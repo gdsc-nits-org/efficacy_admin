@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:efficacy_admin/models/utils/utils.dart';
-import 'package:efficacy_admin/models/club_position/club_position.dart';
 
 part 'club.freezed.dart';
 part 'club.g.dart';

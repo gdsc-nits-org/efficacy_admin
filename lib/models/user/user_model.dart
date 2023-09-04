@@ -1,14 +1,14 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:efficacy_admin/models/utils/utils.dart';
-import 'package:efficacy_admin/models/club_position/club_position.dart';
+import 'package:efficacy_admin/models/club_position/club_position_model.dart';
 
-part 'user.freezed.dart';
-part 'user.g.dart';
+part 'user_model.freezed.dart';
+part 'user_model.g.dart';
 
 @freezed
-class User with _$User {
-  const factory User({
+class UserModel with _$UserModel {
+  const factory UserModel({
     required String name,
     @PhoneNumberSerializer() PhoneNumber? phoneNumber,
     required String email,
@@ -17,8 +17,9 @@ class User with _$User {
     required Branch branch,
     required Degree degree,
     @Default({}) Map<Social, String> socials,
-    @Default([]) List<ClubPosition> position,
-  }) = _User;
+    @Default([]) List<ClubPositionModel> position,
+  }) = _UserModel;
 
-  factory User.fromJson(Map<String, Object?> json) => _$UserFromJson(json);
+  factory UserModel.fromJson(Map<String, Object?> json) =>
+      _$UserModelFromJson(json);
 }

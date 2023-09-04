@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'user_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
+_$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       name: json['name'] as String,
       phoneNumber: _$JsonConverterFromJson<Map<String, String?>, PhoneNumber>(
           json['phoneNumber'], const PhoneNumberSerializer().fromJson),
@@ -20,12 +20,14 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
           ) ??
           const {},
       position: (json['position'] as List<dynamic>?)
-              ?.map((e) => ClubPosition.fromJson(e as Map<String, dynamic>))
+              ?.map(
+                  (e) => ClubPositionModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
     );
 
-Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
+Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
+    <String, dynamic>{
       'name': instance.name,
       'phoneNumber': _$JsonConverterToJson<Map<String, String?>, PhoneNumber>(
           instance.phoneNumber, const PhoneNumberSerializer().toJson),

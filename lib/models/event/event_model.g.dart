@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'event.dart';
+part of 'event_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Event _$$_EventFromJson(Map<String, dynamic> json) => _$_Event(
+_$_EventModel _$$_EventModelFromJson(Map<String, dynamic> json) =>
+    _$_EventModel(
       posterURL: json['posterURL'] as String,
       title: json['title'] as String,
       shortDescription: json['shortDescription'] as String,
@@ -24,7 +25,8 @@ _$_Event _$$_EventFromJson(Map<String, dynamic> json) => _$_Event(
       clubID: json['clubID'] as String,
     );
 
-Map<String, dynamic> _$$_EventToJson(_$_Event instance) => <String, dynamic>{
+Map<String, dynamic> _$$_EventModelToJson(_$_EventModel instance) =>
+    <String, dynamic>{
       'posterURL': instance.posterURL,
       'title': instance.title,
       'shortDescription': instance.shortDescription,

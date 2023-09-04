@@ -1,11 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'event.freezed.dart';
-part 'event.g.dart';
+part 'event_model.freezed.dart';
+part 'event_model.g.dart';
 
 @freezed
-class Event with _$Event {
-  const factory Event({
+class EventModel with _$EventModel {
+  const factory EventModel({
     required String posterURL,
     required String title,
     required String shortDescription,
@@ -22,7 +22,8 @@ class Event with _$Event {
     /// Users who liked the event
     @Default([]) List<String> liked,
     required String clubID,
-  }) = _Event;
+  }) = _EventModel;
 
-  factory Event.fromJson(Map<String, Object?> json) => _$EventFromJson(json);
+  factory EventModel.fromJson(Map<String, Object?> json) =>
+      _$EventModelFromJson(json);
 }

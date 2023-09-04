@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'club.dart';
+part of 'club_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Club _$$_ClubFromJson(Map<String, dynamic> json) => _$_Club(
+_$_ClubModel _$$_ClubModelFromJson(Map<String, dynamic> json) => _$_ClubModel(
       description: json['description'] as String,
       socials: (json['socials'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry($enumDecode(_$SocialEnumMap, k), e as String),
@@ -24,7 +24,8 @@ _$_Club _$$_ClubFromJson(Map<String, dynamic> json) => _$_Club(
           const [],
     );
 
-Map<String, dynamic> _$$_ClubToJson(_$_Club instance) => <String, dynamic>{
+Map<String, dynamic> _$$_ClubModelToJson(_$_ClubModel instance) =>
+    <String, dynamic>{
       'description': instance.description,
       'socials':
           instance.socials.map((k, e) => MapEntry(_$SocialEnumMap[k]!, e)),

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'constants.dart';
-import 'package:efficacy_admin/models/user/user.dart' as models;
+import '../constants.dart';
+import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserController {
@@ -12,11 +12,11 @@ class UserController {
     }
   }
 
-  static Future<void> create(models.User user) async {
+  static Future<void> create(UserModel user) async {
     await update(user);
   }
 
-  static Future<models.User?> get() async {
+  static Future<UserModel?> get() async {
     _checkValidity();
     DocumentSnapshot snapshot = await FirebaseFirestore.instance
         .collection(Collections.users.name)
@@ -24,12 +24,12 @@ class UserController {
         .get();
 
     if (snapshot.data() != null) {
-      return models.User.fromJson(snapshot.data()! as Map<String, Object>);
+      return UserModel.fromJson(snapshot.data()! as Map<String, Object>);
     }
     return null;
   }
 
-  static Future<void> update(models.User user) async {
+  static Future<void> update(UserModel user) async {
     _checkValidity();
     await FirebaseFirestore.instance
         .collection(Collections.users.name)

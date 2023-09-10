@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'user.dart';
+part of 'user_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-User _$UserFromJson(Map<String, dynamic> json) {
-  return _User.fromJson(json);
+UserModel _$UserModelFromJson(Map<String, dynamic> json) {
+  return _UserModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$User {
+mixin _$UserModel {
   String get name => throw _privateConstructorUsedError;
   @PhoneNumberSerializer()
   PhoneNumber? get phoneNumber => throw _privateConstructorUsedError;
@@ -29,17 +29,18 @@ mixin _$User {
   Branch get branch => throw _privateConstructorUsedError;
   Degree get degree => throw _privateConstructorUsedError;
   Map<Social, String> get socials => throw _privateConstructorUsedError;
-  List<ClubPosition> get position => throw _privateConstructorUsedError;
+  List<ClubPositionModel> get position => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
+  $UserModelCopyWith<UserModel> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UserCopyWith<$Res> {
-  factory $UserCopyWith(User value, $Res Function(User) then) =
-      _$UserCopyWithImpl<$Res, User>;
+abstract class $UserModelCopyWith<$Res> {
+  factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
+      _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
   $Res call(
       {String name,
@@ -50,13 +51,13 @@ abstract class $UserCopyWith<$Res> {
       Branch branch,
       Degree degree,
       Map<Social, String> socials,
-      List<ClubPosition> position});
+      List<ClubPositionModel> position});
 }
 
 /// @nodoc
-class _$UserCopyWithImpl<$Res, $Val extends User>
-    implements $UserCopyWith<$Res> {
-  _$UserCopyWithImpl(this._value, this._then);
+class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
+    implements $UserModelCopyWith<$Res> {
+  _$UserModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -112,15 +113,16 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
       position: null == position
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
-              as List<ClubPosition>,
+              as List<ClubPositionModel>,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
-  factory _$$_UserCopyWith(_$_User value, $Res Function(_$_User) then) =
-      __$$_UserCopyWithImpl<$Res>;
+abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
+  factory _$$_UserModelCopyWith(
+          _$_UserModel value, $Res Function(_$_UserModel) then) =
+      __$$_UserModelCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -132,13 +134,15 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       Branch branch,
       Degree degree,
       Map<Social, String> socials,
-      List<ClubPosition> position});
+      List<ClubPositionModel> position});
 }
 
 /// @nodoc
-class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
-    implements _$$_UserCopyWith<$Res> {
-  __$$_UserCopyWithImpl(_$_User _value, $Res Function(_$_User) _then)
+class __$$_UserModelCopyWithImpl<$Res>
+    extends _$UserModelCopyWithImpl<$Res, _$_UserModel>
+    implements _$$_UserModelCopyWith<$Res> {
+  __$$_UserModelCopyWithImpl(
+      _$_UserModel _value, $Res Function(_$_UserModel) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -154,7 +158,7 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
     Object? socials = null,
     Object? position = null,
   }) {
-    return _then(_$_User(
+    return _then(_$_UserModel(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -190,15 +194,15 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
       position: null == position
           ? _value._position
           : position // ignore: cast_nullable_to_non_nullable
-              as List<ClubPosition>,
+              as List<ClubPositionModel>,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_User implements _User {
-  const _$_User(
+class _$_UserModel implements _UserModel {
+  const _$_UserModel(
       {required this.name,
       @PhoneNumberSerializer() this.phoneNumber,
       required this.email,
@@ -207,11 +211,12 @@ class _$_User implements _User {
       required this.branch,
       required this.degree,
       final Map<Social, String> socials = const {},
-      final List<ClubPosition> position = const []})
+      final List<ClubPositionModel> position = const []})
       : _socials = socials,
         _position = position;
 
-  factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
+  factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
+      _$$_UserModelFromJson(json);
 
   @override
   final String name;
@@ -237,10 +242,10 @@ class _$_User implements _User {
     return EqualUnmodifiableMapView(_socials);
   }
 
-  final List<ClubPosition> _position;
+  final List<ClubPositionModel> _position;
   @override
   @JsonKey()
-  List<ClubPosition> get position {
+  List<ClubPositionModel> get position {
     if (_position is EqualUnmodifiableListView) return _position;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_position);
@@ -248,14 +253,14 @@ class _$_User implements _User {
 
   @override
   String toString() {
-    return 'User(name: $name, phoneNumber: $phoneNumber, email: $email, scholarID: $scholarID, userPhoto: $userPhoto, branch: $branch, degree: $degree, socials: $socials, position: $position)';
+    return 'UserModel(name: $name, phoneNumber: $phoneNumber, email: $email, scholarID: $scholarID, userPhoto: $userPhoto, branch: $branch, degree: $degree, socials: $socials, position: $position)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_User &&
+            other is _$_UserModel &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
@@ -287,19 +292,19 @@ class _$_User implements _User {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserCopyWith<_$_User> get copyWith =>
-      __$$_UserCopyWithImpl<_$_User>(this, _$identity);
+  _$$_UserModelCopyWith<_$_UserModel> get copyWith =>
+      __$$_UserModelCopyWithImpl<_$_UserModel>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserToJson(
+    return _$$_UserModelToJson(
       this,
     );
   }
 }
 
-abstract class _User implements User {
-  const factory _User(
+abstract class _UserModel implements UserModel {
+  const factory _UserModel(
       {required final String name,
       @PhoneNumberSerializer() final PhoneNumber? phoneNumber,
       required final String email,
@@ -308,9 +313,10 @@ abstract class _User implements User {
       required final Branch branch,
       required final Degree degree,
       final Map<Social, String> socials,
-      final List<ClubPosition> position}) = _$_User;
+      final List<ClubPositionModel> position}) = _$_UserModel;
 
-  factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
+  factory _UserModel.fromJson(Map<String, dynamic> json) =
+      _$_UserModel.fromJson;
 
   @override
   String get name;
@@ -330,8 +336,9 @@ abstract class _User implements User {
   @override
   Map<Social, String> get socials;
   @override
-  List<ClubPosition> get position;
+  List<ClubPositionModel> get position;
   @override
   @JsonKey(ignore: true)
-  _$$_UserCopyWith<_$_User> get copyWith => throw _privateConstructorUsedError;
+  _$$_UserModelCopyWith<_$_UserModel> get copyWith =>
+      throw _privateConstructorUsedError;
 }

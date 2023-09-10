@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'club.dart';
+part of 'club_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Club _$ClubFromJson(Map<String, dynamic> json) {
-  return _Club.fromJson(json);
+ClubModel _$ClubModelFromJson(Map<String, dynamic> json) {
+  return _ClubModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Club {
+mixin _$ClubModel {
   String get description => throw _privateConstructorUsedError;
   Map<Social, String> get socials => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
@@ -36,13 +36,14 @@ mixin _$Club {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ClubCopyWith<Club> get copyWith => throw _privateConstructorUsedError;
+  $ClubModelCopyWith<ClubModel> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ClubCopyWith<$Res> {
-  factory $ClubCopyWith(Club value, $Res Function(Club) then) =
-      _$ClubCopyWithImpl<$Res, Club>;
+abstract class $ClubModelCopyWith<$Res> {
+  factory $ClubModelCopyWith(ClubModel value, $Res Function(ClubModel) then) =
+      _$ClubModelCopyWithImpl<$Res, ClubModel>;
   @useResult
   $Res call(
       {String description,
@@ -56,9 +57,9 @@ abstract class $ClubCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ClubCopyWithImpl<$Res, $Val extends Club>
-    implements $ClubCopyWith<$Res> {
-  _$ClubCopyWithImpl(this._value, this._then);
+class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
+    implements $ClubModelCopyWith<$Res> {
+  _$ClubModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -115,9 +116,10 @@ class _$ClubCopyWithImpl<$Res, $Val extends Club>
 }
 
 /// @nodoc
-abstract class _$$_ClubCopyWith<$Res> implements $ClubCopyWith<$Res> {
-  factory _$$_ClubCopyWith(_$_Club value, $Res Function(_$_Club) then) =
-      __$$_ClubCopyWithImpl<$Res>;
+abstract class _$$_ClubModelCopyWith<$Res> implements $ClubModelCopyWith<$Res> {
+  factory _$$_ClubModelCopyWith(
+          _$_ClubModel value, $Res Function(_$_ClubModel) then) =
+      __$$_ClubModelCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -132,9 +134,11 @@ abstract class _$$_ClubCopyWith<$Res> implements $ClubCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_ClubCopyWithImpl<$Res> extends _$ClubCopyWithImpl<$Res, _$_Club>
-    implements _$$_ClubCopyWith<$Res> {
-  __$$_ClubCopyWithImpl(_$_Club _value, $Res Function(_$_Club) _then)
+class __$$_ClubModelCopyWithImpl<$Res>
+    extends _$ClubModelCopyWithImpl<$Res, _$_ClubModel>
+    implements _$$_ClubModelCopyWith<$Res> {
+  __$$_ClubModelCopyWithImpl(
+      _$_ClubModel _value, $Res Function(_$_ClubModel) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -149,7 +153,7 @@ class __$$_ClubCopyWithImpl<$Res> extends _$ClubCopyWithImpl<$Res, _$_Club>
     Object? members = null,
     Object? followers = null,
   }) {
-    return _then(_$_Club(
+    return _then(_$_ClubModel(
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -188,8 +192,8 @@ class __$$_ClubCopyWithImpl<$Res> extends _$ClubCopyWithImpl<$Res, _$_Club>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Club implements _Club {
-  const _$_Club(
+class _$_ClubModel implements _ClubModel {
+  const _$_ClubModel(
       {required this.description,
       final Map<Social, String> socials = const {},
       required this.email,
@@ -202,7 +206,8 @@ class _$_Club implements _Club {
         _members = members,
         _followers = followers;
 
-  factory _$_Club.fromJson(Map<String, dynamic> json) => _$$_ClubFromJson(json);
+  factory _$_ClubModel.fromJson(Map<String, dynamic> json) =>
+      _$$_ClubModelFromJson(json);
 
   @override
   final String description;
@@ -250,14 +255,14 @@ class _$_Club implements _Club {
 
   @override
   String toString() {
-    return 'Club(description: $description, socials: $socials, email: $email, phoneNumber: $phoneNumber, clubLogoURL: $clubLogoURL, clubBannerURL: $clubBannerURL, members: $members, followers: $followers)';
+    return 'ClubModel(description: $description, socials: $socials, email: $email, phoneNumber: $phoneNumber, clubLogoURL: $clubLogoURL, clubBannerURL: $clubBannerURL, members: $members, followers: $followers)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Club &&
+            other is _$_ClubModel &&
             (identical(other.description, description) ||
                 other.description == description) &&
             const DeepCollectionEquality().equals(other._socials, _socials) &&
@@ -289,19 +294,19 @@ class _$_Club implements _Club {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ClubCopyWith<_$_Club> get copyWith =>
-      __$$_ClubCopyWithImpl<_$_Club>(this, _$identity);
+  _$$_ClubModelCopyWith<_$_ClubModel> get copyWith =>
+      __$$_ClubModelCopyWithImpl<_$_ClubModel>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ClubToJson(
+    return _$$_ClubModelToJson(
       this,
     );
   }
 }
 
-abstract class _Club implements Club {
-  const factory _Club(
+abstract class _ClubModel implements ClubModel {
+  const factory _ClubModel(
       {required final String description,
       final Map<Social, String> socials,
       required final String email,
@@ -309,9 +314,10 @@ abstract class _Club implements Club {
       required final String clubLogoURL,
       final String? clubBannerURL,
       required final Map<String, String> members,
-      final List<String> followers}) = _$_Club;
+      final List<String> followers}) = _$_ClubModel;
 
-  factory _Club.fromJson(Map<String, dynamic> json) = _$_Club.fromJson;
+  factory _ClubModel.fromJson(Map<String, dynamic> json) =
+      _$_ClubModel.fromJson;
 
   @override
   String get description;
@@ -336,5 +342,6 @@ abstract class _Club implements Club {
   List<String> get followers;
   @override
   @JsonKey(ignore: true)
-  _$$_ClubCopyWith<_$_Club> get copyWith => throw _privateConstructorUsedError;
+  _$$_ClubModelCopyWith<_$_ClubModel> get copyWith =>
+      throw _privateConstructorUsedError;
 }

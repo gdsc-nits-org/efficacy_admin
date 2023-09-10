@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'event.dart';
+part of 'event_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Event _$EventFromJson(Map<String, dynamic> json) {
-  return _Event.fromJson(json);
+EventModel _$EventModelFromJson(Map<String, dynamic> json) {
+  return _EventModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Event {
+mixin _$EventModel {
   String get posterURL => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get shortDescription => throw _privateConstructorUsedError;
@@ -39,13 +39,15 @@ mixin _$Event {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $EventCopyWith<Event> get copyWith => throw _privateConstructorUsedError;
+  $EventModelCopyWith<EventModel> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $EventCopyWith<$Res> {
-  factory $EventCopyWith(Event value, $Res Function(Event) then) =
-      _$EventCopyWithImpl<$Res, Event>;
+abstract class $EventModelCopyWith<$Res> {
+  factory $EventModelCopyWith(
+          EventModel value, $Res Function(EventModel) then) =
+      _$EventModelCopyWithImpl<$Res, EventModel>;
   @useResult
   $Res call(
       {String posterURL,
@@ -63,9 +65,9 @@ abstract class $EventCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$EventCopyWithImpl<$Res, $Val extends Event>
-    implements $EventCopyWith<$Res> {
-  _$EventCopyWithImpl(this._value, this._then);
+class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
+    implements $EventModelCopyWith<$Res> {
+  _$EventModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -142,9 +144,11 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
 }
 
 /// @nodoc
-abstract class _$$_EventCopyWith<$Res> implements $EventCopyWith<$Res> {
-  factory _$$_EventCopyWith(_$_Event value, $Res Function(_$_Event) then) =
-      __$$_EventCopyWithImpl<$Res>;
+abstract class _$$_EventModelCopyWith<$Res>
+    implements $EventModelCopyWith<$Res> {
+  factory _$$_EventModelCopyWith(
+          _$_EventModel value, $Res Function(_$_EventModel) then) =
+      __$$_EventModelCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -163,9 +167,11 @@ abstract class _$$_EventCopyWith<$Res> implements $EventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_EventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res, _$_Event>
-    implements _$$_EventCopyWith<$Res> {
-  __$$_EventCopyWithImpl(_$_Event _value, $Res Function(_$_Event) _then)
+class __$$_EventModelCopyWithImpl<$Res>
+    extends _$EventModelCopyWithImpl<$Res, _$_EventModel>
+    implements _$$_EventModelCopyWith<$Res> {
+  __$$_EventModelCopyWithImpl(
+      _$_EventModel _value, $Res Function(_$_EventModel) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -184,7 +190,7 @@ class __$$_EventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res, _$_Event>
     Object? liked = null,
     Object? clubID = null,
   }) {
-    return _then(_$_Event(
+    return _then(_$_EventModel(
       posterURL: null == posterURL
           ? _value.posterURL
           : posterURL // ignore: cast_nullable_to_non_nullable
@@ -239,8 +245,8 @@ class __$$_EventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res, _$_Event>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Event implements _Event {
-  const _$_Event(
+class _$_EventModel implements _EventModel {
+  const _$_EventModel(
       {required this.posterURL,
       required this.title,
       required this.shortDescription,
@@ -256,8 +262,8 @@ class _$_Event implements _Event {
       : _contacts = contacts,
         _liked = liked;
 
-  factory _$_Event.fromJson(Map<String, dynamic> json) =>
-      _$$_EventFromJson(json);
+  factory _$_EventModel.fromJson(Map<String, dynamic> json) =>
+      _$$_EventModelFromJson(json);
 
   @override
   final String posterURL;
@@ -306,14 +312,14 @@ class _$_Event implements _Event {
 
   @override
   String toString() {
-    return 'Event(posterURL: $posterURL, title: $title, shortDescription: $shortDescription, longDescription: $longDescription, startDate: $startDate, endDate: $endDate, registrationLink: $registrationLink, facebookPostURL: $facebookPostURL, venue: $venue, contacts: $contacts, liked: $liked, clubID: $clubID)';
+    return 'EventModel(posterURL: $posterURL, title: $title, shortDescription: $shortDescription, longDescription: $longDescription, startDate: $startDate, endDate: $endDate, registrationLink: $registrationLink, facebookPostURL: $facebookPostURL, venue: $venue, contacts: $contacts, liked: $liked, clubID: $clubID)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Event &&
+            other is _$_EventModel &&
             (identical(other.posterURL, posterURL) ||
                 other.posterURL == posterURL) &&
             (identical(other.title, title) || other.title == title) &&
@@ -354,19 +360,19 @@ class _$_Event implements _Event {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_EventCopyWith<_$_Event> get copyWith =>
-      __$$_EventCopyWithImpl<_$_Event>(this, _$identity);
+  _$$_EventModelCopyWith<_$_EventModel> get copyWith =>
+      __$$_EventModelCopyWithImpl<_$_EventModel>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_EventToJson(
+    return _$$_EventModelToJson(
       this,
     );
   }
 }
 
-abstract class _Event implements Event {
-  const factory _Event(
+abstract class _EventModel implements EventModel {
+  const factory _EventModel(
       {required final String posterURL,
       required final String title,
       required final String shortDescription,
@@ -378,9 +384,10 @@ abstract class _Event implements Event {
       required final String venue,
       required final List<String> contacts,
       final List<String> liked,
-      required final String clubID}) = _$_Event;
+      required final String clubID}) = _$_EventModel;
 
-  factory _Event.fromJson(Map<String, dynamic> json) = _$_Event.fromJson;
+  factory _EventModel.fromJson(Map<String, dynamic> json) =
+      _$_EventModel.fromJson;
 
   @override
   String get posterURL;
@@ -412,6 +419,6 @@ abstract class _Event implements Event {
   String get clubID;
   @override
   @JsonKey(ignore: true)
-  _$$_EventCopyWith<_$_Event> get copyWith =>
+  _$$_EventModelCopyWith<_$_EventModel> get copyWith =>
       throw _privateConstructorUsedError;
 }

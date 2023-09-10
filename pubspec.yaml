@@ -12,11 +12,23 @@ dependencies:
 
   # ======================= Design =======================
   cupertino_icons: ^1.0.2
+
   # ======================= Code Generators =======================
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
-  # ======================= Phone =======================
+
+  # ======================= Phone Number =======================
   intl_phone_number_input: ^0.7.3+1
+
+  # ======================= Authentication =======================
+  google_sign_in: ^6.1.5
+
+  # ======================= Storage =======================
+  flutter_dotenv: ^5.1.0
+  mongo_dart: ^0.9.1
+  hive: ^2.2.3
+  path_provider: ^2.1.1
+
 
 dev_dependencies:
   flutter_test:
@@ -24,6 +36,7 @@ dev_dependencies:
 
   # ======================= Rules =======================
   flutter_lints: ^2.0.0
+
   # ======================= Code Generators =======================
   build_runner: ^2.4.6
   freezed: ^2.4.2
@@ -31,3 +44,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - .env

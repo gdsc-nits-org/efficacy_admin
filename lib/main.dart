@@ -27,10 +27,12 @@ class MyApp extends StatelessWidget {
       routes: {
         ExperimentPage.routeName: (BuildContext context) =>
             const ExperimentPage(),
+        WelcomePage.routeName: (context) => const WelcomePage()
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,
-      initialRoute: ExperimentPage.routeName,
+      initialRoute: WelcomePage.routeName,
+      //ExperimentPage.routeName,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

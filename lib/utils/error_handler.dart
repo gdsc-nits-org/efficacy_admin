@@ -22,12 +22,17 @@ class ErrorHandler {
 
   static void _flutterErrorBuilder(BuildContext context) {
     FlutterError.onError = (FlutterErrorDetails details) {
-      // debugPrint(details.toString());
+      // debugPrint(details.exception.toString());
 
       /// TODO: Improvise required
       /// The message should not always render what it gets as sometimes it might be too large
-      final errorMessage = details.exception.toString();
-
+      /// Added a maximum size for error message after which it will be truncated
+      String errorMessage = details.exception.toString();
+      int maxSize = 100;
+      if (errorMessage.length > maxSize) {
+        errorMessage =
+            "${details.toStringShort()}:\n${details.exception.toString().substring(0, maxSize)}.....";
+      }
       showErrorSnackBar(context, errorMessage);
     };
   }

@@ -97,11 +97,11 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: myHeight * 0.04,
                   ),
-                  ElevatedButton(onPressed: () {}, child: Text("Sign Up")),
+                  ElevatedButton(onPressed: () {}, child: const Text("Sign Up")),
                   SizedBox(
                     height: myHeight * 0.01,
                   ),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(

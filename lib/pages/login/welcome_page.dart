@@ -14,7 +14,7 @@ class WelcomePage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -22,15 +22,15 @@ class WelcomePage extends StatelessWidget {
           children: [
             //circle avatar which will show the user's profile pic
             CircleAvatar(
-              backgroundColor: Color.fromRGBO(196, 196, 196, 1),
+              backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
               radius: myWidth * 0.25,
-              child: SizedBox(),
+              child: const SizedBox(),
             ),
             SizedBox(
               height: myHeight * 0.05,
             ),
             //welcome message
-            Text(
+            const Text(
               "Hey! Welcome",
               style: TextStyle(fontWeight: FontWeight.w900, fontSize: 24),
             ),

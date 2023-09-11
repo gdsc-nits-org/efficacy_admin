@@ -1,5 +1,4 @@
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
-import 'package:efficacy_admin/utils/database/database.dart';
 import 'package:flutter/material.dart';
 import 'utils/utils.dart';
 import 'configs/configs.dart';
@@ -27,11 +26,12 @@ class MyApp extends StatelessWidget {
       routes: {
         ExperimentPage.routeName: (BuildContext context) =>
             const ExperimentPage(),
-        WelcomePage.routeName: (context) => const WelcomePage()
+        WelcomePage.routeName: (context) => const WelcomePage(),
+        SplashScreen.routeName: (context) => const SplashScreen()
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,
-      initialRoute: WelcomePage.routeName,
+      initialRoute: SplashScreen.routeName,
       //ExperimentPage.routeName,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );

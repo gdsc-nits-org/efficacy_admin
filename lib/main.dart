@@ -1,3 +1,4 @@
+import 'package:efficacy_admin/pages/login/login_page.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:flutter/material.dart';
 import 'utils/utils.dart';
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
         ExperimentPage.routeName: (BuildContext context) =>
             const ExperimentPage(),
         WelcomePage.routeName: (context) => const WelcomePage(),
-        SplashScreen.routeName: (context) => const SplashScreen()
+        SplashScreen.routeName: (context) => const SplashScreen(),
+        LoginPage.routeName: (context) => const LoginPage()
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,

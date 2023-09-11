@@ -1,3 +1,4 @@
+import 'package:efficacy_admin/pages/login/login_page.dart';
 import 'package:flutter/material.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -43,7 +44,7 @@ class WelcomePage extends StatelessWidget {
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suscipit sed augue quam amet, sed gravida.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: 17, color: Colors.black.withOpacity(0.65)),
+                    fontSize: 16, color: Colors.black.withOpacity(0.65)),
               ),
             ),
             SizedBox(
@@ -51,7 +52,9 @@ class WelcomePage extends StatelessWidget {
             ),
             //sign in with google button
             InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, LoginPage.routeName);
+                },
                 child: Image.asset(
                     "assets/images/btn_google_signin_light_normal_web@2x 1.png"))
           ],

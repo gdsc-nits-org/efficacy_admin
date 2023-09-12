@@ -14,9 +14,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  //form key
+  final _formKey = GlobalKey<FormState>();
+
+  //image variables
   File? _image;
   ImagePicker picker = ImagePicker();
 
+  //function to click photo from camera
   _imgFromCamera() async {
     XFile? image =
         await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
@@ -26,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  //function to choose image from gallery
   _imgFromGallery() async {
     XFile? image =
         await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
@@ -35,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  //function to show image picker
   void _showPicker(context) {
     showModalBottomSheet(
         context: context,
@@ -85,6 +92,9 @@ class _LoginPageState extends State<LoginPage> {
     double gap2 = height * 0.02;
     double formWidth = width * 0.8;
     double gap3 = height * 0.04;
+    //textcontrollers
+    TextEditingController emailController = TextEditingController();
+    TextEditingController nameController = TextEditingController();
 
     return Scaffold(
       body: SizedBox(
@@ -93,6 +103,7 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            //profile picture image picker
             InkWell(
               onTap: () => _showPicker(context),
               child: CircleAvatar(
@@ -100,10 +111,13 @@ class _LoginPageState extends State<LoginPage> {
                 radius: avatarRadius,
                 child: _image != null
                     ? ClipRRect(
-                    borderRadius: BorderRadius.circular(avatarRadius),
+                        borderRadius: BorderRadius.circular(avatarRadius),
                         clipBehavior: Clip.hardEdge,
-                    child: Image.file(_image!,fit: BoxFit.fitHeight,
-                    height: 180,))
+                        child: Image.file(
+                          _image!,
+                          fit: BoxFit.fitHeight,
+                          height: 180,
+                        ))
                     : const SizedBox(),
               ),
             ),
@@ -112,94 +126,117 @@ class _LoginPageState extends State<LoginPage> {
             ),
 
             //login form
-            Form(
-                child: SizedBox(
-              width: formWidth,
-              child: Column(
-                children: [
-                  //email field
-                  TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      hintText: "efficacy789@gmail.com",
+            SingleChildScrollView(
+              child: Form(
+                  key: _formKey,
+                  child: SizedBox(
+                    width: formWidth,
+                    child: Column(
+                      children: [
+                        //email field
+                        TextFormField(
+                          controller: emailController,
+                          validator: (value) {
+                            if (!value!.contains("@")) {
+                              return "invalid email";
+                            } else if (value.isEmpty) {
+                              return "email cannot be empty";
+                            } else {
+                              return null;
+                            }
+                          },
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                            hintText: "efficacy789@gmail.com",
+                          ),
+                        ),
+
+                        SizedBox(
+                          height: gap2,
+                        ),
+
+                        //name field
+                        TextFormField(
+                          controller: nameController,
+                          validator: (value) =>
+                              value!.isEmpty ? "name cannot be empty" : null,
+                          decoration:
+                              const InputDecoration(hintText: "John Doe"),
+                        ),
+
+                        SizedBox(
+                          height: gap2,
+                        ),
+
+                        //intl number field
+                        const IntlPhoneField(
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            hintText: "9077900",
+                            hintStyle:
+                                TextStyle(color: Color.fromRGBO(5, 53, 75, 1)),
+                          ),
+                          initialCountryCode: 'IN',
+                        ),
+
+                        SizedBox(
+                          height: gap2,
+                        ),
+
+                        //club menu field
+                        DropdownButton(
+                          isExpanded: true,
+                          dropdownColor: const Color.fromRGBO(237, 249, 255, 1),
+                          style: const TextStyle(
+                              color: Color.fromRGBO(5, 53, 75, 1)),
+                          value: dropdownvalue,
+                          items: items.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(items),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownvalue = newValue!;
+                            });
+                          },
+                        ),
+
+                        SizedBox(
+                          height: gap3,
+                        ),
+
+                        //sign up button
+                        ElevatedButton(
+                            onPressed: () {
+                              _formKey.currentState!.validate();
+                            },
+                            child: const Text("Sign Up")),
+                        SizedBox(
+                          height: gap1,
+                        ),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Club not in the list?",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color.fromRGBO(128, 128, 128, 1)),
+                            ),
+                            Text(
+                              "mail us at mail@gdsc",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color.fromRGBO(5, 53, 76, 1)),
+                            )
+                          ],
+                        )
+                      ],
                     ),
-                  ),
-
-                  SizedBox(
-                    height: gap2,
-                  ),
-
-                  //name field
-                  TextFormField(
-                    decoration: const InputDecoration(hintText: "John Doe"),
-                  ),
-
-                  SizedBox(
-                    height: gap2,
-                  ),
-
-                  //intl number field
-                  const IntlPhoneField(
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      hintText: "9077900",
-                      hintStyle: TextStyle(color: Color.fromRGBO(5, 53, 75, 1)),
-                    ),
-                    initialCountryCode: 'IN',
-                  ),
-
-                  SizedBox(
-                    height: gap2,
-                  ),
-
-                  //club menu field
-                  DropdownButton(
-                    isExpanded: true,
-                    dropdownColor: const Color.fromRGBO(237, 249, 255, 1),
-                    style: const TextStyle(color: Color.fromRGBO(5, 53, 75, 1)),
-                    value: dropdownvalue,
-                    items: items.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(items),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownvalue = newValue!;
-                      });
-                    },
-                  ),
-
-                  SizedBox(
-                    height: gap3,
-                  ),
-
-                  //sign up button
-                  ElevatedButton(
-                      onPressed: () {}, child: const Text("Sign Up")),
-                  SizedBox(
-                    height: gap1,
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Club not in the list?",
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Color.fromRGBO(128, 128, 128, 1)),
-                      ),
-                      Text(
-                        "mail us at mail@gdsc",
-                        style: TextStyle(
-                            fontSize: 12, color: Color.fromRGBO(5, 53, 76, 1)),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ))
+                  )),
+            )
           ],
         ),
       ),

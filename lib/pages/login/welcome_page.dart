@@ -1,5 +1,6 @@
 import 'package:efficacy_admin/pages/login/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -26,7 +27,6 @@ class WelcomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
             //circle avatar which will show the user's profile pic
             CircleAvatar(
               backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
@@ -64,12 +64,19 @@ class WelcomePage extends StatelessWidget {
             ),
 
             //sign in with google button
-            InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, LoginPage.routeName);
-                },
-                child: Image.asset(
-                    "assets/images/btn_google_signin_light_normal_web@2x 1.png"))
+            OutlinedButton(
+                onPressed: () =>
+                    Navigator.pushNamed(context, LoginPage.routeName),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SvgPicture.asset("assets/images/google_logo.svg",height: 50),
+                    const Text("Sign In with Google",style: TextStyle(
+                      fontSize: 16
+                    ),)
+                  ],
+                ))
           ],
         ),
       ),

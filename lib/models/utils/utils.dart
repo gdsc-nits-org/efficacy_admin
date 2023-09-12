@@ -2,4 +2,3 @@
 
 export 'constants.dart';
 export 'phone_number_serializer.dart';
-export 'club_position_serializer.dart';

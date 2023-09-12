@@ -1,3 +1,4 @@
+import 'package:efficacy_admin/configs/configurations/extensions/extensions.dart';
 import 'package:efficacy_admin/states/authenticator/authenticator.dart';
 import 'package:efficacy_admin/controllers/services/services.dart';
 import 'package:efficacy_admin/models/models.dart';
@@ -26,15 +27,8 @@ class _ExperimentPageState extends State<ExperimentPage> {
               onPressed: () async {
                 GoogleSignInAccount account =
                     await Authenticator.googleSignIn();
-                UserModel user = UserModel(
-                  name: account.displayName ?? "Raj",
-                  email: account.email,
-                  scholarID: '2112035',
-                  branch: Branch.CSE,
-                  degree: Degree.BTech,
-                );
-                await UserController.create(user);
-                await LocalDatabase.setUser(user);
+                // await UserController.create(user);
+                // await LocalDatabase.setUser(user);
               },
               child: const Text("Login with Google"),
             ),
@@ -44,7 +38,7 @@ class _ExperimentPageState extends State<ExperimentPage> {
               },
               child: const Text("Login Out"),
             ),
-          ],
+          ].separate(10),
         ),
       ),
     );

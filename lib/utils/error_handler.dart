@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -37,12 +38,37 @@ class ErrorHandler {
     };
   }
 
-  static void _platformErrorBuilder() {
-    Widget error = const Text("Unknown platform error...");
+  static void _platformErrorBuilder(BuildContext context) {
+    // Widget error = const Text("Unknown platform error...");
     PlatformDispatcher.instance.onError = (obj, stack) {
       // debugPrint(obj.toString());
       // debugPrintStack(stackTrace: stack);
-      error;
+
+      late String errorMessage;
+      if (Platform.isAndroid) {
+        errorMessage = 'This feature is not available on Android.';
+      } else if (Platform.isIOS) {
+        errorMessage = 'This feature is not available on iOS.';
+      } else if (Platform.isMacOS) {
+        errorMessage = 'This feature is not available on macOS.';
+      } else if (Platform.isWindows) {
+        errorMessage = 'This feature is not available on Windows.';
+      } else if (Platform.isLinux) {
+        errorMessage = 'This feature is not available on Linux.';
+      } else {
+        errorMessage = 'This feature is not supported on your platform.';
+      }
+      if (obj.toString().isNotEmpty) {
+        if (obj.toString().contains("network_error")) {
+          errorMessage = "Network Error";
+        } else if (obj.toString().contains("sign_in_failed")) {
+          errorMessage = "Sign in Failed";
+        } else if (obj.toString().contains("Exception: Couldn't sign in")) {
+          errorMessage = "Couldn't sign in";
+        }
+      }
+      showErrorSnackBar(context, errorMessage);
+      // error;
       return true;
     };
   }
@@ -52,7 +78,7 @@ class ErrorHandler {
     // TODO: If required fixed it
     // _errorBuilder();
     _flutterErrorBuilder(context);
-    _platformErrorBuilder();
+    _platformErrorBuilder(context);
 
     if (child != null) return child;
     throw ('child is null');

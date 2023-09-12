@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -11,6 +14,55 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  File? _image;
+  ImagePicker picker = ImagePicker();
+
+  _imgFromCamera() async {
+    XFile? image =
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+
+    setState(() {
+      _image = File(image!.path);
+    });
+  }
+
+  _imgFromGallery() async {
+    XFile? image =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+
+    setState(() {
+      _image = File(image!.path);
+    });
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Photo Library'),
+                    onTap: () {
+                      _imgFromGallery();
+                      Navigator.of(context).pop();
+                    }),
+                ListTile(
+                  leading: const Icon(Icons.photo_camera),
+                  title: const Text('Camera'),
+                  onTap: () {
+                    _imgFromCamera();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
   String dropdownvalue = 'GDSC';
 
   // List of items in our dropdown menu
@@ -23,7 +75,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
     //size of screen
     Size size = MediaQuery.of(context).size;
     double width = size.width;
@@ -42,10 +93,19 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
-              backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
-              radius: avatarRadius,
-              child: const SizedBox(),
+            InkWell(
+              onTap: () => _showPicker(context),
+              child: CircleAvatar(
+                backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
+                radius: avatarRadius,
+                child: _image != null
+                    ? ClipRRect(
+                    borderRadius: BorderRadius.circular(avatarRadius),
+                        clipBehavior: Clip.hardEdge,
+                    child: Image.file(_image!,fit: BoxFit.fitHeight,
+                    height: 180,))
+                    : const SizedBox(),
+              ),
             ),
             SizedBox(
               height: gap2,
@@ -57,7 +117,6 @@ class _LoginPageState extends State<LoginPage> {
               width: formWidth,
               child: Column(
                 children: [
-
                   //email field
                   TextFormField(
                     keyboardType: TextInputType.emailAddress,

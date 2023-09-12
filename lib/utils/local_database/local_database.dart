@@ -24,8 +24,6 @@ class LocalDatabase {
     _userBox ??= await Hive.openBox(LocalCollections.user.name);
     // Since at all time we will have only 1 signed in user.
     await _userBox!.delete(LocalDocuments.currentUser.name);
-    print("hh");
     await _userBox!.put(LocalDocuments.currentUser.name, user.toJson());
-    print("added");
   }
 }

@@ -28,8 +28,10 @@ mixin _$ClubModel {
   String get clubLogoURL => throw _privateConstructorUsedError;
   String? get clubBannerURL => throw _privateConstructorUsedError;
 
-  /// Map<Position, Member ID>
-  Map<String, String> get members => throw _privateConstructorUsedError;
+  /// Map<ClubPositionModel, Member ID>
+  /// Cannot use clubPositionModel
+  /// Since it has issues with freezed (cannot make keys with custom type)
+  Map<dynamic, dynamic> get members => throw _privateConstructorUsedError;
 
   /// Follower Ids
   List<String> get followers => throw _privateConstructorUsedError;
@@ -52,7 +54,7 @@ abstract class $ClubModelCopyWith<$Res> {
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String clubLogoURL,
       String? clubBannerURL,
-      Map<String, String> members,
+      Map<dynamic, dynamic> members,
       List<String> followers});
 }
 
@@ -106,7 +108,7 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
       members: null == members
           ? _value.members
           : members // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+              as Map<dynamic, dynamic>,
       followers: null == followers
           ? _value.followers
           : followers // ignore: cast_nullable_to_non_nullable
@@ -129,7 +131,7 @@ abstract class _$$_ClubModelCopyWith<$Res> implements $ClubModelCopyWith<$Res> {
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String clubLogoURL,
       String? clubBannerURL,
-      Map<String, String> members,
+      Map<dynamic, dynamic> members,
       List<String> followers});
 }
 
@@ -181,7 +183,7 @@ class __$$_ClubModelCopyWithImpl<$Res>
       members: null == members
           ? _value._members
           : members // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+              as Map<dynamic, dynamic>,
       followers: null == followers
           ? _value._followers
           : followers // ignore: cast_nullable_to_non_nullable
@@ -200,7 +202,7 @@ class _$_ClubModel implements _ClubModel {
       @PhoneNumberSerializer() this.phoneNumber,
       required this.clubLogoURL,
       this.clubBannerURL,
-      required final Map<String, String> members,
+      required final Map<dynamic, dynamic> members,
       final List<String> followers = const []})
       : _socials = socials,
         _members = members,
@@ -230,12 +232,16 @@ class _$_ClubModel implements _ClubModel {
   @override
   final String? clubBannerURL;
 
-  /// Map<Position, Member ID>
-  final Map<String, String> _members;
+  /// Map<ClubPositionModel, Member ID>
+  /// Cannot use clubPositionModel
+  /// Since it has issues with freezed (cannot make keys with custom type)
+  final Map<dynamic, dynamic> _members;
 
-  /// Map<Position, Member ID>
+  /// Map<ClubPositionModel, Member ID>
+  /// Cannot use clubPositionModel
+  /// Since it has issues with freezed (cannot make keys with custom type)
   @override
-  Map<String, String> get members {
+  Map<dynamic, dynamic> get members {
     if (_members is EqualUnmodifiableMapView) return _members;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_members);
@@ -313,7 +319,7 @@ abstract class _ClubModel implements ClubModel {
       @PhoneNumberSerializer() final PhoneNumber? phoneNumber,
       required final String clubLogoURL,
       final String? clubBannerURL,
-      required final Map<String, String> members,
+      required final Map<dynamic, dynamic> members,
       final List<String> followers}) = _$_ClubModel;
 
   factory _ClubModel.fromJson(Map<String, dynamic> json) =
@@ -334,8 +340,10 @@ abstract class _ClubModel implements ClubModel {
   String? get clubBannerURL;
   @override
 
-  /// Map<Position, Member ID>
-  Map<String, String> get members;
+  /// Map<ClubPositionModel, Member ID>
+  /// Cannot use clubPositionModel
+  /// Since it has issues with freezed (cannot make keys with custom type)
+  Map<dynamic, dynamic> get members;
   @override
 
   /// Follower Ids

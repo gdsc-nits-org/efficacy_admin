@@ -10,34 +10,45 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //screen height and width
-    double myHeight = MediaQuery.of(context).size.height;
-    double myWidth = MediaQuery.of(context).size.width;
+    Size size = MediaQuery.of(context).size;
+    double width = size.width;
+    double height = size.height;
+    //size constants
+    double avatarRadius = width * 0.25;
+    double gap1 = height * 0.05;
+    double gap2 = height * 0.02;
+    double gap3 = height * 0.1;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SizedBox(
-        width: double.infinity,
+        width: width,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+
             //circle avatar which will show the user's profile pic
             CircleAvatar(
               backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
-              radius: myWidth * 0.25,
+              radius: avatarRadius,
               child: const SizedBox(),
             ),
+
             SizedBox(
-              height: myHeight * 0.05,
+              height: gap1,
             ),
+
             //welcome message
             const Text(
               "Hey! Welcome",
               style: TextStyle(fontWeight: FontWeight.w900, fontSize: 24),
             ),
+
             SizedBox(
-              height: myHeight * 0.02,
+              height: gap2,
             ),
+
+            //text
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16),
               child: Text(
@@ -47,9 +58,11 @@ class WelcomePage extends StatelessWidget {
                     fontSize: 16, color: Colors.black.withOpacity(0.65)),
               ),
             ),
+
             SizedBox(
-              height: myHeight * 0.1,
+              height: gap3,
             ),
+
             //sign in with google button
             InkWell(
                 onTap: () {

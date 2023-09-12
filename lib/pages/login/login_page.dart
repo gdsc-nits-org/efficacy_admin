@@ -23,30 +23,41 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    double myWidth = MediaQuery.of(context).size.width;
-    double myHeight = MediaQuery.of(context).size.height;
+
+    //size of screen
+    Size size = MediaQuery.of(context).size;
+    double width = size.width;
+    double height = size.height;
+    //size constants
+    double avatarRadius = width * 0.2;
+    double gap1 = height * 0.01;
+    double gap2 = height * 0.02;
+    double formWidth = width * 0.8;
+    double gap3 = height * 0.04;
+
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SizedBox(
-        width: double.infinity,
+        width: width,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CircleAvatar(
               backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
-              radius: myWidth * 0.2,
+              radius: avatarRadius,
               child: const SizedBox(),
             ),
             SizedBox(
-              height: myHeight * 0.02,
+              height: gap2,
             ),
+
             //login form
             Form(
                 child: SizedBox(
-              width: myWidth * 0.8,
+              width: formWidth,
               child: Column(
                 children: [
+
                   //email field
                   TextFormField(
                     keyboardType: TextInputType.emailAddress,
@@ -54,16 +65,20 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: "efficacy789@gmail.com",
                     ),
                   ),
+
                   SizedBox(
-                    height: myHeight * 0.02,
+                    height: gap2,
                   ),
+
                   //name field
                   TextFormField(
                     decoration: const InputDecoration(hintText: "John Doe"),
                   ),
+
                   SizedBox(
-                    height: myHeight * 0.02,
+                    height: gap2,
                   ),
+
                   //intl number field
                   const IntlPhoneField(
                     keyboardType: TextInputType.phone,
@@ -73,9 +88,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     initialCountryCode: 'IN',
                   ),
+
                   SizedBox(
-                    height: myHeight * 0.02,
+                    height: gap2,
                   ),
+
                   //club menu field
                   DropdownButton(
                     isExpanded: true,
@@ -94,12 +111,16 @@ class _LoginPageState extends State<LoginPage> {
                       });
                     },
                   ),
+
                   SizedBox(
-                    height: myHeight * 0.04,
+                    height: gap3,
                   ),
-                  ElevatedButton(onPressed: () {}, child: const Text("Sign Up")),
+
+                  //sign up button
+                  ElevatedButton(
+                      onPressed: () {}, child: const Text("Sign Up")),
                   SizedBox(
-                    height: myHeight * 0.01,
+                    height: gap1,
                   ),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,

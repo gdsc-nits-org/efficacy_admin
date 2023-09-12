@@ -30,13 +30,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     //screen height and width
-    double myHeight = MediaQuery.of(context).size.height;
-    double myWidth = MediaQuery.of(context).size.width;
+    Size size = MediaQuery.of(context).size;
+    double width = size.width;
+    double height = size.height;
+    //size constants
+    double avatarRadius = width * 0.25;
+    double gap = height * 0.02;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SizedBox(
-        width: double.infinity,
+        width: width,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,11 +47,11 @@ class _SplashScreenState extends State<SplashScreen> {
             //circle avatar to show user profile pic
             CircleAvatar(
               backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
-              radius: myWidth * 0.25,
+              radius: avatarRadius,
               child: const SizedBox(),
             ),
             SizedBox(
-              height: myHeight * 0.02,
+              height: gap,
             ),
             const Text(
               "Efficacy",

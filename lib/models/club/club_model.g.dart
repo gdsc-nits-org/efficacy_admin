@@ -17,7 +17,7 @@ _$_ClubModel _$$_ClubModelFromJson(Map<String, dynamic> json) => _$_ClubModel(
           json['phoneNumber'], const PhoneNumberSerializer().fromJson),
       clubLogoURL: json['clubLogoURL'] as String,
       clubBannerURL: json['clubBannerURL'] as String?,
-      members: Map<String, String>.from(json['members'] as Map),
+      members: json['members'] as Map<String, dynamic>,
       followers: (json['followers'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??

@@ -24,27 +24,30 @@ ThemeData lightTheme = ThemeData(
       minimumSize: const Size(264, 58),
       backgroundColor: dark,
       foregroundColor: light,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     ),
   ),
   iconButtonTheme: IconButtonThemeData(
     style: ElevatedButton.styleFrom(
-      elevation: 4,
+      elevation: 2,
       backgroundColor: dark,
       foregroundColor: light,
-
     ),
   ),
   textButtonTheme: TextButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: dark,
-      foregroundColor: light,
+      foregroundColor: dark,
     )
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: ElevatedButton.styleFrom(
+      elevation: 2,
       backgroundColor: light,
+      foregroundColor: shadow,
       shadowColor: shadow,
+      minimumSize: const Size(230, 55),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      side: const BorderSide(width: 0)
     )
   ),
   appBarTheme: const AppBarTheme(

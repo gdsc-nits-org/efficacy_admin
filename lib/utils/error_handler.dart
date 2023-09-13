@@ -32,7 +32,7 @@ class ErrorHandler {
       int maxSize = 100;
       if (errorMessage.length > maxSize) {
         errorMessage =
-            "${details.toStringShort()}:\nPlease contact us if error continues.....";
+            "${details.toStringShort()}:\nPlease contact us if error persists";
       }
       showErrorSnackBar(context, errorMessage);
     };

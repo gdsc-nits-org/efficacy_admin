@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:efficacy_admin/configs/configurations/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -26,9 +27,11 @@ class _LoginPageState extends State<LoginPage> {
     XFile? image =
         await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
 
-    setState(() {
-      _image = File(image!.path);
-    });
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+      });
+    }
   }
 
   //function to choose image from gallery
@@ -36,9 +39,11 @@ class _LoginPageState extends State<LoginPage> {
     XFile? image =
         await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
 
-    setState(() {
-      _image = File(image!.path);
-    });
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+      });
+    }
   }
 
   //function to show image picker
@@ -52,15 +57,15 @@ class _LoginPageState extends State<LoginPage> {
                 ListTile(
                     leading: const Icon(Icons.photo_library),
                     title: const Text('Photo Library'),
-                    onTap: () {
-                      _imgFromGallery();
+                    onTap: () async {
+                      await _imgFromGallery();
                       Navigator.of(context).pop();
                     }),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
                   title: const Text('Camera'),
-                  onTap: () {
-                    _imgFromCamera();
+                  onTap: () async {
+                    await _imgFromCamera();
                     Navigator.of(context).pop();
                   },
                 ),
@@ -88,10 +93,10 @@ class _LoginPageState extends State<LoginPage> {
     double height = size.height;
     //size constants
     double avatarRadius = width * 0.2;
-    double gap1 = height * 0.01;
-    double gap2 = height * 0.02;
+    double gap = height * 0.02;
     double formWidth = width * 0.8;
-    double gap3 = height * 0.04;
+    double imageHeight = 180;
+
     //textcontrollers
     TextEditingController emailController = TextEditingController();
     TextEditingController nameController = TextEditingController();
@@ -116,13 +121,10 @@ class _LoginPageState extends State<LoginPage> {
                         child: Image.file(
                           _image!,
                           fit: BoxFit.fitHeight,
-                          height: 180,
+                          height: imageHeight,
                         ))
                     : const SizedBox(),
               ),
-            ),
-            SizedBox(
-              height: gap2,
             ),
 
             //login form
@@ -151,10 +153,6 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
 
-                        SizedBox(
-                          height: gap2,
-                        ),
-
                         //name field
                         TextFormField(
                           controller: nameController,
@@ -162,10 +160,6 @@ class _LoginPageState extends State<LoginPage> {
                               value!.isEmpty ? "name cannot be empty" : null,
                           decoration:
                               const InputDecoration(hintText: "John Doe"),
-                        ),
-
-                        SizedBox(
-                          height: gap2,
                         ),
 
                         //intl number field
@@ -177,10 +171,6 @@ class _LoginPageState extends State<LoginPage> {
                                 TextStyle(color: Color.fromRGBO(5, 53, 75, 1)),
                           ),
                           initialCountryCode: 'IN',
-                        ),
-
-                        SizedBox(
-                          height: gap2,
                         ),
 
                         //club menu field
@@ -203,19 +193,13 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
 
-                        SizedBox(
-                          height: gap3,
-                        ),
-
                         //sign up button
                         ElevatedButton(
                             onPressed: () {
                               _formKey.currentState!.validate();
                             },
                             child: const Text("Sign Up")),
-                        SizedBox(
-                          height: gap1,
-                        ),
+
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -233,7 +217,7 @@ class _LoginPageState extends State<LoginPage> {
                             )
                           ],
                         )
-                      ],
+                      ].separate(gap),
                     ),
                   )),
             )

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:efficacy_admin/configs/configurations/extensions/extensions.dart';
 import 'package:efficacy_admin/pages/login/welcome_page.dart';
 import 'package:flutter/material.dart';
 
@@ -50,14 +51,13 @@ class _SplashScreenState extends State<SplashScreen> {
               radius: avatarRadius,
               child: const SizedBox(),
             ),
-            SizedBox(
-              height: gap,
-            ),
+
+            //Efficacy text
             const Text(
               "Efficacy",
               style: TextStyle(fontWeight: FontWeight.w900, fontSize: 36),
             ),
-          ],
+          ].separate(gap),
         ),
       ),
     );

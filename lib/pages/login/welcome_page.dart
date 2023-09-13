@@ -1,3 +1,4 @@
+import 'package:efficacy_admin/configs/configurations/extensions/extensions.dart';
 import 'package:efficacy_admin/pages/login/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,8 +18,6 @@ class WelcomePage extends StatelessWidget {
     //size constants
     double avatarRadius = width * 0.25;
     double gap1 = height * 0.05;
-    double gap2 = height * 0.02;
-    double gap3 = height * 0.1;
 
     return Scaffold(
       body: SizedBox(
@@ -34,18 +33,10 @@ class WelcomePage extends StatelessWidget {
               child: const SizedBox(),
             ),
 
-            SizedBox(
-              height: gap1,
-            ),
-
             //welcome message
             const Text(
               "Hey! Welcome",
               style: TextStyle(fontWeight: FontWeight.w900, fontSize: 24),
-            ),
-
-            SizedBox(
-              height: gap2,
             ),
 
             //text
@@ -59,10 +50,6 @@ class WelcomePage extends StatelessWidget {
               ),
             ),
 
-            SizedBox(
-              height: gap3,
-            ),
-
             //sign in with google button
             OutlinedButton(
                 onPressed: () =>
@@ -71,13 +58,15 @@ class WelcomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SvgPicture.asset("assets/images/google_logo.svg",height: 50),
-                    const Text("Sign In with Google",style: TextStyle(
-                      fontSize: 16
-                    ),)
+                    SvgPicture.asset("assets/images/google_logo.svg",
+                        height: 50),
+                    const Text(
+                      "Sign In with Google",
+                      style: TextStyle(fontSize: 16),
+                    )
                   ],
                 ))
-          ],
+          ].separate(gap1),
         ),
       ),
     );

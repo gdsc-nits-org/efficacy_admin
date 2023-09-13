@@ -14,21 +14,41 @@ ThemeData lightTheme = ThemeData(
   useMaterial3: true,
   iconTheme: const IconThemeData(color: accent),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+    backgroundColor: dark,
+    foregroundColor: light,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      elevation: 2,
+      minimumSize: const Size(264, 58),
+      backgroundColor: dark,
+      foregroundColor: light,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    ),
+  ),
+  iconButtonTheme: IconButtonThemeData(
     style: ElevatedButton.styleFrom(
       elevation: 2,
       backgroundColor: dark,
       foregroundColor: light,
     ),
   ),
-  iconButtonTheme: IconButtonThemeData(
+  textButtonTheme: TextButtonThemeData(
     style: ElevatedButton.styleFrom(
-      elevation: 4,
-      backgroundColor: dark,
-      foregroundColor: light,
-    ),
+      foregroundColor: dark,
+    )
+  ),
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      elevation: 2,
+      backgroundColor: light,
+      foregroundColor: shadow,
+      shadowColor: shadow,
+      minimumSize: const Size(230, 55),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      side: const BorderSide(width: 0)
+    )
   ),
   appBarTheme: const AppBarTheme(
     backgroundColor: light,

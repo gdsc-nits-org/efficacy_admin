@@ -29,6 +29,11 @@ dependencies:
   mongo_dart: ^0.9.1
   hive: ^2.2.3
   path_provider: ^2.1.1
+  intl_phone_field: ^3.2.0
+  image_picker: ^1.0.4
+  flutter_svg: ^2.0.7
+
+
 
 
 dev_dependencies:
@@ -48,3 +53,5 @@ flutter:
 
   assets:
     - .env
+    - assets/images/
+

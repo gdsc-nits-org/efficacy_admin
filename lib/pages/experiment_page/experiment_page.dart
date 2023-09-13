@@ -44,7 +44,7 @@ class _ExperimentPageState extends State<ExperimentPage> {
                 await Authenticator.signOut();
               },
               child: const Text("Login Out"),
-            ),
+            )
           ],
         ),
       ),

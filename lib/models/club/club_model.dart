@@ -15,13 +15,15 @@ class ClubModel with _$ClubModel {
     required String clubLogoURL,
     String? clubBannerURL,
 
-    /// Map<Position, Member ID>
-    required Map<String, String> members,
+    /// Map<ClubPositionModel, Member ID>
+    /// Cannot use clubPositionModel
+    /// Since it has issues with freezed (cannot make keys with custom type)
+    required Map members,
 
     /// Follower Ids
     @Default([]) List<String> followers,
   }) = _ClubModel;
 
-  factory ClubModel.fromJson(Map<String, Object?> json) =>
+  factory ClubModel.fromJson(Map<String, dynamic> json) =>
       _$ClubModelFromJson(json);
 }

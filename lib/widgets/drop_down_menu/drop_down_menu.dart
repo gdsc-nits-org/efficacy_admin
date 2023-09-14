@@ -1,3 +1,4 @@
+import 'package:efficacy_admin/widgets/drop_down_menu/drop_down.dart';
 import 'package:flutter/material.dart';
 
 class DropDownMenu extends StatefulWidget {
@@ -8,15 +9,7 @@ class DropDownMenu extends StatefulWidget {
 }
 
 class _DropDownMenuState extends State<DropDownMenu> {
-  String dropdownvalue = 'GDSC';
-
-  // List of items in our dropdown menu
-  var items = [
-    'GDSC',
-    'Eco Club',
-    'Item 3',
-    'Item 4',
-  ];
+  DropDown dropDown = DropDown();
 
   bool isSelected = false;
 
@@ -27,8 +20,8 @@ class _DropDownMenuState extends State<DropDownMenu> {
           ? const Color.fromRGBO(159, 220, 249, 1)
           : const Color.fromRGBO(237, 249, 255, 1),
       isExpanded: true,
-      value: dropdownvalue,
-      items: items.map((String items) {
+      value: dropDown.dropdownvalue,
+      items: dropDown.items.map((String items) {
         return DropdownMenuItem(
           value: items,
           child: Text(items),
@@ -36,7 +29,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
       }).toList(),
       onChanged: (String? newValue) {
         setState(() {
-          dropdownvalue = newValue!;
+          dropDown.dropdownvalue = newValue!;
           isSelected = true;
         });
       },

@@ -23,12 +23,8 @@ class _ExperimentPageState extends State<ExperimentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FractionallySizedBox(
-          widthFactor: 1,
-          child: ChangeNotifierProvider(
-            create: (context) => ActiveButtonState(),
-            child: const AppHomepage(),
-          )
-          /*Column(
+        widthFactor: 1,
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
@@ -46,15 +42,9 @@ class _ExperimentPageState extends State<ExperimentPage> {
               },
               child: const Text("Login Out"),
             ),
-            ElevatedButton(
-              onPressed: ChangeNotifierProvider(
-                  create: (context) => ActiveButtonState(),
-                  child: const AppHomepage()),
-              child: Text('me'),
-            )
           ].separate(10),
-        ),*/
-          ),
+        ),
+      ),
     );
   }
 }

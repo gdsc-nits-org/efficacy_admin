@@ -1,4 +1,6 @@
 import 'package:efficacy_admin/configs/configurations/extensions/extensions.dart';
+import 'package:efficacy_admin/pages/homepage_base/homepage.dart';
+import 'package:efficacy_admin/pages/homepage_base/navigator.dart';
 import 'package:efficacy_admin/states/authenticator/authenticator.dart';
 import 'package:efficacy_admin/controllers/services/services.dart';
 import 'package:efficacy_admin/models/models.dart';
@@ -6,6 +8,7 @@ import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
+import 'package:provider/provider.dart';
 
 class ExperimentPage extends StatefulWidget {
   static const String routeName = "/experimentPage";
@@ -20,8 +23,12 @@ class _ExperimentPageState extends State<ExperimentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FractionallySizedBox(
-        widthFactor: 1,
-        child: Column(
+          widthFactor: 1,
+          child: ChangeNotifierProvider(
+            create: (context) => ActiveButtonState(),
+            child: const AppHomepage(),
+          )
+          /*Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
@@ -38,11 +45,16 @@ class _ExperimentPageState extends State<ExperimentPage> {
                 await Authenticator.signOut();
               },
               child: const Text("Login Out"),
-
             ),
+            ElevatedButton(
+              onPressed: ChangeNotifierProvider(
+                  create: (context) => ActiveButtonState(),
+                  child: const AppHomepage()),
+              child: Text('me'),
+            )
           ].separate(10),
-        ),
-      ),
+        ),*/
+          ),
     );
   }
 }

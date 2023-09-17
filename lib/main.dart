@@ -9,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   /// TODO: Add the following to splash screen if suitable
-  await dotenv.load();
+  // await dotenv.load();
   // await Database.init();
   await LocalDatabase.init();
 

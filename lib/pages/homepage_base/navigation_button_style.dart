@@ -1,35 +1,33 @@
-import 'package:efficacy_admin/pages/homepage_base/navigator.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:efficacy_admin/pages/homepage_base/tab_list.dart';
 
 class NavButton extends StatelessWidget {
   NavButton({
     super.key,
     required this.message,
     required this.onTap,
-    required this.isActive,
+    required this.currentTabIndex,
   });
 
   final String message;
-  final Function onTap;
-  final bool isActive;
-
-  // void onPressedButton() {
-  //   callback(activeStateBool);
-  // }
+  final void Function() onTap;
+  final int currentTabIndex;
 
   @override
   Widget build(BuildContext context) {
     // var activeButton = Provider.of<ActiveButtonState>(context);
 
     return OutlinedButton(
-      onPressed: onTap(),
-      style: isActive
+      onPressed: onTap,
+      style: currentTabIndex == tabList.indexOf(message)
           ? OutlinedButton.styleFrom(
-              backgroundColor: const Color(0xFF05354C),
+              backgroundColor: const Color.fromARGB(255, 12, 90, 126),
               foregroundColor: const Color(0xFFEDF9FF),
             )
-          : null,
+          : OutlinedButton.styleFrom(
+              foregroundColor: const Color.fromARGB(255, 12, 90, 126),
+              backgroundColor: const Color(0xFFEDF9FF),
+            ),
       child: Text(message),
     );
   }

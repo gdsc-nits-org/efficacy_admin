@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       routes: {
+        AppHomepage.routeName: (context) => const AppHomepage(),
         ExperimentPage.routeName: (BuildContext context) =>
             const ExperimentPage(),
         WelcomePage.routeName: (context) => const WelcomePage(),
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,
-      initialRoute: SplashScreen.routeName,
+      // initialRoute: SplashScreen.routeName,
+      initialRoute: AppHomepage.routeName,
       //ExperimentPage.routeName,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );

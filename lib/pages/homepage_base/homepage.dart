@@ -1,9 +1,8 @@
 import 'package:efficacy_admin/configs/configurations/extensions/extensions.dart';
-import 'package:efficacy_admin/pages/homepage_base/events_view.dart';
-import 'package:efficacy_admin/pages/homepage_base/navigation_button_style.dart';
-import 'package:efficacy_admin/pages/homepage_base/navigator.dart';
+// import 'package:efficacy_admin/pages/homepage_base/events_view.dart';
+import 'package:efficacy_admin/pages/homepage_base/tab_list.dart';
+import 'package:efficacy_admin/pages/homepage_base/tabView.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class AppHomepage extends StatefulWidget {
   static const String routeName = "/homePage";
@@ -14,15 +13,17 @@ class AppHomepage extends StatefulWidget {
 }
 
 class _AppHomepageState extends State<AppHomepage> {
-  navigator(bool activeButton) {
+  int currentTabIndex = 0;
+
+  navigator(String buttonMessage) {
     setState(() {
-      activeButton = true;
+      currentTabIndex = tabList.indexOf(buttonMessage);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var activeButton = Provider.of<ActiveButtonState>(context);
+    // var activeButton = Provider.of<ActiveButtonState>(context);
 
     return Column(
       children: [
@@ -32,7 +33,7 @@ class _AppHomepageState extends State<AppHomepage> {
             style: TextStyle(
               color: Color(0xFF05354C),
             ),
-            // textAlign: TextAlign.center,
+            textAlign: TextAlign.center,
           ),
           backgroundColor: Colors.transparent,
           actions: [
@@ -42,27 +43,15 @@ class _AppHomepageState extends State<AppHomepage> {
             )
           ],
         ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              NavButton(
-                message: 'Upcoming',
-                // callback: navigator,
-              ),
-              NavButton(
-                message: 'Ongoing',
-                // callback: navigator,
-              ),
-              NavButton(
-                message: 'Completed',
-                // callback: navigator,
-              ),
-            ].separate(3),
-          ),
+        TabView(
+          currentTabIndex: currentTabIndex,
+          navigator: navigator,
         ),
-        const EventViewer(),
+        // const EventViewer(),
       ].separate(10),
     );
   }
 }
+
+//currenttab
+//row()

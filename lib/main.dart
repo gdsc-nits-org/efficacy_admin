@@ -9,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   /// TODO: Add the following to splash screen if suitable
-  // await dotenv.load();
+  await dotenv.load();
   // await Database.init();
   await LocalDatabase.init();
 
@@ -34,9 +34,7 @@ class MyApp extends StatelessWidget {
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,
-      // initialRoute: SplashScreen.routeName,
-      initialRoute: AppHomepage.routeName,
-      //ExperimentPage.routeName,
+      initialRoute: SplashScreen.routeName,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

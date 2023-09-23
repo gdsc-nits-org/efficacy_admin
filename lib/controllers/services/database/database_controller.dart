@@ -7,10 +7,10 @@ class DatabaseController {
   const DatabaseController._();
 
   static void _userValidation(user) {
-    if (!Validator.isEmailValid(user.email)) {
+    if (Validator.isEmailValid(user.email) != null) {
       throw Exception("Invalid email");
     }
-    if (!Validator.isScholarIDValid(user.scholarID)) {
+    if (Validator.isScholarIDValid(user.scholarID) != null) {
       throw Exception("Invalid scholar ID");
     }
   }

@@ -8,10 +8,9 @@
 class Assets {
   static const String _basePath = "assets";
   static const String _imageBasePath = "images";
-  static const String _svgBasePath = "svgs";
 
-  static const String googleLogoSVGPath =
-      "$_basePath/$_svgBasePath/google_logo.svg";
+  static const String googleLogoImagePath =
+      "$_basePath/$_imageBasePath/google_logo.png";
   static const String efficacyAdminLogoImagePath =
       "$_basePath/$_imageBasePath/efficacy_admin_logo.png";
 }

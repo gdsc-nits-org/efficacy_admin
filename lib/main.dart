@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
       routes: {
         ExperimentPage.routeName: (BuildContext context) =>
             const ExperimentPage(),
-        WelcomePage.routeName: (context) => const WelcomePage(),
+        LoginPage.routeName: (context) => const LoginPage(),
         SplashScreen.routeName: (context) => const SplashScreen(),
-        LoginPage.routeName: (context) => const LoginPage()
+        SignUpPage.routeName: (context) => const SignUpPage()
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,

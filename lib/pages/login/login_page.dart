@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:efficacy_admin/configs/configurations/extensions/extensions.dart';
+import 'package:efficacy_admin/widgets/drop_down_menu/drop_down_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -74,16 +75,6 @@ class _LoginPageState extends State<LoginPage> {
           );
         });
   }
-
-  String dropdownvalue = 'GDSC';
-
-  // List of items in our dropdown menu
-  var items = [
-    'GDSC',
-    'Eco Club',
-    'Item 3',
-    'Item 4',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -174,24 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
 
                         //club menu field
-                        DropdownButton(
-                          isExpanded: true,
-                          dropdownColor: const Color.fromRGBO(237, 249, 255, 1),
-                          style: const TextStyle(
-                              color: Color.fromRGBO(5, 53, 75, 1)),
-                          value: dropdownvalue,
-                          items: items.map((String items) {
-                            return DropdownMenuItem(
-                              value: items,
-                              child: Text(items),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              dropdownvalue = newValue!;
-                            });
-                          },
-                        ),
+                        const DropDownMenu(),
 
                         //sign up button
                         ElevatedButton(

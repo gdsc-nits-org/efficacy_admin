@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:efficacy_admin/config/config.dart';
 
-import 'package:efficacy_admin/configs/configurations/extensions/extensions.dart';
 import 'package:efficacy_admin/pages/login/welcome_page.dart';
+import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,28 +17,27 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  /// TODO: Implement error handling
+  Future<void> init() async {
+    await dotenv.load();
+    // await Database.init();
+    await LocalDatabase.init();
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const WelcomePage(),
-          ));
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     //screen height and width
-    Size size = MediaQuery.of(context).size;
-    double width = size.width;
-    double height = size.height;
+    final Size size = MediaQuery.of(context).size;
+    final double width = size.width;
+    final double height = size.height;
     //size constants
-    double avatarRadius = width * 0.25;
-    double gap = height * 0.02;
+    final double avatarRadius = width * 0.25;
+    final double gap = height * 0.03;
 
     return Scaffold(
       body: SizedBox(
@@ -45,17 +46,14 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            //circle avatar to show user profile pic
             CircleAvatar(
-              backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               radius: avatarRadius,
-              child: const SizedBox(),
+              child: Image.asset(Assets.efficacyAdminLogoImagePath),
             ),
-
-            //Efficacy text
-            const Text(
+            Text(
               "Efficacy",
-              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 36),
+              style: Theme.of(context).textTheme.displayMedium,
             ),
           ].separate(gap),
         ),

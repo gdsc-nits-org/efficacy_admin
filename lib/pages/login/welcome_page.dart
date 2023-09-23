@@ -1,4 +1,5 @@
-import 'package:efficacy_admin/configs/configurations/extensions/extensions.dart';
+import 'package:efficacy_admin/config/config.dart';
+
 import 'package:efficacy_admin/pages/login/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

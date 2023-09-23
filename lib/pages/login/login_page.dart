@@ -1,6 +1,6 @@
 import 'dart:io';
+import 'package:efficacy_admin/config/config.dart';
 
-import 'package:efficacy_admin/configs/configurations/extensions/extensions.dart';
 import 'package:efficacy_admin/widgets/drop_down_menu/drop_down_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

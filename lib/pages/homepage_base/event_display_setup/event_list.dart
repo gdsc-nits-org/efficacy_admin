@@ -1,8 +1,7 @@
 import 'package:efficacy_admin/models/models.dart';
-import 'package:efficacy_admin/pages/homepage_base/event_widget.dart';
 
 ///list of events of class EventModel
-List<EventModel> eventListUnmodified = [
+List<EventModel> eventList = [
   /*EventModel(
     posterURL: posterURL,
     title: title,
@@ -15,7 +14,3 @@ List<EventModel> eventListUnmodified = [
     clubID: clubID,
   )*/
 ];
-
-List<EventDisplayStyle> eventList = eventListUnmodified
-    .map((EventModel itemData) => EventDisplayStyle(eventDetails: itemData))
-    .toList();

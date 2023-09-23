@@ -1,4 +1,4 @@
-import 'package:efficacy_admin/configs/configurations/extensions/extensions.dart';
+import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/states/authenticator/authenticator.dart';
 import 'package:efficacy_admin/controllers/services/services.dart';
 import 'package:efficacy_admin/models/models.dart';
@@ -38,7 +38,6 @@ class _ExperimentPageState extends State<ExperimentPage> {
                 await Authenticator.signOut();
               },
               child: const Text("Login Out"),
-
             ),
           ].separate(10),
         ),

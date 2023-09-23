@@ -1,18 +1,9 @@
-import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:flutter/material.dart';
 import 'utils/utils.dart';
-import 'configs/configs.dart';
+import 'config/config.dart';
 import 'pages/pages.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  /// TODO: Add the following to splash screen if suitable
-  await dotenv.load();
-  // await Database.init();
-  await LocalDatabase.init();
-
   runApp(const MyApp());
 }
 
@@ -26,9 +17,9 @@ class MyApp extends StatelessWidget {
       routes: {
         ExperimentPage.routeName: (BuildContext context) =>
             const ExperimentPage(),
-        WelcomePage.routeName: (context) => const WelcomePage(),
+        LoginPage.routeName: (context) => const LoginPage(),
         SplashScreen.routeName: (context) => const SplashScreen(),
-        LoginPage.routeName: (context) => const LoginPage()
+        SignUpPage.routeName: (context) => const SignUpPage()
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,

@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 
 class CustomDropDown extends StatefulWidget {
   final List<String> items;
-  final String? currentlySelected;
+  final String? initialValue;
+  final String? title;
+  final bool enabled;
   final void Function(String?)? onItemChanged;
   const CustomDropDown({
     super.key,
     this.items = const [],
-    this.currentlySelected,
+    this.initialValue,
+    this.enabled = true,
+    this.title,
     this.onItemChanged,
   });
 
@@ -22,29 +26,41 @@ class _CustomDropDownState extends State<CustomDropDown> {
   @override
   void initState() {
     super.initState();
-    currentlySelected = widget.currentlySelected;
+    currentlySelected = widget.initialValue;
   }
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton(
-      dropdownColor: paleBlue,
-      isExpanded: true,
-      value: currentlySelected,
-      items: widget.items.map((String item) {
-        return DropdownMenuItem(
-          value: item,
-          child: Text(item),
-        );
-      }).toList(),
-      onChanged: (String? newValue) {
-        setState(() {
-          currentlySelected = newValue!;
-        });
-        if (widget.onItemChanged != null) {
-          widget.onItemChanged!(newValue);
-        }
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.title != null)
+          Text(
+            widget.title!,
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+        DropdownButton(
+          dropdownColor: paleBlue,
+          isExpanded: true,
+          value: currentlySelected,
+          items: widget.items.map((String item) {
+            return DropdownMenuItem(
+              value: item,
+              child: Text(item),
+            );
+          }).toList(),
+          onChanged: widget.enabled == false
+              ? null
+              : (String? newValue) {
+                  setState(() {
+                    currentlySelected = newValue!;
+                  });
+                  if (widget.onItemChanged != null) {
+                    widget.onItemChanged!(newValue);
+                  }
+                },
+        ),
+      ],
     );
   }
 }

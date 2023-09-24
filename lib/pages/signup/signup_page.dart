@@ -3,7 +3,6 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/utils/validator.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
 
-import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -96,7 +95,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         //club menu field
                         CustomDropDown(
                           items: clubs,
-                          currentlySelected: selectedClub,
+                          initialValue: selectedClub,
                           onItemChanged: (String? newSelectedClub) {
                             if (newSelectedClub != null) {
                               selectedClub = newSelectedClub;
@@ -112,22 +111,22 @@ class _SignUpPageState extends State<SignUpPage> {
                           child: const Text("Sign Up"),
                         ),
 
-                        Row(
+                        const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
+                            Text(
                               "Club not in the list?",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: Color.fromRGBO(128, 128, 128, 1)),
                             ),
-                            const Text(
-                              "mail us at mail@gdsc",
+                            Text(
+                              "Mail us at mail@gdsc",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: Color.fromRGBO(5, 53, 76, 1)),
                             )
-                          ].separate(gap),
+                          ],
                         )
                       ].separate(gap),
                     ),

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:efficacy_admin/models/utils/utils.dart';
 
 part 'club_model.freezed.dart';

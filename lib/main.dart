@@ -24,7 +24,7 @@ class EfficacyAdmin extends StatelessWidget {
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,
-      initialRoute: ProfilePage.routeName,
+      initialRoute: SignUpPage.routeName,
       //ExperimentPage.routeName,
     );
   }

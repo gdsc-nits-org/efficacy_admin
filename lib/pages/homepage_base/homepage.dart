@@ -25,11 +25,7 @@ class _AppHomepageState extends State<AppHomepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          children: [
-            AppBar(
+      appBar: AppBar(
               title: const Text(
                 "Efficacy",
                 style: TextStyle(
@@ -49,6 +45,10 @@ class _AppHomepageState extends State<AppHomepage> {
                 )
               ],
             ),
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
             TabView(
               currentTabIndex: currentTabIndex,
               navigator: navigator,

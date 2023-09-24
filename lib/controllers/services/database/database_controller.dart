@@ -1,7 +1,7 @@
 import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/utils/utils.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 class DatabaseController {
   const DatabaseController._();

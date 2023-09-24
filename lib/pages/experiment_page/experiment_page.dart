@@ -1,5 +1,4 @@
-import 'package:efficacy_admin/configs/configurations/extensions/extensions.dart';
-import 'package:efficacy_admin/pages/homepage_base/homepage.dart';
+import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/states/authenticator/authenticator.dart';
 import 'package:efficacy_admin/controllers/services/services.dart';
 import 'package:efficacy_admin/models/models.dart';

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/utils/validator.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
+import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
 
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:flutter/material.dart';
@@ -82,15 +83,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
 
                         //intl number field
-                        const IntlPhoneField(
-                          keyboardType: TextInputType.phone,
-                          decoration: InputDecoration(
-                            hintText: "9077900",
-                            hintStyle:
-                                TextStyle(color: Color.fromRGBO(5, 53, 75, 1)),
-                          ),
-                          initialCountryCode: 'IN',
-                        ),
+                        const CustomPhoneField(),
 
                         //club menu field
                         CustomDropDown(

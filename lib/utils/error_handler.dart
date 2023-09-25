@@ -42,7 +42,7 @@ class ErrorHandler {
   static void _platformErrorBuilder(BuildContext context) {
     // Widget error = const Text("Unknown platform error...");
     PlatformDispatcher.instance.onError = (obj, stack) {
-      // debugPrint(obj.toString());
+      debugPrint(obj.toString());
       // debugPrintStack(stackTrace: stack);
 
       late String errorMessage;
@@ -66,6 +66,10 @@ class ErrorHandler {
           errorMessage = "Sign in Failed";
         } else if (obj.toString().contains("Exception: Couldn't sign in")) {
           errorMessage = "Couldn't sign in";
+        }else if (obj.toString().contains("SocketException")) {
+          errorMessage = "No internet connection";
+        }else if (obj.toString().contains("SplashscreenError")) {
+          errorMessage = "Network error";
         }
       }
       showErrorSnackBar(context, errorMessage);

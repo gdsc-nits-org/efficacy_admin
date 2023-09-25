@@ -6,7 +6,6 @@ import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dar
 
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:flutter/material.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 
 class SignUpPage extends StatefulWidget {
   static const String routeName = '/SignUpPage';
@@ -21,6 +20,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController scholarIDController = TextEditingController();
   String selectedClub = 'GDSC';
 
   List<String> clubs = [
@@ -76,10 +76,17 @@ class _SignUpPageState extends State<SignUpPage> {
                         //name field
                         TextFormField(
                           controller: nameController,
-                          validator: (value) =>
-                              Validator.nullCheck(value, "Name"),
+                          validator: Validator.isNameValid,
                           decoration:
                               const InputDecoration(hintText: "John Doe"),
+                        ),
+
+                        //scholar ID field
+                        TextFormField(
+                          controller: scholarIDController,
+                          validator: Validator.isScholarIDValid,
+                          decoration:
+                              const InputDecoration(hintText: "2212072"),
                         ),
 
                         //intl number field

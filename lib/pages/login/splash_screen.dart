@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:efficacy_admin/configs/configurations/extensions/extensions.dart';
 import 'package:efficacy_admin/pages/login/welcome_page.dart';
+import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,6 +21,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    asyncMethod().then((duration) {
+      debugPrint("Successfully completed all async tasks");
+      debugPrint("Time taken: $duration ms");
+    });
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
           context,
@@ -26,6 +32,16 @@ class _SplashScreenState extends State<SplashScreen> {
             builder: (context) => const WelcomePage(),
           ));
     });
+  }
+
+  // Function to process all async functions
+  Future<int> asyncMethod() async {
+    Stopwatch stopwatch = Stopwatch()..start();
+    await dotenv.load();
+    // await Database.init();
+    await LocalDatabase.init();
+    stopwatch.stop();
+    return stopwatch.elapsed.inMilliseconds;
   }
 
   @override

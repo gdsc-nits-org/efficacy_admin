@@ -37,7 +37,7 @@ ThemeData lightTheme = ThemeData(
   textButtonTheme: TextButtonThemeData(
     style: ElevatedButton.styleFrom(
       foregroundColor: dark,
-    )
+    ),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -47,8 +47,8 @@ ThemeData lightTheme = ThemeData(
       shadowColor: shadow,
       minimumSize: const Size(230, 55),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      side: const BorderSide(width: 0)
-    )
+      side: const BorderSide(width: 0),
+    ),
   ),
   appBarTheme: const AppBarTheme(
     backgroundColor: light,

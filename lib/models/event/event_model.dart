@@ -5,6 +5,7 @@ part 'event_model.g.dart';
 
 @freezed
 class EventModel with _$EventModel {
+  const EventModel._();
   const factory EventModel({
     required String posterURL,
     required String title,
@@ -26,4 +27,15 @@ class EventModel with _$EventModel {
 
   factory EventModel.fromJson(Map<String, Object?> json) =>
       _$EventModelFromJson(json);
+
+  String get type {
+    DateTime currentTime = DateTime.now();
+    if (endDate.isBefore(currentTime)) {
+      return "Completed";
+    } else if (startDate.isAfter(currentTime)) {
+      return "Upcoming";
+    } else {
+      return "Ongoing";
+    }
+  }
 }

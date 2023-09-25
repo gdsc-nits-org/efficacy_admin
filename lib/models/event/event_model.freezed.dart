@@ -245,7 +245,7 @@ class __$$_EventModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_EventModel implements _EventModel {
+class _$_EventModel extends _EventModel {
   const _$_EventModel(
       {required this.posterURL,
       required this.title,
@@ -260,7 +260,8 @@ class _$_EventModel implements _EventModel {
       final List<String> liked = const [],
       required this.clubID})
       : _contacts = contacts,
-        _liked = liked;
+        _liked = liked,
+        super._();
 
   factory _$_EventModel.fromJson(Map<String, dynamic> json) =>
       _$$_EventModelFromJson(json);
@@ -371,7 +372,7 @@ class _$_EventModel implements _EventModel {
   }
 }
 
-abstract class _EventModel implements EventModel {
+abstract class _EventModel extends EventModel {
   const factory _EventModel(
       {required final String posterURL,
       required final String title,
@@ -385,6 +386,7 @@ abstract class _EventModel implements EventModel {
       required final List<String> contacts,
       final List<String> liked,
       required final String clubID}) = _$_EventModel;
+  const _EventModel._() : super._();
 
   factory _EventModel.fromJson(Map<String, dynamic> json) =
       _$_EventModel.fromJson;

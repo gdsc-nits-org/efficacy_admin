@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/pages/pages.dart';
-import 'package:efficacy_admin/utils/database/database.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -22,7 +20,6 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<int> asyncMethod() async {
     Stopwatch stopwatch = Stopwatch()..start();
     await dotenv.load();
-    await InternetAddress.lookup('google.com');
     // await Database.init();
     await LocalDatabase.init();
     stopwatch.stop();

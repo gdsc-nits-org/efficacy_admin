@@ -13,8 +13,10 @@ class EfficacyAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       routes: {
+        AppHomepage.routeName: (context) => const AppHomepage(),
         ExperimentPage.routeName: (BuildContext context) =>
             const ExperimentPage(),
         LoginPage.routeName: (context) => const LoginPage(),
@@ -24,6 +26,7 @@ class EfficacyAdmin extends StatelessWidget {
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,
+
       initialRoute: SignUpPage.routeName,
       //ExperimentPage.routeName,
     );

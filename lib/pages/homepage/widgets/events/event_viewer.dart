@@ -1,22 +1,26 @@
-import 'package:efficacy_admin/configs/configurations/extensions/extensions.dart';
+import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
-import 'package:efficacy_admin/pages/homepage_base/navigation_tabs_setup/tab_list.dart';
+import 'package:efficacy_admin/utils/formatter.dart';
+import 'package:efficacy_admin/widgets/custom_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:efficacy_admin/pages/homepage_base/event_display_setup/event_list.dart';
 import 'package:flutter/material.dart';
-import 'package:efficacy_admin/pages/homepage_base/event_display_setup/dates.dart';
 
-class EventDisplayWidget extends StatelessWidget {
-  const EventDisplayWidget({super.key, required this.typeIndex});
-
+class EventViewer extends StatelessWidget {
+  final List<EventModel> events;
   final int typeIndex;
+  const EventViewer({
+    super.key,
+    required this.typeIndex,
+    required this.events,
+  });
 
   @override
   Widget build(BuildContext context) {
-    List<EventModel> specificList = eventList
-        .where((element) => tabList.indexOf(element.type) == typeIndex)
+    List<EventModel> specificList = events
+        .where((element) => Status.values.indexOf(element.type) == typeIndex)
         .toList();
+
     return Expanded(
       child: ListView.builder(
         itemCount: specificList.length,
@@ -29,9 +33,15 @@ class EventDisplayWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(15.0),
                 child: Column(
                   children: [
-                    // loadImage(posterUrl: item.posterURL, defaultUrl: ""),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: CustomNetworkImage(
+                        posterUrl: item.posterURL,
+                        defaultUrl: "",
+                      ),
+                    ),
                     Align(
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.center,
                       child: Text(
                         item.title,
                         style: const TextStyle(
@@ -81,7 +91,7 @@ class EventDisplayWidget extends StatelessWidget {
                     AppBar(
                       leading: const Icon(CupertinoIcons.calendar),
                       title: Text(
-                        "${formattedDateTime(item.startDate)} - ${formattedDateTime(item.endDate)}",
+                        "${Formatter.dateTime(item.startDate)} - ${Formatter.dateTime(item.endDate)}",
                         style: const TextStyle(fontSize: 13),
                       ),
                     )

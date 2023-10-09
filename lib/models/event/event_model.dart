@@ -3,6 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'event_model.freezed.dart';
 part 'event_model.g.dart';
 
+enum Status { Upcoming, Ongoing, Completed }
+
 @freezed
 class EventModel with _$EventModel {
   const EventModel._();
@@ -28,14 +30,14 @@ class EventModel with _$EventModel {
   factory EventModel.fromJson(Map<String, Object?> json) =>
       _$EventModelFromJson(json);
 
-  String get type {
+  Status get type {
     DateTime currentTime = DateTime.now();
     if (endDate.isBefore(currentTime)) {
-      return "Completed";
+      return Status.Completed;
     } else if (startDate.isAfter(currentTime)) {
-      return "Upcoming";
+      return Status.Upcoming;
     } else {
-      return "Ongoing";
+      return Status.Ongoing;
     }
   }
 }

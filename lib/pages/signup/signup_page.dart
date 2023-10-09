@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/utils/validator.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
 import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
@@ -109,6 +110,14 @@ class _SignUpPageState extends State<SignUpPage> {
                             _formKey.currentState!.validate();
                           },
                           child: const Text("Sign Up"),
+                        ),
+
+                        // Toggle button to login page
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, LoginPage.routeName);
+                          },
+                          child: const Text("Already have an account? Log In"),
                         ),
 
                         const Column(

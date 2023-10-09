@@ -1,5 +1,6 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/pages/login/widgets/google_sign_in_button.dart';
+import 'package:efficacy_admin/pages/pages.dart';
 
 // import 'package:efficacy_admin/pages/sign_up/signup_page.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class LoginPage extends StatelessWidget {
     //size constants
     double avatarRadius = width * 0.25;
     double gap = height * 0.05;
+    double smallGap = height * 0.01;
     double messageFieldWidth = 0.85;
 
     return Scaffold(
@@ -45,7 +47,18 @@ class LoginPage extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
-            const GoogleSignInButton()
+            Column(
+              children: [
+                const GoogleSignInButton(),
+                // Toggle button to signup page
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, SignUpPage.routeName);
+                  },
+                  child: const Text("Don't have an account? Sign Up"),
+                ),
+              ].separate(smallGap),
+            ),
           ].separate(gap),
         ),
       ),

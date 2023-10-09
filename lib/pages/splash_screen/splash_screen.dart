@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
       throw Exception("SplashscreenError");
     });
     Timer(const Duration(seconds: 3), () {
-      Navigator.pushNamed(context, SignUpPage.routeName);
+      Navigator.pushNamed(context, LoginPage.routeName);
     });
   }
 

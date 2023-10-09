@@ -16,17 +16,27 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  /// TODO: Implement error handling
-  Future<void> init() async {
+  // Function to process all async functions
+  Future<int> asyncMethod() async {
+    Stopwatch stopwatch = Stopwatch()..start();
     await dotenv.load();
     // await Database.init();
     await LocalDatabase.init();
+    stopwatch.stop();
+    return stopwatch.elapsed.inMilliseconds;
   }
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    init().then((_) {
+    asyncMethod().then((duration) {
+      debugPrint("Successfully completed all async tasks");
+      debugPrint("Time taken: $duration ms");
+    }).catchError((error) {
+      throw Exception("SplashscreenError");
+    });
+    Timer(const Duration(seconds: 3), () {
       Navigator.pushNamed(context, SignUpPage.routeName);
     });
   }

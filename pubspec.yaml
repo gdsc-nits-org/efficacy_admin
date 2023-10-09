@@ -36,6 +36,9 @@ dependencies:
   expandable: ^5.0.1
   intl: ^0.18.1
 
+  # ======================= URL launcher =======================
+  url_launcher: ^6.1.14
+
 
 
 dev_dependencies:

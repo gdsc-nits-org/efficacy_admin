@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
@@ -34,13 +35,10 @@ class _SplashScreenState extends State<SplashScreen> {
       debugPrint("Successfully completed all async tasks");
       debugPrint("Time taken: $duration ms");
 
-      Navigator.pushNamed(context, Homepage.routeName);
+      Navigator.pushNamed(context, LoginPage.routeName)
+          .then((value) => exit(0));
     }).catchError((error) {
       throw Exception("SplashscreenError");
-    });
-    
-    Timer(const Duration(seconds: 3), () {
-      Navigator.popAndPushNamed(context, LoginPage.routeName);
     });
   }
 

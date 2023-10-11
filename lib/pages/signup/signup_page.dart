@@ -154,20 +154,20 @@ class _SignUpPageState extends State<SignUpPage> {
                               style: TextStyle(fontSize: 12, color: shadow),
                             ),
                             RichText(
-                                text: const TextSpan(
+                                text: TextSpan(
                               text: "Mail us at ",
                               children: [
                                 TextSpan(
-                                    text: "$gdscEmail",
-                                    style: TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        color: dark),
-                                recognizer: TapGestureRecognizer()
-                                ..onTap = _launchEmail,
+                                  text: gdscEmail,
+                                  style: const TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      color: dark),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = _launchEmail,
                                 )
                               ],
-                              style: TextStyle(fontSize: 12, color: shadow),
-
+                              style:
+                                  const TextStyle(fontSize: 12, color: shadow),
                             )),
                           ],
                         )

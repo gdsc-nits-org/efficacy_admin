@@ -34,9 +34,12 @@ class _SplashScreenState extends State<SplashScreen> {
     asyncMethod().then((duration) {
       debugPrint("Successfully completed all async tasks");
       debugPrint("Time taken: $duration ms");
-
-      Navigator.pushNamed(context, LoginPage.routeName)
-          .then((value) => exit(0));
+      Timer(const Duration(seconds: 3), () {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(
+                LoginPage.routeName, (Route<dynamic> route) => false)
+            .then((value) => exit(0));
+      });
     }).catchError((error) {
       throw Exception("SplashscreenError");
     });

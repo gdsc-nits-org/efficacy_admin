@@ -38,6 +38,10 @@ class _SplashScreenState extends State<SplashScreen> {
     }).catchError((error) {
       throw Exception("SplashscreenError");
     });
+    
+    Timer(const Duration(seconds: 3), () {
+      Navigator.popAndPushNamed(context, LoginPage.routeName);
+    });
   }
 
   @override

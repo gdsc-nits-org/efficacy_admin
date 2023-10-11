@@ -115,26 +115,42 @@ class _SignUpPageState extends State<SignUpPage> {
                         // Toggle button to login page
                         TextButton(
                           onPressed: () {
-                            Navigator.popAndPushNamed(context, LoginPage.routeName);
+                            Navigator.popAndPushNamed(
+                                context, LoginPage.routeName);
                           },
-                          child: const Text("Already have an account? Log In"),
+                          child: RichText(
+                            text: const TextSpan(
+                                text: "Already have an account? ",
+                                children: [
+                                  TextSpan(
+                                      text: "Log In",
+                                      style: TextStyle(
+                                          color: dark,
+                                          decoration: TextDecoration.underline))
+                                ],
+                                style: TextStyle(color: shadow)),
+                          ),
                         ),
 
-                        const Column(
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
+                            const Text(
                               "Club not in the list?",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color.fromRGBO(128, 128, 128, 1)),
+                              style: TextStyle(fontSize: 12, color: shadow),
                             ),
-                            Text(
-                              "Mail us at mail@gdsc",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color.fromRGBO(5, 53, 76, 1)),
-                            )
+                            RichText(
+                                text: const TextSpan(
+                              text: "Mail us at ",
+                              children: [
+                                TextSpan(
+                                    text: "mail@gdsc",
+                                    style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        color: dark))
+                              ],
+                              style: TextStyle(fontSize: 12, color: shadow),
+                            )),
                           ],
                         )
                       ].separate(gap),

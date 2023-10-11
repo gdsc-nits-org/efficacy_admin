@@ -55,7 +55,18 @@ class LoginPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.popAndPushNamed(context, SignUpPage.routeName);
                   },
-                  child: const Text("Don't have an account? Sign Up"),
+                  child: RichText(
+                    text: const TextSpan(
+                        text: "Don't have an account? ",
+                        children: [
+                          TextSpan(
+                              text: "Sign Up",
+                              style: TextStyle(
+                                  color: dark,
+                                  decoration: TextDecoration.underline))
+                        ],
+                        style: TextStyle(color: shadow)),
+                  ),
                 ),
               ].separate(smallGap),
             ),

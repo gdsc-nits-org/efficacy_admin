@@ -5,7 +5,9 @@ import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
 import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
 
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignUpPage extends StatefulWidget {
   static const String routeName = '/SignUpPage';
@@ -22,6 +24,7 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController scholarIDController = TextEditingController();
   String selectedClub = 'GDSC';
+  String gdscEmail = "gdsc@example.com";
 
   List<String> clubs = [
     'GDSC',
@@ -31,6 +34,18 @@ class _SignUpPageState extends State<SignUpPage> {
   ];
 
   File? _image;
+
+  // Function to launch default email app
+  Future<void> _launchEmail() async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: Uri.encodeComponent(gdscEmail),
+      query: 'subject=Addition of new club',
+    );
+    if (!await launchUrl(emailLaunchUri)) {
+      throw Exception('Could not launch email');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,21 +126,24 @@ class _SignUpPageState extends State<SignUpPage> {
                           child: const Text("Sign Up"),
                         ),
 
-                        const Column(
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
+                            const Text(
                               "Club not in the list?",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: Color.fromRGBO(128, 128, 128, 1)),
                             ),
-                            Text(
-                              "Mail us at mail@gdsc",
-                              style: TextStyle(
+                            RichText(
+                                text: TextSpan(
+                              text: "Mail us at $gdscEmail",
+                              style: const TextStyle(
                                   fontSize: 12,
                                   color: Color.fromRGBO(5, 53, 76, 1)),
-                            )
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = _launchEmail,
+                            )),
                           ],
                         )
                       ].separate(gap),

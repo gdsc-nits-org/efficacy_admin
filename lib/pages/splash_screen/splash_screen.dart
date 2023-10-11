@@ -33,11 +33,10 @@ class _SplashScreenState extends State<SplashScreen> {
     asyncMethod().then((duration) {
       debugPrint("Successfully completed all async tasks");
       debugPrint("Time taken: $duration ms");
+
+      Navigator.pushNamed(context, Homepage.routeName);
     }).catchError((error) {
       throw Exception("SplashscreenError");
-    });
-    Timer(const Duration(seconds: 3), () {
-      Navigator.pushNamed(context, SignUpPage.routeName);
     });
   }
 

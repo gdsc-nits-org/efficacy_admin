@@ -115,7 +115,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         // Toggle button to login page
                         TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, LoginPage.routeName);
+                            Navigator.popAndPushNamed(context, LoginPage.routeName);
                           },
                           child: const Text("Already have an account? Log In"),
                         ),

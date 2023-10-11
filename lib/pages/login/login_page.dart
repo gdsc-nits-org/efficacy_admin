@@ -53,7 +53,7 @@ class LoginPage extends StatelessWidget {
                 // Toggle button to signup page
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, SignUpPage.routeName);
+                    Navigator.popAndPushNamed(context, SignUpPage.routeName);
                   },
                   child: const Text("Don't have an account? Sign Up"),
                 ),

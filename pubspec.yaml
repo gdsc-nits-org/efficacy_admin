@@ -13,13 +13,19 @@ dependencies:
   # ======================= Styling =======================
   cupertino_icons: ^1.0.2
   gap: ^3.0.1
+  flutter_svg: ^2.0.7
 
   # ======================= Code Generators =======================
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
 
-  # ======================= Phone Number =======================
+  # ======================= Utilities =======================
   intl_phone_number_input: ^0.7.3+1
+  expandable: ^5.0.1
+  intl_phone_field: ^3.2.0
+  intl: ^0.18.1
+  provider: ^6.0.5
+  flutter_image_compress: ^2.0.4
 
   # ======================= Authentication =======================
   google_sign_in: ^6.1.5
@@ -29,14 +35,11 @@ dependencies:
   mongo_dart: ^0.9.1
   hive: ^2.2.3
   path_provider: ^2.1.1
-  intl_phone_field: ^3.2.0
   image_picker: ^1.0.4
-  flutter_svg: ^2.0.7
-  provider: ^6.0.5
-  expandable: ^5.0.1
-  intl: ^0.18.1
+  cloudinary: ^1.2.0
 
-
+  # ======================= URL launcher =======================
+  url_launcher: ^6.1.14
 
 dev_dependencies:
   flutter_test:

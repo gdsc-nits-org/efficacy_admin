@@ -49,8 +49,28 @@ class _UploadEventState extends State<UploadEvent> {
     double linePadding = width * 0.3;
     double gap = 40;
     double fontSize = 25;
+    double buttonFontSize = 22;
 
     return Scaffold(
+      floatingActionButton: Container(
+        width: buttonWidth,
+        child: FloatingActionButton(
+          onPressed: () {},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Icon(
+                Icons.file_upload_outlined,
+                size: 30,
+              ),
+              Text(
+                'Upload',
+                style: TextStyle(fontSize: buttonFontSize),
+              )
+            ],
+          ),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

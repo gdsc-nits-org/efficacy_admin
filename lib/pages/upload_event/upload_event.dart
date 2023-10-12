@@ -46,7 +46,9 @@ class _UploadEventState extends State<UploadEvent> {
     double iconSize = 30;
     double padding = 16;
     double lineWidth = width * 0.4;
+    double linePadding = width * 0.3;
     double gap = 40;
+    double fontSize = 25;
 
     return Scaffold(
       body: SafeArea(
@@ -84,11 +86,11 @@ class _UploadEventState extends State<UploadEvent> {
                         topLeft: Radius.circular(containerRadius),
                         topRight: Radius.circular(containerRadius))),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //line
                     Padding(
-                      padding: EdgeInsets.only(top: gap),
+                      padding: EdgeInsets.only(top: gap, left: linePadding),
                       child: Container(
                         color: Colors.grey,
                         height: borderWidth,
@@ -149,6 +151,75 @@ class _UploadEventState extends State<UploadEvent> {
                               size: iconSize,
                               color: Colors.black54,
                             )),
+                      ),
+                    ),
+                    //start date and time
+                    Padding(
+                      padding: EdgeInsets.only(left: padding),
+                      child: Text(
+                        "Start Date & Time",
+                        style: TextStyle(
+                            color: Color.fromRGBO(5, 53, 76, 1),
+                            fontSize: fontSize,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    //end date and time
+                    Padding(
+                      padding: EdgeInsets.only(left: padding),
+                      child: Text(
+                        "End Date & Time",
+                        style: TextStyle(
+                            color: Color.fromRGBO(5, 53, 76, 1),
+                            fontSize: fontSize,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    //google form
+                    Padding(
+                      padding: EdgeInsets.only(left: padding, right: padding),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.grey, width: borderWidth),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(boxRadius))),
+                            hintText: 'Google Form URL',
+                            icon: Icon(
+                              Icons.link_outlined,
+                              size: iconSize,
+                              color: Colors.black54,
+                            )),
+                      ),
+                    ),
+                    //FB form URL
+                    Padding(
+                      padding: EdgeInsets.only(left: padding, right: padding),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.grey, width: borderWidth),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(boxRadius))),
+                            hintText: 'Facebook Form URL',
+                            icon: Icon(
+                              Icons.link_outlined,
+                              size: iconSize,
+                              color: Colors.black54,
+                            )),
+                      ),
+                    ),
+                    //Add Contacts
+                    Padding(
+                      padding: EdgeInsets.only(left: padding),
+                      child: Text(
+                        "Add Contacts",
+                        style: TextStyle(
+                            color: Color.fromRGBO(5, 53, 76, 1),
+                            fontSize: fontSize,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ].separate(padding),

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -34,7 +35,15 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
   }
 
   Future<XFile?> pickImage(ImageSource imageSource) async {
-    return await picker.pickImage(source: imageSource, imageQuality: 50);
+    XFile? original =
+        await picker.pickImage(source: imageSource, imageQuality: 50);
+    XFile? compressed = await FlutterImageCompress.compressAndGetFile(
+        original!.path, "${original.path}compressed.jpg",
+        quality: 10);
+    // debugPrint('Initial file size: ${File(original.path).lengthSync()} bytes');
+    // debugPrint(
+    //     'Compressed file size: ${File(compressed!.path).lengthSync()} bytes');
+    return compressed;
   }
 
   void _showPicker(context) {
@@ -87,6 +96,7 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
                   _image!,
                   fit: BoxFit.fitHeight,
                   height: widget.height,
+                  width: widget.height,
                 )
               : Icon(
                   CupertinoIcons.person_alt_circle,

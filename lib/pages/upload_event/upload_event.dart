@@ -15,6 +15,7 @@ class UploadEvent extends StatefulWidget {
 }
 
 class _UploadEventState extends State<UploadEvent> {
+  //image variable
   File? _image;
 
   //function to get image from gallery
@@ -27,6 +28,50 @@ class _UploadEventState extends State<UploadEvent> {
         _image = File(pickedFile.path);
       } else {}
     });
+  }
+
+  //date time variables
+  DateTime selectedDate1 = DateTime.now();
+  DateTime selectedDate2 = DateTime.now();
+  TimeOfDay selectedTime1 = TimeOfDay.now();
+  TimeOfDay selectedTime2 = TimeOfDay.now();
+
+  //function to get dates
+  Future<void> _selectDate(BuildContext context, int pickerNumber) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: pickerNumber == 1 ? selectedDate1 : selectedDate2,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (picked != null) {
+      setState(() {
+        if (pickerNumber == 1) {
+          selectedDate1 = picked;
+        } else {
+          selectedDate2 = picked;
+        }
+      });
+    }
+  }
+
+  //function to get times
+  Future<void> _selectTime(BuildContext context, int pickerNumber) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: pickerNumber == 1 ? selectedTime1 : selectedTime2,
+    );
+
+    if (picked != null) {
+      setState(() {
+        if (pickerNumber == 1) {
+          selectedTime1 = picked;
+        } else {
+          selectedTime2 = picked;
+        }
+      });
+    }
   }
 
   @override
@@ -50,16 +95,18 @@ class _UploadEventState extends State<UploadEvent> {
     double gap = 40;
     double fontSize = 25;
     double buttonFontSize = 22;
+    //color
+    Color textColor = const Color.fromRGBO(5, 53, 76, 1);
 
     return Scaffold(
-      floatingActionButton: Container(
+      floatingActionButton: SizedBox(
         width: buttonWidth,
         child: FloatingActionButton(
           onPressed: () {},
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Icon(
+              const Icon(
                 Icons.file_upload_outlined,
                 size: 30,
               ),
@@ -179,10 +226,68 @@ class _UploadEventState extends State<UploadEvent> {
                       child: Text(
                         "Start Date & Time",
                         style: TextStyle(
-                            color: Color.fromRGBO(5, 53, 76, 1),
+                            color: textColor,
                             fontSize: fontSize,
                             fontWeight: FontWeight.bold),
                       ),
+                    ),
+                    //Date and time picker
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        InkWell(
+                          onTap: () => _selectDate(context, 1),
+                          child: Icon(
+                            Icons.calendar_today_outlined,
+                            color: textColor,
+                            size: fontSize,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () => _selectDate(context, 1),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Date",
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: buttonFontSize,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "${selectedDate1.toLocal()}".split(' ')[0],
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: buttonFontSize,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () => _selectTime(context, 1),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Time",
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: buttonFontSize,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "${selectedTime1.format(context)}",
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: buttonFontSize,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                     //end date and time
                     Padding(
@@ -190,10 +295,68 @@ class _UploadEventState extends State<UploadEvent> {
                       child: Text(
                         "End Date & Time",
                         style: TextStyle(
-                            color: Color.fromRGBO(5, 53, 76, 1),
+                            color: const Color.fromRGBO(5, 53, 76, 1),
                             fontSize: fontSize,
                             fontWeight: FontWeight.bold),
                       ),
+                    ),
+                    //date and time picker
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        InkWell(
+                          onTap: () => _selectDate(context, 2),
+                          child: Icon(
+                            Icons.calendar_today_outlined,
+                            color: textColor,
+                            size: fontSize,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () => _selectDate(context, 2),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Date",
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: buttonFontSize,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "${selectedDate2.toLocal()}".split(' ')[0],
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: buttonFontSize,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () => _selectTime(context, 2),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Time",
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: buttonFontSize,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "${selectedTime2.format(context)}",
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: buttonFontSize,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                     //google form
                     Padding(
@@ -237,7 +400,7 @@ class _UploadEventState extends State<UploadEvent> {
                       child: Text(
                         "Add Contacts",
                         style: TextStyle(
-                            color: Color.fromRGBO(5, 53, 76, 1),
+                            color: const Color.fromRGBO(5, 53, 76, 1),
                             fontSize: fontSize,
                             fontWeight: FontWeight.bold),
                       ),

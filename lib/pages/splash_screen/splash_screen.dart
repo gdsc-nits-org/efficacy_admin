@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
       debugPrint("Successfully completed all async tasks");
       debugPrint("Time taken: $duration ms");
 
-      Navigator.pushNamed(context, LoginPage.routeName)
+      Navigator.pushNamed(context, SignUpPage.routeName)
           .then((value) => exit(0));
     }).catchError((error) {
       throw Exception("SplashscreenError");

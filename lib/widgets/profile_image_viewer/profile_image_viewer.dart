@@ -1,6 +1,8 @@
+import 'package:efficacy_admin/config/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -23,10 +25,10 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
   File? _image;
   ImagePicker picker = ImagePicker();
 
-  void updateImage(XFile? image) {
+  void updateImage(File? image) {
     if (image != null) {
       setState(() {
-        _image = File(image.path);
+        _image = image;
       });
       if (widget.onImageChange != null) {
         widget.onImageChange!(image.path);
@@ -34,7 +36,7 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
     }
   }
 
-  Future<XFile?> pickImage(ImageSource imageSource) async {
+  Future<File?> pickImage(ImageSource imageSource) async {
     XFile? original =
         await picker.pickImage(source: imageSource, imageQuality: 50);
     XFile? compressed = await FlutterImageCompress.compressAndGetFile(
@@ -43,7 +45,25 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
     // debugPrint('Initial file size: ${File(original.path).lengthSync()} bytes');
     // debugPrint(
     //     'Compressed file size: ${File(compressed!.path).lengthSync()} bytes');
-    return compressed;
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: compressed!.path,
+      cropStyle: CropStyle.circle,
+      aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Crop Image',
+            toolbarColor: dark,
+            activeControlsWidgetColor: shadow,
+            toolbarWidgetColor: light,
+            initAspectRatio: CropAspectRatioPreset.original,
+            dimmedLayerColor: shadow,
+            lockAspectRatio: true),
+        IOSUiSettings(
+          title: 'Crop Image',
+        ),
+      ],
+    );
+    return File(croppedFile!.path);
   }
 
   void _showPicker(context) {

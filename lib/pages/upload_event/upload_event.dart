@@ -112,10 +112,10 @@ class _UploadEventState extends State<UploadEvent> {
     double width = size.width;
     double height = size.height;
     //constants
-    double buttonLeftPos = width * 0.325;
-    double buttonTopPos = height * 0.15;
-    double buttonHeight = height * 0.05;
-    double buttonWidth = width * 0.35;
+    double buttonLeftPos = width * 0.3;
+    double buttonTopPos = height * 0.16;
+    double buttonHeight = height * 0.04;
+    double buttonWidth = width * 0.4;
     double containerRadius = 30.0;
     double borderWidth = 2;
     double boxRadius = 5;
@@ -127,7 +127,7 @@ class _UploadEventState extends State<UploadEvent> {
     double fontSize = 25;
     double buttonFontSize = 22;
     double dateTimeFontSize = 20;
-    double dropDownWidth = width * 0.4;
+    double dropDownWidth = width * 0.45;
     double endGap = height * 0.1;
     //color
     Color textColor = const Color.fromRGBO(5, 53, 76, 1);

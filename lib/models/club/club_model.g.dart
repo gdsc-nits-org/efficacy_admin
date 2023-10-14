@@ -13,8 +13,8 @@ _$_ClubModel _$$_ClubModelFromJson(Map<String, dynamic> json) => _$_ClubModel(
           ) ??
           const {},
       email: json['email'] as String,
-      phoneNumber: _$JsonConverterFromJson<Map<String, String?>, PhoneNumber>(
-          json['phoneNumber'], const PhoneNumberSerializer().fromJson),
+      phoneNumber: const PhoneNumberSerializer()
+          .fromJson(json['phoneNumber'] as Map<String, String?>?),
       clubLogoURL: json['clubLogoURL'] as String,
       clubBannerURL: json['clubBannerURL'] as String?,
       members: json['members'] as Map<String, dynamic>,
@@ -30,8 +30,7 @@ Map<String, dynamic> _$$_ClubModelToJson(_$_ClubModel instance) =>
       'socials':
           instance.socials.map((k, e) => MapEntry(_$SocialEnumMap[k]!, e)),
       'email': instance.email,
-      'phoneNumber': _$JsonConverterToJson<Map<String, String?>, PhoneNumber>(
-          instance.phoneNumber, const PhoneNumberSerializer().toJson),
+      'phoneNumber': const PhoneNumberSerializer().toJson(instance.phoneNumber),
       'clubLogoURL': instance.clubLogoURL,
       'clubBannerURL': instance.clubBannerURL,
       'members': instance.members,
@@ -44,15 +43,3 @@ const _$SocialEnumMap = {
   Social.instagram: 'instagram',
   Social.linkedin: 'linkedin',
 };
-
-Value? _$JsonConverterFromJson<Json, Value>(
-  Object? json,
-  Value? Function(Json json) fromJson,
-) =>
-    json == null ? null : fromJson(json as Json);
-
-Json? _$JsonConverterToJson<Json, Value>(
-  Value? value,
-  Json? Function(Value value) toJson,
-) =>
-    value == null ? null : toJson(value);

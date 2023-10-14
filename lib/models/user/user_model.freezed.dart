@@ -23,6 +23,7 @@ mixin _$UserModel {
   String get name => throw _privateConstructorUsedError;
   @PhoneNumberSerializer()
   PhoneNumber? get phoneNumber => throw _privateConstructorUsedError;
+  String get password => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get scholarID => throw _privateConstructorUsedError;
   String? get userPhoto => throw _privateConstructorUsedError;
@@ -45,6 +46,7 @@ abstract class $UserModelCopyWith<$Res> {
   $Res call(
       {String name,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
+      String password,
       String email,
       String scholarID,
       String? userPhoto,
@@ -69,6 +71,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   $Res call({
     Object? name = null,
     Object? phoneNumber = freezed,
+    Object? password = null,
     Object? email = null,
     Object? scholarID = null,
     Object? userPhoto = freezed,
@@ -86,6 +89,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as PhoneNumber?,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -128,6 +135,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
   $Res call(
       {String name,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
+      String password,
       String email,
       String scholarID,
       String? userPhoto,
@@ -150,6 +158,7 @@ class __$$_UserModelCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
     Object? phoneNumber = freezed,
+    Object? password = null,
     Object? email = null,
     Object? scholarID = null,
     Object? userPhoto = freezed,
@@ -167,6 +176,10 @@ class __$$_UserModelCopyWithImpl<$Res>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as PhoneNumber?,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -205,6 +218,7 @@ class _$_UserModel implements _UserModel {
   const _$_UserModel(
       {required this.name,
       @PhoneNumberSerializer() this.phoneNumber,
+      required this.password,
       required this.email,
       required this.scholarID,
       this.userPhoto,
@@ -223,6 +237,8 @@ class _$_UserModel implements _UserModel {
   @override
   @PhoneNumberSerializer()
   final PhoneNumber? phoneNumber;
+  @override
+  final String password;
   @override
   final String email;
   @override
@@ -253,7 +269,7 @@ class _$_UserModel implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(name: $name, phoneNumber: $phoneNumber, email: $email, scholarID: $scholarID, userPhoto: $userPhoto, branch: $branch, degree: $degree, socials: $socials, position: $position)';
+    return 'UserModel(name: $name, phoneNumber: $phoneNumber, password: $password, email: $email, scholarID: $scholarID, userPhoto: $userPhoto, branch: $branch, degree: $degree, socials: $socials, position: $position)';
   }
 
   @override
@@ -264,6 +280,8 @@ class _$_UserModel implements _UserModel {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
+            (identical(other.password, password) ||
+                other.password == password) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.scholarID, scholarID) ||
                 other.scholarID == scholarID) &&
@@ -281,6 +299,7 @@ class _$_UserModel implements _UserModel {
       runtimeType,
       name,
       phoneNumber,
+      password,
       email,
       scholarID,
       userPhoto,
@@ -307,6 +326,7 @@ abstract class _UserModel implements UserModel {
   const factory _UserModel(
       {required final String name,
       @PhoneNumberSerializer() final PhoneNumber? phoneNumber,
+      required final String password,
       required final String email,
       required final String scholarID,
       final String? userPhoto,
@@ -323,6 +343,8 @@ abstract class _UserModel implements UserModel {
   @override
   @PhoneNumberSerializer()
   PhoneNumber? get phoneNumber;
+  @override
+  String get password;
   @override
   String get email;
   @override

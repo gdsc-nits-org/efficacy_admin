@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -7,7 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import 'constants.dart';
 
 class LocalDatabase {
-  static Box? _userBox;
   const LocalDatabase._();
 
   static Future<void> init() async {
@@ -15,15 +13,28 @@ class LocalDatabase {
     Hive.init(directory.path);
   }
 
-  static Future<UserModel?> getUser() async {
-    _userBox ??= await Hive.openBox(LocalCollections.user.name);
-    return UserModel.fromJson(_userBox!.get(LocalDocuments.currentUser.name));
+  static Future<dynamic> get(
+    LocalCollections collection,
+    LocalDocuments key,
+  ) async {
+    Box box = await Hive.openBox(collection.name);
+    return box.get(key.name);
   }
 
-  static Future<void> setUser(UserModel user) async {
-    _userBox ??= await Hive.openBox(LocalCollections.user.name);
-    // Since at all time we will have only 1 signed in user.
-    await _userBox!.delete(LocalDocuments.currentUser.name);
-    await _userBox!.put(LocalDocuments.currentUser.name, user.toJson());
+  static Future<void> set(
+    LocalCollections collection,
+    LocalDocuments key,
+    dynamic data,
+  ) async {
+    Box box = await Hive.openBox(collection.name);
+    await box.put(key.name, data);
+  }
+
+  static Future<void> delete(
+    LocalCollections collection,
+    LocalDocuments key,
+  ) async {
+    Box box = await Hive.openBox(collection.name);
+    await box.delete(key.name);
   }
 }

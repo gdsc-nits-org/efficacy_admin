@@ -15,7 +15,7 @@ class ClubModel with _$ClubModel {
     required String clubLogoURL,
     String? clubBannerURL,
 
-    /// Map<ClubPositionModel, Member ID>
+    /// Map<ClubPositionModel, Member Email>
     /// Cannot use clubPositionModel
     /// Since it has issues with freezed (cannot make keys with custom type)
     required Map members,

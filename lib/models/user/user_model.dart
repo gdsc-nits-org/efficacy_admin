@@ -11,6 +11,7 @@ class UserModel with _$UserModel {
   const factory UserModel({
     required String name,
     @PhoneNumberSerializer() PhoneNumber? phoneNumber,
+    required String password,
     required String email,
     required String scholarID,
     String? userPhoto,
@@ -22,4 +23,16 @@ class UserModel with _$UserModel {
 
   factory UserModel.fromJson(Map<String, Object?> json) =>
       _$UserModelFromJson(json);
+}
+
+enum UserFields {
+  name,
+  phoneNumber,
+  email,
+  scholarID,
+  userPhoto,
+  branch,
+  degree,
+  socials,
+  positions
 }

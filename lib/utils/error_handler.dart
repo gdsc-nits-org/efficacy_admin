@@ -43,21 +43,25 @@ class ErrorHandler {
     // Widget error = const Text("Unknown platform error...");
     PlatformDispatcher.instance.onError = (obj, stack) {
       debugPrint(obj.toString());
-      // debugPrintStack(stackTrace: stack);
+      debugPrintStack(stackTrace: stack);
 
       late String errorMessage;
-      if (Platform.isAndroid) {
-        errorMessage = 'This feature is not available on Android.';
-      } else if (Platform.isIOS) {
-        errorMessage = 'This feature is not available on iOS.';
-      } else if (Platform.isMacOS) {
-        errorMessage = 'This feature is not available on macOS.';
-      } else if (Platform.isWindows) {
-        errorMessage = 'This feature is not available on Windows.';
-      } else if (Platform.isLinux) {
-        errorMessage = 'This feature is not available on Linux.';
+      if (obj is Exception) {
+        errorMessage = obj.toString().substring("Exception: ".length);
       } else {
-        errorMessage = 'This feature is not supported on your platform.';
+        if (Platform.isAndroid) {
+          errorMessage = 'This feature is not available on Android.';
+        } else if (Platform.isIOS) {
+          errorMessage = 'This feature is not available on iOS.';
+        } else if (Platform.isMacOS) {
+          errorMessage = 'This feature is not available on macOS.';
+        } else if (Platform.isWindows) {
+          errorMessage = 'This feature is not available on Windows.';
+        } else if (Platform.isLinux) {
+          errorMessage = 'This feature is not available on Linux.';
+        } else {
+          errorMessage = 'This feature is not supported on your platform.';
+        }
       }
       if (obj.toString().isNotEmpty) {
         if (obj.toString().contains("network_error")) {
@@ -66,9 +70,9 @@ class ErrorHandler {
           errorMessage = "Sign in Failed";
         } else if (obj.toString().contains("Exception: Couldn't sign in")) {
           errorMessage = "Couldn't sign in";
-        }else if (obj.toString().contains("SocketException")) {
+        } else if (obj.toString().contains("SocketException")) {
           errorMessage = "No internet connection";
-        }else if (obj.toString().contains("SplashscreenError")) {
+        } else if (obj.toString().contains("SplashscreenError")) {
           errorMessage = "Network error";
         }
       }

@@ -3,4 +3,3 @@
 
 export 'constants.dart';
 export 'user/user_controller.dart';
-export 'database/database_controller.dart';

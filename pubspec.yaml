@@ -28,7 +28,7 @@ dependencies:
   flutter_image_compress: ^2.0.4
 
   # ======================= Authentication =======================
-  google_sign_in: ^6.1.5
+  crypt: ^4.3.1
 
   # ======================= Storage =======================
   flutter_dotenv: ^5.1.0

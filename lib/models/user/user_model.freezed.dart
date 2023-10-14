@@ -20,8 +20,9 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserModel {
+  @ObjectIdSerializer()
   @JsonKey(name: '_id')
-  String? get id => throw _privateConstructorUsedError;
+  ObjectId? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   @PhoneNumberSerializer()
   PhoneNumber? get phoneNumber => throw _privateConstructorUsedError;
@@ -33,6 +34,7 @@ mixin _$UserModel {
   Degree get degree => throw _privateConstructorUsedError;
   Map<Social, String> get socials => throw _privateConstructorUsedError;
   List<ClubPositionModel> get position => throw _privateConstructorUsedError;
+  DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,7 +48,7 @@ abstract class $UserModelCopyWith<$Res> {
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') String? id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
       String name,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String password,
@@ -56,7 +58,8 @@ abstract class $UserModelCopyWith<$Res> {
       Branch branch,
       Degree degree,
       Map<Social, String> socials,
-      List<ClubPositionModel> position});
+      List<ClubPositionModel> position,
+      DateTime? lastLocalUpdate});
 }
 
 /// @nodoc
@@ -83,12 +86,13 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? degree = null,
     Object? socials = null,
     Object? position = null,
+    Object? lastLocalUpdate = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as ObjectId?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -129,6 +133,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
               as List<ClubPositionModel>,
+      lastLocalUpdate: freezed == lastLocalUpdate
+          ? _value.lastLocalUpdate
+          : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -141,7 +149,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') String? id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
       String name,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String password,
@@ -151,7 +159,8 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       Branch branch,
       Degree degree,
       Map<Social, String> socials,
-      List<ClubPositionModel> position});
+      List<ClubPositionModel> position,
+      DateTime? lastLocalUpdate});
 }
 
 /// @nodoc
@@ -176,12 +185,13 @@ class __$$_UserModelCopyWithImpl<$Res>
     Object? degree = null,
     Object? socials = null,
     Object? position = null,
+    Object? lastLocalUpdate = freezed,
   }) {
     return _then(_$_UserModel(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as ObjectId?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -222,6 +232,10 @@ class __$$_UserModelCopyWithImpl<$Res>
           ? _value._position
           : position // ignore: cast_nullable_to_non_nullable
               as List<ClubPositionModel>,
+      lastLocalUpdate: freezed == lastLocalUpdate
+          ? _value.lastLocalUpdate
+          : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -230,7 +244,7 @@ class __$$_UserModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_UserModel implements _UserModel {
   const _$_UserModel(
-      {@JsonKey(name: '_id') this.id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') this.id,
       required this.name,
       @PhoneNumberSerializer() this.phoneNumber,
       required this.password,
@@ -240,7 +254,8 @@ class _$_UserModel implements _UserModel {
       required this.branch,
       required this.degree,
       final Map<Social, String> socials = const {},
-      final List<ClubPositionModel> position = const []})
+      final List<ClubPositionModel> position = const [],
+      this.lastLocalUpdate})
       : _socials = socials,
         _position = position;
 
@@ -248,8 +263,9 @@ class _$_UserModel implements _UserModel {
       _$$_UserModelFromJson(json);
 
   @override
+  @ObjectIdSerializer()
   @JsonKey(name: '_id')
-  final String? id;
+  final ObjectId? id;
   @override
   final String name;
   @override
@@ -286,8 +302,11 @@ class _$_UserModel implements _UserModel {
   }
 
   @override
+  final DateTime? lastLocalUpdate;
+
+  @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, phoneNumber: $phoneNumber, password: $password, email: $email, scholarID: $scholarID, userPhoto: $userPhoto, branch: $branch, degree: $degree, socials: $socials, position: $position)';
+    return 'UserModel(id: $id, name: $name, phoneNumber: $phoneNumber, password: $password, email: $email, scholarID: $scholarID, userPhoto: $userPhoto, branch: $branch, degree: $degree, socials: $socials, position: $position, lastLocalUpdate: $lastLocalUpdate)';
   }
 
   @override
@@ -309,7 +328,9 @@ class _$_UserModel implements _UserModel {
             (identical(other.branch, branch) || other.branch == branch) &&
             (identical(other.degree, degree) || other.degree == degree) &&
             const DeepCollectionEquality().equals(other._socials, _socials) &&
-            const DeepCollectionEquality().equals(other._position, _position));
+            const DeepCollectionEquality().equals(other._position, _position) &&
+            (identical(other.lastLocalUpdate, lastLocalUpdate) ||
+                other.lastLocalUpdate == lastLocalUpdate));
   }
 
   @JsonKey(ignore: true)
@@ -326,7 +347,8 @@ class _$_UserModel implements _UserModel {
       branch,
       degree,
       const DeepCollectionEquality().hash(_socials),
-      const DeepCollectionEquality().hash(_position));
+      const DeepCollectionEquality().hash(_position),
+      lastLocalUpdate);
 
   @JsonKey(ignore: true)
   @override
@@ -344,7 +366,7 @@ class _$_UserModel implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
-      {@JsonKey(name: '_id') final String? id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') final ObjectId? id,
       required final String name,
       @PhoneNumberSerializer() final PhoneNumber? phoneNumber,
       required final String password,
@@ -354,14 +376,16 @@ abstract class _UserModel implements UserModel {
       required final Branch branch,
       required final Degree degree,
       final Map<Social, String> socials,
-      final List<ClubPositionModel> position}) = _$_UserModel;
+      final List<ClubPositionModel> position,
+      final DateTime? lastLocalUpdate}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$_UserModel.fromJson;
 
   @override
+  @ObjectIdSerializer()
   @JsonKey(name: '_id')
-  String? get id;
+  ObjectId? get id;
   @override
   String get name;
   @override
@@ -383,6 +407,8 @@ abstract class _UserModel implements UserModel {
   Map<Social, String> get socials;
   @override
   List<ClubPositionModel> get position;
+  @override
+  DateTime? get lastLocalUpdate;
   @override
   @JsonKey(ignore: true)
   _$$_UserModelCopyWith<_$_UserModel> get copyWith =>

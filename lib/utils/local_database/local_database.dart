@@ -30,11 +30,15 @@ class LocalDatabase {
     await box.put(key.name, data);
   }
 
-  static Future<void> delete(
+  static Future<void> deleteKey(
     LocalCollections collection,
     LocalDocuments key,
   ) async {
     Box box = await Hive.openBox(collection.name);
     await box.delete(key.name);
+  }
+
+  static Future<void> deleteCollection(LocalCollections collection) async {
+    await Hive.deleteBoxFromDisk(collection.name);
   }
 }

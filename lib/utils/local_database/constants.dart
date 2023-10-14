@@ -1,3 +1,3 @@
 enum LocalCollections { user }
 
-enum LocalDocuments { currentUser }
+enum LocalDocuments { currentUser, users }

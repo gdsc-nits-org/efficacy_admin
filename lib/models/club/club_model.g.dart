@@ -7,7 +7,7 @@ part of 'club_model.dart';
 // **************************************************************************
 
 _$_ClubModel _$$_ClubModelFromJson(Map<String, dynamic> json) => _$_ClubModel(
-      id: json['_id'] as String?,
+      id: const ObjectIdSerializer().fromJson(json['_id'] as String?),
       name: json['name'] as String,
       instituteName: json['instituteName'] as String,
       description: json['description'] as String,
@@ -25,11 +25,14 @@ _$_ClubModel _$$_ClubModelFromJson(Map<String, dynamic> json) => _$_ClubModel(
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      lastLocalUpdate: json['lastLocalUpdate'] == null
+          ? null
+          : DateTime.parse(json['lastLocalUpdate'] as String),
     );
 
 Map<String, dynamic> _$$_ClubModelToJson(_$_ClubModel instance) =>
     <String, dynamic>{
-      '_id': instance.id,
+      '_id': const ObjectIdSerializer().toJson(instance.id),
       'name': instance.name,
       'instituteName': instance.instituteName,
       'description': instance.description,
@@ -41,6 +44,7 @@ Map<String, dynamic> _$$_ClubModelToJson(_$_ClubModel instance) =>
       'clubBannerURL': instance.clubBannerURL,
       'members': instance.members,
       'followers': instance.followers,
+      'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
     };
 
 const _$SocialEnumMap = {

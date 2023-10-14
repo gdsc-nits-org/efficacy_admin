@@ -8,7 +8,7 @@ part of 'event_model.dart';
 
 _$_EventModel _$$_EventModelFromJson(Map<String, dynamic> json) =>
     _$_EventModel(
-      id: json['_id'] as String?,
+      id: const ObjectIdSerializer().fromJson(json['_id'] as String?),
       posterURL: json['posterURL'] as String,
       title: json['title'] as String,
       shortDescription: json['shortDescription'] as String,
@@ -24,11 +24,14 @@ _$_EventModel _$$_EventModelFromJson(Map<String, dynamic> json) =>
           (json['liked'] as List<dynamic>?)?.map((e) => e as String).toList() ??
               const [],
       clubID: json['clubID'] as String,
+      lastLocalUpdate: json['lastLocalUpdate'] == null
+          ? null
+          : DateTime.parse(json['lastLocalUpdate'] as String),
     );
 
 Map<String, dynamic> _$$_EventModelToJson(_$_EventModel instance) =>
     <String, dynamic>{
-      '_id': instance.id,
+      '_id': const ObjectIdSerializer().toJson(instance.id),
       'posterURL': instance.posterURL,
       'title': instance.title,
       'shortDescription': instance.shortDescription,
@@ -41,4 +44,5 @@ Map<String, dynamic> _$$_EventModelToJson(_$_EventModel instance) =>
       'contacts': instance.contacts,
       'liked': instance.liked,
       'clubID': instance.clubID,
+      'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
     };

@@ -12,16 +12,26 @@ class UserController {
   static UserModel? currentUser;
   const UserController._();
 
-  static Future<void> _save() async {
-    if (currentUser == null) {
-      LocalDatabase.delete(LocalCollections.user, LocalDocuments.currentUser);
-    } else {
-      await LocalDatabase.set(
-        LocalCollections.user,
-        LocalDocuments.currentUser,
-        currentUser!.toJson(),
-      );
+  static Future<void> _save({UserModel? user}) async {
+    if (user == null) {
+      user = currentUser;
+      if (currentUser == null) {
+        LocalDatabase.deleteCollection(LocalCollections.user);
+      } else {
+        currentUser = currentUser!.copyWith(lastLocalUpdate: DateTime.now());
+        await LocalDatabase.set(
+          LocalCollections.user,
+          LocalDocuments.currentUser,
+          currentUser!.toJson(),
+        );
+      }
     }
+    user = user!.copyWith(lastLocalUpdate: DateTime.now());
+    Map? res =
+        await LocalDatabase.get(LocalCollections.user, LocalDocuments.users);
+    res ??= {};
+    res[user.email] = user.toJson();
+    await LocalDatabase.set(LocalCollections.user, LocalDocuments.users, res);
   }
 
   static UserModel _removePassword(UserModel user) {
@@ -35,7 +45,7 @@ class UserController {
   ///
   /// Stores the value in local database
   /// Stores the value in currentUser field
-  static Future<void> create(UserModel user) async {
+  static Future<UserModel?> create(UserModel user) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
     if (await get(user.email) != null) {
@@ -47,10 +57,11 @@ class UserController {
           dotenv.env[EnvValues.ENCRYPTER_SALT.name]!,
         ),
       );
+      user = user.copyWith(lastLocalUpdate: null);
       await collection.insert(user.toJson());
-      user = _removePassword(user);
-      currentUser = user;
+      currentUser = await get(user.email);
       await _save();
+      return currentUser;
     }
   }
 
@@ -60,7 +71,7 @@ class UserController {
   ///
   /// Stores the value in local database
   /// Stores the value in currentUser field
-  static Future<void> login(String email, String password) async {
+  static Future<UserModel?> login(String email, String password) async {
     UserModel? user = await get(email, keepPassword: true);
     if (user == null) {
       throw Exception("User exists with the provided email. Please Log in");
@@ -71,6 +82,7 @@ class UserController {
       user = _removePassword(user);
       currentUser = user;
       await _save();
+      return currentUser;
     }
   }
 
@@ -90,8 +102,24 @@ class UserController {
   /// Fetches a  user from the provided email
   ///   * if keepPassword is true, the hashed password is kept (recommended not to keep)
   ///   * if keepPassword is false, the hashed password is replaced with ""
-  static Future<UserModel?> get(String email,
-      {bool keepPassword = false}) async {
+  ///
+  /// If [forceGet] is true, the localDatabase is cleared and new data is fetched
+  /// Else only the users not in database are fetched
+  static Future<UserModel?> get(
+    String email, {
+    bool keepPassword = false,
+    bool forceGet = false,
+  }) async {
+    if (forceGet) {
+      await LocalDatabase.deleteCollection(LocalCollections.user);
+    } else {
+      Map? users =
+          await LocalDatabase.get(LocalCollections.user, LocalDocuments.users);
+      if (users != null && users.containsKey(email)) {
+        return UserModel.fromJson(users[email]);
+      }
+    }
+
     DbCollection collection = Database.instance.collection(_collectionName);
     SelectorBuilder selectorBuilder = SelectorBuilder();
     selectorBuilder.eq(UserFields.email.name, email);
@@ -102,6 +130,7 @@ class UserController {
       if (!keepPassword) {
         user = _removePassword(user);
       }
+      await _save(user: user);
       return user;
     } else {
       return null;
@@ -110,7 +139,9 @@ class UserController {
 
   /// Updates the user data if exists in the database
   /// and stores it in the local database
-  static Future<void> update(UserModel user) async {
+  ///
+  /// Current user is not set as the update might not be necessarily of the current user
+  static Future<UserModel?> update(UserModel user) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
     if (await get(user.email) == null) {
@@ -118,12 +149,13 @@ class UserController {
     } else {
       SelectorBuilder selectorBuilder = SelectorBuilder();
       selectorBuilder.eq(UserFields.email.name, user.email);
+      user = user.copyWith(lastLocalUpdate: null);
       await collection.update(
         selectorBuilder,
         user.toJson(),
       );
-      currentUser = user;
-      await _save();
+      await _save(user: user);
+      return user;
     }
   }
 

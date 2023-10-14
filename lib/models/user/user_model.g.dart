@@ -7,7 +7,7 @@ part of 'user_model.dart';
 // **************************************************************************
 
 _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
-      id: json['_id'] as String?,
+      id: const ObjectIdSerializer().fromJson(json['_id']),
       name: json['name'] as String,
       phoneNumber: const PhoneNumberSerializer()
           .fromJson(json['phoneNumber'] as Map<String, String?>?),
@@ -26,11 +26,14 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
                   (e) => ClubPositionModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      lastLocalUpdate: json['lastLocalUpdate'] == null
+          ? null
+          : DateTime.parse(json['lastLocalUpdate'] as String),
     );
 
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
     <String, dynamic>{
-      '_id': instance.id,
+      '_id': const ObjectIdSerializer().toJson(instance.id),
       'name': instance.name,
       'phoneNumber': const PhoneNumberSerializer().toJson(instance.phoneNumber),
       'password': instance.password,
@@ -42,6 +45,7 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
       'socials':
           instance.socials.map((k, e) => MapEntry(_$SocialEnumMap[k]!, e)),
       'position': instance.position,
+      'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
     };
 
 const _$BranchEnumMap = {

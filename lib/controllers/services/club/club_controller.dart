@@ -6,29 +6,51 @@ class ClubController {
   const ClubController._();
   static const String _collectionName = "clubs";
 
-  static Future<void> create(ClubModel club) async {
+  /// Combination of clubName and institute name must be unique
+  static Future<ClubModel?> create(ClubModel club) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
+    SelectorBuilder selectorBuilder = SelectorBuilder();
+    selectorBuilder.eq(ClubFields.instituteName.name, club.instituteName);
+    selectorBuilder.eq(ClubFields.name.name, club.name);
+
+    if (await collection.findOne(selectorBuilder) != null) {
+      throw Exception("Club with same name exists at ${club.instituteName}");
+    }
     await collection.insert(club.toJson());
+    return await get(instituteName: club.instituteName, clubName: club.name);
   }
 
-  static Future<void> update(ClubModel club) async {
+  static Future<ClubModel?> update(ClubModel club) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
-    if (club.id == null || await get(club.id!) == null) {
+    if (club.id == null || await get(id: club.id!.toHexString()) == null) {
       throw Exception("Couldn't find club");
     } else {
       SelectorBuilder selectorBuilder = SelectorBuilder();
       selectorBuilder.eq("id", club.id);
       await collection.update(selectorBuilder, club.toJson());
+      return await get(id: club.id?.toHexString());
     }
   }
 
   /// For a given id returns all the data of the club
-  static Future<ClubModel?> get(String id) async {
+  static Future<ClubModel?> get({
+    String? id,
+    String? instituteName,
+    String? clubName,
+  }) async {
     DbCollection collection = Database.instance.collection(_collectionName);
     SelectorBuilder selectorBuilder = SelectorBuilder();
-    selectorBuilder.eq(ClubFields.id.name, id);
+    if (id != null) {
+      selectorBuilder.eq(ClubFields.id.name, id);
+    } else if (instituteName != null && clubName != null) {
+      selectorBuilder.eq(ClubFields.instituteName.name, instituteName);
+      selectorBuilder.eq(ClubFields.name.name, clubName);
+    } else {
+      throw ArgumentError(
+          "id or (instituteName and clubName) must be provided");
+    }
 
     Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
     if (res != null) {
@@ -54,7 +76,7 @@ class ClubController {
   static Future<void> delete(String id) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
-    if (await get(id) == null) {
+    if (await get(id: id) == null) {
       throw Exception("Couldn't find club");
     } else {
       SelectorBuilder selectorBuilder = SelectorBuilder();

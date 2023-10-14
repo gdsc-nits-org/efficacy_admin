@@ -1,4 +1,6 @@
+import 'package:efficacy_admin/models/utils/objectid_serializer.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mongo_dart/mongo_dart.dart';
 
 part 'event_model.freezed.dart';
 part 'event_model.g.dart';
@@ -9,7 +11,7 @@ enum Status { Upcoming, Ongoing, Completed }
 class EventModel with _$EventModel {
   const EventModel._();
   const factory EventModel({
-    @JsonKey(name: '_id') String? id,
+    @JsonKey(name: '_id') @ObjectIdSerializer() ObjectId? id,
     required String posterURL,
     required String title,
     required String shortDescription,
@@ -26,6 +28,7 @@ class EventModel with _$EventModel {
     /// Users who liked the event
     @Default([]) List<String> liked,
     required String clubID,
+    DateTime? lastLocalUpdate,
   }) = _EventModel;
 
   factory EventModel.fromJson(Map<String, Object?> json) =>
@@ -41,4 +44,20 @@ class EventModel with _$EventModel {
       return Status.Ongoing;
     }
   }
+}
+
+enum EventFields {
+  id,
+  posterURL,
+  title,
+  shortDescription,
+  longDescription,
+  startDate,
+  endDate,
+  registrationLink,
+  facebookPostURL,
+  venue,
+  contacts,
+  liked,
+  clubID,
 }

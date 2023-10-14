@@ -1,6 +1,8 @@
+import 'package:efficacy_admin/models/utils/objectid_serializer.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:efficacy_admin/models/utils/utils.dart';
+import 'package:mongo_dart/mongo_dart.dart';
 
 part 'club_model.freezed.dart';
 part 'club_model.g.dart';
@@ -8,7 +10,7 @@ part 'club_model.g.dart';
 @freezed
 class ClubModel with _$ClubModel {
   const factory ClubModel({
-    @JsonKey(name: '_id') String? id,
+    @JsonKey(name: '_id') @ObjectIdSerializer() ObjectId? id,
     required String name,
     required String instituteName,
     required String description,
@@ -18,13 +20,14 @@ class ClubModel with _$ClubModel {
     required String clubLogoURL,
     String? clubBannerURL,
 
-    /// Map<ClubPositionModel, Member Email>
+    /// Map<ClubPositionModelID, Member Email>
     /// Cannot use clubPositionModel
     /// Since it has issues with freezed (cannot make keys with custom type)
     required Map members,
 
     /// Follower Ids
     @Default([]) List<String> followers,
+    DateTime? lastLocalUpdate,
   }) = _ClubModel;
 
   factory ClubModel.fromJson(Map<String, dynamic> json) =>

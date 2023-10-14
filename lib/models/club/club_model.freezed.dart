@@ -20,6 +20,10 @@ ClubModel _$ClubModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClubModel {
+  @JsonKey(name: '_id')
+  String? get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  String get instituteName => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   Map<Social, String> get socials => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
@@ -28,7 +32,7 @@ mixin _$ClubModel {
   String get clubLogoURL => throw _privateConstructorUsedError;
   String? get clubBannerURL => throw _privateConstructorUsedError;
 
-  /// Map<ClubPositionModel, Member ID>
+  /// Map<ClubPositionModel, Member Email>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
   Map<dynamic, dynamic> get members => throw _privateConstructorUsedError;
@@ -48,7 +52,10 @@ abstract class $ClubModelCopyWith<$Res> {
       _$ClubModelCopyWithImpl<$Res, ClubModel>;
   @useResult
   $Res call(
-      {String description,
+      {@JsonKey(name: '_id') String? id,
+      String name,
+      String instituteName,
+      String description,
       Map<Social, String> socials,
       String email,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
@@ -71,6 +78,9 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
+    Object? name = null,
+    Object? instituteName = null,
     Object? description = null,
     Object? socials = null,
     Object? email = null,
@@ -81,6 +91,18 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
     Object? followers = null,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      instituteName: null == instituteName
+          ? _value.instituteName
+          : instituteName // ignore: cast_nullable_to_non_nullable
+              as String,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -125,7 +147,10 @@ abstract class _$$_ClubModelCopyWith<$Res> implements $ClubModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String description,
+      {@JsonKey(name: '_id') String? id,
+      String name,
+      String instituteName,
+      String description,
       Map<Social, String> socials,
       String email,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
@@ -146,6 +171,9 @@ class __$$_ClubModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
+    Object? name = null,
+    Object? instituteName = null,
     Object? description = null,
     Object? socials = null,
     Object? email = null,
@@ -156,6 +184,18 @@ class __$$_ClubModelCopyWithImpl<$Res>
     Object? followers = null,
   }) {
     return _then(_$_ClubModel(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      instituteName: null == instituteName
+          ? _value.instituteName
+          : instituteName // ignore: cast_nullable_to_non_nullable
+              as String,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -196,7 +236,10 @@ class __$$_ClubModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ClubModel implements _ClubModel {
   const _$_ClubModel(
-      {required this.description,
+      {@JsonKey(name: '_id') this.id,
+      required this.name,
+      required this.instituteName,
+      required this.description,
       final Map<Social, String> socials = const {},
       required this.email,
       @PhoneNumberSerializer() this.phoneNumber,
@@ -211,6 +254,13 @@ class _$_ClubModel implements _ClubModel {
   factory _$_ClubModel.fromJson(Map<String, dynamic> json) =>
       _$$_ClubModelFromJson(json);
 
+  @override
+  @JsonKey(name: '_id')
+  final String? id;
+  @override
+  final String name;
+  @override
+  final String instituteName;
   @override
   final String description;
   final Map<Social, String> _socials;
@@ -232,12 +282,12 @@ class _$_ClubModel implements _ClubModel {
   @override
   final String? clubBannerURL;
 
-  /// Map<ClubPositionModel, Member ID>
+  /// Map<ClubPositionModel, Member Email>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
   final Map<dynamic, dynamic> _members;
 
-  /// Map<ClubPositionModel, Member ID>
+  /// Map<ClubPositionModel, Member Email>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
   @override
@@ -261,7 +311,7 @@ class _$_ClubModel implements _ClubModel {
 
   @override
   String toString() {
-    return 'ClubModel(description: $description, socials: $socials, email: $email, phoneNumber: $phoneNumber, clubLogoURL: $clubLogoURL, clubBannerURL: $clubBannerURL, members: $members, followers: $followers)';
+    return 'ClubModel(id: $id, name: $name, instituteName: $instituteName, description: $description, socials: $socials, email: $email, phoneNumber: $phoneNumber, clubLogoURL: $clubLogoURL, clubBannerURL: $clubBannerURL, members: $members, followers: $followers)';
   }
 
   @override
@@ -269,6 +319,10 @@ class _$_ClubModel implements _ClubModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ClubModel &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.instituteName, instituteName) ||
+                other.instituteName == instituteName) &&
             (identical(other.description, description) ||
                 other.description == description) &&
             const DeepCollectionEquality().equals(other._socials, _socials) &&
@@ -288,6 +342,9 @@ class _$_ClubModel implements _ClubModel {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
+      name,
+      instituteName,
       description,
       const DeepCollectionEquality().hash(_socials),
       email,
@@ -313,7 +370,10 @@ class _$_ClubModel implements _ClubModel {
 
 abstract class _ClubModel implements ClubModel {
   const factory _ClubModel(
-      {required final String description,
+      {@JsonKey(name: '_id') final String? id,
+      required final String name,
+      required final String instituteName,
+      required final String description,
       final Map<Social, String> socials,
       required final String email,
       @PhoneNumberSerializer() final PhoneNumber? phoneNumber,
@@ -325,6 +385,13 @@ abstract class _ClubModel implements ClubModel {
   factory _ClubModel.fromJson(Map<String, dynamic> json) =
       _$_ClubModel.fromJson;
 
+  @override
+  @JsonKey(name: '_id')
+  String? get id;
+  @override
+  String get name;
+  @override
+  String get instituteName;
   @override
   String get description;
   @override
@@ -340,7 +407,7 @@ abstract class _ClubModel implements ClubModel {
   String? get clubBannerURL;
   @override
 
-  /// Map<ClubPositionModel, Member ID>
+  /// Map<ClubPositionModel, Member Email>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
   Map<dynamic, dynamic> get members;

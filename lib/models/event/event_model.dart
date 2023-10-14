@@ -9,6 +9,7 @@ enum Status { Upcoming, Ongoing, Completed }
 class EventModel with _$EventModel {
   const EventModel._();
   const factory EventModel({
+    @JsonKey(name: '_id') String? id,
     required String posterURL,
     required String title,
     required String shortDescription,

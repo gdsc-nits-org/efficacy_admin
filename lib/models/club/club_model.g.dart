@@ -7,6 +7,9 @@ part of 'club_model.dart';
 // **************************************************************************
 
 _$_ClubModel _$$_ClubModelFromJson(Map<String, dynamic> json) => _$_ClubModel(
+      id: json['_id'] as String?,
+      name: json['name'] as String,
+      instituteName: json['instituteName'] as String,
       description: json['description'] as String,
       socials: (json['socials'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry($enumDecode(_$SocialEnumMap, k), e as String),
@@ -26,6 +29,9 @@ _$_ClubModel _$$_ClubModelFromJson(Map<String, dynamic> json) => _$_ClubModel(
 
 Map<String, dynamic> _$$_ClubModelToJson(_$_ClubModel instance) =>
     <String, dynamic>{
+      '_id': instance.id,
+      'name': instance.name,
+      'instituteName': instance.instituteName,
       'description': instance.description,
       'socials':
           instance.socials.map((k, e) => MapEntry(_$SocialEnumMap[k]!, e)),

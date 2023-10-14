@@ -1,5 +1,4 @@
 import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/states/authenticator/authenticator.dart';
 import 'package:efficacy_admin/controllers/services/services.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
@@ -34,9 +33,7 @@ class _ExperimentPageState extends State<ExperimentPage> {
               child: const Text("Login with Google"),
             ),
             ElevatedButton(
-              onPressed: () async {
-                await Authenticator.signOut();
-              },
+              onPressed: () async {},
               child: const Text("Login Out"),
             ),
           ].separate(10),

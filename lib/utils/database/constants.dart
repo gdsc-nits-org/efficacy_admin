@@ -5,5 +5,3 @@ enum EnvValues {
   CLOUDINARY_CLOUD_NAME,
   ENCRYPTER_SALT,
 }
-
-enum Collections { users, clubs, events, app }

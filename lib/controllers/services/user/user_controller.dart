@@ -47,7 +47,7 @@ class UserController {
           dotenv.env[EnvValues.ENCRYPTER_SALT.name]!,
         ),
       );
-      Map<String, dynamic> res = await collection.insert(user.toJson());
+      await collection.insert(user.toJson());
       user = _removePassword(user);
       currentUser = user;
       await _save();
@@ -118,7 +118,7 @@ class UserController {
     } else {
       SelectorBuilder selectorBuilder = SelectorBuilder();
       selectorBuilder.eq(UserFields.email.name, user.email);
-      Map<String, dynamic> res = await collection.update(
+      await collection.update(
         selectorBuilder,
         user.toJson(),
       );
@@ -136,10 +136,14 @@ class UserController {
     } else {
       SelectorBuilder selectorBuilder = SelectorBuilder();
       selectorBuilder.eq(UserFields.email.name, email);
-      WriteResult res = await collection.deleteOne(selectorBuilder);
+      await collection.deleteOne(selectorBuilder);
 
-      currentUser = null;
-      await _save();
+      await logOut();
     }
+  }
+
+  static Future<void> logOut() async {
+    currentUser = null;
+    await _save();
   }
 }

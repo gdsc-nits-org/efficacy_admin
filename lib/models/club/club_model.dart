@@ -8,6 +8,9 @@ part 'club_model.g.dart';
 @freezed
 class ClubModel with _$ClubModel {
   const factory ClubModel({
+    @JsonKey(name: '_id') String? id,
+    required String name,
+    required String instituteName,
     required String description,
     @Default({}) Map<Social, String> socials,
     required String email,
@@ -26,4 +29,18 @@ class ClubModel with _$ClubModel {
 
   factory ClubModel.fromJson(Map<String, dynamic> json) =>
       _$ClubModelFromJson(json);
+}
+
+enum ClubFields {
+  id,
+  name,
+  instituteName,
+  description,
+  socials,
+  email,
+  phoneNumber,
+  clubLogoURL,
+  clubBannerURL,
+  members,
+  followers,
 }

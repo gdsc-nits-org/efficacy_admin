@@ -9,6 +9,7 @@ part 'user_model.g.dart';
 @freezed
 class UserModel with _$UserModel {
   const factory UserModel({
+    @JsonKey(name: '_id') String? id,
     required String name,
     @PhoneNumberSerializer() PhoneNumber? phoneNumber,
     required String password,
@@ -26,6 +27,7 @@ class UserModel with _$UserModel {
 }
 
 enum UserFields {
+  id,
   name,
   phoneNumber,
   email,

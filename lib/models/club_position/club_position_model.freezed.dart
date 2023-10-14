@@ -20,6 +20,8 @@ ClubPositionModel _$ClubPositionModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClubPositionModel {
+  @JsonKey(name: '_id')
+  String? get id => throw _privateConstructorUsedError;
   String get clubID => throw _privateConstructorUsedError;
   String get position => throw _privateConstructorUsedError;
 
@@ -35,7 +37,7 @@ abstract class $ClubPositionModelCopyWith<$Res> {
           ClubPositionModel value, $Res Function(ClubPositionModel) then) =
       _$ClubPositionModelCopyWithImpl<$Res, ClubPositionModel>;
   @useResult
-  $Res call({String clubID, String position});
+  $Res call({@JsonKey(name: '_id') String? id, String clubID, String position});
 }
 
 /// @nodoc
@@ -51,10 +53,15 @@ class _$ClubPositionModelCopyWithImpl<$Res, $Val extends ClubPositionModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? clubID = null,
     Object? position = null,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       clubID: null == clubID
           ? _value.clubID
           : clubID // ignore: cast_nullable_to_non_nullable
@@ -75,7 +82,7 @@ abstract class _$$_ClubPositionModelCopyWith<$Res>
       __$$_ClubPositionModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String clubID, String position});
+  $Res call({@JsonKey(name: '_id') String? id, String clubID, String position});
 }
 
 /// @nodoc
@@ -89,10 +96,15 @@ class __$$_ClubPositionModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? clubID = null,
     Object? position = null,
   }) {
     return _then(_$_ClubPositionModel(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       clubID: null == clubID
           ? _value.clubID
           : clubID // ignore: cast_nullable_to_non_nullable
@@ -108,11 +120,17 @@ class __$$_ClubPositionModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ClubPositionModel implements _ClubPositionModel {
-  const _$_ClubPositionModel({required this.clubID, required this.position});
+  const _$_ClubPositionModel(
+      {@JsonKey(name: '_id') this.id,
+      required this.clubID,
+      required this.position});
 
   factory _$_ClubPositionModel.fromJson(Map<String, dynamic> json) =>
       _$$_ClubPositionModelFromJson(json);
 
+  @override
+  @JsonKey(name: '_id')
+  final String? id;
   @override
   final String clubID;
   @override
@@ -120,7 +138,7 @@ class _$_ClubPositionModel implements _ClubPositionModel {
 
   @override
   String toString() {
-    return 'ClubPositionModel(clubID: $clubID, position: $position)';
+    return 'ClubPositionModel(id: $id, clubID: $clubID, position: $position)';
   }
 
   @override
@@ -128,6 +146,7 @@ class _$_ClubPositionModel implements _ClubPositionModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ClubPositionModel &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.clubID, clubID) || other.clubID == clubID) &&
             (identical(other.position, position) ||
                 other.position == position));
@@ -135,7 +154,7 @@ class _$_ClubPositionModel implements _ClubPositionModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, clubID, position);
+  int get hashCode => Object.hash(runtimeType, id, clubID, position);
 
   @JsonKey(ignore: true)
   @override
@@ -154,12 +173,16 @@ class _$_ClubPositionModel implements _ClubPositionModel {
 
 abstract class _ClubPositionModel implements ClubPositionModel {
   const factory _ClubPositionModel(
-      {required final String clubID,
+      {@JsonKey(name: '_id') final String? id,
+      required final String clubID,
       required final String position}) = _$_ClubPositionModel;
 
   factory _ClubPositionModel.fromJson(Map<String, dynamic> json) =
       _$_ClubPositionModel.fromJson;
 
+  @override
+  @JsonKey(name: '_id')
+  String? get id;
   @override
   String get clubID;
   @override

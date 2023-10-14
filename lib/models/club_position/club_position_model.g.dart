@@ -8,6 +8,7 @@ part of 'club_position_model.dart';
 
 _$_ClubPositionModel _$$_ClubPositionModelFromJson(Map<String, dynamic> json) =>
     _$_ClubPositionModel(
+      id: json['_id'] as String?,
       clubID: json['clubID'] as String,
       position: json['position'] as String,
     );
@@ -15,6 +16,7 @@ _$_ClubPositionModel _$$_ClubPositionModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$_ClubPositionModelToJson(
         _$_ClubPositionModel instance) =>
     <String, dynamic>{
+      '_id': instance.id,
       'clubID': instance.clubID,
       'position': instance.position,
     };

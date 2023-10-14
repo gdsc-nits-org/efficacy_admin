@@ -7,6 +7,7 @@ part of 'user_model.dart';
 // **************************************************************************
 
 _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
+      id: json['_id'] as String?,
       name: json['name'] as String,
       phoneNumber: const PhoneNumberSerializer()
           .fromJson(json['phoneNumber'] as Map<String, String?>?),
@@ -29,6 +30,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
 
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
     <String, dynamic>{
+      '_id': instance.id,
       'name': instance.name,
       'phoneNumber': const PhoneNumberSerializer().toJson(instance.phoneNumber),
       'password': instance.password,

@@ -39,5 +39,6 @@ enum UserFields {
   branch,
   degree,
   socials,
-  positions
+  positions,
+  lastLocalUpdate
 }

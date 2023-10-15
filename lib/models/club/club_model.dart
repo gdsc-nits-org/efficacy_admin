@@ -46,4 +46,5 @@ enum ClubFields {
   clubBannerURL,
   members,
   followers,
+  lastLocalUpdate
 }

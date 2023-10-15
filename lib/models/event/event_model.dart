@@ -60,4 +60,5 @@ enum EventFields {
   contacts,
   liked,
   clubID,
+  lastLocalUpdate
 }

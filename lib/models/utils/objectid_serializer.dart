@@ -7,9 +7,7 @@ class ObjectIdSerializer implements JsonConverter<ObjectId?, String?> {
   @override
   ObjectId? fromJson(dynamic json) {
     if (json == null) return null;
-    if (json is String? || json is String) {
-      return ObjectId.parse(json);
-    }
+    if (json is String) return ObjectId.parse(json);
     return json;
   }
 

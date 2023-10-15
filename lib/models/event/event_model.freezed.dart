@@ -20,8 +20,8 @@ EventModel _$EventModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$EventModel {
-  @JsonKey(name: '_id')
   @ObjectIdSerializer()
+  @JsonKey(name: '_id')
   ObjectId? get id => throw _privateConstructorUsedError;
   String get posterURL => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
@@ -54,7 +54,7 @@ abstract class $EventModelCopyWith<$Res> {
       _$EventModelCopyWithImpl<$Res, EventModel>;
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') @ObjectIdSerializer() ObjectId? id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
       String posterURL,
       String title,
       String shortDescription,
@@ -168,7 +168,7 @@ abstract class _$$_EventModelCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') @ObjectIdSerializer() ObjectId? id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
       String posterURL,
       String title,
       String shortDescription,
@@ -275,7 +275,7 @@ class __$$_EventModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_EventModel extends _EventModel {
   const _$_EventModel(
-      {@JsonKey(name: '_id') @ObjectIdSerializer() this.id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') this.id,
       required this.posterURL,
       required this.title,
       required this.shortDescription,
@@ -297,8 +297,8 @@ class _$_EventModel extends _EventModel {
       _$$_EventModelFromJson(json);
 
   @override
-  @JsonKey(name: '_id')
   @ObjectIdSerializer()
+  @JsonKey(name: '_id')
   final ObjectId? id;
   @override
   final String posterURL;
@@ -415,7 +415,7 @@ class _$_EventModel extends _EventModel {
 
 abstract class _EventModel extends EventModel {
   const factory _EventModel(
-      {@JsonKey(name: '_id') @ObjectIdSerializer() final ObjectId? id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') final ObjectId? id,
       required final String posterURL,
       required final String title,
       required final String shortDescription,
@@ -435,8 +435,8 @@ abstract class _EventModel extends EventModel {
       _$_EventModel.fromJson;
 
   @override
-  @JsonKey(name: '_id')
   @ObjectIdSerializer()
+  @JsonKey(name: '_id')
   ObjectId? get id;
   @override
   String get posterURL;

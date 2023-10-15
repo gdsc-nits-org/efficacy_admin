@@ -12,7 +12,7 @@ class UserController {
   static UserModel? currentUser;
   const UserController._();
 
-  static Future<void> _save({UserModel? user}) async {
+  static Future<UserModel?> _save({UserModel? user}) async {
     if (user == null) {
       user = currentUser;
       if (currentUser == null) {
@@ -32,6 +32,7 @@ class UserController {
     res ??= {};
     res[user.email] = user.toJson();
     await LocalDatabase.set(LocalCollections.user, LocalDocuments.users, res);
+    return user;
   }
 
   static UserModel _removePassword(UserModel user) {
@@ -48,7 +49,7 @@ class UserController {
   static Future<UserModel?> create(UserModel user) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
-    if (await get(user.email) != null) {
+    if (await get(user.email, forceGet: true).first != null) {
       throw Exception("User exists with the provided email. Please Log in");
     } else {
       user = user.copyWith(
@@ -59,8 +60,8 @@ class UserController {
       );
       user = user.copyWith(lastLocalUpdate: null);
       await collection.insert(user.toJson());
-      currentUser = await get(user.email);
-      await _save();
+      currentUser = await get(user.email, forceGet: true).first;
+      currentUser = await _save();
       return currentUser;
     }
   }
@@ -72,7 +73,8 @@ class UserController {
   /// Stores the value in local database
   /// Stores the value in currentUser field
   static Future<UserModel?> login(String email, String password) async {
-    UserModel? user = await get(email, keepPassword: true);
+    UserModel? user =
+        await get(email, keepPassword: true, forceGet: true).first;
     if (user == null) {
       throw Exception("User exists with the provided email. Please Log in");
     } else {
@@ -81,7 +83,7 @@ class UserController {
       }
       user = _removePassword(user);
       currentUser = user;
-      await _save();
+      currentUser = await _save();
       return currentUser;
     }
   }
@@ -105,18 +107,18 @@ class UserController {
   ///
   /// If [forceGet] is true, the localDatabase is cleared and new data is fetched
   /// Else only the users not in database are fetched
-  static Future<UserModel?> get(
+  static Stream<UserModel?> get(
     String email, {
     bool keepPassword = false,
     bool forceGet = false,
-  }) async {
+  }) async* {
     if (forceGet) {
       await LocalDatabase.deleteCollection(LocalCollections.user);
     } else {
       Map? users =
           await LocalDatabase.get(LocalCollections.user, LocalDocuments.users);
       if (users != null && users.containsKey(email)) {
-        return UserModel.fromJson(users[email]);
+        yield UserModel.fromJson(users[email]);
       }
     }
 
@@ -130,10 +132,10 @@ class UserController {
       if (!keepPassword) {
         user = _removePassword(user);
       }
-      await _save(user: user);
-      return user;
+      user = (await _save(user: user)) ?? user;
+      yield user;
     } else {
-      return null;
+      yield null;
     }
   }
 
@@ -144,7 +146,7 @@ class UserController {
   static Future<UserModel?> update(UserModel user) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
-    if (await get(user.email) == null) {
+    if (await get(user.email, forceGet: true).first == null) {
       throw Exception("Couldn't find user");
     } else {
       SelectorBuilder selectorBuilder = SelectorBuilder();
@@ -154,7 +156,7 @@ class UserController {
         selectorBuilder,
         user.toJson(),
       );
-      await _save(user: user);
+      user = (await _save(user: user)) ?? user;
       return user;
     }
   }
@@ -163,7 +165,7 @@ class UserController {
   static Future<void> delete(String email) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
-    if (await get(email) == null) {
+    if (await get(email, forceGet: true).first == null) {
       throw Exception("Couldn't find user");
     } else {
       SelectorBuilder selectorBuilder = SelectorBuilder();

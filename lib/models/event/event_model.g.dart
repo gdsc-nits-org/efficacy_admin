@@ -8,7 +8,7 @@ part of 'event_model.dart';
 
 _$_EventModel _$$_EventModelFromJson(Map<String, dynamic> json) =>
     _$_EventModel(
-      id: const ObjectIdSerializer().fromJson(json['_id'] as String?),
+      id: const ObjectIdSerializer().fromJson(json['_id']),
       posterURL: json['posterURL'] as String,
       title: json['title'] as String,
       shortDescription: json['shortDescription'] as String,

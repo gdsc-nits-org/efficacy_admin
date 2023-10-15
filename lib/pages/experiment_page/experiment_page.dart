@@ -27,27 +27,82 @@ class _ExperimentPageState extends State<ExperimentPage> {
           children: [
             ElevatedButton(
               onPressed: () async {
-                // GoogleSignInAccount account =
-                //     await Authenticator.googleSignIn();
-                // await LocalDatabase.setUser(user);
-                // await UserController.create(
-                //   const UserModel(
-                //     name: "User5",
-                //     password: "123",
-                //     email: "user5@mail.com",
-                //     scholarID: "2112005",
-                //     branch: Branch.CSE,
-                //     degree: Degree.BTech,
+                // await EventController.create(
+                //   EventModel(
+                //     posterURL: "1",
+                //     title: "1",
+                //     shortDescription: "1",
+                //     startDate: DateTime.parse("2023-10-15T19:05:27.949457"),
+                //     endDate: DateTime.parse("2023-10-15T19:05:27.949457"),
+                //     registrationLink: "1",
+                //     venue: "1",
+                //     contacts: [],
+                //     clubID: "1",
                 //   ),
                 // );
-                // await ClubController.create(
-                //   const ClubModel(
-                //     name: "GDSC",
-                //     instituteName: "NIT Silchar",
-                //     description: "GDSC",
-                //     email: "raj@mail.co",
-                //     clubLogoURL: "http://",
-                //     members: {},
+                // await EventController.create(
+                //   EventModel(
+                //     posterURL: "2",
+                //     title: "2",
+                //     shortDescription: "1",
+                //     startDate: DateTime.now(),
+                //     endDate: DateTime.now(),
+                //     registrationLink: "1",
+                //     venue: "1",
+                //     contacts: [],
+                //     clubID: "2",
+                //   ),
+                // );
+                // await EventController.create(
+                //   EventModel(
+                //     posterURL: "1",
+                //     title: "3",
+                //     shortDescription: "1",
+                //     startDate: DateTime.now(),
+                //     endDate: DateTime.now(),
+                //     registrationLink: "1",
+                //     venue: "1",
+                //     contacts: [],
+                //     clubID: "2",
+                //   ),
+                // );
+                // await EventController.create(
+                //   EventModel(
+                //     posterURL: "1",
+                //     title: "4",
+                //     shortDescription: "1",
+                //     startDate: DateTime.now(),
+                //     endDate: DateTime.now(),
+                //     registrationLink: "1",
+                //     venue: "1",
+                //     contacts: [],
+                //     clubID: "3",
+                //   ),
+                // );
+                // await EventController.create(
+                //   EventModel(
+                //     posterURL: "1",
+                //     title: "5",
+                //     shortDescription: "1",
+                //     startDate: DateTime.now(),
+                //     endDate: DateTime.now(),
+                //     registrationLink: "1",
+                //     venue: "1",
+                //     contacts: [],
+                //     clubID: "1",
+                //   ),
+                // );
+                // await EventController.create(
+                //   EventModel(
+                //     posterURL: "1",
+                //     title: "1",
+                //     shortDescription: "1",
+                //     startDate: DateTime.now(),
+                //     endDate: DateTime.now(),
+                //     registrationLink: "1",
+                //     venue: "1",
+                //     contacts: [],
+                //     clubID: "3",
                 //   ),
                 // );
               },

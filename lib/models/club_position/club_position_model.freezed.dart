@@ -20,8 +20,8 @@ ClubPositionModel _$ClubPositionModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClubPositionModel {
-  @JsonKey(name: '_id')
   @ObjectIdSerializer()
+  @JsonKey(name: '_id')
   ObjectId? get id => throw _privateConstructorUsedError;
   String get clubID => throw _privateConstructorUsedError;
   String get position => throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $ClubPositionModelCopyWith<$Res> {
       _$ClubPositionModelCopyWithImpl<$Res, ClubPositionModel>;
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') @ObjectIdSerializer() ObjectId? id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
       String clubID,
       String position,
       DateTime? lastLocalUpdate});
@@ -94,7 +94,7 @@ abstract class _$$_ClubPositionModelCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') @ObjectIdSerializer() ObjectId? id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
       String clubID,
       String position,
       DateTime? lastLocalUpdate});
@@ -141,7 +141,7 @@ class __$$_ClubPositionModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ClubPositionModel implements _ClubPositionModel {
   const _$_ClubPositionModel(
-      {@JsonKey(name: '_id') @ObjectIdSerializer() this.id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') this.id,
       required this.clubID,
       required this.position,
       this.lastLocalUpdate});
@@ -150,8 +150,8 @@ class _$_ClubPositionModel implements _ClubPositionModel {
       _$$_ClubPositionModelFromJson(json);
 
   @override
-  @JsonKey(name: '_id')
   @ObjectIdSerializer()
+  @JsonKey(name: '_id')
   final ObjectId? id;
   @override
   final String clubID;
@@ -200,7 +200,7 @@ class _$_ClubPositionModel implements _ClubPositionModel {
 
 abstract class _ClubPositionModel implements ClubPositionModel {
   const factory _ClubPositionModel(
-      {@JsonKey(name: '_id') @ObjectIdSerializer() final ObjectId? id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') final ObjectId? id,
       required final String clubID,
       required final String position,
       final DateTime? lastLocalUpdate}) = _$_ClubPositionModel;
@@ -209,8 +209,8 @@ abstract class _ClubPositionModel implements ClubPositionModel {
       _$_ClubPositionModel.fromJson;
 
   @override
-  @JsonKey(name: '_id')
   @ObjectIdSerializer()
+  @JsonKey(name: '_id')
   ObjectId? get id;
   @override
   String get clubID;

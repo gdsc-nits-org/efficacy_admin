@@ -1,3 +1,3 @@
-enum LocalCollections { user }
+enum LocalCollections { user, events }
 
-enum LocalDocuments { currentUser, users }
+enum LocalDocuments { currentUser, users, events }

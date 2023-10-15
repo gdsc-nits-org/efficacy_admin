@@ -7,7 +7,7 @@ part of 'user_model.dart';
 // **************************************************************************
 
 _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
-      id: const ObjectIdSerializer().fromJson(json['_id']),
+      id: const ObjectIdSerializer().fromJson(json['_id'] as String?),
       name: json['name'] as String,
       phoneNumber: const PhoneNumberSerializer()
           .fromJson(json['phoneNumber'] as Map<String, String?>?),

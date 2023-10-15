@@ -11,7 +11,7 @@ enum Status { Upcoming, Ongoing, Completed }
 class EventModel with _$EventModel {
   const EventModel._();
   const factory EventModel({
-    @JsonKey(name: '_id') @ObjectIdSerializer() ObjectId? id,
+    @ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
     required String posterURL,
     required String title,
     required String shortDescription,

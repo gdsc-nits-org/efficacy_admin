@@ -20,8 +20,8 @@ ClubModel _$ClubModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClubModel {
-  @JsonKey(name: '_id')
   @ObjectIdSerializer()
+  @JsonKey(name: '_id')
   ObjectId? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get instituteName => throw _privateConstructorUsedError;
@@ -54,7 +54,7 @@ abstract class $ClubModelCopyWith<$Res> {
       _$ClubModelCopyWithImpl<$Res, ClubModel>;
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') @ObjectIdSerializer() ObjectId? id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
       String name,
       String instituteName,
       String description,
@@ -155,7 +155,7 @@ abstract class _$$_ClubModelCopyWith<$Res> implements $ClubModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') @ObjectIdSerializer() ObjectId? id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
       String name,
       String instituteName,
       String description,
@@ -250,7 +250,7 @@ class __$$_ClubModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ClubModel implements _ClubModel {
   const _$_ClubModel(
-      {@JsonKey(name: '_id') @ObjectIdSerializer() this.id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') this.id,
       required this.name,
       required this.instituteName,
       required this.description,
@@ -270,8 +270,8 @@ class _$_ClubModel implements _ClubModel {
       _$$_ClubModelFromJson(json);
 
   @override
-  @JsonKey(name: '_id')
   @ObjectIdSerializer()
+  @JsonKey(name: '_id')
   final ObjectId? id;
   @override
   final String name;
@@ -392,7 +392,7 @@ class _$_ClubModel implements _ClubModel {
 
 abstract class _ClubModel implements ClubModel {
   const factory _ClubModel(
-      {@JsonKey(name: '_id') @ObjectIdSerializer() final ObjectId? id,
+      {@ObjectIdSerializer() @JsonKey(name: '_id') final ObjectId? id,
       required final String name,
       required final String instituteName,
       required final String description,
@@ -409,8 +409,8 @@ abstract class _ClubModel implements ClubModel {
       _$_ClubModel.fromJson;
 
   @override
-  @JsonKey(name: '_id')
   @ObjectIdSerializer()
+  @JsonKey(name: '_id')
   ObjectId? get id;
   @override
   String get name;

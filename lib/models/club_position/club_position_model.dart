@@ -8,7 +8,7 @@ part 'club_position_model.g.dart';
 @freezed
 class ClubPositionModel with _$ClubPositionModel {
   const factory ClubPositionModel({
-    @JsonKey(name: '_id') @ObjectIdSerializer() ObjectId? id,
+    @ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
     required String clubID,
     required String position,
     DateTime? lastLocalUpdate,

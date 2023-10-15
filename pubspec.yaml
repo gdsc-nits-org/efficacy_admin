@@ -37,6 +37,8 @@ dependencies:
   path_provider: ^2.1.1
   image_picker: ^1.0.4
   cloudinary: ^1.2.0
+  cached_network_image: ^3.3.0
+  flutter_cache_manager: ^3.3.1
 
   # ======================= URL launcher =======================
   url_launcher: ^6.1.14

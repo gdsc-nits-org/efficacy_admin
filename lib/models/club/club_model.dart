@@ -10,7 +10,7 @@ part 'club_model.g.dart';
 @freezed
 class ClubModel with _$ClubModel {
   const factory ClubModel({
-    @JsonKey(name: '_id') @ObjectIdSerializer() ObjectId? id,
+    @ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
     required String name,
     required String instituteName,
     required String description,

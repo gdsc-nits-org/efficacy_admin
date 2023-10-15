@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/models/utils/objectid_adapter.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -10,14 +11,15 @@ import 'constants.dart';
 /// Or a Map of json value
 ///
 /// Each value must contain lastLocalUpdate
-/// Neccessary for removing stale data
+/// Necessary for removing stale data
 class LocalDatabase {
-  static const Duration _staleDataDuration = Duration(days: 7);
+  static const Duration stalePeriod = Duration(days: 7);
   const LocalDatabase._();
 
   static Future<void> init() async {
     Directory directory = await getApplicationDocumentsDirectory();
     Hive.init(directory.path);
+    Hive.registerAdapter(ObjectIDAdapter());
     await _removeStaleData();
   }
 
@@ -55,7 +57,7 @@ class LocalDatabase {
   static bool _canKeepData(Map? item) {
     if (item == null) return false;
     DateTime oldDate = DateTime.parse(item[UserFields.lastLocalUpdate.name]);
-    return DateTime.now().difference(oldDate) < _staleDataDuration;
+    return DateTime.now().difference(oldDate) < stalePeriod;
   }
 
   static Future<void> _removeStaleDataFromBox(
@@ -63,10 +65,8 @@ class LocalDatabase {
     Box box = await Hive.openBox(collection.name);
 
     for (dynamic key in box.keys) {
-      print(key);
       dynamic data = await box.get(key);
       dynamic filteredData;
-      print(data);
       if (data is Map && data.values.isNotEmpty && data.values.first is Map) {
         filteredData = {};
         for (dynamic key in data.keys) {
@@ -87,7 +87,6 @@ class LocalDatabase {
           filteredData = data;
         }
       }
-      print(filteredData);
       box.delete(key);
       if (filteredData != null) {
         if (filteredData is Map || filteredData is List) {

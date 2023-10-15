@@ -29,6 +29,7 @@ dependencies:
 
   # ======================= Authentication =======================
   google_sign_in: ^6.1.5
+  native_flutter_proxy: ^0.1.15
 
   # ======================= Storage =======================
   flutter_dotenv: ^5.1.0

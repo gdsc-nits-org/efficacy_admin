@@ -1,6 +1,5 @@
 import 'package:efficacy_admin/models/models.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class Authenticator {
   static UserModel? _currentUser;

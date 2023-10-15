@@ -10,12 +10,12 @@ class EventController {
 
   static Future<EventModel> _save(EventModel event) async {
     Map? events =
-        await LocalDatabase.get(LocalCollections.events, LocalDocuments.events);
+        await LocalDatabase.get(LocalCollections.event, LocalDocuments.events);
     events ??= {};
     event = event.copyWith(lastLocalUpdate: DateTime.now());
     events[event.id] = event.toJson();
     await LocalDatabase.set(
-      LocalCollections.events,
+      LocalCollections.event,
       LocalDocuments.events,
       events,
     );
@@ -24,11 +24,11 @@ class EventController {
 
   static Future<void> _delete(String id) async {
     Map? events =
-        await LocalDatabase.get(LocalCollections.events, LocalDocuments.events);
+        await LocalDatabase.get(LocalCollections.event, LocalDocuments.events);
     if (events == null || !events.containsKey(id)) return;
     events.remove(id);
     await LocalDatabase.set(
-        LocalCollections.events, LocalDocuments.events, events);
+        LocalCollections.event, LocalDocuments.events, events);
   }
 
   /// Assumption: (ClubID, title, startDate, endDate) combination is unique for each event
@@ -68,12 +68,12 @@ class EventController {
 
     // Local Data
     Map localEvents = await LocalDatabase.get(
-          LocalCollections.events,
+          LocalCollections.event,
           LocalDocuments.events,
         ) ??
         {};
     if (forceGet) {
-      await LocalDatabase.deleteCollection(LocalCollections.events);
+      await LocalDatabase.deleteCollection(LocalCollections.event);
       localEvents = {};
     } else {
       if (localEvents.isNotEmpty) {
@@ -105,6 +105,9 @@ class EventController {
     List<Map<String, dynamic>> res =
         await collection.find(selectorBuilder).toList();
     filteredEvents = res.map((model) => EventModel.fromJson(model)).toList();
+    for (int i = 0; i < filteredEvents.length; i++) {
+      filteredEvents[i] = await _save(filteredEvents[i]);
+    }
     yield filteredEvents;
   }
 

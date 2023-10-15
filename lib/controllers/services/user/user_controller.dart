@@ -58,7 +58,6 @@ class UserController {
           dotenv.env[EnvValues.ENCRYPTER_SALT.name]!,
         ),
       );
-      user = user.copyWith(lastLocalUpdate: null);
       await collection.insert(user.toJson());
       currentUser = await get(user.email, forceGet: true).first;
       currentUser = await _save();
@@ -151,7 +150,6 @@ class UserController {
     } else {
       SelectorBuilder selectorBuilder = SelectorBuilder();
       selectorBuilder.eq(UserFields.email.name, user.email);
-      user = user.copyWith(lastLocalUpdate: null);
       await collection.update(
         selectorBuilder,
         user.toJson(),

@@ -9,6 +9,7 @@ part 'club_model.g.dart';
 
 @freezed
 class ClubModel with _$ClubModel {
+  const ClubModel._();
   const factory ClubModel({
     @ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
     required String name,
@@ -32,6 +33,24 @@ class ClubModel with _$ClubModel {
 
   factory ClubModel.fromJson(Map<String, dynamic> json) =>
       _$ClubModelFromJson(json);
+
+  /// Returns a minified data primary target being the id and name
+  /// If the rest of the values are provided they are also stored in the model
+  static ClubModel minifiedFromJson(Map<String, dynamic> json) {
+    return ClubModel(
+      id: json[ClubFields.id.name],
+      name: json[ClubFields.name.name],
+      instituteName: json[ClubFields.instituteName.name],
+      description: json[ClubFields.description.name] ?? "",
+      socials: json[ClubFields.socials.name] ?? {},
+      email: json[ClubFields.email.name] ?? "",
+      phoneNumber: json[ClubFields.phoneNumber.name],
+      clubLogoURL: json[ClubFields.clubLogoURL.name] ?? "",
+      clubBannerURL: json[ClubFields.clubBannerURL.name] ?? "",
+      members: json[ClubFields.members.name] ?? {},
+      followers: json[ClubFields.followers.name] ?? [],
+    );
+  }
 }
 
 enum ClubFields {

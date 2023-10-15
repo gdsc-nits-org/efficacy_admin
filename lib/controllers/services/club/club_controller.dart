@@ -1,10 +1,32 @@
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
+import 'package:efficacy_admin/utils/local_database/constants.dart';
+import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 class ClubController {
   const ClubController._();
   static const String _collectionName = "clubs";
+
+  static Future<ClubModel> _save(ClubModel club) async {
+    Map? clubs = await LocalDatabase.get(
+      LocalCollections.club,
+      LocalDocuments.clubs,
+    );
+    clubs ??= {};
+    club = club.copyWith(lastLocalUpdate: DateTime.now());
+    clubs[club.id] = club.toJson();
+    await LocalDatabase.set(
+      LocalCollections.club,
+      LocalDocuments.clubs,
+      clubs,
+    );
+    return club;
+  }
+
+  static bool _isMinified(Map<String, dynamic> json) {
+    return json[ClubFields.email.name] == null;
+  }
 
   /// Combination of clubName and institute name must be unique
   static Future<ClubModel?> create(ClubModel club) async {
@@ -18,77 +40,136 @@ class ClubController {
       throw Exception("Club with same name exists at ${club.instituteName}");
     }
     await collection.insert(club.toJson());
-    return await get(instituteName: club.instituteName, clubName: club.name);
+    Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
+
+    if (res == null) return null;
+    club = ClubModel.fromJson(res);
+    club = await _save(club);
+    return club;
   }
 
   static Future<ClubModel?> update(ClubModel club) async {
     DbCollection collection = Database.instance.collection(_collectionName);
+    SelectorBuilder selectorBuilder = SelectorBuilder();
+    selectorBuilder.eq(ClubFields.id.name, club.id);
 
-    if (club.id == null || await get(id: club.id!.toHexString()) == null) {
+    if (club.id == null || await collection.findOne(selectorBuilder) == null) {
       throw Exception("Couldn't find club");
     } else {
-      SelectorBuilder selectorBuilder = SelectorBuilder();
-      selectorBuilder.eq("id", club.id);
       await collection.update(selectorBuilder, club.toJson());
-      return await get(id: club.id?.toHexString());
+      club = await _save(club);
+      return club;
     }
   }
 
   /// For a given id returns all the data of the club
-  static Future<ClubModel?> get({
+  static Stream<List<ClubModel>> get({
     String? id,
     String? instituteName,
     String? clubName,
-  }) async {
-    DbCollection collection = Database.instance.collection(_collectionName);
+    bool forceGet = false,
+  }) async* {
+    List<ClubModel> filteredClubs = [];
     SelectorBuilder selectorBuilder = SelectorBuilder();
     if (id != null) {
       selectorBuilder.eq(ClubFields.id.name, id);
-    } else if (instituteName != null && clubName != null) {
+    }
+    if (instituteName != null) {
       selectorBuilder.eq(ClubFields.instituteName.name, instituteName);
+    }
+    if (clubName != null) {
       selectorBuilder.eq(ClubFields.name.name, clubName);
-    } else {
-      throw ArgumentError(
-          "id or (instituteName and clubName) must be provided");
+    }
+    if (clubName == null && instituteName == null && id == null) {
+      throw ArgumentError("id or instituteName or clubName must be provided");
     }
 
-    Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
-    if (res != null) {
-      return ClubModel.fromJson(res);
+    if (forceGet) {
+      await LocalDatabase.deleteKey(
+          LocalCollections.club, LocalDocuments.clubs);
+    } else {
+      Map? res =
+          await LocalDatabase.get(LocalCollections.club, LocalDocuments.clubs);
+      if (res != null) {
+        for (dynamic model in res.values) {
+          if (id != null &&
+              model[ClubFields.id.name] == id &&
+              !_isMinified(model)) {
+            filteredClubs.add(ClubModel.fromJson(model));
+            break;
+          } else if (instituteName != null &&
+              model[ClubFields.instituteName.name] == instituteName &&
+              !_isMinified(model)) {
+            filteredClubs.add(ClubModel.fromJson(model));
+          } else if (clubName != null &&
+              model[ClubFields.name.name] == clubName &&
+              !_isMinified(model)) {
+            filteredClubs.add(ClubModel.fromJson(model));
+          }
+        }
+        yield filteredClubs;
+      }
     }
-    return null;
+
+    DbCollection collection = Database.instance.collection(_collectionName);
+
+    List<Map<String, dynamic>> res =
+        await collection.find(selectorBuilder).toList();
+    filteredClubs = res.map((model) => ClubModel.fromJson(model)).toList();
+    for (int i = 0; i < filteredClubs.length; i++) {
+      filteredClubs[i] = await _save(filteredClubs[i]);
+    }
+    yield filteredClubs;
   }
 
   /// For a given id returns only the name
-  static Future<String?> getName(String id) async {
+  static Stream<String?> getName(String id) async* {
+    Map<String, dynamic>? res =
+        await LocalDatabase.get(LocalCollections.club, LocalDocuments.clubs);
+    if (res != null) {
+      if (res.containsKey(id)) {
+        yield res[id][ClubFields.name.name] as String?;
+      }
+    }
     DbCollection collection = Database.instance.collection(_collectionName);
     SelectorBuilder selectorBuilder = SelectorBuilder();
     selectorBuilder.eq(ClubFields.id.name, id);
     selectorBuilder.fields([ClubFields.name.name]);
 
-    Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
+    res = await collection.findOne(selectorBuilder);
     if (res != null) {
-      return res[ClubFields.name.name];
+      ClubModel minified = await _save(ClubModel.minifiedFromJson(res));
+      yield minified.name;
     }
-    return null;
+    yield null;
   }
 
   static Future<void> delete(String id) async {
-    DbCollection collection = Database.instance.collection(_collectionName);
-
-    if (await get(id: id) == null) {
-      throw Exception("Couldn't find club");
-    } else {
-      SelectorBuilder selectorBuilder = SelectorBuilder();
-      selectorBuilder.eq("id", id);
-      await collection.deleteOne(selectorBuilder);
-    }
+    throw UnimplementedError();
   }
 
   /// In minified only the club id, name and institute name is returned
   /// Recommended to use minified
-  static Future<List<ClubModel>> listAllClubs(List<String> instituteName,
-      {bool minified = true}) async {
+  static Stream<List<ClubModel>> listAllClubs(List<String> instituteName,
+      {bool minified = true}) async* {
+    List<ClubModel> filteredClubs = [];
+    Map<String, dynamic>? res =
+        await LocalDatabase.get(LocalCollections.club, LocalDocuments.clubs);
+    if (res != null) {
+      if (minified == true) {
+        for (dynamic model in res.values) {
+          filteredClubs.add(ClubModel.minifiedFromJson(model));
+        }
+      } else {
+        for (dynamic model in res.values) {
+          if (!_isMinified(model)) {
+            filteredClubs.add(ClubModel.fromJson(model));
+          }
+        }
+      }
+      yield filteredClubs;
+    }
+
     DbCollection collection = Database.instance.collection(_collectionName);
     SelectorBuilder selectorBuilder = SelectorBuilder();
     if (minified) {
@@ -103,26 +184,12 @@ class ClubController {
       selectorBuilder.nin(ClubFields.instituteName.name, instituteName);
     }
 
-    List<Map<String, dynamic>> res =
+    List<Map<String, dynamic>> listResponse =
         await collection.find(selectorBuilder).toList();
-    List<ClubModel> models = [];
-    for (Map<String, dynamic> val in res) {
-      models.add(
-        ClubModel(
-          id: val[ClubFields.id.name],
-          name: val[ClubFields.name.name],
-          instituteName: val[ClubFields.instituteName.name],
-          description: val[ClubFields.description.name] ?? "",
-          socials: val[ClubFields.socials.name] ?? {},
-          email: val[ClubFields.email.name] ?? "",
-          phoneNumber: val[ClubFields.phoneNumber.name],
-          clubLogoURL: val[ClubFields.clubLogoURL.name] ?? "",
-          clubBannerURL: val[ClubFields.clubBannerURL.name] ?? "",
-          members: val[ClubFields.members.name] ?? {},
-          followers: val[ClubFields.followers.name] ?? [],
-        ),
-      );
+    filteredClubs = [];
+    for (Map<String, dynamic> val in listResponse) {
+      filteredClubs.add(ClubModel.minifiedFromJson(val));
     }
-    return models;
+    yield filteredClubs;
   }
 }

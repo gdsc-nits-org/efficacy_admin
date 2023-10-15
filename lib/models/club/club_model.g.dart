@@ -7,7 +7,7 @@ part of 'club_model.dart';
 // **************************************************************************
 
 _$_ClubModel _$$_ClubModelFromJson(Map<String, dynamic> json) => _$_ClubModel(
-      id: const ObjectIdSerializer().fromJson(json['_id'] as String?),
+      id: const ObjectIdSerializer().fromJson(json['_id']),
       name: json['name'] as String,
       instituteName: json['instituteName'] as String,
       description: json['description'] as String,
@@ -20,7 +20,7 @@ _$_ClubModel _$$_ClubModelFromJson(Map<String, dynamic> json) => _$_ClubModel(
           .fromJson(json['phoneNumber'] as Map<String, String?>?),
       clubLogoURL: json['clubLogoURL'] as String,
       clubBannerURL: json['clubBannerURL'] as String?,
-      members: json['members'] as Map<String, dynamic>,
+      members: json['members'],
       followers: (json['followers'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??

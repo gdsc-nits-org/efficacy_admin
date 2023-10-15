@@ -8,7 +8,7 @@ part of 'club_position_model.dart';
 
 _$_ClubPositionModel _$$_ClubPositionModelFromJson(Map<String, dynamic> json) =>
     _$_ClubPositionModel(
-      id: const ObjectIdSerializer().fromJson(json['_id'] as String?),
+      id: const ObjectIdSerializer().fromJson(json['_id']),
       clubID: json['clubID'] as String,
       position: json['position'] as String,
       lastLocalUpdate: json['lastLocalUpdate'] == null

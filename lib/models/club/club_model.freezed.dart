@@ -20,6 +20,10 @@ ClubModel _$ClubModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClubModel {
+  @JsonKey(name: '_id')
+  String? get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  String get instituteName => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   Map<Social, String> get socials => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
@@ -28,13 +32,14 @@ mixin _$ClubModel {
   String get clubLogoURL => throw _privateConstructorUsedError;
   String? get clubBannerURL => throw _privateConstructorUsedError;
 
-  /// Map<ClubPositionModel, Member ID>
+  /// Map<ClubPositionModelID, Member Email>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
-  Map<dynamic, dynamic> get members => throw _privateConstructorUsedError;
+  Map<String, String> get members => throw _privateConstructorUsedError;
 
   /// Follower Ids
   List<String> get followers => throw _privateConstructorUsedError;
+  DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,14 +53,18 @@ abstract class $ClubModelCopyWith<$Res> {
       _$ClubModelCopyWithImpl<$Res, ClubModel>;
   @useResult
   $Res call(
-      {String description,
+      {@JsonKey(name: '_id') String? id,
+      String name,
+      String instituteName,
+      String description,
       Map<Social, String> socials,
       String email,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String clubLogoURL,
       String? clubBannerURL,
-      Map<dynamic, dynamic> members,
-      List<String> followers});
+      Map<String, String> members,
+      List<String> followers,
+      DateTime? lastLocalUpdate});
 }
 
 /// @nodoc
@@ -71,6 +80,9 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
+    Object? name = null,
+    Object? instituteName = null,
     Object? description = null,
     Object? socials = null,
     Object? email = null,
@@ -79,8 +91,21 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
     Object? clubBannerURL = freezed,
     Object? members = null,
     Object? followers = null,
+    Object? lastLocalUpdate = freezed,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      instituteName: null == instituteName
+          ? _value.instituteName
+          : instituteName // ignore: cast_nullable_to_non_nullable
+              as String,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -108,11 +133,15 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
       members: null == members
           ? _value.members
           : members // ignore: cast_nullable_to_non_nullable
-              as Map<dynamic, dynamic>,
+              as Map<String, String>,
       followers: null == followers
           ? _value.followers
           : followers // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      lastLocalUpdate: freezed == lastLocalUpdate
+          ? _value.lastLocalUpdate
+          : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -125,14 +154,18 @@ abstract class _$$_ClubModelCopyWith<$Res> implements $ClubModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String description,
+      {@JsonKey(name: '_id') String? id,
+      String name,
+      String instituteName,
+      String description,
       Map<Social, String> socials,
       String email,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String clubLogoURL,
       String? clubBannerURL,
-      Map<dynamic, dynamic> members,
-      List<String> followers});
+      Map<String, String> members,
+      List<String> followers,
+      DateTime? lastLocalUpdate});
 }
 
 /// @nodoc
@@ -146,6 +179,9 @@ class __$$_ClubModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
+    Object? name = null,
+    Object? instituteName = null,
     Object? description = null,
     Object? socials = null,
     Object? email = null,
@@ -154,8 +190,21 @@ class __$$_ClubModelCopyWithImpl<$Res>
     Object? clubBannerURL = freezed,
     Object? members = null,
     Object? followers = null,
+    Object? lastLocalUpdate = freezed,
   }) {
     return _then(_$_ClubModel(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      instituteName: null == instituteName
+          ? _value.instituteName
+          : instituteName // ignore: cast_nullable_to_non_nullable
+              as String,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -183,34 +232,50 @@ class __$$_ClubModelCopyWithImpl<$Res>
       members: null == members
           ? _value._members
           : members // ignore: cast_nullable_to_non_nullable
-              as Map<dynamic, dynamic>,
+              as Map<String, String>,
       followers: null == followers
           ? _value._followers
           : followers // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      lastLocalUpdate: freezed == lastLocalUpdate
+          ? _value.lastLocalUpdate
+          : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_ClubModel implements _ClubModel {
+class _$_ClubModel extends _ClubModel {
   const _$_ClubModel(
-      {required this.description,
+      {@JsonKey(name: '_id') this.id,
+      required this.name,
+      required this.instituteName,
+      required this.description,
       final Map<Social, String> socials = const {},
       required this.email,
       @PhoneNumberSerializer() this.phoneNumber,
       required this.clubLogoURL,
       this.clubBannerURL,
-      required final Map<dynamic, dynamic> members,
-      final List<String> followers = const []})
+      required final Map<String, String> members,
+      final List<String> followers = const [],
+      this.lastLocalUpdate})
       : _socials = socials,
         _members = members,
-        _followers = followers;
+        _followers = followers,
+        super._();
 
   factory _$_ClubModel.fromJson(Map<String, dynamic> json) =>
       _$$_ClubModelFromJson(json);
 
+  @override
+  @JsonKey(name: '_id')
+  final String? id;
+  @override
+  final String name;
+  @override
+  final String instituteName;
   @override
   final String description;
   final Map<Social, String> _socials;
@@ -232,16 +297,16 @@ class _$_ClubModel implements _ClubModel {
   @override
   final String? clubBannerURL;
 
-  /// Map<ClubPositionModel, Member ID>
+  /// Map<ClubPositionModelID, Member Email>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
-  final Map<dynamic, dynamic> _members;
+  final Map<String, String> _members;
 
-  /// Map<ClubPositionModel, Member ID>
+  /// Map<ClubPositionModelID, Member Email>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
   @override
-  Map<dynamic, dynamic> get members {
+  Map<String, String> get members {
     if (_members is EqualUnmodifiableMapView) return _members;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_members);
@@ -260,8 +325,11 @@ class _$_ClubModel implements _ClubModel {
   }
 
   @override
+  final DateTime? lastLocalUpdate;
+
+  @override
   String toString() {
-    return 'ClubModel(description: $description, socials: $socials, email: $email, phoneNumber: $phoneNumber, clubLogoURL: $clubLogoURL, clubBannerURL: $clubBannerURL, members: $members, followers: $followers)';
+    return 'ClubModel(id: $id, name: $name, instituteName: $instituteName, description: $description, socials: $socials, email: $email, phoneNumber: $phoneNumber, clubLogoURL: $clubLogoURL, clubBannerURL: $clubBannerURL, members: $members, followers: $followers, lastLocalUpdate: $lastLocalUpdate)';
   }
 
   @override
@@ -269,6 +337,10 @@ class _$_ClubModel implements _ClubModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ClubModel &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.instituteName, instituteName) ||
+                other.instituteName == instituteName) &&
             (identical(other.description, description) ||
                 other.description == description) &&
             const DeepCollectionEquality().equals(other._socials, _socials) &&
@@ -281,13 +353,18 @@ class _$_ClubModel implements _ClubModel {
                 other.clubBannerURL == clubBannerURL) &&
             const DeepCollectionEquality().equals(other._members, _members) &&
             const DeepCollectionEquality()
-                .equals(other._followers, _followers));
+                .equals(other._followers, _followers) &&
+            (identical(other.lastLocalUpdate, lastLocalUpdate) ||
+                other.lastLocalUpdate == lastLocalUpdate));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
+      name,
+      instituteName,
       description,
       const DeepCollectionEquality().hash(_socials),
       email,
@@ -295,7 +372,8 @@ class _$_ClubModel implements _ClubModel {
       clubLogoURL,
       clubBannerURL,
       const DeepCollectionEquality().hash(_members),
-      const DeepCollectionEquality().hash(_followers));
+      const DeepCollectionEquality().hash(_followers),
+      lastLocalUpdate);
 
   @JsonKey(ignore: true)
   @override
@@ -311,20 +389,32 @@ class _$_ClubModel implements _ClubModel {
   }
 }
 
-abstract class _ClubModel implements ClubModel {
+abstract class _ClubModel extends ClubModel {
   const factory _ClubModel(
-      {required final String description,
+      {@JsonKey(name: '_id') final String? id,
+      required final String name,
+      required final String instituteName,
+      required final String description,
       final Map<Social, String> socials,
       required final String email,
       @PhoneNumberSerializer() final PhoneNumber? phoneNumber,
       required final String clubLogoURL,
       final String? clubBannerURL,
-      required final Map<dynamic, dynamic> members,
-      final List<String> followers}) = _$_ClubModel;
+      required final Map<String, String> members,
+      final List<String> followers,
+      final DateTime? lastLocalUpdate}) = _$_ClubModel;
+  const _ClubModel._() : super._();
 
   factory _ClubModel.fromJson(Map<String, dynamic> json) =
       _$_ClubModel.fromJson;
 
+  @override
+  @JsonKey(name: '_id')
+  String? get id;
+  @override
+  String get name;
+  @override
+  String get instituteName;
   @override
   String get description;
   @override
@@ -340,14 +430,16 @@ abstract class _ClubModel implements ClubModel {
   String? get clubBannerURL;
   @override
 
-  /// Map<ClubPositionModel, Member ID>
+  /// Map<ClubPositionModelID, Member Email>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
-  Map<dynamic, dynamic> get members;
+  Map<String, String> get members;
   @override
 
   /// Follower Ids
   List<String> get followers;
+  @override
+  DateTime? get lastLocalUpdate;
   @override
   @JsonKey(ignore: true)
   _$$_ClubModelCopyWith<_$_ClubModel> get copyWith =>

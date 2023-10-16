@@ -1,10 +1,12 @@
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/controllers/services/image/image_controller.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
 import 'package:efficacy_admin/pages/homepage/widgets/events/event_list.dart';
 import 'package:efficacy_admin/pages/homepage/widgets/events/event_viewer.dart';
 import 'package:efficacy_admin/pages/homepage/widgets/tab_navigation/tab_view.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Homepage extends StatefulWidget {
   static const String routeName = "/homePage";
@@ -44,7 +46,16 @@ class _HomepageState extends State<Homepage> {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: FloatingActionButton(
-                  onPressed: () {}, //define add event function here
+                  onPressed: () async {
+                    XFile? file = await ImagePicker()
+                        .pickImage(source: ImageSource.gallery);
+                    if (file != null) {
+                      ImageController.uploadImage(
+                          img: await file.readAsBytes(),
+                          clubName: "GDSC",
+                          eventName: "Flutter");
+                    }
+                  }, //define add event function here
                   child: const Icon(Icons.add),
                 ),
               ),

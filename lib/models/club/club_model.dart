@@ -1,13 +1,19 @@
+import 'package:efficacy_admin/models/utils/objectid_serializer.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:efficacy_admin/models/utils/utils.dart';
+import 'package:mongo_dart/mongo_dart.dart';
 
 part 'club_model.freezed.dart';
 part 'club_model.g.dart';
 
-@freezed
+@Freezed(fromJson: true, toJson: true)
 class ClubModel with _$ClubModel {
+  const ClubModel._();
   const factory ClubModel({
+    @JsonKey(name: '_id') String? id,
+    required String name,
+    required String instituteName,
     required String description,
     @Default({}) Map<Social, String> socials,
     required String email,
@@ -15,15 +21,53 @@ class ClubModel with _$ClubModel {
     required String clubLogoURL,
     String? clubBannerURL,
 
-    /// Map<ClubPositionModel, Member ID>
+    /// Map<ClubPositionModelID, Member Email>
     /// Cannot use clubPositionModel
     /// Since it has issues with freezed (cannot make keys with custom type)
-    required Map members,
+    required Map<String, String> members,
 
     /// Follower Ids
     @Default([]) List<String> followers,
+    DateTime? lastLocalUpdate,
   }) = _ClubModel;
 
-  factory ClubModel.fromJson(Map<String, dynamic> json) =>
-      _$ClubModelFromJson(json);
+  factory ClubModel.fromJson(Map<String, dynamic> json) {
+    if (json["_id"] != null && json["_id"] is ObjectId) {
+      json["_id"] = (json["_id"] as ObjectId).toHexString();
+    }
+    return _$ClubModelFromJson(json);
+  }
+
+  /// Returns a minified data primary target being the id and name
+  /// If the rest of the values are provided they are also stored in the model
+  static ClubModel minifiedFromJson(Map<String, dynamic> json) {
+    return ClubModel(
+      id: json[ClubFields.id.name],
+      name: json[ClubFields.name.name],
+      instituteName: json[ClubFields.instituteName.name],
+      description: json[ClubFields.description.name] ?? "",
+      socials: json[ClubFields.socials.name] ?? {},
+      email: json[ClubFields.email.name] ?? "",
+      phoneNumber: json[ClubFields.phoneNumber.name],
+      clubLogoURL: json[ClubFields.clubLogoURL.name] ?? "",
+      clubBannerURL: json[ClubFields.clubBannerURL.name] ?? "",
+      members: json[ClubFields.members.name] ?? {},
+      followers: json[ClubFields.followers.name] ?? [],
+    );
+  }
+}
+
+enum ClubFields {
+  id,
+  name,
+  instituteName,
+  description,
+  socials,
+  email,
+  phoneNumber,
+  clubLogoURL,
+  clubBannerURL,
+  members,
+  followers,
+  lastLocalUpdate
 }

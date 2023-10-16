@@ -7,35 +7,44 @@ part of 'club_model.dart';
 // **************************************************************************
 
 _$_ClubModel _$$_ClubModelFromJson(Map<String, dynamic> json) => _$_ClubModel(
+      id: json['_id'] as String?,
+      name: json['name'] as String,
+      instituteName: json['instituteName'] as String,
       description: json['description'] as String,
       socials: (json['socials'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry($enumDecode(_$SocialEnumMap, k), e as String),
           ) ??
           const {},
       email: json['email'] as String,
-      phoneNumber: _$JsonConverterFromJson<Map<String, String?>, PhoneNumber>(
-          json['phoneNumber'], const PhoneNumberSerializer().fromJson),
+      phoneNumber: const PhoneNumberSerializer()
+          .fromJson(json['phoneNumber'] as Map<String, String?>?),
       clubLogoURL: json['clubLogoURL'] as String,
       clubBannerURL: json['clubBannerURL'] as String?,
-      members: json['members'] as Map<String, dynamic>,
+      members: Map<String, String>.from(json['members'] as Map),
       followers: (json['followers'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      lastLocalUpdate: json['lastLocalUpdate'] == null
+          ? null
+          : DateTime.parse(json['lastLocalUpdate'] as String),
     );
 
 Map<String, dynamic> _$$_ClubModelToJson(_$_ClubModel instance) =>
     <String, dynamic>{
+      '_id': instance.id,
+      'name': instance.name,
+      'instituteName': instance.instituteName,
       'description': instance.description,
       'socials':
           instance.socials.map((k, e) => MapEntry(_$SocialEnumMap[k]!, e)),
       'email': instance.email,
-      'phoneNumber': _$JsonConverterToJson<Map<String, String?>, PhoneNumber>(
-          instance.phoneNumber, const PhoneNumberSerializer().toJson),
+      'phoneNumber': const PhoneNumberSerializer().toJson(instance.phoneNumber),
       'clubLogoURL': instance.clubLogoURL,
       'clubBannerURL': instance.clubBannerURL,
       'members': instance.members,
       'followers': instance.followers,
+      'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
     };
 
 const _$SocialEnumMap = {
@@ -44,15 +53,3 @@ const _$SocialEnumMap = {
   Social.instagram: 'instagram',
   Social.linkedin: 'linkedin',
 };
-
-Value? _$JsonConverterFromJson<Json, Value>(
-  Object? json,
-  Value? Function(Json json) fromJson,
-) =>
-    json == null ? null : fromJson(json as Json);
-
-Json? _$JsonConverterToJson<Json, Value>(
-  Value? value,
-  Json? Function(Value value) toJson,
-) =>
-    value == null ? null : toJson(value);

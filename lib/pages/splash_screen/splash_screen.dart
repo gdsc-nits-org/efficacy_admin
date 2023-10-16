@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
       debugPrint("Successfully completed all async tasks");
       debugPrint("Time taken: $duration ms");
 
-      Navigator.pushNamed(context, ExperimentPage.routeName)
+      Navigator.pushNamed(context, LoginPage.routeName)
           .then((value) => exit(0));
     });
   }

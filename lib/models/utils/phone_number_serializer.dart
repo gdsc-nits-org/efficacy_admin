@@ -2,11 +2,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl_phone_field/phone_number.dart';
 
 class PhoneNumberSerializer
-    implements JsonConverter<PhoneNumber, Map<String, String?>> {
+    implements JsonConverter<PhoneNumber?, Map<String, String?>?> {
   const PhoneNumberSerializer();
 
   @override
-  PhoneNumber fromJson(Map<String, String?> json) {
+  PhoneNumber? fromJson(Map<String, String?>? json) {
+    if (json == null) return null;
     return PhoneNumber(
       number: json['number']!,
       countryCode: json['countryCode']!,
@@ -15,7 +16,8 @@ class PhoneNumberSerializer
   }
 
   @override
-  Map<String, String?> toJson(PhoneNumber phoneNumber) {
+  Map<String, String?>? toJson(PhoneNumber? phoneNumber) {
+    if (phoneNumber == null) return null;
     return {
       'number': phoneNumber.number,
       'countryCode': phoneNumber.countryCode,

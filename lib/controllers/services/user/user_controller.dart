@@ -2,6 +2,7 @@ import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/utils/database/constants.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
 import 'package:efficacy_admin/utils/encrypter.dart';
+import 'package:efficacy_admin/utils/formatter.dart';
 import 'package:efficacy_admin/utils/local_database/constants.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -16,7 +17,7 @@ class UserController {
     if (user == null) {
       user = currentUser;
       if (currentUser == null) {
-        LocalDatabase.deleteCollection(LocalCollections.user);
+        await LocalDatabase.deleteCollection(LocalCollections.user);
       } else {
         currentUser = currentUser!.copyWith(lastLocalUpdate: DateTime.now());
         await LocalDatabase.set(
@@ -97,7 +98,11 @@ class UserController {
     if (userData == null) {
       return null;
     }
-    return currentUser = UserModel.fromJson(userData);
+    Map<String, dynamic> data = {};
+    for (dynamic key in userData.keys) {
+      data[key] = userData[key];
+    }
+    return currentUser = UserModel.fromJson(data);
   }
 
   /// Fetches a  user from the provided email
@@ -117,7 +122,9 @@ class UserController {
       Map? users =
           await LocalDatabase.get(LocalCollections.user, LocalDocuments.users);
       if (users != null && users.containsKey(email)) {
-        yield UserModel.fromJson(users[email]);
+        yield UserModel.fromJson(
+          Formatter.convertMapToMapStringDynamic(users[email])!,
+        );
       }
     }
 

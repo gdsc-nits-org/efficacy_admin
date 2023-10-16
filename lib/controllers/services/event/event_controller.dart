@@ -1,5 +1,6 @@
 import 'package:efficacy_admin/models/event/event_model.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
+import 'package:efficacy_admin/utils/formatter.dart';
 import 'package:efficacy_admin/utils/local_database/constants.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:mongo_dart/mongo_dart.dart';
@@ -78,11 +79,16 @@ class EventController {
     } else {
       if (localEvents.isNotEmpty) {
         if (localEvents.containsKey(eventID)) {
-          filteredEvents.add(EventModel.fromJson(localEvents[eventID]));
+          filteredEvents.add(EventModel.fromJson(
+            Formatter.convertMapToMapStringDynamic(localEvents[eventID])!,
+          ));
           yield filteredEvents;
         } else {
           for (dynamic key in localEvents.keys) {
-            if (localEvents[key][EventFields.clubID.name] == clubID) {
+            localEvents[key] =
+                Formatter.convertMapToMapStringDynamic(localEvents[key]);
+            if (localEvents[key] != null &&
+                localEvents[key][EventFields.clubID.name] == clubID) {
               filteredEvents.add(EventModel.fromJson(localEvents[key]));
             }
           }

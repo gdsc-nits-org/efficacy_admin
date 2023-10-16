@@ -20,9 +20,8 @@ ClubPositionModel _$ClubPositionModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClubPositionModel {
-  @ObjectIdSerializer()
   @JsonKey(name: '_id')
-  ObjectId? get id => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
   String get clubID => throw _privateConstructorUsedError;
   String get position => throw _privateConstructorUsedError;
   DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
@@ -40,7 +39,7 @@ abstract class $ClubPositionModelCopyWith<$Res> {
       _$ClubPositionModelCopyWithImpl<$Res, ClubPositionModel>;
   @useResult
   $Res call(
-      {@ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
+      {@JsonKey(name: '_id') String? id,
       String clubID,
       String position,
       DateTime? lastLocalUpdate});
@@ -68,7 +67,7 @@ class _$ClubPositionModelCopyWithImpl<$Res, $Val extends ClubPositionModel>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as ObjectId?,
+              as String?,
       clubID: null == clubID
           ? _value.clubID
           : clubID // ignore: cast_nullable_to_non_nullable
@@ -94,7 +93,7 @@ abstract class _$$_ClubPositionModelCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
+      {@JsonKey(name: '_id') String? id,
       String clubID,
       String position,
       DateTime? lastLocalUpdate});
@@ -120,7 +119,7 @@ class __$$_ClubPositionModelCopyWithImpl<$Res>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as ObjectId?,
+              as String?,
       clubID: null == clubID
           ? _value.clubID
           : clubID // ignore: cast_nullable_to_non_nullable
@@ -141,7 +140,7 @@ class __$$_ClubPositionModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ClubPositionModel implements _ClubPositionModel {
   const _$_ClubPositionModel(
-      {@ObjectIdSerializer() @JsonKey(name: '_id') this.id,
+      {@JsonKey(name: '_id') this.id,
       required this.clubID,
       required this.position,
       this.lastLocalUpdate});
@@ -150,9 +149,8 @@ class _$_ClubPositionModel implements _ClubPositionModel {
       _$$_ClubPositionModelFromJson(json);
 
   @override
-  @ObjectIdSerializer()
   @JsonKey(name: '_id')
-  final ObjectId? id;
+  final String? id;
   @override
   final String clubID;
   @override
@@ -200,7 +198,7 @@ class _$_ClubPositionModel implements _ClubPositionModel {
 
 abstract class _ClubPositionModel implements ClubPositionModel {
   const factory _ClubPositionModel(
-      {@ObjectIdSerializer() @JsonKey(name: '_id') final ObjectId? id,
+      {@JsonKey(name: '_id') final String? id,
       required final String clubID,
       required final String position,
       final DateTime? lastLocalUpdate}) = _$_ClubPositionModel;
@@ -209,9 +207,8 @@ abstract class _ClubPositionModel implements ClubPositionModel {
       _$_ClubPositionModel.fromJson;
 
   @override
-  @ObjectIdSerializer()
   @JsonKey(name: '_id')
-  ObjectId? get id;
+  String? get id;
   @override
   String get clubID;
   @override

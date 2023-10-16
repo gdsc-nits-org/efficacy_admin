@@ -20,9 +20,8 @@ ClubModel _$ClubModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClubModel {
-  @ObjectIdSerializer()
   @JsonKey(name: '_id')
-  ObjectId? get id => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get instituteName => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
@@ -36,7 +35,7 @@ mixin _$ClubModel {
   /// Map<ClubPositionModelID, Member Email>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
-  Map<dynamic, dynamic> get members => throw _privateConstructorUsedError;
+  Map<String, String> get members => throw _privateConstructorUsedError;
 
   /// Follower Ids
   List<String> get followers => throw _privateConstructorUsedError;
@@ -54,7 +53,7 @@ abstract class $ClubModelCopyWith<$Res> {
       _$ClubModelCopyWithImpl<$Res, ClubModel>;
   @useResult
   $Res call(
-      {@ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
+      {@JsonKey(name: '_id') String? id,
       String name,
       String instituteName,
       String description,
@@ -63,7 +62,7 @@ abstract class $ClubModelCopyWith<$Res> {
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String clubLogoURL,
       String? clubBannerURL,
-      Map<dynamic, dynamic> members,
+      Map<String, String> members,
       List<String> followers,
       DateTime? lastLocalUpdate});
 }
@@ -98,7 +97,7 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as ObjectId?,
+              as String?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -134,7 +133,7 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
       members: null == members
           ? _value.members
           : members // ignore: cast_nullable_to_non_nullable
-              as Map<dynamic, dynamic>,
+              as Map<String, String>,
       followers: null == followers
           ? _value.followers
           : followers // ignore: cast_nullable_to_non_nullable
@@ -155,7 +154,7 @@ abstract class _$$_ClubModelCopyWith<$Res> implements $ClubModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
+      {@JsonKey(name: '_id') String? id,
       String name,
       String instituteName,
       String description,
@@ -164,7 +163,7 @@ abstract class _$$_ClubModelCopyWith<$Res> implements $ClubModelCopyWith<$Res> {
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String clubLogoURL,
       String? clubBannerURL,
-      Map<dynamic, dynamic> members,
+      Map<String, String> members,
       List<String> followers,
       DateTime? lastLocalUpdate});
 }
@@ -197,7 +196,7 @@ class __$$_ClubModelCopyWithImpl<$Res>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as ObjectId?,
+              as String?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -233,7 +232,7 @@ class __$$_ClubModelCopyWithImpl<$Res>
       members: null == members
           ? _value._members
           : members // ignore: cast_nullable_to_non_nullable
-              as Map<dynamic, dynamic>,
+              as Map<String, String>,
       followers: null == followers
           ? _value._followers
           : followers // ignore: cast_nullable_to_non_nullable
@@ -248,9 +247,9 @@ class __$$_ClubModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ClubModel implements _ClubModel {
+class _$_ClubModel extends _ClubModel {
   const _$_ClubModel(
-      {@ObjectIdSerializer() @JsonKey(name: '_id') this.id,
+      {@JsonKey(name: '_id') this.id,
       required this.name,
       required this.instituteName,
       required this.description,
@@ -259,20 +258,20 @@ class _$_ClubModel implements _ClubModel {
       @PhoneNumberSerializer() this.phoneNumber,
       required this.clubLogoURL,
       this.clubBannerURL,
-      required final Map<dynamic, dynamic> members,
+      required final Map<String, String> members,
       final List<String> followers = const [],
       this.lastLocalUpdate})
       : _socials = socials,
         _members = members,
-        _followers = followers;
+        _followers = followers,
+        super._();
 
   factory _$_ClubModel.fromJson(Map<String, dynamic> json) =>
       _$$_ClubModelFromJson(json);
 
   @override
-  @ObjectIdSerializer()
   @JsonKey(name: '_id')
-  final ObjectId? id;
+  final String? id;
   @override
   final String name;
   @override
@@ -301,13 +300,13 @@ class _$_ClubModel implements _ClubModel {
   /// Map<ClubPositionModelID, Member Email>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
-  final Map<dynamic, dynamic> _members;
+  final Map<String, String> _members;
 
   /// Map<ClubPositionModelID, Member Email>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
   @override
-  Map<dynamic, dynamic> get members {
+  Map<String, String> get members {
     if (_members is EqualUnmodifiableMapView) return _members;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_members);
@@ -390,9 +389,9 @@ class _$_ClubModel implements _ClubModel {
   }
 }
 
-abstract class _ClubModel implements ClubModel {
+abstract class _ClubModel extends ClubModel {
   const factory _ClubModel(
-      {@ObjectIdSerializer() @JsonKey(name: '_id') final ObjectId? id,
+      {@JsonKey(name: '_id') final String? id,
       required final String name,
       required final String instituteName,
       required final String description,
@@ -401,17 +400,17 @@ abstract class _ClubModel implements ClubModel {
       @PhoneNumberSerializer() final PhoneNumber? phoneNumber,
       required final String clubLogoURL,
       final String? clubBannerURL,
-      required final Map<dynamic, dynamic> members,
+      required final Map<String, String> members,
       final List<String> followers,
       final DateTime? lastLocalUpdate}) = _$_ClubModel;
+  const _ClubModel._() : super._();
 
   factory _ClubModel.fromJson(Map<String, dynamic> json) =
       _$_ClubModel.fromJson;
 
   @override
-  @ObjectIdSerializer()
   @JsonKey(name: '_id')
-  ObjectId? get id;
+  String? get id;
   @override
   String get name;
   @override
@@ -434,7 +433,7 @@ abstract class _ClubModel implements ClubModel {
   /// Map<ClubPositionModelID, Member Email>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
-  Map<dynamic, dynamic> get members;
+  Map<String, String> get members;
   @override
 
   /// Follower Ids

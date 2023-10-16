@@ -20,9 +20,8 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserModel {
-  @ObjectIdSerializer()
   @JsonKey(name: '_id')
-  ObjectId? get id => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   @PhoneNumberSerializer()
   PhoneNumber? get phoneNumber => throw _privateConstructorUsedError;
@@ -48,7 +47,7 @@ abstract class $UserModelCopyWith<$Res> {
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
   $Res call(
-      {@ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
+      {@JsonKey(name: '_id') String? id,
       String name,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String password,
@@ -92,7 +91,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as ObjectId?,
+              as String?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -149,7 +148,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
+      {@JsonKey(name: '_id') String? id,
       String name,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String password,
@@ -191,7 +190,7 @@ class __$$_UserModelCopyWithImpl<$Res>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as ObjectId?,
+              as String?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -244,7 +243,7 @@ class __$$_UserModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_UserModel implements _UserModel {
   const _$_UserModel(
-      {@ObjectIdSerializer() @JsonKey(name: '_id') this.id,
+      {@JsonKey(name: '_id') this.id,
       required this.name,
       @PhoneNumberSerializer() this.phoneNumber,
       required this.password,
@@ -263,9 +262,8 @@ class _$_UserModel implements _UserModel {
       _$$_UserModelFromJson(json);
 
   @override
-  @ObjectIdSerializer()
   @JsonKey(name: '_id')
-  final ObjectId? id;
+  final String? id;
   @override
   final String name;
   @override
@@ -366,7 +364,7 @@ class _$_UserModel implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
-      {@ObjectIdSerializer() @JsonKey(name: '_id') final ObjectId? id,
+      {@JsonKey(name: '_id') final String? id,
       required final String name,
       @PhoneNumberSerializer() final PhoneNumber? phoneNumber,
       required final String password,
@@ -383,9 +381,8 @@ abstract class _UserModel implements UserModel {
       _$_UserModel.fromJson;
 
   @override
-  @ObjectIdSerializer()
   @JsonKey(name: '_id')
-  ObjectId? get id;
+  String? get id;
   @override
   String get name;
   @override

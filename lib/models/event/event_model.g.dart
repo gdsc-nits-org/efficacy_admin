@@ -8,7 +8,7 @@ part of 'event_model.dart';
 
 _$_EventModel _$$_EventModelFromJson(Map<String, dynamic> json) =>
     _$_EventModel(
-      id: const ObjectIdSerializer().fromJson(json['_id']),
+      id: json['_id'] as String?,
       posterURL: json['posterURL'] as String,
       title: json['title'] as String,
       shortDescription: json['shortDescription'] as String,
@@ -31,7 +31,7 @@ _$_EventModel _$$_EventModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_EventModelToJson(_$_EventModel instance) =>
     <String, dynamic>{
-      '_id': const ObjectIdSerializer().toJson(instance.id),
+      '_id': instance.id,
       'posterURL': instance.posterURL,
       'title': instance.title,
       'shortDescription': instance.shortDescription,

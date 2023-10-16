@@ -7,11 +7,11 @@ import 'package:mongo_dart/mongo_dart.dart';
 part 'club_model.freezed.dart';
 part 'club_model.g.dart';
 
-@freezed
+@Freezed(fromJson: true, toJson: true)
 class ClubModel with _$ClubModel {
   const ClubModel._();
   const factory ClubModel({
-    @ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
+    @JsonKey(name: '_id') String? id,
     required String name,
     required String instituteName,
     required String description,
@@ -24,15 +24,19 @@ class ClubModel with _$ClubModel {
     /// Map<ClubPositionModelID, Member Email>
     /// Cannot use clubPositionModel
     /// Since it has issues with freezed (cannot make keys with custom type)
-    required Map members,
+    required Map<String, String> members,
 
     /// Follower Ids
     @Default([]) List<String> followers,
     DateTime? lastLocalUpdate,
   }) = _ClubModel;
 
-  factory ClubModel.fromJson(Map<String, dynamic> json) =>
-      _$ClubModelFromJson(json);
+  factory ClubModel.fromJson(Map<String, dynamic> json) {
+    if (json["_id"] != null && json["_id"] is ObjectId) {
+      json["_id"] = (json["_id"] as ObjectId).toHexString();
+    }
+    return _$ClubModelFromJson(json);
+  }
 
   /// Returns a minified data primary target being the id and name
   /// If the rest of the values are provided they are also stored in the model

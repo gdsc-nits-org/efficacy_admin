@@ -1,5 +1,6 @@
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
+import 'package:efficacy_admin/utils/formatter.dart';
 import 'package:efficacy_admin/utils/local_database/constants.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:mongo_dart/mongo_dart.dart';
@@ -92,6 +93,7 @@ class ClubController {
           await LocalDatabase.get(LocalCollections.club, LocalDocuments.clubs);
       if (res != null) {
         for (dynamic model in res.values) {
+          model = Formatter.convertMapToMapStringDynamic(model);
           if (id != null &&
               model[ClubFields.id.name] == id &&
               !_isMinified(model)) {

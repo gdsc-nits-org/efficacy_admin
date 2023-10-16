@@ -1,5 +1,6 @@
 import 'package:efficacy_admin/models/club_position/club_position_model.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
+import 'package:efficacy_admin/utils/formatter.dart';
 import 'package:efficacy_admin/utils/local_database/constants.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:mongo_dart/mongo_dart.dart';
@@ -10,12 +11,12 @@ class ClubPositionController {
 
   static Future<ClubPositionModel> _save(ClubPositionModel position) async {
     Map? positions = await LocalDatabase.get(
-        LocalCollections.club, LocalDocuments.clubPositions);
+        LocalCollections.clubPosition, LocalDocuments.clubPositions);
     positions ??= {};
     position = position.copyWith(lastLocalUpdate: DateTime.now());
     positions[position.id] = position.toJson();
     await LocalDatabase.set(
-      LocalCollections.club,
+      LocalCollections.clubPosition,
       LocalDocuments.clubPositions,
       positions,
     );
@@ -56,17 +57,24 @@ class ClubPositionController {
 
     if (forceGet) {
       await LocalDatabase.deleteKey(
-        LocalCollections.club,
+        LocalCollections.clubPosition,
         LocalDocuments.clubPositions,
       );
     } else {
       Map? res = await LocalDatabase.get(
-          LocalCollections.club, LocalDocuments.clubPositions);
+        LocalCollections.clubPosition,
+        LocalDocuments.clubPositions,
+      );
       if (res != null) {
         if (clubPositionID != null && res.containsKey(clubPositionID)) {
-          yield [ClubPositionModel.fromJson(res[clubPositionID])];
+          yield [
+            ClubPositionModel.fromJson(
+              Formatter.convertMapToMapStringDynamic(res[clubPositionID])!,
+            )
+          ];
         } else if (clubID != null) {
           for (dynamic model in res.values) {
+            model = Formatter.convertMapToMapStringDynamic(model);
             if (model[ClubPositionFields.clubID.name] == clubID) {
               filteredClubPositions.add(ClubPositionModel.fromJson(model));
             }
@@ -89,8 +97,7 @@ class ClubPositionController {
   static Future<void> update(ClubPositionModel clubPositionModel) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
-    if ((await get(clubID: clubPositionModel.id?.toHexString(), forceGet: true)
-            .first)
+    if ((await get(clubID: clubPositionModel.id, forceGet: true).first)
         .isEmpty) {
       throw Exception("Couldn't find club position");
     }

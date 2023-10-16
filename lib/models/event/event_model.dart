@@ -7,11 +7,11 @@ part 'event_model.g.dart';
 
 enum Status { Upcoming, Ongoing, Completed }
 
-@freezed
+@Freezed(fromJson: true, toJson: true)
 class EventModel with _$EventModel {
   const EventModel._();
   const factory EventModel({
-    @ObjectIdSerializer() @JsonKey(name: '_id') ObjectId? id,
+    @JsonKey(name: "_id") String? id,
     required String posterURL,
     required String title,
     required String shortDescription,
@@ -31,8 +31,12 @@ class EventModel with _$EventModel {
     DateTime? lastLocalUpdate,
   }) = _EventModel;
 
-  factory EventModel.fromJson(Map<String, Object?> json) =>
-      _$EventModelFromJson(json);
+  factory EventModel.fromJson(Map<String, Object?> json) {
+    if (json["_id"] != null && json["_id"] is ObjectId) {
+      json["_id"] = (json["_id"] as ObjectId).toHexString();
+    }
+    return _$EventModelFromJson(json);
+  }
 
   Status get type {
     DateTime currentTime = DateTime.now();

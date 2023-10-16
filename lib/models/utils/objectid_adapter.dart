@@ -8,7 +8,7 @@ class ObjectIDAdapter implements TypeAdapter<ObjectId> {
   }
 
   @override
-  int get typeId => 0;
+  int get typeId => 13;
 
   @override
   void write(BinaryWriter writer, ObjectId obj) {

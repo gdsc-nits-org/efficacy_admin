@@ -7,9 +7,11 @@ part of 'user_model.dart';
 // **************************************************************************
 
 _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
+      id: json['_id'] as String?,
       name: json['name'] as String,
-      phoneNumber: _$JsonConverterFromJson<Map<String, String?>, PhoneNumber>(
-          json['phoneNumber'], const PhoneNumberSerializer().fromJson),
+      phoneNumber: const PhoneNumberSerializer()
+          .fromJson(json['phoneNumber'] as Map<String, String?>?),
+      password: json['password'] as String,
       email: json['email'] as String,
       scholarID: json['scholarID'] as String,
       userPhoto: json['userPhoto'] as String?,
@@ -24,13 +26,17 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
                   (e) => ClubPositionModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      lastLocalUpdate: json['lastLocalUpdate'] == null
+          ? null
+          : DateTime.parse(json['lastLocalUpdate'] as String),
     );
 
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
     <String, dynamic>{
+      '_id': instance.id,
       'name': instance.name,
-      'phoneNumber': _$JsonConverterToJson<Map<String, String?>, PhoneNumber>(
-          instance.phoneNumber, const PhoneNumberSerializer().toJson),
+      'phoneNumber': const PhoneNumberSerializer().toJson(instance.phoneNumber),
+      'password': instance.password,
       'email': instance.email,
       'scholarID': instance.scholarID,
       'userPhoto': instance.userPhoto,
@@ -39,13 +45,8 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
       'socials':
           instance.socials.map((k, e) => MapEntry(_$SocialEnumMap[k]!, e)),
       'position': instance.position,
+      'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
     };
-
-Value? _$JsonConverterFromJson<Json, Value>(
-  Object? json,
-  Value? Function(Json json) fromJson,
-) =>
-    json == null ? null : fromJson(json as Json);
 
 const _$BranchEnumMap = {
   Branch.CE: 'CE',
@@ -68,9 +69,3 @@ const _$SocialEnumMap = {
   Social.instagram: 'instagram',
   Social.linkedin: 'linkedin',
 };
-
-Json? _$JsonConverterToJson<Json, Value>(
-  Value? value,
-  Json? Function(Value value) toJson,
-) =>
-    value == null ? null : toJson(value);

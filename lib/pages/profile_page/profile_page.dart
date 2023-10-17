@@ -1,10 +1,10 @@
+import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
 import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/states/authenticator/authenticator.dart';
 import 'package:gap/gap.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -42,29 +42,29 @@ class _ProfileState extends State<ProfilePage> {
                 CustomTextField(
                   title: "Name",
                   enabled: false,
-                  initialValue: Authenticator.currentUser?.name,
+                  initialValue: UserController.currentUser?.name,
                 ),
                 CustomPhoneField(
                   title: "Phone",
                   enabled: false,
-                  initialValue: Authenticator.currentUser?.phoneNumber,
+                  initialValue: UserController.currentUser?.phoneNumber,
                 ),
                 CustomTextField(
                   title: "ScholarID",
                   enabled: false,
-                  initialValue: Authenticator.currentUser?.scholarID,
+                  initialValue: UserController.currentUser?.scholarID,
                 ),
                 CustomDropDown(
                   title: "Branch",
                   items: Branch.values.map((branch) => branch.name).toList(),
                   enabled: false,
-                  initialValue: Authenticator.currentUser?.branch.name,
+                  initialValue: UserController.currentUser?.branch.name,
                 ),
                 CustomDropDown(
                   title: "Degree",
                   items: Degree.values.map((degree) => degree.name).toList(),
                   enabled: false,
-                  initialValue: Authenticator.currentUser?.degree.name,
+                  initialValue: UserController.currentUser?.degree.name,
                 ),
                 // ...(Authenticator.currentUser?.position ?? [])
                 //     .map(

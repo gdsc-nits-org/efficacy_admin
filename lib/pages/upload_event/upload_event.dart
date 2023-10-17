@@ -1,15 +1,11 @@
 import 'dart:io';
-
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/pages/upload_event/widgets/custom_drop_down.dart';
+import 'package:efficacy_admin/pages/upload_event/widgets/custom_text_field.dart';
+import 'package:efficacy_admin/pages/upload_event/widgets/date_time_picker.dart';
+import 'package:efficacy_admin/pages/upload_event/widgets/url_input.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
-//moderator class
-class Moderator {
-  String name;
-
-  Moderator(this.name);
-}
 
 class UploadEvent extends StatefulWidget {
   //route
@@ -37,7 +33,7 @@ class _UploadEventState extends State<UploadEvent> {
     } else {}
   }
 
-  //moderator declaration
+//moderator declaration
   List<Moderator> moderators = [
     Moderator('John Doe'),
     Moderator('Jane Doe'),
@@ -118,16 +114,13 @@ class _UploadEventState extends State<UploadEvent> {
     double buttonWidth = width * 0.4;
     double containerRadius = 30.0;
     double borderWidth = 2;
-    double boxRadius = 5;
-    double iconSize = 30;
+    double iconSize = 25;
     double padding = 16;
     double lineWidth = width * 0.4;
     double linePadding = width * 0.3;
     double gap = 40;
-    double fontSize = 25;
-    double buttonFontSize = 22;
-    double dateTimeFontSize = 20;
-    double dropDownWidth = width * 0.45;
+    double fontSize = 20;
+    double buttonFontSize = 20;
     double endGap = height * 0.1;
     //color
     Color textColor = const Color.fromRGBO(5, 53, 76, 1);
@@ -200,84 +193,41 @@ class _UploadEventState extends State<UploadEvent> {
                           ),
                         ),
                         //title
-                        Padding(
-                          padding:
-                              EdgeInsets.only(left: padding, right: padding),
-                          child: TextFormField(
-                            controller: titleController,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "Title cannot be empty";
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: borderWidth),
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(boxRadius))),
-                                hintText: 'Event Title',
-                                icon: Icon(
-                                  Icons.title,
-                                  size: iconSize,
-                                  color: Colors.black54,
-                                )),
-                          ),
+                        CustomField(
+                          controller: titleController,
+                          hintText: 'Event Title',
+                          icon: Icons.title,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Title cannot be empty';
+                            }
+                            return null;
+                          },
                         ),
                         //short description
-                        Padding(
-                          padding:
-                              EdgeInsets.only(left: padding, right: padding),
-                          child: TextFormField(
-                            controller: shortDescController,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "Description cannot be empty";
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: borderWidth),
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(boxRadius))),
-                                hintText: 'Short Description',
-                                icon: Icon(
-                                  Icons.format_align_right_rounded,
-                                  size: iconSize,
-                                  color: Colors.black54,
-                                )),
-                          ),
+                        CustomField(
+                          controller: shortDescController,
+                          icon: Icons.format_align_right_rounded,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Description cannot be empty';
+                            }
+                            return null;
+                          },
+                          hintText: 'Short Description',
                         ),
                         //long description
-                        Padding(
-                          padding:
-                              EdgeInsets.only(left: padding, right: padding),
-                          child: TextFormField(
-                            controller: longDescController,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "Description cannot be empty";
-                              }
-                              return null;
-                            },
-                            maxLines: 8,
-                            maxLength: 500,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: borderWidth),
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(boxRadius))),
-                                hintText: 'Long Description',
-                                icon: Icon(
-                                  Icons.format_align_right_rounded,
-                                  size: iconSize,
-                                  color: Colors.black54,
-                                )),
-                          ),
+                        CustomField(
+                          hintText: 'Long Description',
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Description cannot be empty";
+                            }
+                            return null;
+                          },
+                          icon: Icons.format_align_right_rounded,
+                          controller: longDescController,
+                          maxLines: 6,
                         ),
                         //start date and time
                         Padding(
@@ -285,68 +235,18 @@ class _UploadEventState extends State<UploadEvent> {
                           child: Text(
                             "Start Date & Time",
                             style: TextStyle(
-                                color: textColor,
-                                fontSize: fontSize,
-                                fontWeight: FontWeight.bold),
+                              color: textColor,
+                              fontSize: fontSize,
+                            ),
                           ),
                         ),
                         //Date and time picker
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            InkWell(
-                              onTap: () => _selectDate(context, 1),
-                              child: Icon(
-                                Icons.calendar_today_outlined,
-                                color: textColor,
-                                size: iconSize,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () => _selectDate(context, 1),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Date",
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: dateTimeFontSize,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "${selectedDate1.toLocal()}".split(' ')[0],
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: dateTimeFontSize,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () => _selectTime(context, 1),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Time",
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: dateTimeFontSize,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    selectedTime1.format(context),
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: dateTimeFontSize,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                        DateTimePicker(
+                          label: 'Start Date & Time',
+                          selectedDate: selectedDate1,
+                          selectedTime: selectedTime1,
+                          onTapDate: () => _selectDate(context, 1),
+                          onTapTime: () => _selectTime(context, 1),
                         ),
                         //end date and time
                         Padding(
@@ -354,128 +254,48 @@ class _UploadEventState extends State<UploadEvent> {
                           child: Text(
                             "End Date & Time",
                             style: TextStyle(
-                                color: const Color.fromRGBO(5, 53, 76, 1),
-                                fontSize: fontSize,
-                                fontWeight: FontWeight.bold),
+                              color: const Color.fromRGBO(5, 53, 76, 1),
+                              fontSize: fontSize,
+                            ),
                           ),
                         ),
                         //date and time picker
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            InkWell(
-                              onTap: () => _selectDate(context, 2),
-                              child: Icon(
-                                Icons.calendar_today_outlined,
-                                color: textColor,
-                                size: iconSize,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () => _selectDate(context, 2),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Date",
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: dateTimeFontSize,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "${selectedDate2.toLocal()}".split(' ')[0],
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: dateTimeFontSize,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () => _selectTime(context, 2),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Time",
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: dateTimeFontSize,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    selectedTime2.format(context),
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: dateTimeFontSize,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                        DateTimePicker(
+                          label: 'End Date & Time',
+                          selectedDate: selectedDate2,
+                          selectedTime: selectedTime2,
+                          onTapDate: () => _selectDate(context, 2),
+                          onTapTime: () => _selectTime(context, 2),
                         ),
                         //google form
-                        Padding(
-                          padding:
-                              EdgeInsets.only(left: padding, right: padding),
-                          child: TextFormField(
-                            controller: googleUrlController,
-                            validator: (value) {
-                              Uri uri = Uri.parse(value!);
-                              if (!(uri.isAbsolute &&
-                                  uri.hasScheme &&
-                                  uri.hasAuthority)) {
-                                return "Invalid URL";
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.url,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: borderWidth),
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(boxRadius))),
-                                hintText: 'Google Form URL',
-                                icon: Icon(
-                                  Icons.link_outlined,
-                                  size: iconSize,
-                                  color: Colors.black54,
-                                )),
-                          ),
+                        UrlInput(
+                          controller: googleUrlController,
+                          icon: Icons.link_outlined,
+                          hintText: 'Google Form URL',
+                          validator: (value) {
+                            Uri uri = Uri.parse(value!);
+                            if (!(uri.isAbsolute &&
+                                uri.hasScheme &&
+                                uri.hasAuthority)) {
+                              return "Invalid URL";
+                            }
+                            return '';
+                          },
                         ),
                         //FB form URL
-                        Padding(
-                          padding:
-                              EdgeInsets.only(left: padding, right: padding),
-                          child: TextFormField(
-                            controller: fbUrlController,
-                            validator: (value) {
-                              Uri uri = Uri.parse(value!);
-                              if (!(uri.isAbsolute &&
-                                  uri.hasScheme &&
-                                  uri.hasAuthority)) {
-                                return "Invalid URL";
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.url,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: borderWidth),
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(boxRadius))),
-                                hintText: 'Facebook Form URL',
-                                icon: Icon(
-                                  Icons.link_outlined,
-                                  size: iconSize,
-                                  color: Colors.black54,
-                                )),
-                          ),
+                        UrlInput(
+                          controller: fbUrlController,
+                          icon: Icons.link_outlined,
+                          hintText: 'FaceBook Form URL',
+                          validator: (value) {
+                            Uri uri = Uri.parse(value!);
+                            if (!(uri.isAbsolute &&
+                                uri.hasScheme &&
+                                uri.hasAuthority)) {
+                              return "Invalid URL";
+                            }
+                            return '';
+                          },
                         ),
                         //Add Contacts
                         Padding(
@@ -483,9 +303,9 @@ class _UploadEventState extends State<UploadEvent> {
                           child: Text(
                             "Add Contacts",
                             style: TextStyle(
-                                color: textColor,
-                                fontSize: fontSize,
-                                fontWeight: FontWeight.bold),
+                              color: textColor,
+                              fontSize: fontSize,
+                            ),
                           ),
                         ),
                         //drop down menu
@@ -499,22 +319,8 @@ class _UploadEventState extends State<UploadEvent> {
                                 size: iconSize,
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: padding),
-                                child: Container(
                                   padding: EdgeInsets.only(left: padding),
-                                  width: dropDownWidth,
-                                  decoration: BoxDecoration(
-                                      border:
-                                          Border.all(color: Colors.black54)),
-                                  child: DropdownButton<Moderator>(
-                                    icon: const Icon(Icons.arrow_drop_down),
-                                    hint: const Text('Add Moderators'),
-                                    value: selectedModerator,
-                                    onChanged: (Moderator? newValue) {
-                                      setState(() {
-                                        selectedModerator = newValue;
-                                      });
-                                    },
+                                  child: CustomDropMenu(
                                     items:
                                         moderators.map((Moderator moderator) {
                                       return DropdownMenuItem<Moderator>(
@@ -522,9 +328,13 @@ class _UploadEventState extends State<UploadEvent> {
                                         child: Text(moderator.name),
                                       );
                                     }).toList(),
-                                  ),
-                                ),
-                              ),
+                                    value: selectedModerator,
+                                    onChanged: (Moderator? newValue) {
+                                      setState(() {
+                                        selectedModerator = newValue;
+                                      });
+                                    },
+                                  )),
                             ],
                           ),
                         ),

@@ -7,4 +7,20 @@ class Formatter {
     final formatter = DateFormat('h:mm a, MMM d');
     return formatter.format(dateTime);
   }
+
+  /// Converts Map<dynamic, dynamic> to Map<String, dynamic> recursively
+  static Map<String, dynamic>? convertMapToMapStringDynamic(Map? json) {
+    if (json == null) return null;
+    if (json.isEmpty) return {};
+
+    Map<String, dynamic> converted = {};
+    for (dynamic key in json.keys) {
+      if (json[key] is Map? || json[key] is Map) {
+        converted[key.toString()] = convertMapToMapStringDynamic(json[key]);
+      } else {
+        converted[key.toString()] = json[key];
+      }
+    }
+    return converted;
+  }
 }

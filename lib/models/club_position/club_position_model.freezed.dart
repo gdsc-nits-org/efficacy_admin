@@ -20,8 +20,11 @@ ClubPositionModel _$ClubPositionModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClubPositionModel {
+  @JsonKey(name: '_id')
+  String? get id => throw _privateConstructorUsedError;
   String get clubID => throw _privateConstructorUsedError;
   String get position => throw _privateConstructorUsedError;
+  DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +38,11 @@ abstract class $ClubPositionModelCopyWith<$Res> {
           ClubPositionModel value, $Res Function(ClubPositionModel) then) =
       _$ClubPositionModelCopyWithImpl<$Res, ClubPositionModel>;
   @useResult
-  $Res call({String clubID, String position});
+  $Res call(
+      {@JsonKey(name: '_id') String? id,
+      String clubID,
+      String position,
+      DateTime? lastLocalUpdate});
 }
 
 /// @nodoc
@@ -51,10 +58,16 @@ class _$ClubPositionModelCopyWithImpl<$Res, $Val extends ClubPositionModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? clubID = null,
     Object? position = null,
+    Object? lastLocalUpdate = freezed,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       clubID: null == clubID
           ? _value.clubID
           : clubID // ignore: cast_nullable_to_non_nullable
@@ -63,6 +76,10 @@ class _$ClubPositionModelCopyWithImpl<$Res, $Val extends ClubPositionModel>
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
               as String,
+      lastLocalUpdate: freezed == lastLocalUpdate
+          ? _value.lastLocalUpdate
+          : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -75,7 +92,11 @@ abstract class _$$_ClubPositionModelCopyWith<$Res>
       __$$_ClubPositionModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String clubID, String position});
+  $Res call(
+      {@JsonKey(name: '_id') String? id,
+      String clubID,
+      String position,
+      DateTime? lastLocalUpdate});
 }
 
 /// @nodoc
@@ -89,10 +110,16 @@ class __$$_ClubPositionModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? clubID = null,
     Object? position = null,
+    Object? lastLocalUpdate = freezed,
   }) {
     return _then(_$_ClubPositionModel(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       clubID: null == clubID
           ? _value.clubID
           : clubID // ignore: cast_nullable_to_non_nullable
@@ -101,6 +128,10 @@ class __$$_ClubPositionModelCopyWithImpl<$Res>
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
               as String,
+      lastLocalUpdate: freezed == lastLocalUpdate
+          ? _value.lastLocalUpdate
+          : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -108,19 +139,28 @@ class __$$_ClubPositionModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ClubPositionModel implements _ClubPositionModel {
-  const _$_ClubPositionModel({required this.clubID, required this.position});
+  const _$_ClubPositionModel(
+      {@JsonKey(name: '_id') this.id,
+      required this.clubID,
+      required this.position,
+      this.lastLocalUpdate});
 
   factory _$_ClubPositionModel.fromJson(Map<String, dynamic> json) =>
       _$$_ClubPositionModelFromJson(json);
 
   @override
+  @JsonKey(name: '_id')
+  final String? id;
+  @override
   final String clubID;
   @override
   final String position;
+  @override
+  final DateTime? lastLocalUpdate;
 
   @override
   String toString() {
-    return 'ClubPositionModel(clubID: $clubID, position: $position)';
+    return 'ClubPositionModel(id: $id, clubID: $clubID, position: $position, lastLocalUpdate: $lastLocalUpdate)';
   }
 
   @override
@@ -128,14 +168,18 @@ class _$_ClubPositionModel implements _ClubPositionModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ClubPositionModel &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.clubID, clubID) || other.clubID == clubID) &&
             (identical(other.position, position) ||
-                other.position == position));
+                other.position == position) &&
+            (identical(other.lastLocalUpdate, lastLocalUpdate) ||
+                other.lastLocalUpdate == lastLocalUpdate));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, clubID, position);
+  int get hashCode =>
+      Object.hash(runtimeType, id, clubID, position, lastLocalUpdate);
 
   @JsonKey(ignore: true)
   @override
@@ -154,16 +198,23 @@ class _$_ClubPositionModel implements _ClubPositionModel {
 
 abstract class _ClubPositionModel implements ClubPositionModel {
   const factory _ClubPositionModel(
-      {required final String clubID,
-      required final String position}) = _$_ClubPositionModel;
+      {@JsonKey(name: '_id') final String? id,
+      required final String clubID,
+      required final String position,
+      final DateTime? lastLocalUpdate}) = _$_ClubPositionModel;
 
   factory _ClubPositionModel.fromJson(Map<String, dynamic> json) =
       _$_ClubPositionModel.fromJson;
 
   @override
+  @JsonKey(name: '_id')
+  String? get id;
+  @override
   String get clubID;
   @override
   String get position;
+  @override
+  DateTime? get lastLocalUpdate;
   @override
   @JsonKey(ignore: true)
   _$$_ClubPositionModelCopyWith<_$_ClubPositionModel> get copyWith =>

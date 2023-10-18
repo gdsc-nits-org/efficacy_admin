@@ -111,6 +111,9 @@ class _UploadEventState extends State<UploadEvent> {
     double height = size.height;
     //constants
     double buttonWidth = width * 0.4;
+    double buttonHeight = height * 0.04;
+    double buttonLeftPos = width * 0.3;
+    double buttonTopPos = height * 0.16;
     double containerRadius = 30.0;
     double borderWidth = 2;
     double iconSize = 25;
@@ -149,16 +152,25 @@ class _UploadEventState extends State<UploadEvent> {
           children: [
             // Fixed Image Picker
             Positioned(
-              child: InkWell(
-                onTap:() =>  _getImage,
-                child: _image == null
-                    ? Image.asset(
-                  "assets/images/media.png",
-                  width: width,
-                  fit: BoxFit.cover,
-                )
-                    : Image.file(
-                  _image!,
+              child: _image == null
+                  ? Image.asset(
+                "assets/images/media.png",
+                width: width,
+                fit: BoxFit.cover,
+              )
+                  : Image.file(
+                _image!,
+              ),
+            ),
+            Positioned(
+              left: buttonLeftPos, // Adjust the position as needed
+              top: buttonTopPos, // Adjust the position as needed
+              child: SizedBox(
+                height: buttonHeight,
+                width: buttonWidth,
+                child: ElevatedButton(
+                  onPressed: () => _getImage(),
+                  child: const Text("Pick Image"),
                 ),
               ),
             ),

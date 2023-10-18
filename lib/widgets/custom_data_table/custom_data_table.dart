@@ -16,7 +16,7 @@ class CustomDataTable extends StatelessWidget{
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
+        border: Border.all(color: const Color.fromARGB(255, 204, 204, 204)),
         borderRadius: BorderRadius.circular(10),
       ),
       child: DataTable(

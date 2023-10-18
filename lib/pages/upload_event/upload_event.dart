@@ -33,7 +33,7 @@ class _UploadEventState extends State<UploadEvent> {
     } else {}
   }
 
-//moderator declaration
+  //moderator declaration
   List<Moderator> moderators = [
     Moderator('John Doe'),
     Moderator('Jane Doe'),
@@ -46,16 +46,18 @@ class _UploadEventState extends State<UploadEvent> {
   File? _image;
 
   //function to get image from gallery
-  Future _getImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<void> _getImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
 
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-      } else {}
+      } else {
+      }
     });
   }
+
 
   //date time variables
   DateTime selectedDate1 = DateTime.now();
@@ -108,9 +110,6 @@ class _UploadEventState extends State<UploadEvent> {
     double width = size.width;
     double height = size.height;
     //constants
-    double buttonLeftPos = width * 0.3;
-    double buttonTopPos = height * 0.16;
-    double buttonHeight = height * 0.04;
     double buttonWidth = width * 0.4;
     double containerRadius = 30.0;
     double borderWidth = 2;
@@ -146,183 +145,181 @@ class _UploadEventState extends State<UploadEvent> {
         ),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  _image == null
-                      ? Image.asset(
-                          "assets/images/media.png",
-                          width: width,
-                          fit: BoxFit.fitWidth,
-                        )
-                      : Image.file(
-                          _image!,
-                        ),
-                  Positioned(
-                      left: buttonLeftPos,
-                      top: buttonTopPos,
-                      child: SizedBox(
-                        height: buttonHeight,
-                        width: buttonWidth,
-                        child: ElevatedButton(
-                            onPressed: _getImage,
-                            child: const Text("Change poster")),
-                      ))
-                ],
+        child: Stack(
+          children: [
+            // Fixed Image Picker
+            Positioned(
+              child: InkWell(
+                onTap:() =>  _getImage,
+                child: _image == null
+                    ? Image.asset(
+                  "assets/images/media.png",
+                  width: width,
+                  fit: BoxFit.cover,
+                )
+                    : Image.file(
+                  _image!,
+                ),
               ),
-              Form(
-                  key: _formKey,
-                  child: Container(
-                    decoration: BoxDecoration(
+            ),
+            // Sliding Container
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: height * 0.27),
+                  Form(
+                    key: _formKey,
+                    child: Container(
+                      decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(containerRadius),
-                            topRight: Radius.circular(containerRadius))),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //line
-                        Padding(
-                          padding: EdgeInsets.only(top: gap, left: linePadding),
-                          child: Container(
-                            color: Colors.grey,
-                            height: borderWidth,
-                            width: lineWidth,
-                          ),
+                          topLeft: Radius.circular(containerRadius),
+                          topRight: Radius.circular(containerRadius),
                         ),
-                        //title
-                        CustomField(
-                          controller: titleController,
-                          hintText: 'Event Title',
-                          icon: Icons.title,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Title cannot be empty';
-                            }
-                            return null;
-                          },
-                        ),
-                        //short description
-                        CustomField(
-                          controller: shortDescController,
-                          icon: Icons.format_align_right_rounded,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Description cannot be empty';
-                            }
-                            return null;
-                          },
-                          hintText: 'Short Description',
-                        ),
-                        //long description
-                        CustomField(
-                          hintText: 'Long Description',
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Description cannot be empty";
-                            }
-                            return null;
-                          },
-                          icon: Icons.format_align_right_rounded,
-                          controller: longDescController,
-                          maxLines: 6,
-                        ),
-                        //start date and time
-                        Padding(
-                          padding: EdgeInsets.only(left: padding),
-                          child: Text(
-                            "Start Date & Time",
-                            style: TextStyle(
-                              color: textColor,
-                              fontSize: fontSize,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //line
+                          Padding(
+                            padding: EdgeInsets.only(top: gap, left: linePadding),
+                            child: Container(
+                              color: Colors.grey,
+                              height: borderWidth,
+                              width: lineWidth,
                             ),
                           ),
-                        ),
-                        //Date and time picker
-                        DateTimePicker(
-                          label: 'Start Date & Time',
-                          selectedDate: selectedDate1,
-                          selectedTime: selectedTime1,
-                          onTapDate: () => _selectDate(context, 1),
-                          onTapTime: () => _selectTime(context, 1),
-                        ),
-                        //end date and time
-                        Padding(
-                          padding: EdgeInsets.only(left: padding),
-                          child: Text(
-                            "End Date & Time",
-                            style: TextStyle(
-                              color: const Color.fromRGBO(5, 53, 76, 1),
-                              fontSize: fontSize,
-                            ),
+                          //title
+                          CustomField(
+                            controller: titleController,
+                            hintText: 'Event Title',
+                            icon: Icons.title,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Title cannot be empty';
+                              }
+                              return null;
+                            },
                           ),
-                        ),
-                        //date and time picker
-                        DateTimePicker(
-                          label: 'End Date & Time',
-                          selectedDate: selectedDate2,
-                          selectedTime: selectedTime2,
-                          onTapDate: () => _selectDate(context, 2),
-                          onTapTime: () => _selectTime(context, 2),
-                        ),
-                        //google form
-                        UrlInput(
-                          controller: googleUrlController,
-                          icon: Icons.link_outlined,
-                          hintText: 'Google Form URL',
-                          validator: (value) {
-                            Uri uri = Uri.parse(value!);
-                            if (!(uri.isAbsolute &&
-                                uri.hasScheme &&
-                                uri.hasAuthority)) {
-                              return "Invalid URL";
-                            }
-                            return '';
-                          },
-                        ),
-                        //FB form URL
-                        UrlInput(
-                          controller: fbUrlController,
-                          icon: Icons.link_outlined,
-                          hintText: 'FaceBook Form URL',
-                          validator: (value) {
-                            Uri uri = Uri.parse(value!);
-                            if (!(uri.isAbsolute &&
-                                uri.hasScheme &&
-                                uri.hasAuthority)) {
-                              return "Invalid URL";
-                            }
-                            return '';
-                          },
-                        ),
-                        //Add Contacts
-                        Padding(
-                          padding: EdgeInsets.only(left: padding),
-                          child: Text(
-                            "Add Contacts",
-                            style: TextStyle(
-                              color: textColor,
-                              fontSize: fontSize,
-                            ),
+                          //short description
+                          CustomField(
+                            controller: shortDescController,
+                            icon: Icons.format_align_right_rounded,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Description cannot be empty';
+                              }
+                              return null;
+                            },
+                            hintText: 'Short Description',
                           ),
-                        ),
-                        //drop down menu
-                        Padding(
-                          padding: EdgeInsets.only(left: padding),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.person_2_outlined,
-                                color: Colors.black54,
-                                size: iconSize,
+                          //long description
+                          CustomField(
+                            hintText: 'Long Description',
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Description cannot be empty";
+                              }
+                              return null;
+                            },
+                            icon: Icons.format_align_right_rounded,
+                            controller: longDescController,
+                            maxLines: 6,
+                          ),
+                          //start date and time
+                          Padding(
+                            padding: EdgeInsets.only(left: padding),
+                            child: Text(
+                              "Start Date & Time",
+                              style: TextStyle(
+                                color: textColor,
+                                fontSize: fontSize,
                               ),
-                              Padding(
+                            ),
+                          ),
+                          //Date and time picker
+                          DateTimePicker(
+                            label: 'Start Date & Time',
+                            selectedDate: selectedDate1,
+                            selectedTime: selectedTime1,
+                            onTapDate: () => _selectDate(context, 1),
+                            onTapTime: () => _selectTime(context, 1),
+                          ),
+                          //end date and time
+                          Padding(
+                            padding: EdgeInsets.only(left: padding),
+                            child: Text(
+                              "End Date & Time",
+                              style: TextStyle(
+                                color: const Color.fromRGBO(5, 53, 76, 1),
+                                fontSize: fontSize,
+                              ),
+                            ),
+                          ),
+                          //date and time picker
+                          DateTimePicker(
+                            label: 'End Date & Time',
+                            selectedDate: selectedDate2,
+                            selectedTime: selectedTime2,
+                            onTapDate: () => _selectDate(context, 2),
+                            onTapTime: () => _selectTime(context, 2),
+                          ),
+                          //google form
+                          UrlInput(
+                            controller: googleUrlController,
+                            icon: Icons.link_outlined,
+                            hintText: 'Google Form URL',
+                            validator: (value) {
+                              Uri uri = Uri.parse(value!);
+                              if (!(uri.isAbsolute &&
+                                  uri.hasScheme &&
+                                  uri.hasAuthority)) {
+                                return "Invalid URL";
+                              }
+                              return '';
+                            },
+                          ),
+                          //FB form URL
+                          UrlInput(
+                            controller: fbUrlController,
+                            icon: Icons.link_outlined,
+                            hintText: 'FaceBook Form URL',
+                            validator: (value) {
+                              Uri uri = Uri.parse(value!);
+                              if (!(uri.isAbsolute &&
+                                  uri.hasScheme &&
+                                  uri.hasAuthority)) {
+                                return "Invalid URL";
+                              }
+                              return '';
+                            },
+                          ),
+                          //Add Contacts
+                          Padding(
+                            padding: EdgeInsets.only(left: padding),
+                            child: Text(
+                              "Add Contacts",
+                              style: TextStyle(
+                                color: textColor,
+                                fontSize: fontSize,
+                              ),
+                            ),
+                          ),
+                          //drop down menu
+                          Padding(
+                            padding: EdgeInsets.only(left: padding),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.person_2_outlined,
+                                  color: Colors.black54,
+                                  size: iconSize,
+                                ),
+                                Padding(
                                   padding: EdgeInsets.only(left: padding),
                                   child: CustomDropMenu(
-                                    items:
-                                        moderators.map((Moderator moderator) {
+                                    items: moderators
+                                        .map((Moderator moderator) {
                                       return DropdownMenuItem<Moderator>(
                                         value: moderator,
                                         child: Text(moderator.name),
@@ -334,19 +331,23 @@ class _UploadEventState extends State<UploadEvent> {
                                         selectedModerator = newValue;
                                       });
                                     },
-                                  )),
-                            ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        //gap at the end
-                        SizedBox(
-                          height: endGap,
-                        )
-                      ].separate(padding),
+                          //gap at the end
+                          SizedBox(
+                            height: endGap,
+                          )
+                        ].separate(padding),
+                      ),
                     ),
-                  ))
-            ],
-          ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

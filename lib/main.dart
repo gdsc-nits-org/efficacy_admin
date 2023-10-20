@@ -16,6 +16,8 @@ class EfficacyAdmin extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       routes: {
+        EventFullScreen.routeName: (context) =>
+            const EventFullScreen(), //issue here
         Homepage.routeName: (context) => const Homepage(),
         ExperimentPage.routeName: (BuildContext context) =>
             const ExperimentPage(),

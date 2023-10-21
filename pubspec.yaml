@@ -26,10 +26,12 @@ dependencies:
   intl: ^0.18.1
   provider: ^6.0.5
   flutter_image_compress: ^2.0.4
+  image_cropper: ^5.0.0
 
   # ======================= Authentication =======================
   google_sign_in: ^6.1.5
   native_flutter_proxy: ^0.1.15
+  crypt: ^4.3.1
 
   # ======================= Storage =======================
   flutter_dotenv: ^5.1.0
@@ -38,6 +40,8 @@ dependencies:
   path_provider: ^2.1.1
   image_picker: ^1.0.4
   cloudinary: ^1.2.0
+  cached_network_image: ^3.3.0
+  flutter_cache_manager: ^3.3.1
 
   # ======================= URL launcher =======================
   url_launcher: ^6.1.14
@@ -60,4 +64,3 @@ flutter:
   assets:
     - .env
     - assets/images/
-

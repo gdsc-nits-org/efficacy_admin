@@ -1,9 +1,12 @@
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/services/image/image_controller.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
+import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/homepage/widgets/events/event_list.dart';
 import 'package:efficacy_admin/pages/homepage/widgets/events/event_viewer.dart';
 import 'package:efficacy_admin/pages/homepage/widgets/tab_navigation/tab_view.dart';
+import 'package:efficacy_admin/utils/data_sync/foreground_service.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -27,6 +30,34 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    // ClubPositionController.create(ClubPositionModel(
+    //     clubID: "652c3bec1c506f70837a41f3", position: "position"));
+    // UserController.create(
+    //   const UserModel(
+    //     name: "1",
+    //     password: '123',
+    //     email: "raj3@mail.co",
+    //     scholarID: "2112035",
+    //     branch: Branch.CSE,
+    //     degree: Degree.BTech,
+    //     position: ["65360e2b1cc773a82d995d82"],
+    //   ),
+    // );
+    // EventController.create(
+    //   EventModel(
+    //     posterURL: "posterURL",
+    //     title: "title",
+    //     shortDescription: "shortDescription",
+    //     startDate: DateTime.now(),
+    //     endDate: DateTime.now(),
+    //     registrationLink: "registrationLink",
+    //     venue: "venue",
+    //     contacts: [],
+    //     clubID: "652c3bec1c506f70837a41f3",
+    //   ),
+    // );
+    ForegroundService.startDataSync();
+
     return Scaffold(
       appBar: const CustomAppBar(),
       body: Column(

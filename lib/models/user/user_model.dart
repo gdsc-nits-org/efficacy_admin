@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:efficacy_admin/models/utils/utils.dart';
-import 'package:efficacy_admin/models/club_position/club_position_model.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 part 'user_model.freezed.dart';
@@ -20,7 +19,7 @@ class UserModel with _$UserModel {
     required Branch branch,
     required Degree degree,
     @Default({}) Map<Social, String> socials,
-    @Default([]) List<ClubPositionModel> position,
+    @Default([]) List<String> position,
     DateTime? lastLocalUpdate,
   }) = _UserModel;
 
@@ -36,6 +35,7 @@ enum UserFields {
   id,
   name,
   phoneNumber,
+  password,
   email,
   scholarID,
   userPhoto,

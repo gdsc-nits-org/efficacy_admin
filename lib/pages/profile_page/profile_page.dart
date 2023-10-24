@@ -47,6 +47,7 @@ class _ProfileState extends State<ProfilePage> {
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
+
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -91,6 +92,7 @@ class _ProfileState extends State<ProfilePage> {
                   columns: const ["ClubId", "Position"],
                   rows: (UserController.currentUser?.position)??const [],
                 )
+
               ].separate(gap),
             ),
           ),

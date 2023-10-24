@@ -27,6 +27,12 @@ _$_EventModel _$$_EventModelFromJson(Map<String, dynamic> json) =>
       lastLocalUpdate: json['lastLocalUpdate'] == null
           ? null
           : DateTime.parse(json['lastLocalUpdate'] as String),
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$$_EventModelToJson(_$_EventModel instance) =>
@@ -45,4 +51,6 @@ Map<String, dynamic> _$$_EventModelToJson(_$_EventModel instance) =>
       'liked': instance.liked,
       'clubID': instance.clubID,
       'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
+      'createdAt': instance.createdAt?.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
     };

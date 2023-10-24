@@ -1,3 +1,4 @@
+import 'package:efficacy_admin/controllers/utils/comparator.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/utils/database/constants.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
@@ -98,11 +99,8 @@ class UserController {
     if (userData == null) {
       return null;
     }
-    Map<String, dynamic> data = {};
-    for (dynamic key in userData.keys) {
-      data[key] = userData[key];
-    }
-    return currentUser = UserModel.fromJson(data);
+    return currentUser =
+        UserModel.fromJson(Formatter.convertMapToMapStringDynamic(userData)!);
   }
 
   /// Fetches a  user from the provided email
@@ -152,14 +150,16 @@ class UserController {
   static Future<UserModel?> update(UserModel user) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
-    if (await get(user.email, forceGet: true).first == null) {
+    UserModel? oldData = await get(user.email, forceGet: true).first;
+    if (oldData == null) {
       throw Exception("Couldn't find user");
     } else {
       SelectorBuilder selectorBuilder = SelectorBuilder();
       selectorBuilder.eq(UserFields.email.name, user.email);
-      await collection.update(
+      await collection.updateOne(
         selectorBuilder,
-        user.toJson(),
+        compare(oldData.toJson(), user.toJson(),
+            ignore: [UserFields.password.name]).map,
       );
       user = (await _save(user: user)) ?? user;
       return user;

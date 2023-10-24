@@ -15,12 +15,16 @@ import 'constants.dart';
 class LocalDatabase {
   static const Duration stalePeriod = Duration(days: 7);
   const LocalDatabase._();
+  static bool didInit = false;
 
   static Future<void> init() async {
+    print(didInit);
+    if (didInit) return;
     Directory directory = await getApplicationDocumentsDirectory();
     Hive.init(directory.path);
     Hive.registerAdapter(ObjectIDAdapter());
     await _removeStaleData();
+    didInit = true;
   }
 
   static Future<dynamic> get(

@@ -62,9 +62,21 @@ Future<bool> _dataSync() async {
         clubs.addAll(pos.map((p) => p.clubID).toList());
       }
     }
+    DateTime previousCheckpoint = await LocalDatabase.get(
+          LocalCollections.checkpoints,
+          LocalDocuments.eventCheckpoint,
+        ) ??
+        DateTime.now();
+    await LocalDatabase.set(
+      LocalCollections.checkpoints,
+      LocalDocuments.eventCheckpoint,
+      DateTime.now(),
+    );
     for (String clubID in clubs) {
       if (await EventController.isAnyUpdate(
-          clubID, currentUser.lastLocalUpdate)) {
+        clubID,
+        previousCheckpoint,
+      )) {
         await LocalNotification.sendNotification(
           0,
           "efficacy",

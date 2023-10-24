@@ -93,14 +93,31 @@ class UserController {
   ///   * If returns null means the user data was not stored
   ///   * Returns the UserModel if exists
   ///   * Stores the user data in currentUser
-  static Future<UserModel?> loginSilently() async {
+  static Stream<UserModel?> loginSilently() async* {
     dynamic userData = await LocalDatabase.get(
-        LocalCollections.user, LocalDocuments.currentUser);
+      LocalCollections.user,
+      LocalDocuments.currentUser,
+    );
     if (userData == null) {
-      return null;
+      yield null;
+    } else {
+      yield currentUser =
+          UserModel.fromJson(Formatter.convertMapToMapStringDynamic(userData)!);
+
+      DbCollection collection = Database.instance.collection(_collectionName);
+      SelectorBuilder selectorBuilder = SelectorBuilder();
+      selectorBuilder.eq(UserFields.email.name, currentUser!.email);
+      Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
+
+      if (res != null) {
+        UserModel user = UserModel.fromJson(res);
+        user = _removePassword(user);
+        user = (await _save()) ?? user;
+        yield user;
+      } else {
+        yield null;
+      }
     }
-    return currentUser =
-        UserModel.fromJson(Formatter.convertMapToMapStringDynamic(userData)!);
   }
 
   /// Fetches a  user from the provided email

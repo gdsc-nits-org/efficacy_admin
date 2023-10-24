@@ -9,6 +9,7 @@ class InvitationModel with _$InvitationModel {
   const factory InvitationModel({
     @JsonKey(name: "_id") String? id,
     required String clubPositionID,
+    required String senderID,
     required String recipientID,
     // Default to creation time + a fixed time
     required DateTime expiry,

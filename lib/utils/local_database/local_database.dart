@@ -86,12 +86,14 @@ class LocalDatabase {
             filteredData.add(item);
           }
         }
+      } else if (data is DateTime) {
+        filteredData = data;
       } else {
         if (_canKeepData(data)) {
           filteredData = data;
         }
       }
-      box.delete(key);
+      await box.delete(key);
       if (filteredData != null) {
         if (filteredData is Map || filteredData is List) {
           if (filteredData.isNotEmpty) await box.put(key, filteredData);

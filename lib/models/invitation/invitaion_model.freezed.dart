@@ -23,6 +23,7 @@ mixin _$InvitationModel {
   @JsonKey(name: "_id")
   String? get id => throw _privateConstructorUsedError;
   String get clubPositionID => throw _privateConstructorUsedError;
+  String get senderID => throw _privateConstructorUsedError;
   String get recipientID =>
       throw _privateConstructorUsedError; // Default to creation time + a fixed time
   DateTime get expiry => throw _privateConstructorUsedError;
@@ -42,6 +43,7 @@ abstract class $InvitationModelCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: "_id") String? id,
       String clubPositionID,
+      String senderID,
       String recipientID,
       DateTime expiry});
 }
@@ -61,6 +63,7 @@ class _$InvitationModelCopyWithImpl<$Res, $Val extends InvitationModel>
   $Res call({
     Object? id = freezed,
     Object? clubPositionID = null,
+    Object? senderID = null,
     Object? recipientID = null,
     Object? expiry = null,
   }) {
@@ -72,6 +75,10 @@ class _$InvitationModelCopyWithImpl<$Res, $Val extends InvitationModel>
       clubPositionID: null == clubPositionID
           ? _value.clubPositionID
           : clubPositionID // ignore: cast_nullable_to_non_nullable
+              as String,
+      senderID: null == senderID
+          ? _value.senderID
+          : senderID // ignore: cast_nullable_to_non_nullable
               as String,
       recipientID: null == recipientID
           ? _value.recipientID
@@ -96,6 +103,7 @@ abstract class _$$_InvitationModelCopyWith<$Res>
   $Res call(
       {@JsonKey(name: "_id") String? id,
       String clubPositionID,
+      String senderID,
       String recipientID,
       DateTime expiry});
 }
@@ -113,6 +121,7 @@ class __$$_InvitationModelCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? clubPositionID = null,
+    Object? senderID = null,
     Object? recipientID = null,
     Object? expiry = null,
   }) {
@@ -124,6 +133,10 @@ class __$$_InvitationModelCopyWithImpl<$Res>
       clubPositionID: null == clubPositionID
           ? _value.clubPositionID
           : clubPositionID // ignore: cast_nullable_to_non_nullable
+              as String,
+      senderID: null == senderID
+          ? _value.senderID
+          : senderID // ignore: cast_nullable_to_non_nullable
               as String,
       recipientID: null == recipientID
           ? _value.recipientID
@@ -143,6 +156,7 @@ class _$_InvitationModel extends _InvitationModel {
   const _$_InvitationModel(
       {@JsonKey(name: "_id") this.id,
       required this.clubPositionID,
+      required this.senderID,
       required this.recipientID,
       required this.expiry})
       : super._();
@@ -156,6 +170,8 @@ class _$_InvitationModel extends _InvitationModel {
   @override
   final String clubPositionID;
   @override
+  final String senderID;
+  @override
   final String recipientID;
 // Default to creation time + a fixed time
   @override
@@ -163,7 +179,7 @@ class _$_InvitationModel extends _InvitationModel {
 
   @override
   String toString() {
-    return 'InvitationModel(id: $id, clubPositionID: $clubPositionID, recipientID: $recipientID, expiry: $expiry)';
+    return 'InvitationModel(id: $id, clubPositionID: $clubPositionID, senderID: $senderID, recipientID: $recipientID, expiry: $expiry)';
   }
 
   @override
@@ -174,6 +190,8 @@ class _$_InvitationModel extends _InvitationModel {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.clubPositionID, clubPositionID) ||
                 other.clubPositionID == clubPositionID) &&
+            (identical(other.senderID, senderID) ||
+                other.senderID == senderID) &&
             (identical(other.recipientID, recipientID) ||
                 other.recipientID == recipientID) &&
             (identical(other.expiry, expiry) || other.expiry == expiry));
@@ -181,8 +199,8 @@ class _$_InvitationModel extends _InvitationModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, clubPositionID, recipientID, expiry);
+  int get hashCode => Object.hash(
+      runtimeType, id, clubPositionID, senderID, recipientID, expiry);
 
   @JsonKey(ignore: true)
   @override
@@ -202,6 +220,7 @@ abstract class _InvitationModel extends InvitationModel {
   const factory _InvitationModel(
       {@JsonKey(name: "_id") final String? id,
       required final String clubPositionID,
+      required final String senderID,
       required final String recipientID,
       required final DateTime expiry}) = _$_InvitationModel;
   const _InvitationModel._() : super._();
@@ -214,6 +233,8 @@ abstract class _InvitationModel extends InvitationModel {
   String? get id;
   @override
   String get clubPositionID;
+  @override
+  String get senderID;
   @override
   String get recipientID;
   @override // Default to creation time + a fixed time

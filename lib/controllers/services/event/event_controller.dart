@@ -75,9 +75,10 @@ class EventController {
       selectorBuilder.gt(
           EventFields.updatedAt.name, lastChecked.toIso8601String());
     }
-    selectorBuilder.fields([EventFields.id.name]);
+    selectorBuilder.fields([EventFields.id.name, EventFields.updatedAt.name]);
 
     dynamic res = await collection.findOne(selectorBuilder);
+    print([clubID, lastChecked, res]);
     return res != null;
   }
 

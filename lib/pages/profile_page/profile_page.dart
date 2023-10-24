@@ -36,7 +36,8 @@ class _ProfileState extends State<ProfilePage> {
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: vmargin, horizontal: hmargin),
+            padding:
+                EdgeInsets.symmetric(vertical: vmargin, horizontal: hmargin),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -83,11 +84,11 @@ class _ProfileState extends State<ProfilePage> {
                 //       ),
                 //     )
                 //     .toList()
-                CustomDataTable(
-                  columnspace: width*0.5,
-                  columns: const ["ClubId", "Position"],
-                  rows: (UserController.currentUser?.position)!,
-                )
+                // CustomDataTable(
+                //   columnspace: width*0.5,
+                //   columns: const ["ClubId", "Position"],
+                //   rows: (UserController.currentUser?.position)!,
+                // )
               ].separate(gap),
             ),
           ),

@@ -20,8 +20,18 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfileState extends State<ProfilePage> {
-  static String? imgPath = UserController.currentUser?.userPhoto;
-  final File _img = File(imgPath!);
+  
+  File? _img; 
+  Widget imageView(String? s){
+    if(s!=null){
+      _img = File(s);
+      return ProfileImageViewer(
+        enabled: false,
+        image: _img,);
+    }
+    return const ProfileImageViewer(enabled: false);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +40,14 @@ class _ProfileState extends State<ProfilePage> {
     double height = size.height;
     //size constants
     double gap = height * 0.02;
-    double hmargin = width * 0.08;
-    double vmargin = width * 0.16;
+    double hMargin = width * 0.08;
+    double vMargin = width * 0.16;
     return Scaffold(
-      body: Center(
+      body: Center(     
         child: SingleChildScrollView(
           child: Padding(
-            padding:
-                EdgeInsets.symmetric(vertical: vmargin, horizontal: hmargin),
+            padding: EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
+
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -47,9 +57,9 @@ class _ProfileState extends State<ProfilePage> {
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 Gap(gap),
-                ProfileImageViewer(
-                  image: _img,
-                ),
+
+                imageView(UserController.currentUser?.userPhoto),
+                
                 CustomTextField(
                   title: "Name",
                   enabled: false,
@@ -77,18 +87,12 @@ class _ProfileState extends State<ProfilePage> {
                   enabled: false,
                   initialValue: UserController.currentUser?.degree.name,
                 ),
-                // ...(Authenticator.currentUser?.position ?? [])
-                //     .map(
-                //       (position) => CustomTextField(
-                //         initialValue: position.,
-                //       ),
-                //     )
-                //     .toList()
-                // CustomDataTable(
-                //   columnspace: width*0.5,
-                //   columns: const ["ClubId", "Position"],
-                //   rows: (UserController.currentUser?.position)!,
-                // )
+                CustomDataTable(
+                  columnspace: width*0.35,
+                  columns: const ["ClubId", "Position"],
+                  rows: (UserController.currentUser?.position)??const [],
+                )
+
               ].separate(gap),
             ),
           ),

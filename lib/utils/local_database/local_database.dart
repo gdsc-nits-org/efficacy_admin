@@ -15,12 +15,16 @@ import 'constants.dart';
 class LocalDatabase {
   static const Duration stalePeriod = Duration(days: 7);
   const LocalDatabase._();
+  static bool didInit = false;
 
   static Future<void> init() async {
+    print(didInit);
+    if (didInit) return;
     Directory directory = await getApplicationDocumentsDirectory();
     Hive.init(directory.path);
     Hive.registerAdapter(ObjectIDAdapter());
     await _removeStaleData();
+    didInit = true;
   }
 
   static Future<dynamic> get(
@@ -82,12 +86,14 @@ class LocalDatabase {
             filteredData.add(item);
           }
         }
+      } else if (data is DateTime) {
+        filteredData = data;
       } else {
         if (_canKeepData(data)) {
           filteredData = data;
         }
       }
-      box.delete(key);
+      await box.delete(key);
       if (filteredData != null) {
         if (filteredData is Map || filteredData is List) {
           if (filteredData.isNotEmpty) await box.put(key, filteredData);

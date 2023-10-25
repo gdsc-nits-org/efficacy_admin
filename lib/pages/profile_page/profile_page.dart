@@ -20,18 +20,17 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfileState extends State<ProfilePage> {
-  
-  File? _img; 
-  Widget imageView(String? s){
-    if(s!=null){
+  File? _img;
+  Widget imageView(String? s) {
+    if (s != null) {
       _img = File(s);
       return ProfileImageViewer(
         enabled: false,
-        image: _img,);
+        image: _img,
+      );
     }
     return const ProfileImageViewer(enabled: false);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +42,11 @@ class _ProfileState extends State<ProfilePage> {
     double hMargin = width * 0.08;
     double vMargin = width * 0.16;
     return Scaffold(
-      body: Center(     
+      body: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
-
+            padding:
+                EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +58,7 @@ class _ProfileState extends State<ProfilePage> {
                 Gap(gap),
 
                 imageView(UserController.currentUser?.userPhoto),
-                
+
                 CustomTextField(
                   title: "Name",
                   enabled: false,
@@ -87,12 +86,11 @@ class _ProfileState extends State<ProfilePage> {
                   enabled: false,
                   initialValue: UserController.currentUser?.degree.name,
                 ),
-                CustomDataTable(
-                  columnspace: width*0.35,
-                  columns: const ["ClubId", "Position"],
-                  rows: (UserController.currentUser?.position)??const [],
-                )
-
+                // CustomDataTable(
+                //   columnspace: width*0.35,
+                //   columns: const ["ClubId", "Position"],
+                //   rows: (UserController.currentUser?.position)??const [],
+                // )
               ].separate(gap),
             ),
           ),

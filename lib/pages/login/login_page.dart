@@ -5,6 +5,8 @@ import 'package:efficacy_admin/pages/pages.dart';
 // import 'package:efficacy_admin/pages/sign_up/signup_page.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/utils.dart';
+
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
@@ -23,54 +25,62 @@ class LoginPage extends StatelessWidget {
     double smallGap = height * 0.01;
     double messageFieldWidth = 0.85;
 
-    return Scaffold(
-      body: SizedBox(
-        width: width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              radius: avatarRadius,
-              child: Image.asset(Assets.efficacyAdminLogoImagePath),
-            ),
-            Text(
-              "Hey! Welcome",
-              style: Theme.of(context).textTheme.displaySmall,
-            ),
-            FractionallySizedBox(
-              widthFactor: messageFieldWidth,
-              child: Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suscipit sed augue quam amet, sed gravida.",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge,
+    return WillPopScope(
+      onWillPop: () async {
+        final quitCondition = await showExitWarning(context);
+        return quitCondition ?? false;
+      },
+      child: Scaffold(
+        body: SizedBox(
+          width: width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                radius: avatarRadius,
+                child: Image.asset(Assets.efficacyAdminLogoImagePath),
               ),
-            ),
-            Column(
-              children: [
-                const GoogleSignInButton(),
-                // Toggle button to signup page
-                TextButton(
-                  onPressed: () {
-                    Navigator.popAndPushNamed(context, SignUpPage.routeName);
-                  },
-                  child: RichText(
-                    text: const TextSpan(
-                        text: "Don't have an account? ",
-                        children: [
-                          TextSpan(
-                              text: "Sign Up",
-                              style: TextStyle(
-                                  color: dark,
-                                  decoration: TextDecoration.underline))
-                        ],
-                        style: TextStyle(color: shadow)),
-                  ),
+              Text(
+                "Hey! Welcome",
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
+              FractionallySizedBox(
+                widthFactor: messageFieldWidth,
+                child: Text(
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suscipit sed augue quam amet, sed gravida.",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
-              ].separate(smallGap),
-            ),
-          ].separate(gap),
+              ),
+              Column(
+                children: [
+                  const GoogleSignInButton(),
+                  // Toggle button to signup page
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          SignUpPage.routeName,
+                          (Route<dynamic> route) => false);
+                    },
+                    child: RichText(
+                      text: const TextSpan(
+                          text: "Don't have an account? ",
+                          children: [
+                            TextSpan(
+                                text: "Sign Up",
+                                style: TextStyle(
+                                    color: dark,
+                                    decoration: TextDecoration.underline))
+                          ],
+                          style: TextStyle(color: shadow)),
+                    ),
+                  ),
+                ].separate(smallGap),
+              ),
+            ].separate(gap),
+          ),
         ),
       ),
     );

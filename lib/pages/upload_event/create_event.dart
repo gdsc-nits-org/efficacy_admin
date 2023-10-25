@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/pages/upload_event/utils/create_event_utils.dart';
 import 'package:efficacy_admin/pages/upload_event/widgets/custom_drop_down.dart';
 import 'package:efficacy_admin/pages/upload_event/widgets/custom_text_field.dart';
 import 'package:efficacy_admin/pages/upload_event/widgets/date_time_picker.dart';
@@ -106,26 +107,7 @@ class _CreateEventState extends State<CreateEvent> {
 
   @override
   Widget build(BuildContext context) {
-    //screen size
-    Size size = MediaQuery.of(context).size;
-    double width = size.width;
-    double height = size.height;
-    //constants
-    double buttonHeight = height * 0.04;
-    double buttonLeftPos = width * 0.3;
-    double buttonTopPos = height * 0.16;
-    double containerRadius = 30.0;
-    double buttonWidth = width * 0.4;
-    double borderWidth = 2;
-    double iconSize = 25;
-    double padding = 16;
-    double lineWidth = min(width * 0.4, 100);
-    double linePadding = width * 0.3;
-    double gap = 40;
-    double fontSize = 20;
-    double endGap = height * 0.1;
-    //color
-    Color textColor = const Color.fromRGBO(5, 53, 76, 1);
+    getSize(context);
 
     return Scaffold(
       floatingActionButton: UploadButton(onPressed: _validateForm),

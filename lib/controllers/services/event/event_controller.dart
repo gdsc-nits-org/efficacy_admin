@@ -34,6 +34,10 @@ class EventController {
 
   /// Assumption: (ClubID, title, startDate, endDate) combination is unique for each event
   static Future<EventModel?> create(EventModel event) async {
+    event = event.copyWith(
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
     DbCollection collection = Database.instance.collection(_collectionName);
 
     await collection.insert(event.toJson());
@@ -59,6 +63,23 @@ class EventController {
     event = EventModel.fromJson(data);
     event = await _save(event);
     return event;
+  }
+
+  //
+  static Future<bool> isAnyUpdate(String clubID, DateTime? lastChecked) async {
+    DbCollection collection = Database.instance.collection(_collectionName);
+
+    SelectorBuilder selectorBuilder = SelectorBuilder();
+    selectorBuilder.eq(EventFields.clubID.name, clubID);
+    if (lastChecked != null) {
+      selectorBuilder.gt(
+          EventFields.updatedAt.name, lastChecked.toIso8601String());
+    }
+    selectorBuilder.fields([EventFields.id.name, EventFields.updatedAt.name]);
+
+    dynamic res = await collection.findOne(selectorBuilder);
+    print([clubID, lastChecked, res]);
+    return res != null;
   }
 
   /// If [forceGet] is true, the localDatabase is cleared and new data is fetched
@@ -118,6 +139,7 @@ class EventController {
   }
 
   static Future<EventModel> update(EventModel event) async {
+    event = event.copyWith(updatedAt: DateTime.now());
     DbCollection collection = Database.instance.collection(_collectionName);
     SelectorBuilder selectorBuilder = SelectorBuilder();
     selectorBuilder.eq(EventFields.id.name, event.id);

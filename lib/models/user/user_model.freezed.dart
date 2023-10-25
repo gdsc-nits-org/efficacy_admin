@@ -32,7 +32,7 @@ mixin _$UserModel {
   Branch get branch => throw _privateConstructorUsedError;
   Degree get degree => throw _privateConstructorUsedError;
   Map<Social, String> get socials => throw _privateConstructorUsedError;
-  List<ClubPositionModel> get position => throw _privateConstructorUsedError;
+  List<String> get position => throw _privateConstructorUsedError;
   DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -57,7 +57,7 @@ abstract class $UserModelCopyWith<$Res> {
       Branch branch,
       Degree degree,
       Map<Social, String> socials,
-      List<ClubPositionModel> position,
+      List<String> position,
       DateTime? lastLocalUpdate});
 }
 
@@ -131,7 +131,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
       position: null == position
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
-              as List<ClubPositionModel>,
+              as List<String>,
       lastLocalUpdate: freezed == lastLocalUpdate
           ? _value.lastLocalUpdate
           : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
@@ -158,7 +158,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       Branch branch,
       Degree degree,
       Map<Social, String> socials,
-      List<ClubPositionModel> position,
+      List<String> position,
       DateTime? lastLocalUpdate});
 }
 
@@ -230,7 +230,7 @@ class __$$_UserModelCopyWithImpl<$Res>
       position: null == position
           ? _value._position
           : position // ignore: cast_nullable_to_non_nullable
-              as List<ClubPositionModel>,
+              as List<String>,
       lastLocalUpdate: freezed == lastLocalUpdate
           ? _value.lastLocalUpdate
           : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
@@ -253,7 +253,7 @@ class _$_UserModel implements _UserModel {
       required this.branch,
       required this.degree,
       final Map<Social, String> socials = const {},
-      final List<ClubPositionModel> position = const [],
+      final List<String> position = const [],
       this.lastLocalUpdate})
       : _socials = socials,
         _position = position;
@@ -290,10 +290,10 @@ class _$_UserModel implements _UserModel {
     return EqualUnmodifiableMapView(_socials);
   }
 
-  final List<ClubPositionModel> _position;
+  final List<String> _position;
   @override
   @JsonKey()
-  List<ClubPositionModel> get position {
+  List<String> get position {
     if (_position is EqualUnmodifiableListView) return _position;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_position);
@@ -374,7 +374,7 @@ abstract class _UserModel implements UserModel {
       required final Branch branch,
       required final Degree degree,
       final Map<Social, String> socials,
-      final List<ClubPositionModel> position,
+      final List<String> position,
       final DateTime? lastLocalUpdate}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -403,7 +403,7 @@ abstract class _UserModel implements UserModel {
   @override
   Map<Social, String> get socials;
   @override
-  List<ClubPositionModel> get position;
+  List<String> get position;
   @override
   DateTime? get lastLocalUpdate;
   @override

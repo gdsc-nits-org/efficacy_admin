@@ -11,12 +11,13 @@ dependencies:
     sdk: flutter
 
   # ======================= Styling =======================
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.6
   gap: ^3.0.1
   flutter_svg: ^2.0.7
   sliding_up_panel: ^2.0.0+1
   font_awesome_flutter: ^10.6.0
-
+  flutter_svg: ^2.0.8
+  
   # ======================= Code Generators =======================
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
@@ -27,14 +28,22 @@ dependencies:
   intl_phone_field: ^3.2.0
   intl: ^0.18.1
   provider: ^6.0.5
-  flutter_image_compress: ^2.0.4
+  flutter_image_compress: ^2.1.0
+  workmanager: ^0.5.2
+  image_cropper: ^5.0.0
+
+  # ====================== Notification =====================
+  flutter_local_notifications: ^16.1.0
+  permission_handler: ^11.0.1
 
   # ======================= Authentication =======================
+  google_sign_in: ^6.1.5
+  native_flutter_proxy: ^0.1.15
   crypt: ^4.3.1
 
   # ======================= Storage =======================
   flutter_dotenv: ^5.1.0
-  mongo_dart: ^0.9.1
+  mongo_dart: ^0.9.3
   hive: ^2.2.3
   path_provider: ^2.1.1
   image_picker: ^1.0.4
@@ -63,4 +72,3 @@ flutter:
   assets:
     - .env
     - assets/images/
-

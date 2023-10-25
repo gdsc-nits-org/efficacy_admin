@@ -1,5 +1,5 @@
 import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/pages/event_details_view/stats_info.dart';
+import 'stats_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

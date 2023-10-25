@@ -6,9 +6,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class EventFullScreen extends StatefulWidget {
   static const String routeName = "/eventFullScreen";
-  const EventFullScreen({super.key, required this.currentEvent});
-
-  final EventModel currentEvent;
+  const EventFullScreen({super.key});
 
   @override
   State<EventFullScreen> createState() => _EventFullScreenState();
@@ -19,7 +17,16 @@ class _EventFullScreenState extends State<EventFullScreen> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    final EventModel currentEvent = widget.currentEvent;
+    final EventModel currentEvent = EventModel(
+        posterURL: "posterURL",
+        title: "title",
+        shortDescription: "shortDescription",
+        startDate: DateTime.now(),
+        endDate: DateTime.now(),
+        registrationLink: "registrationLink",
+        venue: "venue",
+        contacts: [],
+        clubID: "");
     return Stack(
       children: [
         Scaffold(

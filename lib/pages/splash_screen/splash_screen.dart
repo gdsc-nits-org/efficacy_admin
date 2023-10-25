@@ -23,6 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await dotenv.load();
     await Database.init();
     await LocalDatabase.init();
+    await ForegroundService.init();
     stopwatch.stop();
     return stopwatch.elapsed.inMilliseconds;
   }

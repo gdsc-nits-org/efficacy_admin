@@ -1,3 +1,4 @@
+import 'package:efficacy_admin/controllers/utils/comparator.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/utils/database/constants.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
@@ -92,17 +93,31 @@ class UserController {
   ///   * If returns null means the user data was not stored
   ///   * Returns the UserModel if exists
   ///   * Stores the user data in currentUser
-  static Future<UserModel?> loginSilently() async {
+  static Stream<UserModel?> loginSilently() async* {
     dynamic userData = await LocalDatabase.get(
-        LocalCollections.user, LocalDocuments.currentUser);
+      LocalCollections.user,
+      LocalDocuments.currentUser,
+    );
     if (userData == null) {
-      return null;
+      yield null;
+    } else {
+      yield currentUser =
+          UserModel.fromJson(Formatter.convertMapToMapStringDynamic(userData)!);
+
+      DbCollection collection = Database.instance.collection(_collectionName);
+      SelectorBuilder selectorBuilder = SelectorBuilder();
+      selectorBuilder.eq(UserFields.email.name, currentUser!.email);
+      Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
+
+      if (res != null) {
+        UserModel user = UserModel.fromJson(res);
+        user = _removePassword(user);
+        user = (await _save()) ?? user;
+        yield user;
+      } else {
+        yield null;
+      }
     }
-    Map<String, dynamic> data = {};
-    for (dynamic key in userData.keys) {
-      data[key] = userData[key];
-    }
-    return currentUser = UserModel.fromJson(data);
   }
 
   /// Fetches a  user from the provided email
@@ -152,14 +167,16 @@ class UserController {
   static Future<UserModel?> update(UserModel user) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
-    if (await get(user.email, forceGet: true).first == null) {
+    UserModel? oldData = await get(user.email, forceGet: true).first;
+    if (oldData == null) {
       throw Exception("Couldn't find user");
     } else {
       SelectorBuilder selectorBuilder = SelectorBuilder();
       selectorBuilder.eq(UserFields.email.name, user.email);
-      await collection.update(
+      await collection.updateOne(
         selectorBuilder,
-        user.toJson(),
+        compare(oldData.toJson(), user.toJson(),
+            ignore: [UserFields.password.name]).map,
       );
       user = (await _save(user: user)) ?? user;
       return user;

@@ -22,8 +22,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
           ) ??
           const {},
       position: (json['position'] as List<dynamic>?)
-              ?.map(
-                  (e) => ClubPositionModel.fromJson(e as Map<String, dynamic>))
+              ?.map((e) => e as String)
               .toList() ??
           const [],
       lastLocalUpdate: json['lastLocalUpdate'] == null

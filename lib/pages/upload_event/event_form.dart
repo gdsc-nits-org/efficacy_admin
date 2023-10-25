@@ -10,7 +10,8 @@ import 'package:efficacy_admin/pages/upload_event/widgets/url_input.dart';
 import 'package:flutter/material.dart';
 
 class EventForm extends StatefulWidget {
-  const EventForm({super.key});
+  const EventForm({super.key, required this.formKey});
+  final GlobalKey<FormState> formKey;
 
   @override
   State<EventForm> createState() => _EventFormState();
@@ -26,7 +27,7 @@ class _EventFormState extends State<EventForm> {
 
   Moderator? selectedModerator;
 
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = formKey;
   TextEditingController titleController = TextEditingController();
   TextEditingController shortDescController = TextEditingController();
   TextEditingController longDescController = TextEditingController();

@@ -512,6 +512,54 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  google_identity_services_web:
+    dependency: transitive
+    description:
+      name: google_identity_services_web
+      sha256: "554748f2478619076128152c58905620d10f9c7fc270ff1d3a9675f9f53838ed"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1+1"
+  google_sign_in:
+    dependency: "direct main"
+    description:
+      name: google_sign_in
+      sha256: f45038d27bcad37498f282295ae97eece23c9349fc16649154067b87b9f1fd03
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.5"
+  google_sign_in_android:
+    dependency: transitive
+    description:
+      name: google_sign_in_android
+      sha256: "8d76099cb220d4f10c7e3c24492814c733f48ecb574c45c0ccadf5d5e50b012d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.19"
+  google_sign_in_ios:
+    dependency: transitive
+    description:
+      name: google_sign_in_ios
+      sha256: "8edfde9698b5951f3d02632eceb39cc283865c3cff0b03216bf951089f10345b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.6.3"
+  google_sign_in_platform_interface:
+    dependency: transitive
+    description:
+      name: google_sign_in_platform_interface
+      sha256: "35ceee5f0eadc1c07b0b4af7553246e315c901facbb7d3dadf734ba2693ceec4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.2"
+  google_sign_in_web:
+    dependency: transitive
+    description:
+      name: google_sign_in_web
+      sha256: b48263e47f9493ba4120ccdfffe7412549ee297e82b97be9b8fa16ea8919ffbe
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.12.0+4"
   graphs:
     dependency: transitive
     description:
@@ -780,10 +828,18 @@ packages:
     dependency: transitive
     description:
       name: mongo_dart_query
-      sha256: d9185804b24088b933248892c956b8c6962d079523946bdd8b5eef557dca0355
+      sha256: "146150cec2b8baaa8ea7c59fa93b221b774529ec9aac87d49c74a08fae83451f"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.4"
+    version: "4.0.1"
+  native_flutter_proxy:
+    dependency: "direct main"
+    description:
+      name: native_flutter_proxy
+      sha256: d8109940d3412ecb0e88e841b5c7efee2e4ef6016e0d2dc1ebaa07a87af7a45b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.15"
   nested:
     dependency: transitive
     description:
@@ -1000,6 +1056,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.3"
+  quiver:
+    dependency: transitive
+    description:
+      name: quiver
+      sha256: b1c1ac5ce6688d77f65f3375a9abb9319b3cb32486bdc7a1e0fdf004d7ba4e47
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.1"
   rational:
     dependency: transitive
     description:

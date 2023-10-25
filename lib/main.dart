@@ -23,12 +23,11 @@ class EfficacyAdmin extends StatelessWidget {
         SplashScreen.routeName: (context) => const SplashScreen(),
         SignUpPage.routeName: (context) => const SignUpPage(),
         ProfilePage.routeName: (context) => const ProfilePage(),
-        UploadEvent.routeName: (context) => const UploadEvent()
+        CreateEvent.routeName: (context) => const CreateEvent()
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,
-      initialRoute: UploadEvent.routeName
-      //SplashScreen.routeName,
+      initialRoute: SplashScreen.routeName,
       //ExperimentPage.routeName,
     );
   }

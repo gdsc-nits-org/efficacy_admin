@@ -11,9 +11,10 @@ dependencies:
     sdk: flutter
 
   # ======================= Styling =======================
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.6
   gap: ^3.0.1
-  flutter_svg: ^2.0.7
+  flutter_svg: ^2.0.8
+  sliding_up_panel: ^2.0.0+1
 
   # ======================= Code Generators =======================
   freezed_annotation: ^2.4.1
@@ -38,7 +39,7 @@ dependencies:
 
   # ======================= Storage =======================
   flutter_dotenv: ^5.1.0
-  mongo_dart: ^0.9.1
+  mongo_dart: ^0.9.3
   hive: ^2.2.3
   path_provider: ^2.1.1
   image_picker: ^1.0.4

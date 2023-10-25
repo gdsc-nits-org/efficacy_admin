@@ -6,4 +6,4 @@ export 'homepage/homepage.dart';
 export 'splash_screen/splash_screen.dart';
 export 'signup/signup_page.dart';
 export 'profile_page/profile_page.dart';
-export 'upload_event/upload_event.dart';
+export 'upload_event/create_event.dart';

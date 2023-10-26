@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/models.dart';
-import 'package:efficacy_admin/pages/profile_page/widgets/edit_button.dart';
+import 'package:efficacy_admin/pages/profile_page/widgets/buttons.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
 import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
@@ -64,11 +64,9 @@ class _ProfileState extends State<ProfilePage> {
     return Scaffold(
       floatingActionButton: Visibility(
         visible: showButton,
-        child: FloatingActionButton(
-          onPressed: () => saveUpdates(),
-          child: const Icon(Icons.save),
-        ),
-      ),
+        child:SaveButton(
+          onPressed: saveUpdates,
+        ) ,),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(

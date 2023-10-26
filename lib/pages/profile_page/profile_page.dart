@@ -53,7 +53,9 @@ class _ProfileState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     //screen size
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     double width = size.width;
     double height = size.height;
     //size constants
@@ -67,23 +69,26 @@ class _ProfileState extends State<ProfilePage> {
           : FloatingActionButtonLocation.endTop,
       floatingActionButton: showButton
           ? SaveButton(
-              onPressed: () => saveUpdates(),
-            )
+        onPressed: () => saveUpdates(),
+      )
           : EditButton(
-              onPressed: () => enableEdit(),
-            ),
+        onPressed: () => enableEdit(),
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
             padding:
-                EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
+            EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   "Account Details",
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headlineLarge,
                 ),
                 Gap(gap),
 

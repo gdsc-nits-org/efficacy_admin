@@ -7,13 +7,18 @@ class EditButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //screen size
-    double fontSize = 18;
+    //size constants
+    double fontSize = 30;
     return IconButton(
+      tooltip: "Edit Profile",
+       style: const ButtonStyle(
+         backgroundColor: MaterialStatePropertyAll(Colors.transparent)
+       ),
         onPressed: onPressed,
         icon: Icon(
           Icons.edit,
           size: fontSize,
+          color: Colors.black,
         ));
   }
 }

@@ -32,7 +32,7 @@ class _ProfileState extends State<ProfilePage> {
     });
   }
 
-  void saveUpdates(){
+  void saveUpdates() {
     setState(() {
       editMode = false;
       showButton = false;
@@ -62,11 +62,16 @@ class _ProfileState extends State<ProfilePage> {
     double vMargin = width * 0.16;
 
     return Scaffold(
-      floatingActionButton: Visibility(
-        visible: showButton,
-        child:SaveButton(
-          onPressed: () => saveUpdates(),
-        ) ,),
+      floatingActionButtonLocation: showButton
+          ? FloatingActionButtonLocation.endFloat
+          : FloatingActionButtonLocation.endTop,
+      floatingActionButton: showButton
+          ? SaveButton(
+              onPressed: () => saveUpdates(),
+            )
+          : EditButton(
+              onPressed: () => enableEdit(),
+            ),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -83,10 +88,6 @@ class _ProfileState extends State<ProfilePage> {
                 Gap(gap),
 
                 imageView(UserController.currentUser?.userPhoto),
-                //edit button
-                EditButton(
-                  onPressed: () => enableEdit(),
-                ),
 
                 CustomTextField(
                   title: "Name",

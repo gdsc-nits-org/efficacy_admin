@@ -65,7 +65,7 @@ class _ProfileState extends State<ProfilePage> {
       floatingActionButton: Visibility(
         visible: showButton,
         child:SaveButton(
-          onPressed: saveUpdates,
+          onPressed: () => saveUpdates(),
         ) ,),
       body: Center(
         child: SingleChildScrollView(

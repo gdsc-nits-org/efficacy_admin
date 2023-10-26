@@ -1,12 +1,11 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/models/event/event_model.dart';
+import 'package:efficacy_admin/pages/upload_event/event_form.dart';
 import 'package:efficacy_admin/pages/upload_event/utils/create_event_utils.dart';
-import 'package:efficacy_admin/pages/upload_event/widgets/custom_drop_down.dart';
-import 'package:efficacy_admin/pages/upload_event/widgets/custom_text_field.dart';
-import 'package:efficacy_admin/pages/upload_event/widgets/date_time_picker.dart';
 import 'package:efficacy_admin/pages/upload_event/widgets/upload_button.dart';
-import 'package:efficacy_admin/pages/upload_event/widgets/url_input.dart';
+import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -24,27 +23,31 @@ class CreateEvent extends StatefulWidget {
 class _CreateEventState extends State<CreateEvent> {
   //form variables
   final _formKey = GlobalKey<FormState>();
-  TextEditingController titleController = TextEditingController();
-  TextEditingController shortDescController = TextEditingController();
-  TextEditingController longDescController = TextEditingController();
-  TextEditingController googleUrlController = TextEditingController();
-  TextEditingController fbUrlController = TextEditingController();
 
   //form validate function
   void _validateForm() {
     if (_formKey.currentState!.validate()) {
       //validation logic
-    } else {}
+      EventController.create(
+        EventModel(
+          posterURL: _image.toString(),
+          title: titleController.text,
+          shortDescription: shortDescController.text,
+          startDate: DateTime.now(),
+          endDate: DateTime.now(),
+          registrationLink: googleUrlController.text,
+          facebookPostURL:
+              fbUrlController.text.isNotEmpty ? fbUrlController.text : null,
+          venue: venueController.text,
+          contacts: [selectedModerator.toString()],
+          clubID: clubIDController.text,
+        ),
+      );
+    } else {
+      showErrorSnackBar(
+          context, "Upload failed. Please enter valid credentials");
+    }
   }
-
-  //moderator declaration
-  List<Moderator> moderators = [
-    Moderator('John Doe'),
-    Moderator('Jane Doe'),
-    Moderator('Jim Doe'),
-  ];
-
-  Moderator? selectedModerator;
 
   //image variable
   File? _image;
@@ -61,265 +64,97 @@ class _CreateEventState extends State<CreateEvent> {
     });
   }
 
-  //date time variables
-  DateTime selectedDate1 = DateTime.now();
-  DateTime selectedDate2 = DateTime.now();
-  TimeOfDay selectedTime1 = TimeOfDay.now();
-  TimeOfDay selectedTime2 = TimeOfDay.now();
-
-  //function to get dates
-  Future<void> _selectDate(BuildContext context, int pickerNumber) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: pickerNumber == 1 ? selectedDate1 : selectedDate2,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-
-    if (picked != null) {
-      setState(() {
-        if (pickerNumber == 1) {
-          selectedDate1 = picked;
-        } else {
-          selectedDate2 = picked;
-        }
-      });
-    }
-  }
-
-  //function to get times
-  Future<void> _selectTime(BuildContext context, int pickerNumber) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: pickerNumber == 1 ? selectedTime1 : selectedTime2,
-    );
-
-    if (picked != null) {
-      setState(() {
-        if (pickerNumber == 1) {
-          selectedTime1 = picked;
-        } else {
-          selectedTime2 = picked;
-        }
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     getSize(context);
 
-    return Scaffold(
-      floatingActionButton: UploadButton(onPressed: _validateForm),
-      body: SafeArea(
-        child: SlidingUpPanel(
-          maxHeight: height * .75,
-          minHeight: height * .65,
-          borderRadius: BorderRadius.circular(30),
-          panelBuilder: (ScrollController scrollController) {
-            return Form(
-              key: _formKey,
-              child: ListView(
-                controller: scrollController,
-                children: [
-                  SizedBox(height: gap),
-                  //line
-                  Center(
-                    child: Container(
-                      color: Colors.grey,
-                      height: borderWidth,
-                      width: lineWidth,
-                    ),
-                  ),
-                  //title
-                  CustomField(
-                    controller: titleController,
-                    hintText: 'Event Title',
-                    icon: Icons.title,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Title cannot be empty';
-                      }
-                      return null;
-                    },
-                  ),
-                  //short description
-                  CustomField(
-                    controller: shortDescController,
-                    icon: Icons.format_align_right_rounded,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Description cannot be empty';
-                      }
-                      return null;
-                    },
-                    hintText: 'Short Description',
-                  ),
-                  //long description
-                  CustomField(
-                    hintText: 'Long Description',
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Description cannot be empty";
-                      }
-                      return null;
-                    },
-                    icon: Icons.format_align_right_rounded,
-                    controller: longDescController,
-                    maxLines: 6,
-                  ),
-                  //start date and time
-                  Padding(
-                    padding: EdgeInsets.only(left: padding),
-                    child: Text(
-                      "Start Date & Time",
-                      style: TextStyle(
-                        color: textColor,
-                        fontSize: fontSize,
-                      ),
-                    ),
-                  ),
-                  //Date and time picker
-                  DateTimePicker(
-                    label: 'Start Date & Time',
-                    selectedDate: selectedDate1,
-                    selectedTime: selectedTime1,
-                    onTapDate: () => _selectDate(context, 1),
-                    onTapTime: () => _selectTime(context, 1),
-                  ),
-                  //end date and time
-                  Padding(
-                    padding: EdgeInsets.only(left: padding),
-                    child: Text(
-                      "End Date & Time",
-                      style: TextStyle(
-                        color: const Color.fromRGBO(5, 53, 76, 1),
-                        fontSize: fontSize,
-                      ),
-                    ),
-                  ),
-                  //date and time picker
-                  DateTimePicker(
-                    label: 'End Date & Time',
-                    selectedDate: selectedDate2,
-                    selectedTime: selectedTime2,
-                    onTapDate: () => _selectDate(context, 2),
-                    onTapTime: () => _selectTime(context, 2),
-                  ),
-                  //google form
-                  UrlInput(
-                    controller: googleUrlController,
-                    icon: Icons.link_outlined,
-                    hintText: 'Google Form URL',
-                    validator: (value) {
-                      Uri uri = Uri.parse(value!);
-                      if (!(uri.isAbsolute &&
-                          uri.hasScheme &&
-                          uri.hasAuthority)) {
-                        return "Invalid URL";
-                      }
-                      return '';
-                    },
-                  ),
-                  //FB form URL
-                  UrlInput(
-                    controller: fbUrlController,
-                    icon: Icons.link_outlined,
-                    hintText: 'FaceBook Form URL',
-                    validator: (value) {
-                      Uri uri = Uri.parse(value!);
-                      if (!(uri.isAbsolute &&
-                          uri.hasScheme &&
-                          uri.hasAuthority)) {
-                        return "Invalid URL";
-                      }
-                      return '';
-                    },
-                  ),
-                  //Add Contacts
-                  Padding(
-                    padding: EdgeInsets.only(left: padding),
-                    child: Text(
-                      "Add Contacts",
-                      style: TextStyle(
-                        color: textColor,
-                        fontSize: fontSize,
-                      ),
-                    ),
-                  ),
-                  //drop down menu
-                  Padding(
-                    padding: EdgeInsets.only(left: padding),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.person_2_outlined,
-                          color: Colors.black54,
-                          size: iconSize,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: padding),
-                          child: CustomDropMenu(
-                            items: moderators.map((Moderator moderator) {
-                              return DropdownMenuItem<Moderator>(
-                                value: moderator,
-                                child: Text(moderator.name),
-                              );
-                            }).toList(),
-                            value: selectedModerator,
-                            onChanged: (Moderator? newValue) {
-                              setState(() {
-                                selectedModerator = newValue;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  //gap at the end
-                  SizedBox(
-                    height: endGap,
-                  )
-                ].separate(padding),
-              ),
-            );
-          },
-          body: _image == null
-              ? Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    Image.asset(
-                      "assets/images/media.png",
-                      width: width,
-                      fit: BoxFit.cover,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: width / 3),
-                      child: SizedBox(
-                        height: buttonHeight,
-                        width: buttonWidth,
-                        child: ElevatedButton(
-                          onPressed: () => _getImage(),
-                          child: const Text("Pick Image"),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              : Align(
-                  alignment: Alignment.topCenter,
-                  child: GestureDetector(
-                    onTap: () => _getImage(),
-                    child: Image.file(
-                      _image!,
-                      width: width,
-                      fit: BoxFit.fitWidth,
+    return Stack(children: [
+      Scaffold(
+        floatingActionButton: UploadButton(onPressed: _validateForm),
+        body: SafeArea(
+          child: SlidingUpPanel(
+            padding: const EdgeInsets.only(top: 30),
+            maxHeight: height,
+            minHeight: height * .70,
+            borderRadius: BorderRadius.circular(30),
+            header: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: width * 0.33,
+                ),
+                Container(
+                  height: 3,
+                  width: width * 0.35,
+                  decoration: const BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
                     ),
                   ),
                 ),
+              ],
+            ),
+            panel: EventForm(
+              formKey: _formKey,
+            ),
+            body: _image == null
+                ? Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      Image.asset(
+                        "assets/images/media.png",
+                        width: width,
+                        fit: BoxFit.cover,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: width / 3),
+                        child: SizedBox(
+                          height: buttonHeight,
+                          width: buttonWidth,
+                          child: ElevatedButton(
+                            onPressed: () => _getImage(),
+                            child: const Text("Pick Image"),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Align(
+                    alignment: Alignment.topCenter,
+                    child: GestureDetector(
+                      onTap: () => _getImage(),
+                      child: Image.file(
+                        _image!,
+                        width: width,
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+                  ),
+          ),
         ),
       ),
-    );
+      Positioned(
+        left: 15,
+        top: 35,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: CircleAvatar(
+              radius: 15,
+              backgroundColor: dark,
+              child: Icon(
+                Icons.close,
+                size: height * 0.035,
+                color: light,
+              ),
+            ),
+          ),
+        ),
+      ),
+    ]);
   }
 }

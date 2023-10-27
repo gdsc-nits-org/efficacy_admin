@@ -18,7 +18,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Scaffold.of(context).openEndDrawer();
+          },
           icon: const Icon(
             CupertinoIcons.profile_circled,
             color: Colors.white,

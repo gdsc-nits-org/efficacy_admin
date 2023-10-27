@@ -28,21 +28,22 @@ class _CreateEventState extends State<CreateEvent> {
   void _validateForm() {
     if (_formKey.currentState!.validate()) {
       //validation logic
-      EventController.create(
-        EventModel(
-          posterURL: _image.toString(),
-          title: titleController.text,
-          shortDescription: shortDescController.text,
-          startDate: DateTime.now(),
-          endDate: DateTime.now(),
-          registrationLink: googleUrlController.text,
-          facebookPostURL:
-              fbUrlController.text.isNotEmpty ? fbUrlController.text : null,
-          venue: venueController.text,
-          contacts: [selectedModerator.toString()],
-          clubID: clubIDController.text,
-        ),
+      EventModel event = EventModel(
+        posterURL: _image.toString(),
+        title: titleController.text,
+        shortDescription: shortDescController.text,
+        longDescription:
+            longDescController.text.isNotEmpty ? longDescController.text : null,
+        startDate: DateTime.now(),
+        endDate: DateTime.now(),
+        registrationLink: googleUrlController.text,
+        facebookPostURL:
+            fbUrlController.text.isNotEmpty ? fbUrlController.text : null,
+        venue: venueController.text,
+        contacts: [selectedModerator.toString()],
+        clubID: clubIDController.text,
       );
+      EventController.create(event);
     } else {
       showErrorSnackBar(
           context, "Upload failed. Please enter valid credentials");

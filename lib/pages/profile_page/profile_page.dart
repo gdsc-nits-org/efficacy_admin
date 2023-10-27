@@ -25,6 +25,10 @@ class _ProfileState extends State<ProfilePage> {
   bool editMode = false;
   bool showButton = false;
 
+  //controllers
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _scholaridController = TextEditingController();
+
   void enableEdit() {
     setState(() {
       editMode = true;
@@ -32,7 +36,14 @@ class _ProfileState extends State<ProfilePage> {
     });
   }
 
-  void saveUpdates() {
+  void saveUpdates() async {
+    await UserController.update(UserModel(
+        name: _nameController.text,
+        scholarID: _scholaridController.text,
+        branch: UserController.currentUser!.branch,
+        degree: UserController.currentUser!.degree,
+        password: '',
+        email: ''));
     setState(() {
       editMode = false;
       showButton = false;
@@ -53,9 +64,7 @@ class _ProfileState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     //screen size
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     double width = size.width;
     double height = size.height;
     //size constants
@@ -69,42 +78,41 @@ class _ProfileState extends State<ProfilePage> {
           : FloatingActionButtonLocation.endTop,
       floatingActionButton: showButton
           ? SaveButton(
-        onPressed: () => saveUpdates(),
-      )
+              onPressed: () => saveUpdates(),
+            )
           : EditButton(
-        onPressed: () => enableEdit(),
-      ),
+              onPressed: () => enableEdit(),
+            ),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
             padding:
-            EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
+                EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   "Account Details",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headlineLarge,
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 Gap(gap),
 
                 imageView(UserController.currentUser?.userPhoto),
 
                 CustomTextField(
+                  controller: _nameController,
                   title: "Name",
                   enabled: editMode ? true : false,
                   initialValue: UserController.currentUser?.name,
                 ),
                 CustomPhoneField(
                   title: "Phone",
-                  enabled: editMode ? true : false,
+                  enabled: false,
                   initialValue: UserController.currentUser?.phoneNumber,
                 ),
                 CustomTextField(
+                  controller: _scholaridController,
                   title: "ScholarID",
                   enabled: editMode ? true : false,
                   initialValue: UserController.currentUser?.scholarID,

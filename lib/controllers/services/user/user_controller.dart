@@ -41,7 +41,7 @@ class UserController {
     return user.copyWith(password: "");
   }
 
-  /// Crates a user
+  /// Creates a user
   ///  * If user exists throws exception
   ///  * Hashes the password
   ///  * If user doesn't exist creates it

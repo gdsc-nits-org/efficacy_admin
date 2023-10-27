@@ -29,7 +29,7 @@ class EfficacyAdmin extends StatelessWidget {
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,
-      initialRoute:ProfilePage.routeName //SplashScreen.routeName,
+      initialRoute: SplashScreen.routeName,
       //ExperimentPage.routeName,
     );
   }

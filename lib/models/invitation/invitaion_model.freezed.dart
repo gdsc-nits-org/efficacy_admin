@@ -24,9 +24,11 @@ mixin _$InvitationModel {
   String? get id => throw _privateConstructorUsedError;
   String get clubPositionID => throw _privateConstructorUsedError;
   String get senderID => throw _privateConstructorUsedError;
-  String get recipientID =>
-      throw _privateConstructorUsedError; // Default to creation time + a fixed time
-  DateTime get expiry => throw _privateConstructorUsedError;
+  String get recipientID => throw _privateConstructorUsedError;
+  DateTime? get expiry => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,7 +47,10 @@ abstract class $InvitationModelCopyWith<$Res> {
       String clubPositionID,
       String senderID,
       String recipientID,
-      DateTime expiry});
+      DateTime? expiry,
+      DateTime? createdAt,
+      DateTime? updatedAt,
+      DateTime? lastLocalUpdate});
 }
 
 /// @nodoc
@@ -65,7 +70,10 @@ class _$InvitationModelCopyWithImpl<$Res, $Val extends InvitationModel>
     Object? clubPositionID = null,
     Object? senderID = null,
     Object? recipientID = null,
-    Object? expiry = null,
+    Object? expiry = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? lastLocalUpdate = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -84,20 +92,32 @@ class _$InvitationModelCopyWithImpl<$Res, $Val extends InvitationModel>
           ? _value.recipientID
           : recipientID // ignore: cast_nullable_to_non_nullable
               as String,
-      expiry: null == expiry
+      expiry: freezed == expiry
           ? _value.expiry
           : expiry // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      lastLocalUpdate: freezed == lastLocalUpdate
+          ? _value.lastLocalUpdate
+          : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_InvitationModelCopyWith<$Res>
+abstract class _$$InvitationModelImplCopyWith<$Res>
     implements $InvitationModelCopyWith<$Res> {
-  factory _$$_InvitationModelCopyWith(
-          _$_InvitationModel value, $Res Function(_$_InvitationModel) then) =
-      __$$_InvitationModelCopyWithImpl<$Res>;
+  factory _$$InvitationModelImplCopyWith(_$InvitationModelImpl value,
+          $Res Function(_$InvitationModelImpl) then) =
+      __$$InvitationModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -105,15 +125,18 @@ abstract class _$$_InvitationModelCopyWith<$Res>
       String clubPositionID,
       String senderID,
       String recipientID,
-      DateTime expiry});
+      DateTime? expiry,
+      DateTime? createdAt,
+      DateTime? updatedAt,
+      DateTime? lastLocalUpdate});
 }
 
 /// @nodoc
-class __$$_InvitationModelCopyWithImpl<$Res>
-    extends _$InvitationModelCopyWithImpl<$Res, _$_InvitationModel>
-    implements _$$_InvitationModelCopyWith<$Res> {
-  __$$_InvitationModelCopyWithImpl(
-      _$_InvitationModel _value, $Res Function(_$_InvitationModel) _then)
+class __$$InvitationModelImplCopyWithImpl<$Res>
+    extends _$InvitationModelCopyWithImpl<$Res, _$InvitationModelImpl>
+    implements _$$InvitationModelImplCopyWith<$Res> {
+  __$$InvitationModelImplCopyWithImpl(
+      _$InvitationModelImpl _value, $Res Function(_$InvitationModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -123,9 +146,12 @@ class __$$_InvitationModelCopyWithImpl<$Res>
     Object? clubPositionID = null,
     Object? senderID = null,
     Object? recipientID = null,
-    Object? expiry = null,
+    Object? expiry = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? lastLocalUpdate = freezed,
   }) {
-    return _then(_$_InvitationModel(
+    return _then(_$InvitationModelImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -142,27 +168,42 @@ class __$$_InvitationModelCopyWithImpl<$Res>
           ? _value.recipientID
           : recipientID // ignore: cast_nullable_to_non_nullable
               as String,
-      expiry: null == expiry
+      expiry: freezed == expiry
           ? _value.expiry
           : expiry // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      lastLocalUpdate: freezed == lastLocalUpdate
+          ? _value.lastLocalUpdate
+          : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_InvitationModel extends _InvitationModel {
-  const _$_InvitationModel(
+class _$InvitationModelImpl extends _InvitationModel {
+  const _$InvitationModelImpl(
       {@JsonKey(name: "_id") this.id,
       required this.clubPositionID,
       required this.senderID,
       required this.recipientID,
-      required this.expiry})
+      this.expiry,
+      this.createdAt,
+      this.updatedAt,
+      this.lastLocalUpdate})
       : super._();
 
-  factory _$_InvitationModel.fromJson(Map<String, dynamic> json) =>
-      _$$_InvitationModelFromJson(json);
+  factory _$InvitationModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$InvitationModelImplFromJson(json);
 
   @override
   @JsonKey(name: "_id")
@@ -173,20 +214,25 @@ class _$_InvitationModel extends _InvitationModel {
   final String senderID;
   @override
   final String recipientID;
-// Default to creation time + a fixed time
   @override
-  final DateTime expiry;
+  final DateTime? expiry;
+  @override
+  final DateTime? createdAt;
+  @override
+  final DateTime? updatedAt;
+  @override
+  final DateTime? lastLocalUpdate;
 
   @override
   String toString() {
-    return 'InvitationModel(id: $id, clubPositionID: $clubPositionID, senderID: $senderID, recipientID: $recipientID, expiry: $expiry)';
+    return 'InvitationModel(id: $id, clubPositionID: $clubPositionID, senderID: $senderID, recipientID: $recipientID, expiry: $expiry, createdAt: $createdAt, updatedAt: $updatedAt, lastLocalUpdate: $lastLocalUpdate)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_InvitationModel &&
+            other is _$InvitationModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.clubPositionID, clubPositionID) ||
                 other.clubPositionID == clubPositionID) &&
@@ -194,23 +240,30 @@ class _$_InvitationModel extends _InvitationModel {
                 other.senderID == senderID) &&
             (identical(other.recipientID, recipientID) ||
                 other.recipientID == recipientID) &&
-            (identical(other.expiry, expiry) || other.expiry == expiry));
+            (identical(other.expiry, expiry) || other.expiry == expiry) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.lastLocalUpdate, lastLocalUpdate) ||
+                other.lastLocalUpdate == lastLocalUpdate));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, clubPositionID, senderID, recipientID, expiry);
+  int get hashCode => Object.hash(runtimeType, id, clubPositionID, senderID,
+      recipientID, expiry, createdAt, updatedAt, lastLocalUpdate);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_InvitationModelCopyWith<_$_InvitationModel> get copyWith =>
-      __$$_InvitationModelCopyWithImpl<_$_InvitationModel>(this, _$identity);
+  _$$InvitationModelImplCopyWith<_$InvitationModelImpl> get copyWith =>
+      __$$InvitationModelImplCopyWithImpl<_$InvitationModelImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_InvitationModelToJson(
+    return _$$InvitationModelImplToJson(
       this,
     );
   }
@@ -222,11 +275,14 @@ abstract class _InvitationModel extends InvitationModel {
       required final String clubPositionID,
       required final String senderID,
       required final String recipientID,
-      required final DateTime expiry}) = _$_InvitationModel;
+      final DateTime? expiry,
+      final DateTime? createdAt,
+      final DateTime? updatedAt,
+      final DateTime? lastLocalUpdate}) = _$InvitationModelImpl;
   const _InvitationModel._() : super._();
 
   factory _InvitationModel.fromJson(Map<String, dynamic> json) =
-      _$_InvitationModel.fromJson;
+      _$InvitationModelImpl.fromJson;
 
   @override
   @JsonKey(name: "_id")
@@ -237,10 +293,16 @@ abstract class _InvitationModel extends InvitationModel {
   String get senderID;
   @override
   String get recipientID;
-  @override // Default to creation time + a fixed time
-  DateTime get expiry;
+  @override
+  DateTime? get expiry;
+  @override
+  DateTime? get createdAt;
+  @override
+  DateTime? get updatedAt;
+  @override
+  DateTime? get lastLocalUpdate;
   @override
   @JsonKey(ignore: true)
-  _$$_InvitationModelCopyWith<_$_InvitationModel> get copyWith =>
+  _$$InvitationModelImplCopyWith<_$InvitationModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

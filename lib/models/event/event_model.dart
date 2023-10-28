@@ -53,7 +53,6 @@ class EventModel with _$EventModel {
 }
 
 enum EventFields {
-  id,
   posterURL,
   title,
   shortDescription,

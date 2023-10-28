@@ -41,24 +41,27 @@ class ClubModel with _$ClubModel {
   /// Returns a minified data primary target being the id and name
   /// If the rest of the values are provided they are also stored in the model
   static ClubModel minifiedFromJson(Map<String, dynamic> json) {
+    String id = "";
+    if (json["_id"] is ObjectId) {
+      id = (json["_id"] as ObjectId).toHexString();
+    } else {
+      id = json["_id"];
+    }
     return ClubModel(
-      id: json[ClubFields.id.name],
+      id: id,
       name: json[ClubFields.name.name],
       instituteName: json[ClubFields.instituteName.name],
-      description: json[ClubFields.description.name] ?? "",
-      socials: json[ClubFields.socials.name] ?? {},
-      email: json[ClubFields.email.name] ?? "",
-      phoneNumber: json[ClubFields.phoneNumber.name],
-      clubLogoURL: json[ClubFields.clubLogoURL.name] ?? "",
-      clubBannerURL: json[ClubFields.clubBannerURL.name] ?? "",
-      members: json[ClubFields.members.name] ?? {},
-      followers: json[ClubFields.followers.name] ?? [],
+      description: "",
+      socials: {},
+      email: "",
+      clubLogoURL: "",
+      members: {},
+      followers: [],
     );
   }
 }
 
 enum ClubFields {
-  id,
   name,
   instituteName,
   description,

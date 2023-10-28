@@ -1,7 +1,7 @@
+import 'package:efficacy_admin/controllers/utils/comparator.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
 import 'package:efficacy_admin/utils/formatter.dart';
-import 'package:efficacy_admin/utils/local_database/constants.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
@@ -10,8 +10,10 @@ class EventController {
   const EventController._();
 
   static Future<EventModel> _save(EventModel event) async {
-    Map? events =
-        await LocalDatabase.get(LocalCollections.event, LocalDocuments.events);
+    Map? events = await LocalDatabase.get(
+      LocalCollections.event,
+      LocalDocuments.events,
+    );
     events ??= {};
     event = event.copyWith(lastLocalUpdate: DateTime.now());
     events[event.id] = event.toJson();
@@ -23,13 +25,16 @@ class EventController {
     return event;
   }
 
-  static Future<void> _delete(String id) async {
+  static Future<void> _deleteLocal(String id) async {
     Map? events =
         await LocalDatabase.get(LocalCollections.event, LocalDocuments.events);
     if (events == null || !events.containsKey(id)) return;
     events.remove(id);
     await LocalDatabase.set(
-        LocalCollections.event, LocalDocuments.events, events);
+      LocalCollections.event,
+      LocalDocuments.events,
+      events,
+    );
   }
 
   /// Assumption: (ClubID, title, startDate, endDate) combination is unique for each event
@@ -40,27 +45,17 @@ class EventController {
     );
     DbCollection collection = Database.instance.collection(_collectionName);
 
-    await collection.insert(event.toJson());
+    await collection.insertOne(event.toJson());
     SelectorBuilder selectorBuilder = SelectorBuilder();
     selectorBuilder.eq(EventFields.clubID.name, event.clubID);
     selectorBuilder.eq(EventFields.title.name, event.title);
+    selectorBuilder.eq(
+        EventFields.createdAt.name, event.createdAt!.toIso8601String());
 
-    List<Map<String, dynamic>> res =
-        await collection.find(selectorBuilder).toList();
+    Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
 
-    Map<String, dynamic>? data;
-    for (dynamic model in res) {
-      DateTime start = DateTime.parse(model[EventFields.startDate.name]);
-      DateTime end = DateTime.parse(model[EventFields.endDate.name]);
-
-      if (start.difference(event.startDate) <= const Duration(seconds: 1) &&
-          end.difference(event.endDate) <= const Duration(seconds: 1)) {
-        data = model;
-        break;
-      }
-    }
-    if (data == null) return null;
-    event = EventModel.fromJson(data);
+    if (res == null) return null;
+    event = EventModel.fromJson(res);
     event = await _save(event);
     return event;
   }
@@ -73,19 +68,23 @@ class EventController {
     selectorBuilder.eq(EventFields.clubID.name, clubID);
     if (lastChecked != null) {
       selectorBuilder.gt(
-          EventFields.updatedAt.name, lastChecked.toIso8601String());
+        EventFields.updatedAt.name,
+        lastChecked.toIso8601String(),
+      );
     }
-    selectorBuilder.fields([EventFields.id.name, EventFields.updatedAt.name]);
+    selectorBuilder.fields(["_id"]);
 
     dynamic res = await collection.findOne(selectorBuilder);
-    print([clubID, lastChecked, res]);
     return res != null;
   }
 
   /// If [forceGet] is true, the localDatabase is cleared and new data is fetched
   /// Else only the users not in database are fetched
-  static Stream<List<EventModel>> get(
-      {String? eventID, String? clubID, bool forceGet = false}) async* {
+  static Stream<List<EventModel>> get({
+    String? eventID,
+    String? clubID,
+    bool forceGet = false,
+  }) async* {
     List<EventModel> filteredEvents = [];
 
     // Local Data
@@ -96,15 +95,13 @@ class EventController {
         {};
     if (forceGet) {
       await LocalDatabase.deleteCollection(LocalCollections.event);
-      localEvents = {};
     } else {
       if (localEvents.isNotEmpty) {
-        if (localEvents.containsKey(eventID)) {
+        if (eventID != null && localEvents.containsKey(eventID)) {
           filteredEvents.add(EventModel.fromJson(
             Formatter.convertMapToMapStringDynamic(localEvents[eventID])!,
           ));
-          yield filteredEvents;
-        } else {
+        } else if (clubID != null) {
           for (dynamic key in localEvents.keys) {
             localEvents[key] =
                 Formatter.convertMapToMapStringDynamic(localEvents[key]);
@@ -113,8 +110,8 @@ class EventController {
               filteredEvents.add(EventModel.fromJson(localEvents[key]));
             }
           }
-          yield filteredEvents;
         }
+        if (filteredEvents.isNotEmpty) yield filteredEvents;
       }
     }
     // Server data
@@ -122,7 +119,7 @@ class EventController {
 
     SelectorBuilder selectorBuilder = SelectorBuilder();
     if (eventID != null) {
-      selectorBuilder.eq(EventFields.id.name, eventID);
+      selectorBuilder.eq("_id", ObjectId.parse(eventID));
     } else if (clubID != null) {
       selectorBuilder.eq(EventFields.clubID.name, clubID);
     } else {
@@ -140,25 +137,37 @@ class EventController {
 
   static Future<EventModel> update(EventModel event) async {
     event = event.copyWith(updatedAt: DateTime.now());
+
     DbCollection collection = Database.instance.collection(_collectionName);
     SelectorBuilder selectorBuilder = SelectorBuilder();
-    selectorBuilder.eq(EventFields.id.name, event.id);
-    if ((await collection.findOne(selectorBuilder)) == null) {
+
+    List<EventModel> oldData =
+        await get(eventID: event.id, forceGet: true).first;
+    if (oldData.isEmpty) {
       throw Exception("Event not found");
     }
-    await collection.updateOne(selectorBuilder, event);
+    selectorBuilder.eq("_id", ObjectId.parse(event.id!));
+    await collection.updateOne(
+      selectorBuilder,
+      compare(
+        oldData.first.toJson(),
+        event.toJson(),
+      ).map,
+    );
     event = await _save(event);
     return event;
   }
 
   static Future<void> delete(String eventID) async {
     DbCollection collection = Database.instance.collection(_collectionName);
+
     SelectorBuilder selectorBuilder = SelectorBuilder();
-    selectorBuilder.eq(EventFields.id.name, eventID);
+    selectorBuilder.eq("_id", ObjectId.parse(eventID));
+
     if ((await collection.findOne(selectorBuilder)) == null) {
       throw Exception("Event not found");
     }
     await collection.deleteOne(selectorBuilder);
-    _delete(eventID);
+    await _deleteLocal(eventID);
   }
 }

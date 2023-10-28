@@ -7,6 +7,6 @@ class InvitationController {
   // static Future<InvitationModel> _save(InvitationModel invitation) async {}
 
   static Future<InvitationModel?> create(InvitationModel invitation) async {}
-  static Stream<InvitationModel> get(String senderID) async* {}
+  static Stream<List<InvitationModel>> get(String senderID) async* {}
   static Future<void> delete(String invitationID) async {}
 }

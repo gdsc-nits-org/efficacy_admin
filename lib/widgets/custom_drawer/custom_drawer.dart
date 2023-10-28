@@ -35,11 +35,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
     //size constants
     double gap = height * 0.02;
 
+    // Get current route name
     var route = ModalRoute.of(context);
     String? routeName;
 
     if (route != null) {
-      debugPrint(route.settings.name);
+      // debugPrint(route.settings.name);
       routeName = route.settings.name;
     }
     return Drawer(

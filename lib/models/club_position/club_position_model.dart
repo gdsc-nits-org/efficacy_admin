@@ -24,4 +24,8 @@ class ClubPositionModel with _$ClubPositionModel {
   }
 }
 
-enum ClubPositionFields { id, clubID, position, lastLocalUpdate }
+enum ClubPositionFields {
+  clubID,
+  position,
+  lastLocalUpdate,
+}

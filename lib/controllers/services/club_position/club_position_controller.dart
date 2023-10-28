@@ -1,3 +1,4 @@
+import 'package:efficacy_admin/controllers/utils/comparator.dart';
 import 'package:efficacy_admin/models/club_position/club_position_model.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
 import 'package:efficacy_admin/utils/formatter.dart';
@@ -27,12 +28,14 @@ class ClubPositionController {
   static Future<ClubPositionModel?> create(
       ClubPositionModel clubPosition) async {
     DbCollection collection = Database.instance.collection(_collectionName);
-
-    await collection.insert(clubPosition.toJson());
     SelectorBuilder selectorBuilder = SelectorBuilder();
     selectorBuilder.eq(ClubPositionFields.clubID.name, clubPosition.clubID);
     selectorBuilder.eq(ClubPositionFields.position.name, clubPosition.position);
+    if (await collection.findOne(selectorBuilder) != null) {
+      throw Exception("Club already has a position with the same name");
+    }
 
+    await collection.insertOne(clubPosition.toJson());
     Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
 
     if (res == null) return null;
@@ -48,7 +51,7 @@ class ClubPositionController {
     List<ClubPositionModel> filteredClubPositions = [];
     SelectorBuilder selector = SelectorBuilder();
     if (clubPositionID != null) {
-      selector.eq(ClubPositionFields.id.name, clubPositionID);
+      selector.eq("_id", ObjectId.parse(clubPositionID));
     } else if (clubID != null) {
       selector.eq(ClubPositionFields.clubID.name, clubID);
     } else {
@@ -79,7 +82,7 @@ class ClubPositionController {
               filteredClubPositions.add(ClubPositionModel.fromJson(model));
             }
           }
-          yield filteredClubPositions;
+          if (filteredClubPositions.isNotEmpty) yield filteredClubPositions;
         }
       }
     }
@@ -94,17 +97,23 @@ class ClubPositionController {
     yield filteredClubPositions;
   }
 
-  static Future<void> update(ClubPositionModel clubPositionModel) async {
+  static Future<ClubPositionModel> update(
+      ClubPositionModel clubPositionModel) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
-    if ((await get(clubID: clubPositionModel.id, forceGet: true).first)
-        .isEmpty) {
+    List<ClubPositionModel> oldData =
+        await get(clubID: clubPositionModel.id, forceGet: true).first;
+    if (oldData.isEmpty) {
       throw Exception("Couldn't find club position");
     }
     SelectorBuilder selector = SelectorBuilder();
-    selector.eq(ClubPositionFields.id.name, clubPositionModel.id);
+    selector.eq("_id", ObjectId.parse(clubPositionModel.id!));
 
-    await collection.updateOne(selector, clubPositionModel.toJson());
+    await collection.updateOne(
+      selector,
+      compare(oldData.first.toJson(), clubPositionModel.toJson()).map,
+    );
+    return await _save(clubPositionModel);
   }
 
   /// Not implemented as the delete would required cascade event of deleting the members also

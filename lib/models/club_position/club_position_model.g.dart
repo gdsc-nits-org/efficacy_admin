@@ -33,9 +33,9 @@ Map<String, dynamic> _$$ClubPositionModelImplToJson(
     };
 
 const _$PermissionEnumMap = {
-  Permission.read: 'read',
-  Permission.modifyEvents: 'modifyEvents',
-  Permission.modifyMembers: 'modifyMembers',
-  Permission.modifyPermission: 'modifyPermission',
-  Permission.modifyPositions: 'modifyPositions',
+  Permissions.read: 'read',
+  Permissions.modifyEvents: 'modifyEvents',
+  Permissions.modifyMembers: 'modifyMembers',
+  Permissions.modifyPermission: 'modifyPermission',
+  Permissions.modifyPositions: 'modifyPositions',
 };

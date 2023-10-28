@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/pages/create_event/create_event.dart';
 import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -24,6 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Database.init();
     await LocalDatabase.init();
     await ForegroundService.init();
+    await ForegroundService.startDataSync();
     stopwatch.stop();
     return stopwatch.elapsed.inMilliseconds;
   }
@@ -36,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
       debugPrint("Time taken: $duration ms");
       Navigator.of(context)
           .pushNamedAndRemoveUntil(
-              ExperimentPage.routeName, (Route<dynamic> route) => false)
+              Homepage.routeName, (Route<dynamic> route) => false)
           .then((value) => exit(0));
     });
   }

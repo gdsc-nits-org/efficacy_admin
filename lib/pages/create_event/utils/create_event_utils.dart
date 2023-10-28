@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/pages/upload_event/widgets/custom_drop_down.dart';
+import 'package:efficacy_admin/pages/create_event/widgets/custom_drop_down.dart';
 import 'package:flutter/material.dart';
 
 Size size = 0 as Size;

@@ -21,10 +21,10 @@ class ClubModel with _$ClubModel {
     required String clubLogoURL,
     String? clubBannerURL,
 
-    /// Map<ClubPositionModelID, Member Email>
+    /// Map<ClubPositionModelID, List<Member Email>>
     /// Cannot use clubPositionModel
     /// Since it has issues with freezed (cannot make keys with custom type)
-    required Map<String, String> members,
+    required Map<String, List<String>> members,
 
     /// Follower Ids
     @Default([]) List<String> followers,

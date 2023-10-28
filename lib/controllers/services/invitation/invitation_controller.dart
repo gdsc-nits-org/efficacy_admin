@@ -1,5 +1,6 @@
-import 'dart:math';
-
+import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/models/club/club_model.dart';
+import 'package:efficacy_admin/models/club_position/club_position_model.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
 import 'package:efficacy_admin/utils/formatter.dart';
@@ -89,10 +90,14 @@ class InvitationController {
   }
 
   static Stream<List<InvitationModel>> get({
-    required String senderID,
+    String? senderID,
+    String? invitationID,
     bool forceGet = false,
   }) async* {
     List<InvitationModel> invitations = [];
+    if (senderID == null && invitationID == null) {
+      throw ArgumentError("Either Invitation or Sender ID is required");
+    }
     if (forceGet) {
       await LocalDatabase.deleteKey(
         LocalCollections.invitations,
@@ -107,14 +112,15 @@ class InvitationController {
       List<String> toDel = [];
       for (dynamic model in res.values) {
         model = Formatter.convertMapToMapStringDynamic(model);
-        if (model[InvitationFields.senderID.name] == senderID) {
-          InvitationModel invitation = InvitationModel.fromJson(model);
-          if (invitation.expiry!.millisecondsSinceEpoch <=
-              DateTime.now().millisecondsSinceEpoch) {
-            toDel.add(invitation.id!);
-          } else {
-            invitations.add(invitation);
-          }
+        InvitationModel invitation = InvitationModel.fromJson(model);
+        if (invitation.expiry!.millisecondsSinceEpoch <=
+            DateTime.now().millisecondsSinceEpoch) {
+          toDel.add(invitation.id!);
+        } else if (senderID != null && invitation.senderID == senderID) {
+          invitations.add(invitation);
+        } else if (invitationID != null && invitation.id == invitationID) {
+          invitations.add(invitation);
+          break;
         }
       }
       for (String id in toDel) {
@@ -125,7 +131,11 @@ class InvitationController {
     DbCollection collection = Database.instance.collection(_collectionName);
 
     SelectorBuilder selectorBuilder = SelectorBuilder();
-    selectorBuilder.eq(InvitationFields.senderID.name, senderID);
+    if (senderID != null) {
+      selectorBuilder.eq(InvitationFields.senderID.name, senderID);
+    } else if (invitationID != null) {
+      selectorBuilder.eq("_id", ObjectId.parse(invitationID));
+    }
 
     List<Map<String, dynamic>> res =
         await collection.find(selectorBuilder).toList();
@@ -159,10 +169,60 @@ class InvitationController {
     selector.eq("_id", ObjectId.parse(invitationID));
     if (await collection.findOne(selector) == null) {
       throw Exception(
-          "Could not find invitation. Invitation might have expired");
+        "Could not find invitation. Invitation might have expired",
+      );
     }
 
     await collection.deleteOne(selector);
     await _deleteLocal(invitationID);
+  }
+
+  static Future<void> acceptInvitation(String invitationID) async {
+    if (UserController.currentUser == null) {
+      throw Exception("Please Login");
+    }
+
+    List<InvitationModel> invitations = await get(
+      invitationID: invitationID,
+      forceGet: true,
+    ).first;
+
+    if (invitations.isEmpty) {
+      throw Exception("Invitation expired");
+    }
+    if (UserController.currentUser!.id != invitations.first.recipientID) {
+      throw Exception("Permission Denied");
+    }
+    List<ClubPositionModel> clubPosition = await ClubPositionController.get(
+      clubPositionID: invitations.first.clubPositionID,
+    ).first;
+    if (clubPosition.isEmpty) {
+      throw Exception("Invalid Club Position");
+    }
+    List<ClubModel> clubs = await ClubController.get(
+      id: clubPosition.first.clubID,
+      forceGet: true,
+    ).first;
+    if (clubs.isEmpty) {
+      throw Exception("Club not found");
+    }
+    // Accepting the invitation and updating the data
+    ClubModel club = clubs.first;
+    Map<String, List<String>> members = club.members;
+    if (!members.containsKey(clubPosition.first.id)) {
+      members[clubPosition.first.id!] = [];
+    }
+    members[clubPosition.first.id!]!.add(UserController.currentUser!.email);
+    club = club.copyWith(members: members);
+    List<String> position = UserController.currentUser!.position;
+    position.add(clubPosition.first.id!);
+    UserController.currentUser =
+        UserController.currentUser!.copyWith(position: position);
+
+    // Updating the data in the backend
+    await Future.wait([
+      ClubController.update(club),
+      UserController.update(),
+    ]);
   }
 }

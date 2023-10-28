@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'constants.dart';
+export 'constants.dart';
 
 /// The data is assumed to be either directly as a json value
 /// Or a list of json value

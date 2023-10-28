@@ -13,6 +13,7 @@ class InvitationModel with _$InvitationModel {
     required String recipientID,
     // Default to creation time + a fixed time
     required DateTime expiry,
+    DateTime? lastLocalUpdate,
   }) = _InvitationModel;
 
   factory InvitationModel.fromJson(Map<String, dynamic> json) =>
@@ -22,6 +23,8 @@ class InvitationModel with _$InvitationModel {
 enum InvitationFields {
   id,
   clubPositionID,
+  senderID,
   recipientID,
   expiry,
+  lastLocalUpdate,
 }

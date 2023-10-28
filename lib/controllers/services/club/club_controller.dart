@@ -52,7 +52,7 @@ class ClubController {
   static Future<ClubModel?> update(ClubModel club) async {
     DbCollection collection = Database.instance.collection(_collectionName);
     SelectorBuilder selectorBuilder = SelectorBuilder();
-    selectorBuilder.eq(ClubFields.id.name, club.id);
+    selectorBuilder.eq("_${ClubFields.id.name}", club.id);
 
     if (club.id == null || await collection.findOne(selectorBuilder) == null) {
       throw Exception("Couldn't find club");

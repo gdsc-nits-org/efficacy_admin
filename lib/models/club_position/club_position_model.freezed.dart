@@ -92,11 +92,11 @@ class _$ClubPositionModelCopyWithImpl<$Res, $Val extends ClubPositionModel>
 }
 
 /// @nodoc
-abstract class _$$_ClubPositionModelCopyWith<$Res>
+abstract class _$$ClubPositionModelImplCopyWith<$Res>
     implements $ClubPositionModelCopyWith<$Res> {
-  factory _$$_ClubPositionModelCopyWith(_$_ClubPositionModel value,
-          $Res Function(_$_ClubPositionModel) then) =
-      __$$_ClubPositionModelCopyWithImpl<$Res>;
+  factory _$$ClubPositionModelImplCopyWith(_$ClubPositionModelImpl value,
+          $Res Function(_$ClubPositionModelImpl) then) =
+      __$$ClubPositionModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -108,11 +108,11 @@ abstract class _$$_ClubPositionModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ClubPositionModelCopyWithImpl<$Res>
-    extends _$ClubPositionModelCopyWithImpl<$Res, _$_ClubPositionModel>
-    implements _$$_ClubPositionModelCopyWith<$Res> {
-  __$$_ClubPositionModelCopyWithImpl(
-      _$_ClubPositionModel _value, $Res Function(_$_ClubPositionModel) _then)
+class __$$ClubPositionModelImplCopyWithImpl<$Res>
+    extends _$ClubPositionModelCopyWithImpl<$Res, _$ClubPositionModelImpl>
+    implements _$$ClubPositionModelImplCopyWith<$Res> {
+  __$$ClubPositionModelImplCopyWithImpl(_$ClubPositionModelImpl _value,
+      $Res Function(_$ClubPositionModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -124,7 +124,7 @@ class __$$_ClubPositionModelCopyWithImpl<$Res>
     Object? lastLocalUpdate = freezed,
     Object? permissions = null,
   }) {
-    return _then(_$_ClubPositionModel(
+    return _then(_$ClubPositionModelImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -151,8 +151,8 @@ class __$$_ClubPositionModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ClubPositionModel implements _ClubPositionModel {
-  const _$_ClubPositionModel(
+class _$ClubPositionModelImpl implements _ClubPositionModel {
+  const _$ClubPositionModelImpl(
       {@JsonKey(name: '_id') this.id,
       required this.clubID,
       required this.position,
@@ -160,8 +160,8 @@ class _$_ClubPositionModel implements _ClubPositionModel {
       final List<Permission> permissions = const []})
       : _permissions = permissions;
 
-  factory _$_ClubPositionModel.fromJson(Map<String, dynamic> json) =>
-      _$$_ClubPositionModelFromJson(json);
+  factory _$ClubPositionModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ClubPositionModelImplFromJson(json);
 
   @override
   @JsonKey(name: '_id')
@@ -190,7 +190,7 @@ class _$_ClubPositionModel implements _ClubPositionModel {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ClubPositionModel &&
+            other is _$ClubPositionModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.clubID, clubID) || other.clubID == clubID) &&
             (identical(other.position, position) ||
@@ -209,13 +209,13 @@ class _$_ClubPositionModel implements _ClubPositionModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ClubPositionModelCopyWith<_$_ClubPositionModel> get copyWith =>
-      __$$_ClubPositionModelCopyWithImpl<_$_ClubPositionModel>(
+  _$$ClubPositionModelImplCopyWith<_$ClubPositionModelImpl> get copyWith =>
+      __$$ClubPositionModelImplCopyWithImpl<_$ClubPositionModelImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ClubPositionModelToJson(
+    return _$$ClubPositionModelImplToJson(
       this,
     );
   }
@@ -227,10 +227,10 @@ abstract class _ClubPositionModel implements ClubPositionModel {
       required final String clubID,
       required final String position,
       final DateTime? lastLocalUpdate,
-      final List<Permission> permissions}) = _$_ClubPositionModel;
+      final List<Permission> permissions}) = _$ClubPositionModelImpl;
 
   factory _ClubPositionModel.fromJson(Map<String, dynamic> json) =
-      _$_ClubPositionModel.fromJson;
+      _$ClubPositionModelImpl.fromJson;
 
   @override
   @JsonKey(name: '_id')
@@ -245,6 +245,6 @@ abstract class _ClubPositionModel implements ClubPositionModel {
   List<Permission> get permissions;
   @override
   @JsonKey(ignore: true)
-  _$$_ClubPositionModelCopyWith<_$_ClubPositionModel> get copyWith =>
+  _$$ClubPositionModelImplCopyWith<_$ClubPositionModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

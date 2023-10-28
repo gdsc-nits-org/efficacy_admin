@@ -23,7 +23,7 @@ class EventController {
     return event;
   }
 
-  static Future<void> _delete(String id) async {
+  static Future<void> _deleteLocal(String id) async {
     Map? events =
         await LocalDatabase.get(LocalCollections.event, LocalDocuments.events);
     if (events == null || !events.containsKey(id)) return;
@@ -154,11 +154,11 @@ class EventController {
   static Future<void> delete(String eventID) async {
     DbCollection collection = Database.instance.collection(_collectionName);
     SelectorBuilder selectorBuilder = SelectorBuilder();
-    selectorBuilder.eq(EventFields.id.name, eventID);
+    selectorBuilder.eq("_${EventFields.id.name}", eventID);
     if ((await collection.findOne(selectorBuilder)) == null) {
       throw Exception("Event not found");
     }
     await collection.deleteOne(selectorBuilder);
-    _delete(eventID);
+    await _deleteLocal(eventID);
   }
 }

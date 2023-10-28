@@ -12,7 +12,7 @@ class UserModel with _$UserModel {
     @JsonKey(name: '_id') String? id,
     required String name,
     @PhoneNumberSerializer() PhoneNumber? phoneNumber,
-    required String password,
+    String? password,
     required String email,
     required String scholarID,
     String? userPhoto,

@@ -6,12 +6,13 @@ part of 'user_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
+_$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
+    _$UserModelImpl(
       id: json['_id'] as String?,
       name: json['name'] as String,
       phoneNumber: const PhoneNumberSerializer()
           .fromJson(json['phoneNumber'] as Map<String, String?>?),
-      password: json['password'] as String,
+      password: json['password'] as String?,
       email: json['email'] as String,
       scholarID: json['scholarID'] as String,
       userPhoto: json['userPhoto'] as String?,
@@ -30,7 +31,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
           : DateTime.parse(json['lastLocalUpdate'] as String),
     );
 
-Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
+Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
     <String, dynamic>{
       '_id': instance.id,
       'name': instance.name,

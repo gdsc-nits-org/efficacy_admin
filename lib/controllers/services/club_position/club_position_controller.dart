@@ -2,7 +2,6 @@ import 'package:efficacy_admin/controllers/utils/comparator.dart';
 import 'package:efficacy_admin/models/club_position/club_position_model.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
 import 'package:efficacy_admin/utils/formatter.dart';
-import 'package:efficacy_admin/utils/local_database/constants.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
@@ -101,8 +100,10 @@ class ClubPositionController {
       ClubPositionModel clubPositionModel) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
-    List<ClubPositionModel> oldData =
-        await get(clubID: clubPositionModel.id, forceGet: true).first;
+    List<ClubPositionModel> oldData = await get(
+      clubPositionID: clubPositionModel.id,
+      forceGet: true,
+    ).first;
     if (oldData.isEmpty) {
       throw Exception("Couldn't find club position");
     }

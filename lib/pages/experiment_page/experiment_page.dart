@@ -28,27 +28,7 @@ class _ExperimentPageState extends State<ExperimentPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () async {
-                // print(
-                //   await EventController.update(
-                //     EventModel(
-                //         id: "65361cfbf5e24f5fef303b10",
-                //         posterURL: "posterURL",
-                //         title: "title",
-                //         shortDescription: "shortDescription",
-                //         startDate: DateTime.now(),
-                //         endDate: DateTime.now().add(Duration(days: 2)),
-                //         registrationLink: "registrationLink",
-                //         venue: "venue",
-                //         contacts: [],
-                //         clubID: "clubID"),
-                //   ),
-                // );
-                // EventController.get(clubID: "clubID", forceGet: true)
-                //     .listen((event) {
-                //   print(event.length);
-                // });
-              },
+              onPressed: () async {},
               child: const Text("Task 1"),
             ),
             ElevatedButton(

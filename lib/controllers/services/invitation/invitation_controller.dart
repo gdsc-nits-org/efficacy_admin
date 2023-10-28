@@ -19,7 +19,7 @@ class InvitationController {
     await LocalDatabase.set(
       LocalCollections.invitations,
       LocalDocuments.invitations,
-      invitation,
+      invitations,
     );
     return invitation;
   }
@@ -45,7 +45,7 @@ class InvitationController {
     if (await collection.findOne(selectorBuilder) != null) {
       throw Exception("Recipient is already invited for the provided position");
     }
-    await collection.insert(invitation.toJson());
+    await collection.insertOne(invitation.toJson());
     Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
 
     if (res == null) return null;
@@ -59,9 +59,6 @@ class InvitationController {
     bool forceGet = false,
   }) async* {
     List<InvitationModel> invitations = [];
-    SelectorBuilder selectorBuilder = SelectorBuilder();
-    selectorBuilder.eq(InvitationFields.id.name, senderID);
-
     if (forceGet) {
       await LocalDatabase.deleteKey(
         LocalCollections.invitations,
@@ -75,7 +72,7 @@ class InvitationController {
       if (res != null) {
         for (dynamic model in res.values) {
           model = Formatter.convertMapToMapStringDynamic(model);
-          if (model[InvitationFields.id.name] == senderID) {
+          if (model["_id"] == senderID) {
             invitations.add(InvitationModel.fromJson(model));
           }
         }
@@ -83,6 +80,9 @@ class InvitationController {
       }
     }
     DbCollection collection = Database.instance.collection(_collectionName);
+
+    SelectorBuilder selectorBuilder = SelectorBuilder();
+    selectorBuilder.eq("_id", senderID);
 
     List<Map<String, dynamic>> res =
         await collection.find(selectorBuilder).toList();
@@ -97,6 +97,20 @@ class InvitationController {
     throw UnimplementedError();
   }
 
+  static Future<void> delete(String invitationID) async {
+    DbCollection collection = Database.instance.collection(_collectionName);
+
+    SelectorBuilder selector = SelectorBuilder();
+    selector.eq("_id", invitationID);
+    if (await collection.findOne(selector) == null) {
+      throw Exception(
+          "Could not find invitation. Invitation might have expired");
+    }
+
+    await collection.deleteOne(selector);
+    await _deleteLocal(invitationID);
+  }
+
   static Future<void> _deleteLocal(String id) async {
     Map? invitations = await LocalDatabase.get(
       LocalCollections.invitations,
@@ -109,18 +123,5 @@ class InvitationController {
       LocalDocuments.invitations,
       invitations,
     );
-  }
-
-  static Future<void> delete(String invitationID) async {
-    DbCollection collection = Database.instance.collection(_collectionName);
-    SelectorBuilder selector = SelectorBuilder();
-    selector.eq(InvitationFields.id.name, invitationID);
-    if (await collection.findOne(selector) == null) {
-      throw Exception(
-          "Could not find invitation. Invitation might have expired");
-    }
-
-    await collection.deleteOne(selector);
-    await _deleteLocal(invitationID);
   }
 }

@@ -21,7 +21,6 @@ class InvitationModel with _$InvitationModel {
 }
 
 enum InvitationFields {
-  id,
   clubPositionID,
   senderID,
   recipientID,

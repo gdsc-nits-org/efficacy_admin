@@ -1,6 +1,6 @@
 part of '../user_controller.dart';
 
-Future<UserModel?> loginImpl({
+Future<UserModel?> _loginImpl({
   required String email,
   required String password,
 }) async {

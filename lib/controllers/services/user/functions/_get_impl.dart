@@ -1,6 +1,6 @@
 part of '../user_controller.dart';
 
-Stream<List<UserModel>> getImpl({
+Stream<List<UserModel>> _getImpl({
   String? email,
   String? nameStartsWith,
   bool keepPassword = false,

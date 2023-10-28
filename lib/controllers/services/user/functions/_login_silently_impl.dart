@@ -1,6 +1,6 @@
 part of '../user_controller.dart';
 
-Stream<UserModel?> loginSilentlyImpl() async* {
+Stream<UserModel?> _loginSilentlyImpl() async* {
   dynamic userData = await LocalDatabase.get(
     LocalCollections.user,
     LocalDocuments.currentUser,

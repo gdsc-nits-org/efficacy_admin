@@ -1,6 +1,6 @@
 part of '../user_controller.dart';
 
-Future<void> deleteImpl() async {
+Future<void> _deleteImpl() async {
   DbCollection collection =
       Database.instance.collection(UserController._collectionName);
 

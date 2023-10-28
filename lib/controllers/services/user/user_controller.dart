@@ -9,12 +9,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 part 'functions/_save_impl.dart';
-part 'functions/create_impl.dart';
-part 'functions/login_impl.dart';
-part 'functions/login_silently_impl.dart';
-part 'functions/get_impl.dart';
-part 'functions/update_impl.dart';
-part 'functions/delete_impl.dart';
+part 'functions/_create_impl.dart';
+part 'functions/_login_impl.dart';
+part 'functions/_login_silently_impl.dart';
+part 'functions/_get_impl.dart';
+part 'functions/_update_impl.dart';
+part 'functions/_delete_impl.dart';
 
 class UserController {
   static const String _collectionName = "users";
@@ -46,7 +46,7 @@ class UserController {
   /// Stores the value in local database
   /// Stores the value in currentUser field
   static Future<UserModel?> create(UserModel user) async {
-    return await createImpl(user);
+    return await _createImpl(user);
   }
 
   /// Logs in the user
@@ -59,7 +59,7 @@ class UserController {
     required String email,
     required String password,
   }) async {
-    return await loginImpl(
+    return await _loginImpl(
       email: email,
       password: password,
     );
@@ -70,7 +70,7 @@ class UserController {
   ///   * Returns the UserModel if exists
   ///   * Stores the user data in currentUser
   static Stream<UserModel?> loginSilently() {
-    return loginSilentlyImpl();
+    return _loginSilentlyImpl();
   }
 
   /// Fetches a  user from the provided email
@@ -85,7 +85,7 @@ class UserController {
     bool keepPassword = false,
     bool forceGet = false,
   }) {
-    return getImpl(
+    return _getImpl(
       email: email,
       nameStartsWith: nameStartsWith,
       keepPassword: keepPassword,
@@ -98,12 +98,12 @@ class UserController {
   ///
   /// It updates the data of the currentUser
   static Future<UserModel?> update() async {
-    return await updateImpl();
+    return await _updateImpl();
   }
 
   /// Deletes the user if exists from both local database and server
   static Future<void> delete() async {
-    return await deleteImpl();
+    return await _deleteImpl();
   }
 
   static Future<void> logOut() async {

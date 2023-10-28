@@ -1,6 +1,6 @@
 part of '../user_controller.dart';
 
-Future<UserModel?> updateImpl() async {
+Future<UserModel?> _updateImpl() async {
   if (UserController.currentUser == null) {
     throw Exception("Please Login");
   }

@@ -1,6 +1,6 @@
 part of '../user_controller.dart';
 
-Future<UserModel?> createImpl(UserModel user) async {
+Future<UserModel?> _createImpl(UserModel user) async {
   DbCollection collection =
       Database.instance.collection(UserController._collectionName);
 

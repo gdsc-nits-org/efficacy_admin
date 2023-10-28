@@ -28,7 +28,20 @@ class _ExperimentPageState extends State<ExperimentPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () async {},
+              onPressed: () async {
+                print(
+                  await ClubController.create(
+                    const ClubModel(
+                      name: "name",
+                      instituteName: "instituteName",
+                      description: "description",
+                      email: "email",
+                      clubLogoURL: "clubLogoURL",
+                      members: {},
+                    ),
+                  ),
+                );
+              },
               child: const Text("Task 1"),
             ),
             ElevatedButton(

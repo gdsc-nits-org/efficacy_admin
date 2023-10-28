@@ -42,7 +42,7 @@ class ClubModel with _$ClubModel {
   /// If the rest of the values are provided they are also stored in the model
   static ClubModel minifiedFromJson(Map<String, dynamic> json) {
     return ClubModel(
-      id: json[ClubFields.id.name],
+      id: json["_id"],
       name: json[ClubFields.name.name],
       instituteName: json[ClubFields.instituteName.name],
       description: json[ClubFields.description.name] ?? "",
@@ -58,7 +58,6 @@ class ClubModel with _$ClubModel {
 }
 
 enum ClubFields {
-  id,
   name,
   instituteName,
   description,

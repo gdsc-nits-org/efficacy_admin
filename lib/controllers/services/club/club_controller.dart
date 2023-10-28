@@ -1,7 +1,7 @@
+import 'package:efficacy_admin/controllers/utils/comparator.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
 import 'package:efficacy_admin/utils/formatter.dart';
-import 'package:efficacy_admin/utils/local_database/constants.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
@@ -40,7 +40,7 @@ class ClubController {
     if (await collection.findOne(selectorBuilder) != null) {
       throw Exception("Club with same name exists at ${club.instituteName}");
     }
-    await collection.insert(club.toJson());
+    await collection.insertOne(club.toJson());
     Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
 
     if (res == null) return null;
@@ -51,13 +51,21 @@ class ClubController {
 
   static Future<ClubModel?> update(ClubModel club) async {
     DbCollection collection = Database.instance.collection(_collectionName);
+    if (club.id == null) {
+      throw Exception("Couldn't find club");
+    }
     SelectorBuilder selectorBuilder = SelectorBuilder();
-    selectorBuilder.eq("_${ClubFields.id.name}", club.id);
+    selectorBuilder.eq("_id", ObjectId.parse(club.id!));
 
-    if (club.id == null || await collection.findOne(selectorBuilder) == null) {
+    List<ClubModel> oldData = await get(id: club.id, forceGet: true).first;
+
+    if (oldData.isEmpty) {
       throw Exception("Couldn't find club");
     } else {
-      await collection.update(selectorBuilder, club.toJson());
+      await collection.update(
+        selectorBuilder,
+        compare(oldData.first.toJson(), club.toJson()).map,
+      );
       club = await _save(club);
       return club;
     }
@@ -73,7 +81,7 @@ class ClubController {
     List<ClubModel> filteredClubs = [];
     SelectorBuilder selectorBuilder = SelectorBuilder();
     if (id != null) {
-      selectorBuilder.eq(ClubFields.id.name, id);
+      selectorBuilder.eq("_id", ObjectId.parse(id));
     }
     if (instituteName != null) {
       selectorBuilder.eq(ClubFields.instituteName.name, instituteName);
@@ -94,9 +102,7 @@ class ClubController {
       if (res != null) {
         for (dynamic model in res.values) {
           model = Formatter.convertMapToMapStringDynamic(model);
-          if (id != null &&
-              model[ClubFields.id.name] == id &&
-              !_isMinified(model)) {
+          if (id != null && model["_id"] == id && !_isMinified(model)) {
             filteredClubs.add(ClubModel.fromJson(model));
             break;
           } else if (instituteName != null &&
@@ -135,7 +141,7 @@ class ClubController {
     }
     DbCollection collection = Database.instance.collection(_collectionName);
     SelectorBuilder selectorBuilder = SelectorBuilder();
-    selectorBuilder.eq(ClubFields.id.name, id);
+    selectorBuilder.eq("_id", id);
     selectorBuilder.fields([ClubFields.name.name]);
 
     res = await collection.findOne(selectorBuilder);
@@ -176,7 +182,7 @@ class ClubController {
     SelectorBuilder selectorBuilder = SelectorBuilder();
     if (minified) {
       selectorBuilder.fields([
-        ClubFields.id.name,
+        "_id",
         ClubFields.name.name,
         ClubFields.instituteName.name,
       ]);

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
 import 'package:efficacy_admin/utils/formatter.dart';
@@ -24,14 +26,29 @@ class InvitationController {
     return invitation;
   }
 
+  static Future<void> _deleteLocal(String id) async {
+    Map? invitations = await LocalDatabase.get(
+      LocalCollections.invitations,
+      LocalDocuments.invitations,
+    );
+    if (invitations == null || !invitations.containsKey(id)) return;
+    invitations.remove(id);
+    await LocalDatabase.set(
+      LocalCollections.invitations,
+      LocalDocuments.invitations,
+      invitations,
+    );
+  }
+
   static Future<InvitationModel?> create(InvitationModel invitation) async {
     DbCollection collection = Database.instance.collection(_collectionName);
-    await Database.instance.createCollection(
-      _collectionName,
-      rawOptions: {
-        "expireAfterSeconds": 60 * 60 * 24 * 7, // 7 Days
-      },
+    Duration expiryDuration = const Duration(seconds: 1);
+
+    DateTime now = DateTime.now();
+    invitation = invitation.copyWith(
+      expiry: now.add(expiryDuration),
     );
+
     SelectorBuilder selectorBuilder = SelectorBuilder();
     selectorBuilder.eq(
       InvitationFields.clubPositionID.name,
@@ -65,32 +82,53 @@ class InvitationController {
         LocalDocuments.invitations,
       );
     } else {
-      Map? res = await LocalDatabase.get(
-        LocalCollections.invitations,
-        LocalDocuments.invitations,
-      );
-      if (res != null) {
-        for (dynamic model in res.values) {
-          model = Formatter.convertMapToMapStringDynamic(model);
-          if (model["_id"] == senderID) {
-            invitations.add(InvitationModel.fromJson(model));
+      Map res = await LocalDatabase.get(
+            LocalCollections.invitations,
+            LocalDocuments.invitations,
+          ) ??
+          {};
+      List<String> toDel = [];
+      for (dynamic model in res.values) {
+        model = Formatter.convertMapToMapStringDynamic(model);
+        if (model[InvitationFields.senderID.name] == senderID) {
+          InvitationModel invitation = InvitationModel.fromJson(model);
+          if (invitation.expiry!.millisecondsSinceEpoch <=
+              DateTime.now().millisecondsSinceEpoch) {
+            toDel.add(invitation.id!);
+          } else {
+            invitations.add(invitation);
           }
         }
-        yield invitations;
       }
+      for (String id in toDel) {
+        await _deleteLocal(id);
+      }
+      if (invitations.isNotEmpty) yield invitations;
     }
     DbCollection collection = Database.instance.collection(_collectionName);
 
     SelectorBuilder selectorBuilder = SelectorBuilder();
-    selectorBuilder.eq("_id", senderID);
+    selectorBuilder.eq(InvitationFields.senderID.name, senderID);
 
     List<Map<String, dynamic>> res =
         await collection.find(selectorBuilder).toList();
     invitations = res.map((model) => InvitationModel.fromJson(model)).toList();
+    List<String> toDel = [];
+    List<InvitationModel> filtered = [];
     for (int i = 0; i < invitations.length; i++) {
-      invitations[i] = await _save(invitations[i]);
+      if (invitations[i].expiry!.millisecondsSinceEpoch <=
+          DateTime.now().millisecondsSinceEpoch) {
+        toDel.add(invitations[i].id!);
+      } else {
+        filtered.add(await _save(invitations[i]));
+      }
     }
-    yield invitations;
+
+    selectorBuilder = SelectorBuilder();
+    selectorBuilder.nin("_id", toDel);
+    await collection.deleteMany(selectorBuilder);
+
+    yield filtered;
   }
 
   static Future<InvitationModel?> update(InvitationModel invitation) async {
@@ -109,19 +147,5 @@ class InvitationController {
 
     await collection.deleteOne(selector);
     await _deleteLocal(invitationID);
-  }
-
-  static Future<void> _deleteLocal(String id) async {
-    Map? invitations = await LocalDatabase.get(
-      LocalCollections.invitations,
-      LocalDocuments.invitations,
-    );
-    if (invitations == null || !invitations.containsKey(id)) return;
-    invitations.remove(id);
-    await LocalDatabase.set(
-      LocalCollections.invitations,
-      LocalDocuments.invitations,
-      invitations,
-    );
   }
 }

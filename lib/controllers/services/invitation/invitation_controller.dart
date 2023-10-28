@@ -40,8 +40,28 @@ class InvitationController {
     );
   }
 
+  static Future<void> _checkDuplicate(InvitationModel invitation) async {
+    DbCollection collection = Database.instance.collection(_collectionName);
+
+    SelectorBuilder selectorBuilder = SelectorBuilder();
+    selectorBuilder.eq(
+      InvitationFields.clubPositionID.name,
+      invitation.clubPositionID,
+    );
+    selectorBuilder.eq(
+      InvitationFields.recipientID.name,
+      invitation.recipientID,
+    );
+
+    if (await collection.findOne(selectorBuilder) != null) {
+      throw Exception("Recipient is already invited for the provided position");
+    }
+  }
+
   static Future<InvitationModel?> create(InvitationModel invitation) async {
     DbCollection collection = Database.instance.collection(_collectionName);
+    await _checkDuplicate(invitation);
+
     Duration expiryDuration = const Duration(seconds: 1);
 
     DateTime now = DateTime.now();
@@ -59,9 +79,6 @@ class InvitationController {
       invitation.recipientID,
     );
 
-    if (await collection.findOne(selectorBuilder) != null) {
-      throw Exception("Recipient is already invited for the provided position");
-    }
     await collection.insertOne(invitation.toJson());
     Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
 
@@ -125,7 +142,7 @@ class InvitationController {
     }
 
     selectorBuilder = SelectorBuilder();
-    selectorBuilder.nin("_id", toDel);
+    selectorBuilder.all("_id", toDel);
     await collection.deleteMany(selectorBuilder);
 
     yield filtered;

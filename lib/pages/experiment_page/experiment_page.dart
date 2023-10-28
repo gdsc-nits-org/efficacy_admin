@@ -29,18 +29,19 @@ class _ExperimentPageState extends State<ExperimentPage> {
           children: [
             ElevatedButton(
               onPressed: () async {
-                print(
-                  await ClubController.create(
-                    const ClubModel(
-                      name: "name",
-                      instituteName: "instituteName",
-                      description: "description",
-                      email: "email",
-                      clubLogoURL: "clubLogoURL",
-                      members: {},
-                    ),
-                  ),
-                );
+                // print(
+                //   await ClubController.update(
+                //     const ClubModel(
+                //       id: "653d0552e696c108109aeb0a",
+                //       name: "name4",
+                //       instituteName: "instituteName",
+                //       description: "description",
+                //       email: "email",
+                //       clubLogoURL: "clubLogoURL",
+                //       members: {},
+                //     ),
+                //   ),
+                // );
               },
               child: const Text("Task 1"),
             ),

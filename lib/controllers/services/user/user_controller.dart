@@ -49,6 +49,14 @@ class UserController {
     return user.copyWith(password: null);
   }
 
+  /// Checks for duplicate values
+  /// If found throws error
+  static Future<void> _checkDuplicate(UserModel user) async {
+    if ((await get(email: user.email, forceGet: true).first).isNotEmpty) {
+      throw Exception("User exists with the provided email. Please Log in");
+    }
+  }
+
   /// Crates a user
   ///  * If user exists throws exception
   ///  * Hashes the password
@@ -59,10 +67,7 @@ class UserController {
   static Future<UserModel?> create(UserModel user) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
-    if ((await get(email: user.email, forceGet: true).first).isNotEmpty) {
-      throw Exception("User exists with the provided email. Please Log in");
-    }
-
+    await _checkDuplicate(user);
     if (user.password == null || user.password!.isEmpty) {
       throw Exception("Password cannot be empty");
     } else {
@@ -220,27 +225,32 @@ class UserController {
   /// Updates the user data if exists in the database
   /// and stores it in the local database
   ///
-  /// Current user is not set as the update might not be necessarily of the current user
-  static Future<UserModel?> update(UserModel user) async {
+  /// It updates the data of the currentUser
+  static Future<UserModel?> update() async {
+    if (currentUser == null) {
+      throw Exception("Please Login");
+    }
     DbCollection collection = Database.instance.collection(_collectionName);
 
-    List<UserModel> oldData =
-        await get(email: user.email, forceGet: true).first;
+    List<UserModel> oldData = await get(
+      email: currentUser!.email,
+      forceGet: true,
+    ).first;
     if (oldData.isEmpty) {
       throw Exception("Couldn't find user");
     } else {
       SelectorBuilder selectorBuilder = SelectorBuilder();
-      selectorBuilder.eq(UserFields.email.name, user.email);
+      selectorBuilder.eq(UserFields.email.name, currentUser!.email);
       await collection.updateOne(
         selectorBuilder,
         compare(
           oldData.first.toJson(),
-          user.toJson(),
-          ignore: [UserFields.password.name],
+          currentUser!.toJson(),
+          ignore: [UserFields.password.name, UserFields.email.name],
         ).map,
       );
-      user = (await _save(user: user))!;
-      return user;
+      currentUser = (await _save(user: currentUser))!;
+      return currentUser;
     }
   }
 

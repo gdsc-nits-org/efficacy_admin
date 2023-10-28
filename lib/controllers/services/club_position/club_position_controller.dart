@@ -23,9 +23,7 @@ class ClubPositionController {
     return position;
   }
 
-  /// Assumption: Combination of clubID and position is unique
-  static Future<ClubPositionModel?> create(
-      ClubPositionModel clubPosition) async {
+  static Future<void> _checkDuplicate(ClubPositionModel clubPosition) async {
     DbCollection collection = Database.instance.collection(_collectionName);
     SelectorBuilder selectorBuilder = SelectorBuilder();
     selectorBuilder.eq(ClubPositionFields.clubID.name, clubPosition.clubID);
@@ -33,7 +31,17 @@ class ClubPositionController {
     if (await collection.findOne(selectorBuilder) != null) {
       throw Exception("Club already has a position with the same name");
     }
+  }
 
+  /// Assumption: Combination of clubID and position is unique
+  static Future<ClubPositionModel?> create(
+      ClubPositionModel clubPosition) async {
+    DbCollection collection = Database.instance.collection(_collectionName);
+    SelectorBuilder selectorBuilder = SelectorBuilder();
+    selectorBuilder.eq(ClubPositionFields.clubID.name, clubPosition.clubID);
+    selectorBuilder.eq(ClubPositionFields.position.name, clubPosition.position);
+
+    await _checkDuplicate(clubPosition);
     await collection.insertOne(clubPosition.toJson());
     Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
 
@@ -98,6 +106,8 @@ class ClubPositionController {
 
   static Future<ClubPositionModel> update(
       ClubPositionModel clubPositionModel) async {
+    // Since the only editable field is position name its check is necessary
+    await _checkDuplicate(clubPositionModel);
     DbCollection collection = Database.instance.collection(_collectionName);
 
     List<ClubPositionModel> oldData = await get(
@@ -112,7 +122,11 @@ class ClubPositionController {
 
     await collection.updateOne(
       selector,
-      compare(oldData.first.toJson(), clubPositionModel.toJson()).map,
+      compare(
+        oldData.first.toJson(),
+        clubPositionModel.toJson(),
+        ignore: [ClubPositionFields.clubID.name],
+      ).map,
     );
     return await _save(clubPositionModel);
   }

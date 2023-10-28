@@ -29,8 +29,7 @@ class ClubController {
     return json[ClubFields.email.name] == null;
   }
 
-  /// Combination of clubName and institute name must be unique
-  static Future<ClubModel?> create(ClubModel club) async {
+  static Future<void> _checkDuplicate(ClubModel club) async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
     SelectorBuilder selectorBuilder = SelectorBuilder();
@@ -40,6 +39,17 @@ class ClubController {
     if (await collection.findOne(selectorBuilder) != null) {
       throw Exception("Club with same name exists at ${club.instituteName}");
     }
+  }
+
+  /// Combination of clubName and institute name must be unique
+  static Future<ClubModel?> create(ClubModel club) async {
+    DbCollection collection = Database.instance.collection(_collectionName);
+
+    SelectorBuilder selectorBuilder = SelectorBuilder();
+    selectorBuilder.eq(ClubFields.instituteName.name, club.instituteName);
+    selectorBuilder.eq(ClubFields.name.name, club.name);
+
+    await _checkDuplicate(club);
     await collection.insertOne(club.toJson());
     Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
 
@@ -62,9 +72,16 @@ class ClubController {
     if (oldData.isEmpty) {
       throw Exception("Couldn't find club");
     } else {
+      if (oldData.first.instituteName != club.instituteName ||
+          oldData.first.name != club.name) {
+        await _checkDuplicate(club);
+      }
       await collection.update(
         selectorBuilder,
-        compare(oldData.first.toJson(), club.toJson()).map,
+        compare(
+          oldData.first.toJson(),
+          club.toJson(),
+        ).map,
       );
       club = await _save(club);
       return club;
@@ -132,21 +149,27 @@ class ClubController {
 
   /// For a given id returns only the name
   static Stream<String?> getName(String id) async* {
-    Map<String, dynamic>? res =
+    Map? res =
         await LocalDatabase.get(LocalCollections.club, LocalDocuments.clubs);
     if (res != null) {
+      res = Formatter.convertMapToMapStringDynamic(res)!;
       if (res.containsKey(id)) {
         yield res[id][ClubFields.name.name] as String?;
       }
     }
     DbCollection collection = Database.instance.collection(_collectionName);
     SelectorBuilder selectorBuilder = SelectorBuilder();
-    selectorBuilder.eq("_id", id);
-    selectorBuilder.fields([ClubFields.name.name]);
+    selectorBuilder.eq("_id", ObjectId.parse(id));
+    selectorBuilder.fields([
+      ClubFields.name.name,
+      ClubFields.instituteName.name,
+    ]);
 
     res = await collection.findOne(selectorBuilder);
     if (res != null) {
-      ClubModel minified = await _save(ClubModel.minifiedFromJson(res));
+      ClubModel minified = await _save(ClubModel.minifiedFromJson(
+        Formatter.convertMapToMapStringDynamic(res)!,
+      ));
       yield minified.name;
     }
     yield null;
@@ -158,20 +181,29 @@ class ClubController {
 
   /// In minified only the club id, name and institute name is returned
   /// Recommended to use minified
-  static Stream<List<ClubModel>> listAllClubs(List<String> instituteName,
-      {bool minified = true}) async* {
+  static Stream<List<ClubModel>> listAllClubs(
+      {List<String> instituteName = const [], bool minified = true}) async* {
     List<ClubModel> filteredClubs = [];
-    Map<String, dynamic>? res =
+    Map? res =
         await LocalDatabase.get(LocalCollections.club, LocalDocuments.clubs);
     if (res != null) {
+      res = Formatter.convertMapToMapStringDynamic(res)!;
       if (minified == true) {
         for (dynamic model in res.values) {
-          filteredClubs.add(ClubModel.minifiedFromJson(model));
+          ClubModel clubModel = ClubModel.minifiedFromJson(model);
+          if (instituteName.isEmpty ||
+              instituteName.contains(clubModel.instituteName)) {
+            filteredClubs.add(clubModel);
+          }
         }
       } else {
         for (dynamic model in res.values) {
           if (!_isMinified(model)) {
-            filteredClubs.add(ClubModel.fromJson(model));
+            ClubModel clubModel = ClubModel.minifiedFromJson(model);
+            if (instituteName.isEmpty ||
+                instituteName.contains(clubModel.instituteName)) {
+              filteredClubs.add(clubModel);
+            }
           }
         }
       }
@@ -189,14 +221,16 @@ class ClubController {
     }
 
     if (instituteName.isNotEmpty) {
-      selectorBuilder.nin(ClubFields.instituteName.name, instituteName);
+      selectorBuilder.all(ClubFields.instituteName.name, instituteName);
     }
 
     List<Map<String, dynamic>> listResponse =
         await collection.find(selectorBuilder).toList();
     filteredClubs = [];
     for (Map<String, dynamic> val in listResponse) {
-      filteredClubs.add(ClubModel.minifiedFromJson(val));
+      ClubModel clubModel = ClubModel.minifiedFromJson(val);
+      clubModel = await _save(clubModel);
+      filteredClubs.add(clubModel);
     }
     yield filteredClubs;
   }

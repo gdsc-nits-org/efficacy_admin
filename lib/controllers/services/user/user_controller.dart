@@ -61,7 +61,9 @@ class UserController {
 
     if ((await get(email: user.email, forceGet: true).first).isNotEmpty) {
       throw Exception("User exists with the provided email. Please Log in");
-    } else if (user.password == null) {
+    }
+
+    if (user.password == null || user.password!.isEmpty) {
       throw Exception("Password cannot be empty");
     } else {
       user = user.copyWith(
@@ -83,7 +85,8 @@ class UserController {
   ///
   /// Stores the value in local database
   /// Stores the value in currentUser field
-  static Future<UserModel?> login(String email, String password) async {
+  static Future<UserModel?> login(
+      {required String email, required String password}) async {
     List<UserModel> user = await get(
       email: email,
       keepPassword: true,
@@ -129,7 +132,7 @@ class UserController {
       if (res != null) {
         UserModel user = UserModel.fromJson(res);
         currentUser = await _save(user: user);
-        yield user;
+        yield currentUser;
       } else {
         yield null;
       }
@@ -151,6 +154,7 @@ class UserController {
     if (nameStartsWith == null && email == null) {
       throw ArgumentError("Email or NameStartsWith must be provided");
     }
+
     if (forceGet) {
       await LocalDatabase.deleteCollection(LocalCollections.user);
     } else if (keepPassword == false) {
@@ -172,14 +176,12 @@ class UserController {
         List<UserModel> filteredUsers = [];
         for (dynamic user in users.values) {
           if (user != null &&
-              user[UserFields.name.name].startsWith(
-                '/^$nameStartsWith\$/',
-              )) {
-            filteredUsers.add(
-              UserModel.fromJson(
-                Formatter.convertMapToMapStringDynamic(user)!,
-              ),
-            );
+              (user[UserFields.name.name] as String)
+                  .toLowerCase()
+                  .startsWith(nameStartsWith!.toLowerCase())) {
+            filteredUsers.add(UserModel.fromJson(
+              Formatter.convertMapToMapStringDynamic(user)!,
+            ));
           }
         }
         if (filteredUsers.isNotEmpty) {
@@ -187,32 +189,32 @@ class UserController {
         }
       }
     }
-
     DbCollection collection = Database.instance.collection(_collectionName);
     SelectorBuilder selectorBuilder = SelectorBuilder();
     if (nameStartsWith != null) {
       selectorBuilder.match(
         UserFields.name.name,
-        '/^$nameStartsWith\$/',
+        nameStartsWith,
         caseInsensitive: true,
       );
     } else {
+      selectorBuilder.limit(1);
       selectorBuilder.eq(UserFields.email.name, email);
     }
-    Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
+    List<Map<String, dynamic>> res =
+        await collection.find(selectorBuilder).toList();
 
-    if (res != null) {
-      UserModel user = UserModel.fromJson(res);
+    List<UserModel> users = [];
+    for (Map<String, dynamic> userData in res) {
+      UserModel user = UserModel.fromJson(userData);
       String? password;
       if (keepPassword) {
         password = user.password;
       }
       user = (await _save(user: user))!;
-      user = user.copyWith(password: password);
-      yield [user];
-    } else {
-      yield [];
+      users.add(user.copyWith(password: password));
     }
+    yield users;
   }
 
   /// Updates the user data if exists in the database
@@ -243,14 +245,17 @@ class UserController {
   }
 
   /// Deletes the user if exists from both local database and server
-  static Future<void> delete(String email) async {
+  static Future<void> delete() async {
     DbCollection collection = Database.instance.collection(_collectionName);
 
-    if ((await get(email: email, forceGet: true).first).isEmpty) {
+    if (currentUser == null) {
+      throw Exception("Please Login to your account");
+    }
+    if ((await get(email: currentUser!.email, forceGet: true).first).isEmpty) {
       throw Exception("Couldn't find user");
     } else {
       SelectorBuilder selectorBuilder = SelectorBuilder();
-      selectorBuilder.eq(UserFields.email.name, email);
+      selectorBuilder.eq(UserFields.email.name, currentUser!.email);
       await collection.deleteOne(selectorBuilder);
 
       await logOut();

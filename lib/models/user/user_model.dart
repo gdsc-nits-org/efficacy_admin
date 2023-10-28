@@ -32,7 +32,6 @@ class UserModel with _$UserModel {
 }
 
 enum UserFields {
-  id,
   name,
   phoneNumber,
   password,

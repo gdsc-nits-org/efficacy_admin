@@ -113,12 +113,12 @@ class InvitationController {
     List<Map<String, dynamic>> res =
         await collection.find(selectorBuilder).toList();
     invitations = res.map((model) => InvitationModel.fromJson(model)).toList();
-    List<String> toDel = [];
+    List<ObjectId> toDel = [];
     List<InvitationModel> filtered = [];
     for (int i = 0; i < invitations.length; i++) {
       if (invitations[i].expiry!.millisecondsSinceEpoch <=
           DateTime.now().millisecondsSinceEpoch) {
-        toDel.add(invitations[i].id!);
+        toDel.add(ObjectId.parse(invitations[i].id!));
       } else {
         filtered.add(await _save(invitations[i]));
       }
@@ -139,7 +139,7 @@ class InvitationController {
     DbCollection collection = Database.instance.collection(_collectionName);
 
     SelectorBuilder selector = SelectorBuilder();
-    selector.eq("_id", invitationID);
+    selector.eq("_id", ObjectId.parse(invitationID));
     if (await collection.findOne(selector) == null) {
       throw Exception(
           "Could not find invitation. Invitation might have expired");

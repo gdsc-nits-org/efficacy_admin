@@ -30,17 +30,24 @@ class _ExperimentPageState extends State<ExperimentPage> {
             ElevatedButton(
               onPressed: () async {
                 // print(
-                //   await InvitationController.create(
-                //     const InvitationModel(
-                //       clubPositionID: "clubPositionID",
-                //       senderID: "senderID",
-                //       recipientID: "recipient0ID",
-                //     ),
+                //   await EventController.update(
+                //     EventModel(
+                //         id: "65361cfbf5e24f5fef303b10",
+                //         posterURL: "posterURL",
+                //         title: "title",
+                //         shortDescription: "shortDescription",
+                //         startDate: DateTime.now(),
+                //         endDate: DateTime.now().add(Duration(days: 2)),
+                //         registrationLink: "registrationLink",
+                //         venue: "venue",
+                //         contacts: [],
+                //         clubID: "clubID"),
                 //   ),
                 // );
-                InvitationController.get(senderID: "senderID").listen((event) {
-                  print(event);
-                });
+                // EventController.get(clubID: "clubID", forceGet: true)
+                //     .listen((event) {
+                //   print(event.length);
+                // });
               },
               child: const Text("Task 1"),
             ),

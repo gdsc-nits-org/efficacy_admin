@@ -2,7 +2,6 @@ import 'package:efficacy_admin/controllers/utils/comparator.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
 import 'package:efficacy_admin/utils/formatter.dart';
-import 'package:efficacy_admin/utils/local_database/constants.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
@@ -120,7 +119,7 @@ class EventController {
 
     SelectorBuilder selectorBuilder = SelectorBuilder();
     if (eventID != null) {
-      selectorBuilder.eq("_id", eventID);
+      selectorBuilder.eq("_id", ObjectId.parse(eventID));
     } else if (clubID != null) {
       selectorBuilder.eq(EventFields.clubID.name, clubID);
     } else {
@@ -142,12 +141,12 @@ class EventController {
     DbCollection collection = Database.instance.collection(_collectionName);
     SelectorBuilder selectorBuilder = SelectorBuilder();
 
-    selectorBuilder.eq("_id", event.id);
     List<EventModel> oldData =
         await get(eventID: event.id, forceGet: true).first;
-    if (oldData.isNotEmpty) {
+    if (oldData.isEmpty) {
       throw Exception("Event not found");
     }
+    selectorBuilder.eq("_id", ObjectId.parse(event.id!));
     await collection.updateOne(
       selectorBuilder,
       compare(
@@ -163,7 +162,7 @@ class EventController {
     DbCollection collection = Database.instance.collection(_collectionName);
 
     SelectorBuilder selectorBuilder = SelectorBuilder();
-    selectorBuilder.eq("_id", eventID);
+    selectorBuilder.eq("_id", ObjectId.parse(eventID));
 
     if ((await collection.findOne(selectorBuilder)) == null) {
       throw Exception("Event not found");

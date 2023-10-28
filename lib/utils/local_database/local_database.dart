@@ -60,7 +60,10 @@ class LocalDatabase {
   }
 
   static bool _canKeepData(Map? item) {
-    if (item == null) return false;
+    if (item == null || item[UserFields.lastLocalUpdate.name] == null) {
+      return false;
+    }
+
     DateTime oldDate = DateTime.parse(item[UserFields.lastLocalUpdate.name]);
     return DateTime.now().difference(oldDate) < stalePeriod;
   }

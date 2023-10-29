@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'constants.dart';
+export 'constants.dart';
 
 /// The data is assumed to be either directly as a json value
 /// Or a list of json value
@@ -59,7 +60,10 @@ class LocalDatabase {
   }
 
   static bool _canKeepData(Map? item) {
-    if (item == null) return false;
+    if (item == null || item[UserFields.lastLocalUpdate.name] == null) {
+      return false;
+    }
+
     DateTime oldDate = DateTime.parse(item[UserFields.lastLocalUpdate.name]);
     return DateTime.now().difference(oldDate) < stalePeriod;
   }

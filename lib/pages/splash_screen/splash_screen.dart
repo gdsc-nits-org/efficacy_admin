@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
     await Database.init();
     await LocalDatabase.init();
     await ForegroundService.init();
+    await ForegroundService.startDataSync();
+    await UserController.loginSilently().first;
     stopwatch.stop();
     return stopwatch.elapsed.inMilliseconds;
   }
@@ -36,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
       debugPrint("Time taken: $duration ms");
       Navigator.of(context)
           .pushNamedAndRemoveUntil(
-              LoginPage.routeName, (Route<dynamic> route) => false)
+              Homepage.routeName, (Route<dynamic> route) => false)
           .then((value) => exit(0));
     });
   }

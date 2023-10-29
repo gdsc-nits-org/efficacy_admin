@@ -25,13 +25,15 @@ mixin _$UserModel {
   String get name => throw _privateConstructorUsedError;
   @PhoneNumberSerializer()
   PhoneNumber? get phoneNumber => throw _privateConstructorUsedError;
-  String get password => throw _privateConstructorUsedError;
+  String? get password => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get scholarID => throw _privateConstructorUsedError;
   String? get userPhoto => throw _privateConstructorUsedError;
   Branch get branch => throw _privateConstructorUsedError;
   Degree get degree => throw _privateConstructorUsedError;
   Map<Social, String> get socials => throw _privateConstructorUsedError;
+
+  /// List<ClubPositionID>
   List<String> get position => throw _privateConstructorUsedError;
   DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
 
@@ -50,7 +52,7 @@ abstract class $UserModelCopyWith<$Res> {
       {@JsonKey(name: '_id') String? id,
       String name,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
-      String password,
+      String? password,
       String email,
       String scholarID,
       String? userPhoto,
@@ -77,7 +79,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? id = freezed,
     Object? name = null,
     Object? phoneNumber = freezed,
-    Object? password = null,
+    Object? password = freezed,
     Object? email = null,
     Object? scholarID = null,
     Object? userPhoto = freezed,
@@ -100,10 +102,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as PhoneNumber?,
-      password: null == password
+      password: freezed == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -141,17 +143,18 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
 }
 
 /// @nodoc
-abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
-  factory _$$_UserModelCopyWith(
-          _$_UserModel value, $Res Function(_$_UserModel) then) =
-      __$$_UserModelCopyWithImpl<$Res>;
+abstract class _$$UserModelImplCopyWith<$Res>
+    implements $UserModelCopyWith<$Res> {
+  factory _$$UserModelImplCopyWith(
+          _$UserModelImpl value, $Res Function(_$UserModelImpl) then) =
+      __$$UserModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {@JsonKey(name: '_id') String? id,
       String name,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
-      String password,
+      String? password,
       String email,
       String scholarID,
       String? userPhoto,
@@ -163,11 +166,11 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_UserModelCopyWithImpl<$Res>
-    extends _$UserModelCopyWithImpl<$Res, _$_UserModel>
-    implements _$$_UserModelCopyWith<$Res> {
-  __$$_UserModelCopyWithImpl(
-      _$_UserModel _value, $Res Function(_$_UserModel) _then)
+class __$$UserModelImplCopyWithImpl<$Res>
+    extends _$UserModelCopyWithImpl<$Res, _$UserModelImpl>
+    implements _$$UserModelImplCopyWith<$Res> {
+  __$$UserModelImplCopyWithImpl(
+      _$UserModelImpl _value, $Res Function(_$UserModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -176,7 +179,7 @@ class __$$_UserModelCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = null,
     Object? phoneNumber = freezed,
-    Object? password = null,
+    Object? password = freezed,
     Object? email = null,
     Object? scholarID = null,
     Object? userPhoto = freezed,
@@ -186,7 +189,7 @@ class __$$_UserModelCopyWithImpl<$Res>
     Object? position = null,
     Object? lastLocalUpdate = freezed,
   }) {
-    return _then(_$_UserModel(
+    return _then(_$UserModelImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -199,10 +202,10 @@ class __$$_UserModelCopyWithImpl<$Res>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as PhoneNumber?,
-      password: null == password
+      password: freezed == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -241,12 +244,12 @@ class __$$_UserModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_UserModel implements _UserModel {
-  const _$_UserModel(
+class _$UserModelImpl implements _UserModel {
+  const _$UserModelImpl(
       {@JsonKey(name: '_id') this.id,
       required this.name,
       @PhoneNumberSerializer() this.phoneNumber,
-      required this.password,
+      this.password,
       required this.email,
       required this.scholarID,
       this.userPhoto,
@@ -258,8 +261,8 @@ class _$_UserModel implements _UserModel {
       : _socials = socials,
         _position = position;
 
-  factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
-      _$$_UserModelFromJson(json);
+  factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserModelImplFromJson(json);
 
   @override
   @JsonKey(name: '_id')
@@ -270,7 +273,7 @@ class _$_UserModel implements _UserModel {
   @PhoneNumberSerializer()
   final PhoneNumber? phoneNumber;
   @override
-  final String password;
+  final String? password;
   @override
   final String email;
   @override
@@ -290,7 +293,10 @@ class _$_UserModel implements _UserModel {
     return EqualUnmodifiableMapView(_socials);
   }
 
+  /// List<ClubPositionID>
   final List<String> _position;
+
+  /// List<ClubPositionID>
   @override
   @JsonKey()
   List<String> get position {
@@ -311,7 +317,7 @@ class _$_UserModel implements _UserModel {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UserModel &&
+            other is _$UserModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.phoneNumber, phoneNumber) ||
@@ -351,12 +357,12 @@ class _$_UserModel implements _UserModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserModelCopyWith<_$_UserModel> get copyWith =>
-      __$$_UserModelCopyWithImpl<_$_UserModel>(this, _$identity);
+  _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
+      __$$UserModelImplCopyWithImpl<_$UserModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserModelToJson(
+    return _$$UserModelImplToJson(
       this,
     );
   }
@@ -367,7 +373,7 @@ abstract class _UserModel implements UserModel {
       {@JsonKey(name: '_id') final String? id,
       required final String name,
       @PhoneNumberSerializer() final PhoneNumber? phoneNumber,
-      required final String password,
+      final String? password,
       required final String email,
       required final String scholarID,
       final String? userPhoto,
@@ -375,10 +381,10 @@ abstract class _UserModel implements UserModel {
       required final Degree degree,
       final Map<Social, String> socials,
       final List<String> position,
-      final DateTime? lastLocalUpdate}) = _$_UserModel;
+      final DateTime? lastLocalUpdate}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
-      _$_UserModel.fromJson;
+      _$UserModelImpl.fromJson;
 
   @override
   @JsonKey(name: '_id')
@@ -389,7 +395,7 @@ abstract class _UserModel implements UserModel {
   @PhoneNumberSerializer()
   PhoneNumber? get phoneNumber;
   @override
-  String get password;
+  String? get password;
   @override
   String get email;
   @override
@@ -403,11 +409,13 @@ abstract class _UserModel implements UserModel {
   @override
   Map<Social, String> get socials;
   @override
+
+  /// List<ClubPositionID>
   List<String> get position;
   @override
   DateTime? get lastLocalUpdate;
   @override
   @JsonKey(ignore: true)
-  _$$_UserModelCopyWith<_$_UserModel> get copyWith =>
+  _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

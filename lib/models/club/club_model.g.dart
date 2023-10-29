@@ -6,7 +6,8 @@ part of 'club_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ClubModel _$$_ClubModelFromJson(Map<String, dynamic> json) => _$_ClubModel(
+_$ClubModelImpl _$$ClubModelImplFromJson(Map<String, dynamic> json) =>
+    _$ClubModelImpl(
       id: json['_id'] as String?,
       name: json['name'] as String,
       instituteName: json['instituteName'] as String,
@@ -20,7 +21,10 @@ _$_ClubModel _$$_ClubModelFromJson(Map<String, dynamic> json) => _$_ClubModel(
           .fromJson(json['phoneNumber'] as Map<String, String?>?),
       clubLogoURL: json['clubLogoURL'] as String,
       clubBannerURL: json['clubBannerURL'] as String?,
-      members: Map<String, String>.from(json['members'] as Map),
+      members: (json['members'] as Map<String, dynamic>).map(
+        (k, e) =>
+            MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
+      ),
       followers: (json['followers'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -30,7 +34,7 @@ _$_ClubModel _$$_ClubModelFromJson(Map<String, dynamic> json) => _$_ClubModel(
           : DateTime.parse(json['lastLocalUpdate'] as String),
     );
 
-Map<String, dynamic> _$$_ClubModelToJson(_$_ClubModel instance) =>
+Map<String, dynamic> _$$ClubModelImplToJson(_$ClubModelImpl instance) =>
     <String, dynamic>{
       '_id': instance.id,
       'name': instance.name,

@@ -4,6 +4,7 @@ enum LocalCollections {
   club,
   clubPosition,
   checkpoints,
+  invitations,
 }
 
 enum LocalDocuments {
@@ -13,4 +14,5 @@ enum LocalDocuments {
   clubPositions,
   clubs,
   eventCheckpoint,
+  invitations,
 }

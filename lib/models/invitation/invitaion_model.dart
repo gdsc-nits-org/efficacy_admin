@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mongo_dart/mongo_dart.dart';
 
 part 'invitaion_model.g.dart';
 part 'invitaion_model.freezed.dart';
@@ -11,17 +12,22 @@ class InvitationModel with _$InvitationModel {
     required String clubPositionID,
     required String senderID,
     required String recipientID,
-    // Default to creation time + a fixed time
-    required DateTime expiry,
+    DateTime? expiry,
+    DateTime? lastLocalUpdate,
   }) = _InvitationModel;
 
-  factory InvitationModel.fromJson(Map<String, dynamic> json) =>
-      _$InvitationModelFromJson(json);
+  factory InvitationModel.fromJson(Map<String, dynamic> json) {
+    if (json["_id"] != null && json["_id"] is ObjectId) {
+      json["_id"] = (json["_id"] as ObjectId).toHexString();
+    }
+    return _$InvitationModelFromJson(json);
+  }
 }
 
 enum InvitationFields {
-  id,
   clubPositionID,
+  senderID,
   recipientID,
   expiry,
+  lastLocalUpdate,
 }

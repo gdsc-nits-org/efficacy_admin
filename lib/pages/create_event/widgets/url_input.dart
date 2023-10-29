@@ -4,9 +4,10 @@ class UrlInput extends StatelessWidget {
   final TextEditingController controller;
   final IconData icon;
   final String hintText;
-  final String Function(String?) validator;
+  final String? Function(String?) validator;
 
-  const UrlInput({super.key,
+  const UrlInput({
+    super.key,
     required this.controller,
     required this.icon,
     required this.hintText,

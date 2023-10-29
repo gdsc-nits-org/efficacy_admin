@@ -1,44 +1,53 @@
+import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/utils/comparator.dart';
+import 'package:efficacy_admin/models/club/club_model.dart';
+import 'package:efficacy_admin/models/club_position/club_position_model.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/utils/database/constants.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
 import 'package:efficacy_admin/utils/encrypter.dart';
 import 'package:efficacy_admin/utils/formatter.dart';
-import 'package:efficacy_admin/utils/local_database/constants.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
+part 'functions/_save_impl.dart';
+part 'functions/_create_impl.dart';
+part 'functions/_login_impl.dart';
+part 'functions/_login_silently_impl.dart';
+part 'functions/_get_impl.dart';
+part 'functions/_update_impl.dart';
+part 'functions/_delete_impl.dart';
+part 'functions/_gather_data.dart';
+
 class UserController {
   static const String _collectionName = "users";
   static UserModel? currentUser;
+  static List<ClubModel> clubs = [];
+  static List<ClubPositionModel> clubPositions = [];
   const UserController._();
 
+  /// Pass user as null if you want to save the currentUser
   static Future<UserModel?> _save({UserModel? user}) async {
-    if (user == null) {
-      user = currentUser;
-      if (currentUser == null) {
-        await LocalDatabase.deleteCollection(LocalCollections.user);
-      } else {
-        currentUser = currentUser!.copyWith(lastLocalUpdate: DateTime.now());
-        await LocalDatabase.set(
-          LocalCollections.user,
-          LocalDocuments.currentUser,
-          currentUser!.toJson(),
-        );
-      }
-    }
-    user = user!.copyWith(lastLocalUpdate: DateTime.now());
-    Map? res =
-        await LocalDatabase.get(LocalCollections.user, LocalDocuments.users);
-    res ??= {};
-    res[user.email] = user.toJson();
-    await LocalDatabase.set(LocalCollections.user, LocalDocuments.users, res);
-    return user;
+    return await _saveImpl(user: user);
+  }
+
+  static Future<void> _gatherData() async {
+    clubs = [];
+    clubPositions = [];
+    return await _gatherDataImpl();
   }
 
   static UserModel _removePassword(UserModel user) {
-    return user.copyWith(password: "");
+    return user.copyWith(password: null);
+  }
+
+  /// Checks for duplicate values
+  /// If found throws error
+  static Future<void> _checkDuplicate(UserModel user) async {
+    if ((await get(email: user.email, forceGet: true).first).isNotEmpty) {
+      throw Exception("User exists with the provided email. Please Log in");
+    }
   }
 
   /// Crates a user
@@ -49,22 +58,7 @@ class UserController {
   /// Stores the value in local database
   /// Stores the value in currentUser field
   static Future<UserModel?> create(UserModel user) async {
-    DbCollection collection = Database.instance.collection(_collectionName);
-
-    if (await get(user.email, forceGet: true).first != null) {
-      throw Exception("User exists with the provided email. Please Log in");
-    } else {
-      user = user.copyWith(
-        password: Encryptor.encrypt(
-          user.password,
-          dotenv.env[EnvValues.ENCRYPTER_SALT.name]!,
-        ),
-      );
-      await collection.insert(user.toJson());
-      currentUser = await get(user.email, forceGet: true).first;
-      currentUser = await _save();
-      return currentUser;
-    }
+    return await _createImpl(user);
   }
 
   /// Logs in the user
@@ -73,51 +67,23 @@ class UserController {
   ///
   /// Stores the value in local database
   /// Stores the value in currentUser field
-  static Future<UserModel?> login(String email, String password) async {
-    UserModel? user =
-        await get(email, keepPassword: true, forceGet: true).first;
-    if (user == null) {
-      throw Exception("User exists with the provided email. Please Log in");
-    } else {
-      if (!Encryptor.isValid(user.password, password)) {
-        throw Exception("Invalid password");
-      }
-      user = _removePassword(user);
-      currentUser = user;
-      currentUser = await _save();
-      return currentUser;
-    }
+  static Future<UserModel?> login({
+    required String email,
+    required String password,
+  }) async {
+    UserModel? user = await _loginImpl(
+      email: email,
+      password: password,
+    );
+    return user;
   }
 
   /// Log in without internet i.e. from local database
   ///   * If returns null means the user data was not stored
   ///   * Returns the UserModel if exists
   ///   * Stores the user data in currentUser
-  static Stream<UserModel?> loginSilently() async* {
-    dynamic userData = await LocalDatabase.get(
-      LocalCollections.user,
-      LocalDocuments.currentUser,
-    );
-    if (userData == null) {
-      yield null;
-    } else {
-      yield currentUser =
-          UserModel.fromJson(Formatter.convertMapToMapStringDynamic(userData)!);
-
-      DbCollection collection = Database.instance.collection(_collectionName);
-      SelectorBuilder selectorBuilder = SelectorBuilder();
-      selectorBuilder.eq(UserFields.email.name, currentUser!.email);
-      Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
-
-      if (res != null) {
-        UserModel user = UserModel.fromJson(res);
-        user = _removePassword(user);
-        user = (await _save()) ?? user;
-        yield user;
-      } else {
-        yield null;
-      }
-    }
+  static Stream<UserModel?> loginSilently() {
+    return _loginSilentlyImpl();
   }
 
   /// Fetches a  user from the provided email
@@ -126,80 +92,39 @@ class UserController {
   ///
   /// If [forceGet] is true, the localDatabase is cleared and new data is fetched
   /// Else only the users not in database are fetched
-  static Stream<UserModel?> get(
-    String email, {
+  static Stream<List<UserModel>> get({
+    String? email,
+    String? nameStartsWith,
     bool keepPassword = false,
     bool forceGet = false,
-  }) async* {
-    if (forceGet) {
-      await LocalDatabase.deleteCollection(LocalCollections.user);
-    } else {
-      Map? users =
-          await LocalDatabase.get(LocalCollections.user, LocalDocuments.users);
-      if (users != null && users.containsKey(email)) {
-        yield UserModel.fromJson(
-          Formatter.convertMapToMapStringDynamic(users[email])!,
-        );
-      }
-    }
-
-    DbCollection collection = Database.instance.collection(_collectionName);
-    SelectorBuilder selectorBuilder = SelectorBuilder();
-    selectorBuilder.eq(UserFields.email.name, email);
-    Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
-
-    if (res != null) {
-      UserModel user = UserModel.fromJson(res);
-      if (!keepPassword) {
-        user = _removePassword(user);
-      }
-      user = (await _save(user: user)) ?? user;
-      yield user;
-    } else {
-      yield null;
-    }
+  }) {
+    return _getImpl(
+      email: email,
+      nameStartsWith: nameStartsWith,
+      keepPassword: keepPassword,
+      forceGet: forceGet,
+    );
   }
 
   /// Updates the user data if exists in the database
   /// and stores it in the local database
   ///
-  /// Current user is not set as the update might not be necessarily of the current user
-  static Future<UserModel?> update(UserModel user) async {
-    DbCollection collection = Database.instance.collection(_collectionName);
-
-    UserModel? oldData = await get(user.email, forceGet: true).first;
-    if (oldData == null) {
-      throw Exception("Couldn't find user");
-    } else {
-      SelectorBuilder selectorBuilder = SelectorBuilder();
-      selectorBuilder.eq(UserFields.email.name, user.email);
-      await collection.updateOne(
-        selectorBuilder,
-        compare(oldData.toJson(), user.toJson(),
-            ignore: [UserFields.password.name]).map,
-      );
-      user = (await _save(user: user)) ?? user;
-      return user;
-    }
+  /// It updates the data of the currentUser
+  static Future<UserModel?> update() async {
+    UserModel? user = await _updateImpl();
+    await _gatherData();
+    return user;
   }
 
   /// Deletes the user if exists from both local database and server
-  static Future<void> delete(String email) async {
-    DbCollection collection = Database.instance.collection(_collectionName);
-
-    if (await get(email, forceGet: true).first == null) {
-      throw Exception("Couldn't find user");
-    } else {
-      SelectorBuilder selectorBuilder = SelectorBuilder();
-      selectorBuilder.eq(UserFields.email.name, email);
-      await collection.deleteOne(selectorBuilder);
-
-      await logOut();
-    }
+  static Future<void> delete() async {
+    return await _deleteImpl();
   }
 
   static Future<void> logOut() async {
     currentUser = null;
+    clubs = [];
+    clubPositions = [];
     await _save();
   }
 }

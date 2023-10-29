@@ -12,13 +12,15 @@ class UserModel with _$UserModel {
     @JsonKey(name: '_id') String? id,
     required String name,
     @PhoneNumberSerializer() PhoneNumber? phoneNumber,
-    required String password,
+    String? password,
     required String email,
     required String scholarID,
     String? userPhoto,
     required Branch branch,
     required Degree degree,
     @Default({}) Map<Social, String> socials,
+
+    /// List<ClubPositionID>
     @Default([]) List<String> position,
     DateTime? lastLocalUpdate,
   }) = _UserModel;
@@ -32,7 +34,6 @@ class UserModel with _$UserModel {
 }
 
 enum UserFields {
-  id,
   name,
   phoneNumber,
   password,

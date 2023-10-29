@@ -61,8 +61,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
               // Close the drawer
               Navigator.pop(context);
               // Navigate to Home page
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  Homepage.routeName, (Route<dynamic> route) => false);
             },
           ),
           ListTile(
@@ -74,15 +72,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
               // Close the drawer
               Navigator.pop(context);
               // Navigate to Organizations page
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  OrganizationsPage.routeName, (Route<dynamic> route) => false);
+              Navigator.of(context).pushNamed(
+                OrganizationsPage.routeName,
+              );
             },
           ),
           ListTile(
             title: const Text('Log out'),
-            onTap: () {
-              Authenticator.signOut();
-              Navigator.pop(context);
+            onTap: () async {
+              await UserController.logOut();
+              if (mounted) {
+                Navigator.pop(context);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  LoginPage.routeName,
+                  (route) => false,
+                );
+              }
             },
           ),
         ].separate(gap),

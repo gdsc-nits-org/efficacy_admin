@@ -123,10 +123,7 @@ class _EventFormState extends State<EventForm> {
 
   @override
   Widget build(BuildContext context) {
-    prepareData();
-    print(
-      UserController.clubs.map((club) => club.name).toList(),
-    );
+    // prepareData();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 25.0),
       child: Form(

@@ -13,6 +13,26 @@ Stream<List<EventModel>> _getImpl({
       forView: true,
     );
   }
+  List<EventModel> filteredEvents = await _fetchLocal(
+    eventID: eventID,
+    clubID: clubID,
+    forceGet: forceGet,
+  );
+  if (filteredEvents.isNotEmpty) yield filteredEvents;
+
+  filteredEvents = await _fetchFromBackend(
+    eventID: eventID,
+    clubID: clubID,
+    forceGet: forceGet,
+  );
+  yield filteredEvents;
+}
+
+Future<List<EventModel>> _fetchLocal({
+  String? eventID,
+  String? clubID,
+  bool forceGet = false,
+}) async {
   List<EventModel> filteredEvents = [];
 
   // Local Data
@@ -39,9 +59,17 @@ Stream<List<EventModel>> _getImpl({
           }
         }
       }
-      if (filteredEvents.isNotEmpty) yield filteredEvents;
     }
   }
+  return filteredEvents;
+}
+
+Future<List<EventModel>> _fetchFromBackend({
+  String? eventID,
+  String? clubID,
+  bool forceGet = false,
+}) async {
+  List<EventModel> filteredEvents = [];
   // Server data
   DbCollection collection =
       Database.instance.collection(EventController._collectionName);
@@ -61,5 +89,5 @@ Stream<List<EventModel>> _getImpl({
   for (int i = 0; i < filteredEvents.length; i++) {
     filteredEvents[i] = await EventController._save(filteredEvents[i]);
   }
-  yield filteredEvents;
+  return filteredEvents;
 }

@@ -13,7 +13,7 @@ class ClubPositionModel with _$ClubPositionModel {
     required String clubID,
     required String position,
     DateTime? lastLocalUpdate,
-    @Default([]) List<Permission> permissions,
+    @Default([]) List<Permissions> permissions,
   }) = _ClubPositionModel;
 
   factory ClubPositionModel.fromJson(Map<String, dynamic> json) {

@@ -16,12 +16,6 @@ _$InvitationModelImpl _$$InvitationModelImplFromJson(
       expiry: json['expiry'] == null
           ? null
           : DateTime.parse(json['expiry'] as String),
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
-      updatedAt: json['updatedAt'] == null
-          ? null
-          : DateTime.parse(json['updatedAt'] as String),
       lastLocalUpdate: json['lastLocalUpdate'] == null
           ? null
           : DateTime.parse(json['lastLocalUpdate'] as String),
@@ -35,7 +29,5 @@ Map<String, dynamic> _$$InvitationModelImplToJson(
       'senderID': instance.senderID,
       'recipientID': instance.recipientID,
       'expiry': instance.expiry?.toIso8601String(),
-      'createdAt': instance.createdAt?.toIso8601String(),
-      'updatedAt': instance.updatedAt?.toIso8601String(),
       'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
     };

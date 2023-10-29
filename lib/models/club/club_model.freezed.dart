@@ -32,10 +32,10 @@ mixin _$ClubModel {
   String get clubLogoURL => throw _privateConstructorUsedError;
   String? get clubBannerURL => throw _privateConstructorUsedError;
 
-  /// Map<ClubPositionModelID, Member Email>
+  /// Map<ClubPositionModelID, List<Member Email>>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
-  Map<String, String> get members => throw _privateConstructorUsedError;
+  Map<String, List<String>> get members => throw _privateConstructorUsedError;
 
   /// Follower Ids
   List<String> get followers => throw _privateConstructorUsedError;
@@ -62,7 +62,7 @@ abstract class $ClubModelCopyWith<$Res> {
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String clubLogoURL,
       String? clubBannerURL,
-      Map<String, String> members,
+      Map<String, List<String>> members,
       List<String> followers,
       DateTime? lastLocalUpdate});
 }
@@ -133,7 +133,7 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
       members: null == members
           ? _value.members
           : members // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+              as Map<String, List<String>>,
       followers: null == followers
           ? _value.followers
           : followers // ignore: cast_nullable_to_non_nullable
@@ -164,7 +164,7 @@ abstract class _$$ClubModelImplCopyWith<$Res>
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String clubLogoURL,
       String? clubBannerURL,
-      Map<String, String> members,
+      Map<String, List<String>> members,
       List<String> followers,
       DateTime? lastLocalUpdate});
 }
@@ -233,7 +233,7 @@ class __$$ClubModelImplCopyWithImpl<$Res>
       members: null == members
           ? _value._members
           : members // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+              as Map<String, List<String>>,
       followers: null == followers
           ? _value._followers
           : followers // ignore: cast_nullable_to_non_nullable
@@ -259,7 +259,7 @@ class _$ClubModelImpl extends _ClubModel {
       @PhoneNumberSerializer() this.phoneNumber,
       required this.clubLogoURL,
       this.clubBannerURL,
-      required final Map<String, String> members,
+      required final Map<String, List<String>> members,
       final List<String> followers = const [],
       this.lastLocalUpdate})
       : _socials = socials,
@@ -298,16 +298,16 @@ class _$ClubModelImpl extends _ClubModel {
   @override
   final String? clubBannerURL;
 
-  /// Map<ClubPositionModelID, Member Email>
+  /// Map<ClubPositionModelID, List<Member Email>>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
-  final Map<String, String> _members;
+  final Map<String, List<String>> _members;
 
-  /// Map<ClubPositionModelID, Member Email>
+  /// Map<ClubPositionModelID, List<Member Email>>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
   @override
-  Map<String, String> get members {
+  Map<String, List<String>> get members {
     if (_members is EqualUnmodifiableMapView) return _members;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_members);
@@ -401,7 +401,7 @@ abstract class _ClubModel extends ClubModel {
       @PhoneNumberSerializer() final PhoneNumber? phoneNumber,
       required final String clubLogoURL,
       final String? clubBannerURL,
-      required final Map<String, String> members,
+      required final Map<String, List<String>> members,
       final List<String> followers,
       final DateTime? lastLocalUpdate}) = _$ClubModelImpl;
   const _ClubModel._() : super._();
@@ -431,10 +431,10 @@ abstract class _ClubModel extends ClubModel {
   String? get clubBannerURL;
   @override
 
-  /// Map<ClubPositionModelID, Member Email>
+  /// Map<ClubPositionModelID, List<Member Email>>
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
-  Map<String, String> get members;
+  Map<String, List<String>> get members;
   @override
 
   /// Follower Ids

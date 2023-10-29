@@ -21,7 +21,10 @@ _$ClubModelImpl _$$ClubModelImplFromJson(Map<String, dynamic> json) =>
           .fromJson(json['phoneNumber'] as Map<String, String?>?),
       clubLogoURL: json['clubLogoURL'] as String,
       clubBannerURL: json['clubBannerURL'] as String?,
-      members: Map<String, String>.from(json['members'] as Map),
+      members: (json['members'] as Map<String, dynamic>).map(
+        (k, e) =>
+            MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
+      ),
       followers: (json['followers'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??

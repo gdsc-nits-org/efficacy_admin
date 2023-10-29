@@ -19,6 +19,8 @@ class UserModel with _$UserModel {
     required Branch branch,
     required Degree degree,
     @Default({}) Map<Social, String> socials,
+
+    /// List<ClubPositionID>
     @Default([]) List<String> position,
     DateTime? lastLocalUpdate,
   }) = _UserModel;

@@ -25,7 +25,7 @@ mixin _$ClubPositionModel {
   String get clubID => throw _privateConstructorUsedError;
   String get position => throw _privateConstructorUsedError;
   DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
-  List<Permission> get permissions => throw _privateConstructorUsedError;
+  List<Permissions> get permissions => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,7 +44,7 @@ abstract class $ClubPositionModelCopyWith<$Res> {
       String clubID,
       String position,
       DateTime? lastLocalUpdate,
-      List<Permission> permissions});
+      List<Permissions> permissions});
 }
 
 /// @nodoc
@@ -86,7 +86,7 @@ class _$ClubPositionModelCopyWithImpl<$Res, $Val extends ClubPositionModel>
       permissions: null == permissions
           ? _value.permissions
           : permissions // ignore: cast_nullable_to_non_nullable
-              as List<Permission>,
+              as List<Permissions>,
     ) as $Val);
   }
 }
@@ -104,7 +104,7 @@ abstract class _$$ClubPositionModelImplCopyWith<$Res>
       String clubID,
       String position,
       DateTime? lastLocalUpdate,
-      List<Permission> permissions});
+      List<Permissions> permissions});
 }
 
 /// @nodoc
@@ -144,7 +144,7 @@ class __$$ClubPositionModelImplCopyWithImpl<$Res>
       permissions: null == permissions
           ? _value._permissions
           : permissions // ignore: cast_nullable_to_non_nullable
-              as List<Permission>,
+              as List<Permissions>,
     ));
   }
 }
@@ -157,7 +157,7 @@ class _$ClubPositionModelImpl implements _ClubPositionModel {
       required this.clubID,
       required this.position,
       this.lastLocalUpdate,
-      final List<Permission> permissions = const []})
+      final List<Permissions> permissions = const []})
       : _permissions = permissions;
 
   factory _$ClubPositionModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -172,10 +172,10 @@ class _$ClubPositionModelImpl implements _ClubPositionModel {
   final String position;
   @override
   final DateTime? lastLocalUpdate;
-  final List<Permission> _permissions;
+  final List<Permissions> _permissions;
   @override
   @JsonKey()
-  List<Permission> get permissions {
+  List<Permissions> get permissions {
     if (_permissions is EqualUnmodifiableListView) return _permissions;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_permissions);
@@ -227,7 +227,7 @@ abstract class _ClubPositionModel implements ClubPositionModel {
       required final String clubID,
       required final String position,
       final DateTime? lastLocalUpdate,
-      final List<Permission> permissions}) = _$ClubPositionModelImpl;
+      final List<Permissions> permissions}) = _$ClubPositionModelImpl;
 
   factory _ClubPositionModel.fromJson(Map<String, dynamic> json) =
       _$ClubPositionModelImpl.fromJson;
@@ -242,7 +242,7 @@ abstract class _ClubPositionModel implements ClubPositionModel {
   @override
   DateTime? get lastLocalUpdate;
   @override
-  List<Permission> get permissions;
+  List<Permissions> get permissions;
   @override
   @JsonKey(ignore: true)
   _$$ClubPositionModelImplCopyWith<_$ClubPositionModelImpl> get copyWith =>

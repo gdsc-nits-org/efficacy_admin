@@ -49,10 +49,6 @@ class EventController {
 
   //
   static Future<bool> isAnyUpdate(String clubID, DateTime? lastChecked) async {
-    await _checkPermission(
-      clubID: clubID,
-      forView: true,
-    );
     return await _isAnyUpdateImpl(clubID, lastChecked);
   }
 

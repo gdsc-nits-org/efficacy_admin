@@ -30,7 +30,7 @@ class ClubPositionController {
     required String clubID,
     required bool forView,
   }) async {
-    return await _checkPermissionImpl(
+    return _checkPermissionImpl(
       clubID: clubID,
       forView: forView,
     );
@@ -48,8 +48,11 @@ class ClubPositionController {
 
   /// If [forceGet] is true, the localDatabase is cleared and new data is fetched
   /// Else only the users not in database are fetched
-  static Stream<List<ClubPositionModel>> get(
-      {String? clubPositionID, String? clubID, bool forceGet = false}) {
+  static Stream<List<ClubPositionModel>> get({
+    String? clubPositionID,
+    String? clubID,
+    bool forceGet = false,
+  }) {
     return _getImpl(
       clubID: clubID,
       clubPositionID: clubPositionID,

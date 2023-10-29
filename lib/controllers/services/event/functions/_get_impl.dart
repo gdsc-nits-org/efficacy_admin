@@ -1,18 +1,10 @@
 part of "../event_controller.dart";
 
-/// Permission is checked only for clubID
-/// Assumed that eventID is only accessible to authorized members
 Stream<List<EventModel>> _getImpl({
   String? eventID,
   String? clubID,
   bool forceGet = false,
 }) async* {
-  if (clubID != null) {
-    await EventController._checkPermission(
-      clubID: clubID,
-      forView: true,
-    );
-  }
   List<EventModel> filteredEvents = await _fetchLocal(
     eventID: eventID,
     clubID: clubID,

@@ -7,10 +7,6 @@ Stream<List<ClubPositionModel>> _getImpl(
     throw ArgumentError("Club Position ID or club id is required");
   }
 
-  await ClubPositionController._checkPermission(
-    clubID: clubID!,
-    forView: true,
-  );
   filteredClubPositions = await _fetchLocal(
     clubPositionID: clubPositionID,
     clubID: clubID,

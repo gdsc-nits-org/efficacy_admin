@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/models.dart';
-import 'package:efficacy_admin/widgets/custom_data_table/custom_data_table.dart';
+import 'package:efficacy_admin/pages/profile_page/widgets/buttons.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
 import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
@@ -13,6 +13,7 @@ import 'package:gap/gap.dart';
 
 class ProfilePage extends StatefulWidget {
   static const String routeName = '/ProfilePage';
+
   const ProfilePage({super.key});
 
   @override
@@ -21,6 +22,34 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfileState extends State<ProfilePage> {
   File? _img;
+  bool editMode = false;
+  bool showButton = false;
+
+  //controllers
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _scholaridController = TextEditingController();
+
+  void enableEdit() {
+    setState(() {
+      editMode = true;
+      showButton = true;
+    });
+  }
+
+  void saveUpdates() async {
+    await UserController.update(UserModel(
+        name: _nameController.text,
+        scholarID: _scholaridController.text,
+        branch: UserController.currentUser!.branch,
+        degree: UserController.currentUser!.degree,
+        password: '',
+        email: ''));
+    setState(() {
+      editMode = false;
+      showButton = false;
+    });
+  }
+
   Widget imageView(String? s) {
     if (s != null) {
       _img = File(s);
@@ -34,6 +63,7 @@ class _ProfileState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    //screen size
     Size size = MediaQuery.of(context).size;
     double width = size.width;
     double height = size.height;
@@ -41,7 +71,18 @@ class _ProfileState extends State<ProfilePage> {
     double gap = height * 0.02;
     double hMargin = width * 0.08;
     double vMargin = width * 0.16;
+
     return Scaffold(
+      floatingActionButtonLocation: showButton
+          ? FloatingActionButtonLocation.endFloat
+          : FloatingActionButtonLocation.endTop,
+      floatingActionButton: showButton
+          ? SaveButton(
+              onPressed: () => saveUpdates(),
+            )
+          : EditButton(
+              onPressed: () => enableEdit(),
+            ),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -60,8 +101,9 @@ class _ProfileState extends State<ProfilePage> {
                 imageView(UserController.currentUser?.userPhoto),
 
                 CustomTextField(
+                  controller: _nameController,
                   title: "Name",
-                  enabled: false,
+                  enabled: editMode ? true : false,
                   initialValue: UserController.currentUser?.name,
                 ),
                 CustomPhoneField(
@@ -70,20 +112,21 @@ class _ProfileState extends State<ProfilePage> {
                   initialValue: UserController.currentUser?.phoneNumber,
                 ),
                 CustomTextField(
+                  controller: _scholaridController,
                   title: "ScholarID",
-                  enabled: false,
+                  enabled: editMode ? true : false,
                   initialValue: UserController.currentUser?.scholarID,
                 ),
                 CustomDropDown(
                   title: "Branch",
                   items: Branch.values.map((branch) => branch.name).toList(),
-                  enabled: false,
+                  enabled: editMode ? true : false,
                   initialValue: UserController.currentUser?.branch.name,
                 ),
                 CustomDropDown(
                   title: "Degree",
                   items: Degree.values.map((degree) => degree.name).toList(),
-                  enabled: false,
+                  enabled: editMode ? true : false,
                   initialValue: UserController.currentUser?.degree.name,
                 ),
                 // CustomDataTable(

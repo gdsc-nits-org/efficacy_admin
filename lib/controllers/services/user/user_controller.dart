@@ -33,6 +33,8 @@ class UserController {
   }
 
   static Future<void> _gatherData() async {
+    clubs = [];
+    clubPositions = [];
     return await _gatherDataImpl();
   }
 

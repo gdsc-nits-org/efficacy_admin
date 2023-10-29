@@ -34,13 +34,13 @@ Future<void> _acceptInvitationImpl(String invitationID) async {
 
   // Accepting the invitation and updating the data
   ClubModel club = clubs.first;
-  Map<String, List<String>> members = club.members;
+  Map<String, List<String>> members = Map.of(club.members);
   if (!members.containsKey(clubPosition.first.id)) {
     members[clubPosition.first.id!] = [];
   }
   members[clubPosition.first.id!]!.add(UserController.currentUser!.email);
   club = club.copyWith(members: members);
-  List<String> position = UserController.currentUser!.position;
+  List<String> position = List.of(UserController.currentUser!.position);
   position.add(clubPosition.first.id!);
   UserController.currentUser =
       UserController.currentUser!.copyWith(position: position);
@@ -49,5 +49,6 @@ Future<void> _acceptInvitationImpl(String invitationID) async {
   await Future.wait([
     ClubController.update(club),
     UserController.update(),
+    InvitationController.delete(invitations.first),
   ]);
 }

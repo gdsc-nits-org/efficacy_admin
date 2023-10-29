@@ -1,9 +1,8 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
-import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
 import 'utils/create_event_utils.dart';
-import 'widgets/custom_drop_down.dart';
 import 'widgets/custom_text_field.dart';
 import 'widgets/date_time_picker.dart';
 import 'widgets/url_input.dart';
@@ -23,26 +22,6 @@ class EventForm extends StatefulWidget {
 class _EventFormState extends State<EventForm> {
   //moderator declaration
   List<UserModel> moderators = [];
-  List<String> clubs = [];
-
-  //date time variables
-  Future<void> getClubs() async {
-    List<String> positions = UserController.currentUser!.position;
-    List<String> clubIDs = [];
-    for (String id in positions) {
-      List<ClubPositionModel> clubPositions =
-          await ClubPositionController.get(clubPositionID: id).first;
-      if (clubPositions.isNotEmpty) {
-        clubIDs.add(clubPositions.first.clubID);
-      }
-    }
-    for (String id in clubIDs) {
-      String? name = await ClubController.getName(id).first;
-      if (name != null) {
-        clubs.add(name);
-      }
-    }
-  }
 
   Future<void> prepareData() async {
     /// User is created
@@ -56,40 +35,42 @@ class _EventFormState extends State<EventForm> {
     //       degree: Degree.BTech),
     // ));
     /// Or User is logged in
-    // await UserController.login(
-    //   email: "raj@gmail.com",
-    //   password: "123456",
+    // print(
+    //   await UserController.login(
+    //     email: "raj@gmail.com",
+    //     password: "123456",
+    //   ),
     // );
+
     /// In case user was previously logged in/ signed up
-    // await UserController.loginSilently();
+    // print(await UserController.loginSilently().first);
     //
 
     /// User Creates a club
-    // print(await ClubController.create(
-    //   const ClubModel(
-    //     name: "GDSC",
+    // ClubModel? club = await ClubController.create(
+    //   ClubModel(
+    //     name: "GDSC Test",
     //     instituteName: "NIT Silchar",
-    //     description: "Google Developer Student Clubs, NIT Silchar",
-    //     email: "raj@gmail.com",
+    //     description: "Google Developer Student Clubs, NIT Silchar Test",
+    //     email: UserController.currentUser!.email,
     //     clubLogoURL:
     //         "https://images.unsplash.com/photo-1682686580922-2e594f8bdaa7?auto=format&fit=crop&q=60&w=600&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHx8",
     //     members: {},
     //   ),
-    // ));
+    // );
 
     /// User is asked for his position
     /// User is by default taken as the lead and is asked to fill the name of the position of lead
     /// With all the permissions
     // ClubPositionModel? clubPosition = await ClubPositionController.create(
-    //   const ClubPositionModel(
-    //     clubID: "653d42b050d174b5d9c9c513",
+    //   ClubPositionModel(
+    //     clubID: club!.id!,
     //     position: "Lead",
     //     permissions: Permissions.values,
     //   ),
     // );
     //
     /// A special invitation is then sent to the user with senderID as the same as itself only for this case
-    /// And the invitation in accepted automatically
     // InvitationModel? invitation = await InvitationController.create(
     //   InvitationModel(
     //     clubPositionID: clubPosition!.id!,
@@ -97,6 +78,8 @@ class _EventFormState extends State<EventForm> {
     //     recipientID: UserController.currentUser!.id!,
     //   ),
     // );
+
+    /// And the invitation in accepted automatically
     // await InvitationController.acceptInvitation(invitation!.id!);
   }
 
@@ -141,6 +124,9 @@ class _EventFormState extends State<EventForm> {
   @override
   Widget build(BuildContext context) {
     prepareData();
+    print(
+      UserController.clubs.map((club) => club.name).toList(),
+    );
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 25.0),
       child: Form(
@@ -148,16 +134,8 @@ class _EventFormState extends State<EventForm> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              CustomField(
-                controller: clubIDController,
-                hintText: 'Club ID',
-                icon: Icons.group,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Club ID cannot be empty';
-                  }
-                  return null;
-                },
+              CustomDropDown(
+                items: UserController.clubs.map((club) => club.name).toList(),
               ),
               //title
               CustomField(

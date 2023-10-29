@@ -8,9 +8,11 @@ Stream<UserModel?> _loginSilentlyImpl() async* {
   if (userData == null) {
     yield null;
   } else {
-    yield UserController.currentUser = UserModel.fromJson(
+    UserController.currentUser = UserModel.fromJson(
       Formatter.convertMapToMapStringDynamic(userData)!,
     );
+    await UserController._gatherData();
+    yield UserController.currentUser;
 
     DbCollection collection =
         Database.instance.collection(UserController._collectionName);

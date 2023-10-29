@@ -8,6 +8,14 @@ Future<void> _checkPermissionImpl({
   required String clubID,
   required bool forView,
 }) async {
+  List<ClubModel> club =
+      await ClubController.get(id: clubID, forceGet: true).first;
+  if (club.isEmpty) {
+    throw Exception("Club doesn't exists");
+  }
+  if (club.first.members.isEmpty) {
+    return;
+  }
   List<ClubPositionModel> positions = UserController.clubPositions
       .where((clubPosition) => clubPosition.clubID == clubID)
       .toList();

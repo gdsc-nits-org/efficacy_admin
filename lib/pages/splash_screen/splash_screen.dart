@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await LocalDatabase.init();
     await ForegroundService.init();
     await ForegroundService.startDataSync();
+    await UserController.loginSilently().first;
     stopwatch.stop();
     return stopwatch.elapsed.inMilliseconds;
   }

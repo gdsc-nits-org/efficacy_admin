@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/states/authenticator/authenticator.dart';
@@ -26,6 +27,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
       );
     }
     return const ProfileImageViewer(enabled: false);
+  }
+
+  late bool pendingInvites;
+  @override
+  void initState() {
+    // TODO : integrate with backend
+    pendingInvites = true;
+    super.initState();
   }
 
   @override
@@ -68,6 +77,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
           ListTile(
             title: const Text('Organizations'),
+            trailing: pendingInvites ? Text("NEW") : null,
             selected: routeName == "/OrganizationsPage",
             selectedColor: light,
             selectedTileColor: dark,

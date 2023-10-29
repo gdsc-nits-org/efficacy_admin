@@ -1,3 +1,4 @@
+import 'package:efficacy_admin/config/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       centerTitle: true,
       backgroundColor: Colors.transparent,
+      // Removing the default back button
+      automaticallyImplyLeading: false,
+      // Editing the back button (back button not responsive on all pages due to navigation)
+      // leading: const BackButton(
+      //     style:
+      //         ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.transparent),)),
       actions: [
         IconButton(
           onPressed: () {

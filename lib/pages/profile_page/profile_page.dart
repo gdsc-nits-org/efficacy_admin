@@ -37,13 +37,7 @@ class _ProfileState extends State<ProfilePage> {
   }
 
   void saveUpdates() async {
-    await UserController.update(UserModel(
-        name: _nameController.text,
-        scholarID: _scholaridController.text,
-        branch: UserController.currentUser!.branch,
-        degree: UserController.currentUser!.degree,
-        password: '',
-        email: ''));
+    await UserController.update();
     setState(() {
       editMode = false;
       showButton = false;

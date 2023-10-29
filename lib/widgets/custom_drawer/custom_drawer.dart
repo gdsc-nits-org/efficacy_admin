@@ -61,6 +61,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
               // Close the drawer
               Navigator.pop(context);
               // Navigate to Home page
+              Navigator.of(context).pushNamed(
+                Homepage.routeName,
+              );
             },
           ),
           ListTile(

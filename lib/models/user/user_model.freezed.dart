@@ -32,6 +32,8 @@ mixin _$UserModel {
   Branch get branch => throw _privateConstructorUsedError;
   Degree get degree => throw _privateConstructorUsedError;
   Map<Social, String> get socials => throw _privateConstructorUsedError;
+
+  /// List<ClubPositionID>
   List<String> get position => throw _privateConstructorUsedError;
   DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
 
@@ -291,7 +293,10 @@ class _$UserModelImpl implements _UserModel {
     return EqualUnmodifiableMapView(_socials);
   }
 
+  /// List<ClubPositionID>
   final List<String> _position;
+
+  /// List<ClubPositionID>
   @override
   @JsonKey()
   List<String> get position {
@@ -404,6 +409,8 @@ abstract class _UserModel implements UserModel {
   @override
   Map<Social, String> get socials;
   @override
+
+  /// List<ClubPositionID>
   List<String> get position;
   @override
   DateTime? get lastLocalUpdate;

@@ -13,6 +13,7 @@ part 'functions/_create_impl.dart';
 part 'functions/_get_impl.dart';
 part 'functions/_delete_impl.dart';
 part 'functions/_accept_invitation_impl.dart';
+part 'functions/_check_permission_impl.dart';
 
 class InvitationController {
   static const String _collectionName = "invitations";
@@ -27,12 +28,7 @@ class InvitationController {
   }
 
   static Future<void> _checkPermission(String clubPositionID) async {
-    ClubPositionModel clubPosition =
-        (await ClubPositionController.get(clubPositionID: clubPositionID).first)
-            .first;
-    if (!clubPosition.permissions.contains(Permissions.modifyMembers)) {
-      throw Exception("You do not have permission to create invitations");
-    }
+    return await _checkPermissionImpl(clubPositionID);
   }
 
   static Future<void> _checkDuplicate(InvitationModel invitation) async {
@@ -40,6 +36,7 @@ class InvitationController {
   }
 
   static Future<InvitationModel?> create(InvitationModel invitation) async {
+    await _checkPermission(invitation.clubPositionID);
     return await _createImpl(invitation);
   }
 

@@ -1,8 +1,6 @@
 part of '../invitation_controller.dart';
 
 Future<InvitationModel?> _createImpl(InvitationModel invitation) async {
-  await InvitationController._checkPermission(invitation.clubPositionID);
-
   DbCollection collection =
       Database.instance.collection(InvitationController._collectionName);
   await InvitationController._checkDuplicate(invitation);

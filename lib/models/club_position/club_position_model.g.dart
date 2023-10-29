@@ -16,7 +16,7 @@ _$ClubPositionModelImpl _$$ClubPositionModelImplFromJson(
           ? null
           : DateTime.parse(json['lastLocalUpdate'] as String),
       permissions: (json['permissions'] as List<dynamic>?)
-              ?.map((e) => $enumDecode(_$PermissionEnumMap, e))
+              ?.map((e) => $enumDecode(_$PermissionsEnumMap, e))
               .toList() ??
           const [],
     );
@@ -29,13 +29,12 @@ Map<String, dynamic> _$$ClubPositionModelImplToJson(
       'position': instance.position,
       'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
       'permissions':
-          instance.permissions.map((e) => _$PermissionEnumMap[e]!).toList(),
+          instance.permissions.map((e) => _$PermissionsEnumMap[e]!).toList(),
     };
 
-const _$PermissionEnumMap = {
+const _$PermissionsEnumMap = {
   Permissions.read: 'read',
   Permissions.modifyEvents: 'modifyEvents',
   Permissions.modifyMembers: 'modifyMembers',
-  Permissions.modifyPermission: 'modifyPermission',
-  Permissions.modifyPositions: 'modifyPositions',
+  Permissions.modifyClub: 'modifyClub',
 };

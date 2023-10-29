@@ -1,4 +1,7 @@
+import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/utils/comparator.dart';
+import 'package:efficacy_admin/models/club/club_model.dart';
+import 'package:efficacy_admin/models/club_position/club_position_model.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/utils/database/constants.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
@@ -15,15 +18,22 @@ part 'functions/_login_silently_impl.dart';
 part 'functions/_get_impl.dart';
 part 'functions/_update_impl.dart';
 part 'functions/_delete_impl.dart';
+part 'functions/_gather_data.dart';
 
 class UserController {
   static const String _collectionName = "users";
   static UserModel? currentUser;
+  static List<ClubModel> clubs = [];
+  static List<ClubPositionModel> clubPositions = [];
   const UserController._();
 
   /// Pass user as null if you want to save the currentUser
   static Future<UserModel?> _save({UserModel? user}) async {
     return await _saveImpl(user: user);
+  }
+
+  static Future<void> _gatherData() async {
+    return await _gatherDataImpl();
   }
 
   static UserModel _removePassword(UserModel user) {
@@ -59,10 +69,11 @@ class UserController {
     required String email,
     required String password,
   }) async {
-    return await _loginImpl(
+    UserModel? user = await _loginImpl(
       email: email,
       password: password,
     );
+    return user;
   }
 
   /// Log in without internet i.e. from local database
@@ -98,7 +109,9 @@ class UserController {
   ///
   /// It updates the data of the currentUser
   static Future<UserModel?> update() async {
-    return await _updateImpl();
+    UserModel? user = await _updateImpl();
+    await _gatherData();
+    return user;
   }
 
   /// Deletes the user if exists from both local database and server
@@ -108,6 +121,8 @@ class UserController {
 
   static Future<void> logOut() async {
     currentUser = null;
+    clubs = [];
+    clubPositions = [];
     await _save();
   }
 }

@@ -26,5 +26,6 @@ Stream<UserModel?> _loginSilentlyImpl() async* {
     } else {
       yield null;
     }
+    await UserController._gatherData();
   }
 }

@@ -13,7 +13,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
-  late bool pendingInvites;
+  late bool pendingInvites=false;
 
   Future<void> init() async {
     pendingInvites = await InvitationController.anyPendingInvitation();

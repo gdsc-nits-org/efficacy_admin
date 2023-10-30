@@ -1,8 +1,33 @@
+import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  late bool pendingInvites;
+
+  Future<void> init() async {
+    pendingInvites = await InvitationController.anyPendingInvitation();
+    if (pendingInvites) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +62,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             // Notification bubble
             // TODO : Integrate with backend
-            true
+            pendingInvites
                 ? Positioned(
                     right: 5,
                     top: 5,
@@ -59,8 +84,4 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ],
     );
   }
-
-  @override
-  // TODO: implement preferredSize
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

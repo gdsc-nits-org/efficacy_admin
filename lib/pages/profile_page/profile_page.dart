@@ -21,6 +21,15 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfileState extends State<ProfilePage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _nameController.text = UserController.currentUser!.name;
+    _scholaridController.text = UserController.currentUser!.scholarID;
+  }
+
+
   File? _img;
   bool editMode = false;
   bool showButton = false;
@@ -37,13 +46,7 @@ class _ProfileState extends State<ProfilePage> {
   }
 
   void saveUpdates() async {
-    await UserController.update(UserModel(
-        name: _nameController.text,
-        scholarID: _scholaridController.text,
-        branch: UserController.currentUser!.branch,
-        degree: UserController.currentUser!.degree,
-        password: '',
-        email: ''));
+    await UserController.update();
     setState(() {
       editMode = false;
       showButton = false;
@@ -104,30 +107,27 @@ class _ProfileState extends State<ProfilePage> {
                   controller: _nameController,
                   title: "Name",
                   enabled: editMode ? true : false,
-                  initialValue: UserController.currentUser?.name,
                 ),
-                CustomPhoneField(
+                const CustomPhoneField(
                   title: "Phone",
                   enabled: false,
-                  initialValue: UserController.currentUser?.phoneNumber,
                 ),
                 CustomTextField(
                   controller: _scholaridController,
                   title: "ScholarID",
                   enabled: editMode ? true : false,
-                  initialValue: UserController.currentUser?.scholarID,
                 ),
                 CustomDropDown(
                   title: "Branch",
                   items: Branch.values.map((branch) => branch.name).toList(),
                   enabled: editMode ? true : false,
-                  initialValue: UserController.currentUser?.branch.name,
+                  initialValue: UserController.currentUser!.branch.toString(),
                 ),
                 CustomDropDown(
                   title: "Degree",
                   items: Degree.values.map((degree) => degree.name).toList(),
                   enabled: editMode ? true : false,
-                  initialValue: UserController.currentUser?.degree.name,
+                  initialValue: UserController.currentUser!.degree.toString(),
                 ),
                 // CustomDataTable(
                 //   columnspace: width*0.35,

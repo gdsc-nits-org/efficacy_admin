@@ -25,6 +25,7 @@ mixin _$ClubPositionModel {
   String get clubID => throw _privateConstructorUsedError;
   String get position => throw _privateConstructorUsedError;
   DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
+  List<Permissions> get permissions => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,7 +43,8 @@ abstract class $ClubPositionModelCopyWith<$Res> {
       {@JsonKey(name: '_id') String? id,
       String clubID,
       String position,
-      DateTime? lastLocalUpdate});
+      DateTime? lastLocalUpdate,
+      List<Permissions> permissions});
 }
 
 /// @nodoc
@@ -62,6 +64,7 @@ class _$ClubPositionModelCopyWithImpl<$Res, $Val extends ClubPositionModel>
     Object? clubID = null,
     Object? position = null,
     Object? lastLocalUpdate = freezed,
+    Object? permissions = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -80,31 +83,36 @@ class _$ClubPositionModelCopyWithImpl<$Res, $Val extends ClubPositionModel>
           ? _value.lastLocalUpdate
           : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      permissions: null == permissions
+          ? _value.permissions
+          : permissions // ignore: cast_nullable_to_non_nullable
+              as List<Permissions>,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_ClubPositionModelCopyWith<$Res>
+abstract class _$$ClubPositionModelImplCopyWith<$Res>
     implements $ClubPositionModelCopyWith<$Res> {
-  factory _$$_ClubPositionModelCopyWith(_$_ClubPositionModel value,
-          $Res Function(_$_ClubPositionModel) then) =
-      __$$_ClubPositionModelCopyWithImpl<$Res>;
+  factory _$$ClubPositionModelImplCopyWith(_$ClubPositionModelImpl value,
+          $Res Function(_$ClubPositionModelImpl) then) =
+      __$$ClubPositionModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {@JsonKey(name: '_id') String? id,
       String clubID,
       String position,
-      DateTime? lastLocalUpdate});
+      DateTime? lastLocalUpdate,
+      List<Permissions> permissions});
 }
 
 /// @nodoc
-class __$$_ClubPositionModelCopyWithImpl<$Res>
-    extends _$ClubPositionModelCopyWithImpl<$Res, _$_ClubPositionModel>
-    implements _$$_ClubPositionModelCopyWith<$Res> {
-  __$$_ClubPositionModelCopyWithImpl(
-      _$_ClubPositionModel _value, $Res Function(_$_ClubPositionModel) _then)
+class __$$ClubPositionModelImplCopyWithImpl<$Res>
+    extends _$ClubPositionModelCopyWithImpl<$Res, _$ClubPositionModelImpl>
+    implements _$$ClubPositionModelImplCopyWith<$Res> {
+  __$$ClubPositionModelImplCopyWithImpl(_$ClubPositionModelImpl _value,
+      $Res Function(_$ClubPositionModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -114,8 +122,9 @@ class __$$_ClubPositionModelCopyWithImpl<$Res>
     Object? clubID = null,
     Object? position = null,
     Object? lastLocalUpdate = freezed,
+    Object? permissions = null,
   }) {
-    return _then(_$_ClubPositionModel(
+    return _then(_$ClubPositionModelImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -132,21 +141,27 @@ class __$$_ClubPositionModelCopyWithImpl<$Res>
           ? _value.lastLocalUpdate
           : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      permissions: null == permissions
+          ? _value._permissions
+          : permissions // ignore: cast_nullable_to_non_nullable
+              as List<Permissions>,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_ClubPositionModel implements _ClubPositionModel {
-  const _$_ClubPositionModel(
+class _$ClubPositionModelImpl implements _ClubPositionModel {
+  const _$ClubPositionModelImpl(
       {@JsonKey(name: '_id') this.id,
       required this.clubID,
       required this.position,
-      this.lastLocalUpdate});
+      this.lastLocalUpdate,
+      final List<Permissions> permissions = const []})
+      : _permissions = permissions;
 
-  factory _$_ClubPositionModel.fromJson(Map<String, dynamic> json) =>
-      _$$_ClubPositionModelFromJson(json);
+  factory _$ClubPositionModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ClubPositionModelImplFromJson(json);
 
   @override
   @JsonKey(name: '_id')
@@ -157,40 +172,50 @@ class _$_ClubPositionModel implements _ClubPositionModel {
   final String position;
   @override
   final DateTime? lastLocalUpdate;
+  final List<Permissions> _permissions;
+  @override
+  @JsonKey()
+  List<Permissions> get permissions {
+    if (_permissions is EqualUnmodifiableListView) return _permissions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_permissions);
+  }
 
   @override
   String toString() {
-    return 'ClubPositionModel(id: $id, clubID: $clubID, position: $position, lastLocalUpdate: $lastLocalUpdate)';
+    return 'ClubPositionModel(id: $id, clubID: $clubID, position: $position, lastLocalUpdate: $lastLocalUpdate, permissions: $permissions)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ClubPositionModel &&
+            other is _$ClubPositionModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.clubID, clubID) || other.clubID == clubID) &&
             (identical(other.position, position) ||
                 other.position == position) &&
             (identical(other.lastLocalUpdate, lastLocalUpdate) ||
-                other.lastLocalUpdate == lastLocalUpdate));
+                other.lastLocalUpdate == lastLocalUpdate) &&
+            const DeepCollectionEquality()
+                .equals(other._permissions, _permissions));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, clubID, position, lastLocalUpdate);
+  int get hashCode => Object.hash(runtimeType, id, clubID, position,
+      lastLocalUpdate, const DeepCollectionEquality().hash(_permissions));
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ClubPositionModelCopyWith<_$_ClubPositionModel> get copyWith =>
-      __$$_ClubPositionModelCopyWithImpl<_$_ClubPositionModel>(
+  _$$ClubPositionModelImplCopyWith<_$ClubPositionModelImpl> get copyWith =>
+      __$$ClubPositionModelImplCopyWithImpl<_$ClubPositionModelImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ClubPositionModelToJson(
+    return _$$ClubPositionModelImplToJson(
       this,
     );
   }
@@ -201,10 +226,11 @@ abstract class _ClubPositionModel implements ClubPositionModel {
       {@JsonKey(name: '_id') final String? id,
       required final String clubID,
       required final String position,
-      final DateTime? lastLocalUpdate}) = _$_ClubPositionModel;
+      final DateTime? lastLocalUpdate,
+      final List<Permissions> permissions}) = _$ClubPositionModelImpl;
 
   factory _ClubPositionModel.fromJson(Map<String, dynamic> json) =
-      _$_ClubPositionModel.fromJson;
+      _$ClubPositionModelImpl.fromJson;
 
   @override
   @JsonKey(name: '_id')
@@ -216,7 +242,9 @@ abstract class _ClubPositionModel implements ClubPositionModel {
   @override
   DateTime? get lastLocalUpdate;
   @override
+  List<Permissions> get permissions;
+  @override
   @JsonKey(ignore: true)
-  _$$_ClubPositionModelCopyWith<_$_ClubPositionModel> get copyWith =>
+  _$$ClubPositionModelImplCopyWith<_$ClubPositionModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

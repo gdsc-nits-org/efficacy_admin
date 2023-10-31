@@ -4,13 +4,13 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/utils/constants.dart';
 import 'package:efficacy_admin/pages/pages.dart';
+import 'package:efficacy_admin/utils/exit_program.dart';
 import 'package:efficacy_admin/utils/validator.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
 import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -41,7 +41,7 @@ class _SignUpPageUserDetailsState extends State<SignUpUserDetailsPage> {
   String selectedBranch = 'CSE';
   String selectedInstitute = 'NIT Silchar';
 
-  List<String> institute = ['NIT Silchar', 'NIT Trirchy', 'A', 'B'];
+  List<String> institute = ['NIT Silchar', 'NIT Trichy', 'A', 'B'];
 
   File? _image;
 
@@ -171,13 +171,12 @@ class _SignUpPageUserDetailsState extends State<SignUpUserDetailsPage> {
     //size constants
     double gap = height * 0.02;
     double formWidth = width * 0.8;
-    double fieldHeight = height * 0.09;
     double vMargin = width * 0.16;
 
     return WillPopScope(
       onWillPop: () async {
-        SystemNavigator.pop();
-        return true;
+        final quitCondition = await showExitWarning(context);
+        return quitCondition ?? false;
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,

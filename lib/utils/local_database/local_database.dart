@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'constants.dart';
+export 'constants.dart';
 
 /// The data is assumed to be either directly as a json value
 /// Or a list of json value
@@ -15,12 +16,16 @@ import 'constants.dart';
 class LocalDatabase {
   static const Duration stalePeriod = Duration(days: 7);
   const LocalDatabase._();
+  static bool didInit = false;
 
   static Future<void> init() async {
+    print(didInit);
+    if (didInit) return;
     Directory directory = await getApplicationDocumentsDirectory();
     Hive.init(directory.path);
     Hive.registerAdapter(ObjectIDAdapter());
     await _removeStaleData();
+    didInit = true;
   }
 
   static Future<dynamic> get(
@@ -55,7 +60,10 @@ class LocalDatabase {
   }
 
   static bool _canKeepData(Map? item) {
-    if (item == null) return false;
+    if (item == null || item[UserFields.lastLocalUpdate.name] == null) {
+      return false;
+    }
+
     DateTime oldDate = DateTime.parse(item[UserFields.lastLocalUpdate.name]);
     return DateTime.now().difference(oldDate) < stalePeriod;
   }
@@ -82,12 +90,14 @@ class LocalDatabase {
             filteredData.add(item);
           }
         }
+      } else if (data is DateTime) {
+        filteredData = data;
       } else {
         if (_canKeepData(data)) {
           filteredData = data;
         }
       }
-      box.delete(key);
+      await box.delete(key);
       if (filteredData != null) {
         if (filteredData is Map || filteredData is List) {
           if (filteredData.isNotEmpty) await box.put(key, filteredData);

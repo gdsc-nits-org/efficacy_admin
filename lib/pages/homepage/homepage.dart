@@ -1,10 +1,15 @@
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/services/image/image_controller.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
+import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/pages/create_event/create_event.dart';
 import 'package:efficacy_admin/pages/homepage/widgets/events/event_list.dart';
 import 'package:efficacy_admin/pages/homepage/widgets/events/event_viewer.dart';
 import 'package:efficacy_admin/pages/homepage/widgets/tab_navigation/tab_view.dart';
+import 'package:efficacy_admin/utils/data_sync/foreground_service.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -29,6 +34,7 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(),
+      endDrawer: const CustomDrawer(),
       body: Column(
         children: [
           TabView(
@@ -47,14 +53,15 @@ class _HomepageState extends State<Homepage> {
                 alignment: Alignment.centerRight,
                 child: FloatingActionButton(
                   onPressed: () async {
-                    XFile? file = await ImagePicker()
-                        .pickImage(source: ImageSource.gallery);
-                    if (file != null) {
-                      ImageController.uploadImage(
-                          img: await file.readAsBytes(),
-                          clubName: "GDSC",
-                          eventName: "Flutter");
-                    }
+                    Navigator.pushNamed(context, CreateEvent.routeName);
+                    // XFile? file = await ImagePicker()
+                    //     .pickImage(source: ImageSource.gallery);
+                    // if (file != null) {
+                    //   ImageController.uploadImage(
+                    //       img: await file.readAsBytes(),
+                    //       clubName: "GDSC",
+                    //       eventName: "Flutter");
+                    // }
                   }, //define add event function here
                   child: const Icon(Icons.add),
                 ),

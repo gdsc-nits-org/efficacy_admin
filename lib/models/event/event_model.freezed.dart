@@ -39,6 +39,8 @@ mixin _$EventModel {
   List<String> get liked => throw _privateConstructorUsedError;
   String get clubID => throw _privateConstructorUsedError;
   DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -66,7 +68,9 @@ abstract class $EventModelCopyWith<$Res> {
       List<String> contacts,
       List<String> liked,
       String clubID,
-      DateTime? lastLocalUpdate});
+      DateTime? lastLocalUpdate,
+      DateTime? createdAt,
+      DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -96,6 +100,8 @@ class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
     Object? liked = null,
     Object? clubID = null,
     Object? lastLocalUpdate = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -154,16 +160,24 @@ class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
           ? _value.lastLocalUpdate
           : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_EventModelCopyWith<$Res>
+abstract class _$$EventModelImplCopyWith<$Res>
     implements $EventModelCopyWith<$Res> {
-  factory _$$_EventModelCopyWith(
-          _$_EventModel value, $Res Function(_$_EventModel) then) =
-      __$$_EventModelCopyWithImpl<$Res>;
+  factory _$$EventModelImplCopyWith(
+          _$EventModelImpl value, $Res Function(_$EventModelImpl) then) =
+      __$$EventModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -180,15 +194,17 @@ abstract class _$$_EventModelCopyWith<$Res>
       List<String> contacts,
       List<String> liked,
       String clubID,
-      DateTime? lastLocalUpdate});
+      DateTime? lastLocalUpdate,
+      DateTime? createdAt,
+      DateTime? updatedAt});
 }
 
 /// @nodoc
-class __$$_EventModelCopyWithImpl<$Res>
-    extends _$EventModelCopyWithImpl<$Res, _$_EventModel>
-    implements _$$_EventModelCopyWith<$Res> {
-  __$$_EventModelCopyWithImpl(
-      _$_EventModel _value, $Res Function(_$_EventModel) _then)
+class __$$EventModelImplCopyWithImpl<$Res>
+    extends _$EventModelCopyWithImpl<$Res, _$EventModelImpl>
+    implements _$$EventModelImplCopyWith<$Res> {
+  __$$EventModelImplCopyWithImpl(
+      _$EventModelImpl _value, $Res Function(_$EventModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -208,8 +224,10 @@ class __$$_EventModelCopyWithImpl<$Res>
     Object? liked = null,
     Object? clubID = null,
     Object? lastLocalUpdate = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
-    return _then(_$_EventModel(
+    return _then(_$EventModelImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -266,14 +284,22 @@ class __$$_EventModelCopyWithImpl<$Res>
           ? _value.lastLocalUpdate
           : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_EventModel extends _EventModel {
-  const _$_EventModel(
+class _$EventModelImpl extends _EventModel {
+  const _$EventModelImpl(
       {@JsonKey(name: "_id") this.id,
       required this.posterURL,
       required this.title,
@@ -287,13 +313,15 @@ class _$_EventModel extends _EventModel {
       required final List<String> contacts,
       final List<String> liked = const [],
       required this.clubID,
-      this.lastLocalUpdate})
+      this.lastLocalUpdate,
+      this.createdAt,
+      this.updatedAt})
       : _contacts = contacts,
         _liked = liked,
         super._();
 
-  factory _$_EventModel.fromJson(Map<String, dynamic> json) =>
-      _$$_EventModelFromJson(json);
+  factory _$EventModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$EventModelImplFromJson(json);
 
   @override
   @JsonKey(name: "_id")
@@ -344,17 +372,21 @@ class _$_EventModel extends _EventModel {
   final String clubID;
   @override
   final DateTime? lastLocalUpdate;
+  @override
+  final DateTime? createdAt;
+  @override
+  final DateTime? updatedAt;
 
   @override
   String toString() {
-    return 'EventModel(id: $id, posterURL: $posterURL, title: $title, shortDescription: $shortDescription, longDescription: $longDescription, startDate: $startDate, endDate: $endDate, registrationLink: $registrationLink, facebookPostURL: $facebookPostURL, venue: $venue, contacts: $contacts, liked: $liked, clubID: $clubID, lastLocalUpdate: $lastLocalUpdate)';
+    return 'EventModel(id: $id, posterURL: $posterURL, title: $title, shortDescription: $shortDescription, longDescription: $longDescription, startDate: $startDate, endDate: $endDate, registrationLink: $registrationLink, facebookPostURL: $facebookPostURL, venue: $venue, contacts: $contacts, liked: $liked, clubID: $clubID, lastLocalUpdate: $lastLocalUpdate, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_EventModel &&
+            other is _$EventModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.posterURL, posterURL) ||
                 other.posterURL == posterURL) &&
@@ -375,7 +407,11 @@ class _$_EventModel extends _EventModel {
             const DeepCollectionEquality().equals(other._liked, _liked) &&
             (identical(other.clubID, clubID) || other.clubID == clubID) &&
             (identical(other.lastLocalUpdate, lastLocalUpdate) ||
-                other.lastLocalUpdate == lastLocalUpdate));
+                other.lastLocalUpdate == lastLocalUpdate) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(ignore: true)
@@ -395,17 +431,19 @@ class _$_EventModel extends _EventModel {
       const DeepCollectionEquality().hash(_contacts),
       const DeepCollectionEquality().hash(_liked),
       clubID,
-      lastLocalUpdate);
+      lastLocalUpdate,
+      createdAt,
+      updatedAt);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_EventModelCopyWith<_$_EventModel> get copyWith =>
-      __$$_EventModelCopyWithImpl<_$_EventModel>(this, _$identity);
+  _$$EventModelImplCopyWith<_$EventModelImpl> get copyWith =>
+      __$$EventModelImplCopyWithImpl<_$EventModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_EventModelToJson(
+    return _$$EventModelImplToJson(
       this,
     );
   }
@@ -426,11 +464,13 @@ abstract class _EventModel extends EventModel {
       required final List<String> contacts,
       final List<String> liked,
       required final String clubID,
-      final DateTime? lastLocalUpdate}) = _$_EventModel;
+      final DateTime? lastLocalUpdate,
+      final DateTime? createdAt,
+      final DateTime? updatedAt}) = _$EventModelImpl;
   const _EventModel._() : super._();
 
   factory _EventModel.fromJson(Map<String, dynamic> json) =
-      _$_EventModel.fromJson;
+      _$EventModelImpl.fromJson;
 
   @override
   @JsonKey(name: "_id")
@@ -466,7 +506,11 @@ abstract class _EventModel extends EventModel {
   @override
   DateTime? get lastLocalUpdate;
   @override
+  DateTime? get createdAt;
+  @override
+  DateTime? get updatedAt;
+  @override
   @JsonKey(ignore: true)
-  _$$_EventModelCopyWith<_$_EventModel> get copyWith =>
+  _$$EventModelImplCopyWith<_$EventModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

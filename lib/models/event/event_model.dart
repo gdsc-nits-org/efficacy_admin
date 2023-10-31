@@ -29,6 +29,8 @@ class EventModel with _$EventModel {
     @Default([]) List<String> liked,
     required String clubID,
     DateTime? lastLocalUpdate,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) = _EventModel;
 
   factory EventModel.fromJson(Map<String, Object?> json) {
@@ -51,7 +53,6 @@ class EventModel with _$EventModel {
 }
 
 enum EventFields {
-  id,
   posterURL,
   title,
   shortDescription,
@@ -64,5 +65,7 @@ enum EventFields {
   contacts,
   liked,
   clubID,
-  lastLocalUpdate
+  lastLocalUpdate,
+  createdAt,
+  updatedAt,
 }

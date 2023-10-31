@@ -4,10 +4,10 @@ import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/utils/utils.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 
 class LoginPage extends StatefulWidget {
+
   //route
   static const String routeName = "/LoginPage";
   const LoginPage({super.key});
@@ -38,9 +38,9 @@ class _LoginPageState extends State<LoginPage>{
     double fieldHeight = height * 0.09;
 
     return WillPopScope(
-      onWillPop: () async{
-        SystemNavigator.pop();
-        return true;
+       onWillPop: () async {
+        final quitCondition = await showExitWarning(context);
+        return quitCondition ?? false;
       },
       child: Scaffold(
         body: Center(
@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage>{
                             ElevatedButton(
                                 onPressed: () {
                                   if(_formKey.currentState!.validate()){
-                                    UserController.login(_emailController.text.toString(), _passController.text.toString());
+                                    UserController.login(email: _emailController.text.toString(), password: _passController.text.toString());
                                   }
                                 },
                                 child: const Text("Login"),

@@ -16,14 +16,18 @@ class EfficacyAdmin extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       routes: {
+        EventFullScreen.routeName: (context) =>
+            const EventFullScreen(), //issue here
         Homepage.routeName: (context) => const Homepage(),
         ExperimentPage.routeName: (BuildContext context) =>
             const ExperimentPage(),
-        LoginPage.routeName: (context) => const LoginPage(),
+        LoginPage.routeName: (context) =>  LoginPage(),
         SplashScreen.routeName: (context) => const SplashScreen(),
         SignUpPage.routeName: (context) => const SignUpPage(),
         ProfilePage.routeName: (context) => const ProfilePage(),
         SignUpUserDetailsPage.routeName: (context) => const SignUpUserDetailsPage(),
+        CreateEvent.routeName: (context) => const CreateEvent(),
+        OrganizationsPage.routeName:(context) => const OrganizationsPage()
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,

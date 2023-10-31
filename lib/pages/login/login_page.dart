@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class LoginPage extends StatefulWidget {
-
   //route
   static const String routeName = "/LoginPage";
   const LoginPage({super.key});
@@ -22,6 +21,22 @@ class _LoginPageState extends State<LoginPage>{
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
   IconData passVisibility = Icons.visibility;
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    login();
+  }
+
+  void login() async {
+    await UserController.login(email: "raj@gmail.com", password: "123456");
+  }
+
   @override
   Widget build(BuildContext context) {
     //screen height and width

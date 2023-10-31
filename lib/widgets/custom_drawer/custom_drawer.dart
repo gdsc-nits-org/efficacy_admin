@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
+import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/pages/pages.dart';
-import 'package:efficacy_admin/states/authenticator/authenticator.dart';
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +25,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
       );
     }
     return const ProfileImageViewer(enabled: false);
+  }
+
+  late bool pendingInvites = false;
+
+  Future<void> init() async {
+    pendingInvites = await InvitationController.anyPendingInvitation();
+    if (pendingInvites) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO : integrate with backend
+    init();
+    super.initState();
   }
 
   @override
@@ -61,10 +76,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
               // Close the drawer
               Navigator.pop(context);
               // Navigate to Home page
+              Navigator.of(context).pushNamed(
+                Homepage.routeName,
+              );
             },
           ),
           ListTile(
             title: const Text('Organizations'),
+            trailing: pendingInvites ? const Text("NEW") : null,
             selected: routeName == "/OrganizationsPage",
             selectedColor: light,
             selectedTileColor: dark,

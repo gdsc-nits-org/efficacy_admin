@@ -6,11 +6,21 @@ class CustomPhoneField extends StatelessWidget {
   final String? title;
   final bool enabled;
   final PhoneNumber? initialValue;
+  final String? label;
+  final EdgeInsets? contentPadding;
+  final IconData? prefixIcon;
+  final Widget? suffixIcon;
+  final TextEditingController? controller;
   const CustomPhoneField({
     super.key,
     this.title,
     this.enabled = true,
     this.initialValue,
+    this.contentPadding,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.label,
+    this.controller,
   });
 
   @override
@@ -24,6 +34,18 @@ class CustomPhoneField extends StatelessWidget {
             style: Theme.of(context).textTheme.labelLarge,
           ),
         IntlPhoneField(
+              controller: controller,
+              decoration: InputDecoration(
+              labelText: label,
+              focusColor: const Color(0xFF05354C),
+              contentPadding:
+                  contentPadding ?? const EdgeInsets.symmetric(horizontal: 10),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              prefixIcon: Icon(prefixIcon, color: const Color.fromARGB(255, 67, 67, 67)),//const Color(0xFF05354C),),
+              suffixIcon: suffixIcon,
+            ),
           enabled: enabled,
           initialCountryCode: initialValue?.countryISOCode ?? "IN",
           initialValue: initialValue?.number,

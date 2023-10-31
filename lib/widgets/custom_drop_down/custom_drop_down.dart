@@ -1,4 +1,4 @@
-import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/config/configurations/theme/utils/palette.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropDown extends StatefulWidget {
@@ -39,7 +39,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
             widget.title!,
             style: Theme.of(context).textTheme.labelLarge,
           ),
-        DropdownButton(
+        DropdownButtonFormField(
           dropdownColor: paleBlue,
           isExpanded: true,
           value: currentlySelected,

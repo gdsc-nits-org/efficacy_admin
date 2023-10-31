@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   final EdgeInsets? contentPadding;
-  final String? initialValue;
   final TextEditingController? controller;
   final String? title;
   final bool enabled;
   const CustomTextField({
     super.key,
     this.contentPadding,
-    this.initialValue,
     this.controller,
     this.title,
     this.enabled = true,
@@ -38,7 +36,6 @@ class CustomTextField extends StatelessWidget {
               ),
             ),
             enabled: enabled,
-            initialValue: initialValue,
           ),
         ),
       ].separate(3),

@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
       debugPrint("Time taken: $duration ms");
       Navigator.of(context)
           .pushNamedAndRemoveUntil(
-              Homepage.routeName, (Route<dynamic> route) => false)
+              ProfilePage.routeName, (Route<dynamic> route) => false)
           .then((value) => exit(0));
     });
   }

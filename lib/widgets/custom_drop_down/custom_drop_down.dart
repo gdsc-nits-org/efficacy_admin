@@ -1,4 +1,5 @@
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/models/models.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropDown extends StatefulWidget {
@@ -26,7 +27,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
   @override
   void initState() {
     super.initState();
-    currentlySelected = widget.initialValue;
+    currentlySelected = widget.initialValue ?? widget.items.first;
   }
 
   @override

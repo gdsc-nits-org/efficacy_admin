@@ -26,9 +26,8 @@ class _ProfileState extends State<ProfilePage> {
     // TODO: implement initState
     super.initState();
     _nameController.text = UserController.currentUser!.name;
-    _scholaridController.text = UserController.currentUser!.scholarID;
+    _scholarIDController.text = UserController.currentUser!.scholarID;
   }
-
 
   File? _img;
   bool editMode = false;
@@ -36,7 +35,7 @@ class _ProfileState extends State<ProfilePage> {
 
   //controllers
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _scholaridController = TextEditingController();
+  final TextEditingController _scholarIDController = TextEditingController();
 
   void enableEdit() {
     setState(() {
@@ -46,6 +45,10 @@ class _ProfileState extends State<ProfilePage> {
   }
 
   void saveUpdates() async {
+    UserController.currentUser = UserController.currentUser?.copyWith(
+      name: _nameController.text,
+      scholarID: _scholarIDController.text,
+    );
     await UserController.update();
     setState(() {
       editMode = false;
@@ -113,7 +116,7 @@ class _ProfileState extends State<ProfilePage> {
                   enabled: false,
                 ),
                 CustomTextField(
-                  controller: _scholaridController,
+                  controller: _scholarIDController,
                   title: "ScholarID",
                   enabled: editMode ? true : false,
                 ),
@@ -121,13 +124,13 @@ class _ProfileState extends State<ProfilePage> {
                   title: "Branch",
                   items: Branch.values.map((branch) => branch.name).toList(),
                   enabled: editMode ? true : false,
-                  initialValue: UserController.currentUser!.branch.toString(),
+                  initialValue: UserController.currentUser!.branch.name,
                 ),
                 CustomDropDown(
                   title: "Degree",
                   items: Degree.values.map((degree) => degree.name).toList(),
                   enabled: editMode ? true : false,
-                  initialValue: UserController.currentUser!.degree.toString(),
+                  initialValue: UserController.currentUser!.degree.name,
                 ),
                 // CustomDataTable(
                 //   columnspace: width*0.35,

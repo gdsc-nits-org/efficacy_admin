@@ -29,7 +29,6 @@ class _ProfileState extends State<ProfilePage> {
     _scholarIDController.text = UserController.currentUser!.scholarID;
   }
 
-  File? _img;
   bool editMode = false;
   bool showButton = false;
 
@@ -54,17 +53,6 @@ class _ProfileState extends State<ProfilePage> {
       editMode = false;
       showButton = false;
     });
-  }
-
-  Widget imageView(String? s) {
-    if (s != null) {
-      _img = File(s);
-      return ProfileImageViewer(
-        enabled: false,
-        image: _img,
-      );
-    }
-    return const ProfileImageViewer(enabled: false);
   }
 
   @override
@@ -104,7 +92,10 @@ class _ProfileState extends State<ProfilePage> {
                 ),
                 Gap(gap),
 
-                imageView(UserController.currentUser?.userPhoto),
+                ProfileImageViewer(
+                  enabled: false,
+                  imagePath: UserController.currentUser?.userPhoto,
+                ),
 
                 CustomTextField(
                   controller: _nameController,

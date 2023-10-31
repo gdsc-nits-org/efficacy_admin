@@ -14,19 +14,6 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  File? _img;
-
-  Widget imageView(String? s) {
-    if (s != null) {
-      _img = File(s);
-      return ProfileImageViewer(
-        enabled: false,
-        image: _img,
-      );
-    }
-    return const ProfileImageViewer(enabled: false);
-  }
-
   late bool pendingInvites = false;
 
   Future<void> init() async {
@@ -64,9 +51,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: const BoxDecoration(color: dark),
-            child: imageView(UserController.currentUser?.userPhoto),
-          ),
+              decoration: const BoxDecoration(color: dark),
+              child: ProfileImageViewer(
+                enabled: false,
+                imagePath: UserController.currentUser?.userPhoto,
+              )),
           ListTile(
             title: const Text('Home'),
             selected: routeName == "/homePage",

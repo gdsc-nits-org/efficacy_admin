@@ -1,4 +1,5 @@
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/pages/login/widgets/google_sign_in_button.dart';
 import 'package:efficacy_admin/pages/pages.dart';
 
@@ -7,11 +8,27 @@ import 'package:flutter/material.dart';
 
 import '../../utils/utils.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   //route
   static const String routeName = "/LoginPage";
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    login();
+  }
+
+  void login() async {
+    await UserController.login(email: "raj@gmail.com", password: "123456");
+  }
 
   @override
   Widget build(BuildContext context) {

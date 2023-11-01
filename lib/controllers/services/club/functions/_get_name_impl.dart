@@ -1,13 +1,12 @@
 part of '../club_controller.dart';
 
 Stream<String?> _getNameImpl(String id) async* {
-  Map? res =
-      await LocalDatabase.get(LocalCollections.club, LocalDocuments.clubs);
-  if (res != null) {
-    res = Formatter.convertMapToMapStringDynamic(res)!;
-    if (res.containsKey(id)) {
-      yield res[id][ClubFields.name.name] as String?;
-    }
+  List<String> data = LocalDatabase.get(LocalDocuments.clubs.name);
+  Map? res = data.isEmpty ? {} : jsonDecode(data[0]);
+
+  res = Formatter.convertMapToMapStringDynamic(res)!;
+  if (res.containsKey(id)) {
+    yield res[id][ClubFields.name.name] as String?;
   }
   DbCollection collection =
       Database.instance.collection(ClubController._collectionName);

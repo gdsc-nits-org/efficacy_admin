@@ -89,8 +89,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
             title: const Text('Log out'),
             onTap: () async {
               await UserController.logOut();
+
               if (mounted) {
-                Navigator.pop(context);
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   LoginPage.routeName,

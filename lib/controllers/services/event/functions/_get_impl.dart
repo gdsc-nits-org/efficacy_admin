@@ -27,14 +27,11 @@ Future<List<EventModel>> _fetchLocal({
 }) async {
   List<EventModel> filteredEvents = [];
 
+  List<String> data = LocalDatabase.get(LocalDocuments.events.name);
   // Local Data
-  Map localEvents = await LocalDatabase.get(
-        LocalCollections.event,
-        LocalDocuments.events,
-      ) ??
-      {};
+  Map localEvents = data.isEmpty ? {} : jsonDecode(data[0]);
   if (forceGet) {
-    await LocalDatabase.deleteCollection(LocalCollections.event);
+    await LocalDatabase.deleteKey(LocalDocuments.events.name);
   } else {
     if (localEvents.isNotEmpty) {
       if (eventID != null && localEvents.containsKey(eventID)) {

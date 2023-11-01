@@ -37,27 +37,26 @@ Future<List<ClubModel>> _fetchLocal({
 }) async {
   List<ClubModel> filteredClubs = [];
   if (forceGet) {
-    await LocalDatabase.deleteKey(LocalCollections.club, LocalDocuments.clubs);
+    await LocalDatabase.deleteKey(LocalDocuments.clubs.name);
   } else {
-    Map? res =
-        await LocalDatabase.get(LocalCollections.club, LocalDocuments.clubs);
-    if (res != null) {
-      for (dynamic model in res.values) {
-        model = Formatter.convertMapToMapStringDynamic(model);
-        if (id != null &&
-            model["_id"] == id &&
-            !ClubController._isMinified(model)) {
-          filteredClubs.add(ClubModel.fromJson(model));
-          break;
-        } else if (instituteName != null &&
-            model[ClubFields.instituteName.name] == instituteName &&
-            !ClubController._isMinified(model)) {
-          filteredClubs.add(ClubModel.fromJson(model));
-        } else if (clubName != null &&
-            model[ClubFields.name.name] == clubName &&
-            !ClubController._isMinified(model)) {
-          filteredClubs.add(ClubModel.fromJson(model));
-        }
+    List<String> data = LocalDatabase.get(LocalDocuments.clubs.name);
+    Map res = data.isEmpty ? {} : jsonDecode(data[0]);
+
+    for (dynamic model in res.values) {
+      model = Formatter.convertMapToMapStringDynamic(model);
+      if (id != null &&
+          model["_id"] == id &&
+          !ClubController._isMinified(model)) {
+        filteredClubs.add(ClubModel.fromJson(model));
+        break;
+      } else if (instituteName != null &&
+          model[ClubFields.instituteName.name] == instituteName &&
+          !ClubController._isMinified(model)) {
+        filteredClubs.add(ClubModel.fromJson(model));
+      } else if (clubName != null &&
+          model[ClubFields.name.name] == clubName &&
+          !ClubController._isMinified(model)) {
+        filteredClubs.add(ClubModel.fromJson(model));
       }
     }
   }

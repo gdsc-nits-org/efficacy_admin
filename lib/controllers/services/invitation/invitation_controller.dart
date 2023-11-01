@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
@@ -63,6 +65,10 @@ class InvitationController {
 
   static Future<void> acceptInvitation(String invitationID) async {
     return await _acceptInvitationImpl(invitationID);
+  }
+
+  static Future<void> rejectInvitation(InvitationModel invitation) async {
+    return await delete(invitation);
   }
 
   static Future<bool> anyPendingInvitation() async {

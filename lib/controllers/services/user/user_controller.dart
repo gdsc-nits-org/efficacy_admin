@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/utils/comparator.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
@@ -71,11 +73,10 @@ class UserController {
     required String email,
     required String password,
   }) async {
-    UserModel? user = await _loginImpl(
+    return await _loginImpl(
       email: email,
       password: password,
     );
-    return user;
   }
 
   /// Log in without internet i.e. from local database

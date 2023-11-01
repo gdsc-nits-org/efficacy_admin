@@ -35,30 +35,29 @@ Future<List<UserModel>> _fetchLocal({
 }) async {
   List<UserModel> filteredUsers = [];
   if (forceGet) {
-    await LocalDatabase.deleteCollection(LocalCollections.user);
+    await LocalDatabase.deleteKey(LocalDocuments.users.name);
   } else if (keepPassword == false) {
     // Since passwords are never stored in the local database
-    Map users = await LocalDatabase.get(
-          LocalCollections.user,
-          LocalDocuments.users,
-        ) ??
-        {};
-    if (email != null) {
-      if (users.containsKey(email)) {
-        filteredUsers.add(
-          UserModel.fromJson(
-              Formatter.convertMapToMapStringDynamic(users[email])!),
-        );
-      }
-    } else {
-      for (dynamic user in users.values) {
-        if (user != null &&
-            (user[UserFields.name.name] as String)
-                .toLowerCase()
-                .startsWith(nameStartsWith!.toLowerCase())) {
-          filteredUsers.add(UserModel.fromJson(
-            Formatter.convertMapToMapStringDynamic(user)!,
-          ));
+    List<String> data = LocalDatabase.get(LocalDocuments.users.name);
+    if (data.isNotEmpty) {
+      Map users = jsonDecode(data[0]);
+      if (email != null) {
+        if (users.containsKey(email)) {
+          filteredUsers.add(
+            UserModel.fromJson(
+                Formatter.convertMapToMapStringDynamic(users[email])!),
+          );
+        }
+      } else {
+        for (dynamic user in users.values) {
+          if (user != null &&
+              (user[UserFields.name.name] as String)
+                  .toLowerCase()
+                  .startsWith(nameStartsWith!.toLowerCase())) {
+            filteredUsers.add(UserModel.fromJson(
+              Formatter.convertMapToMapStringDynamic(user)!,
+            ));
+          }
         }
       }
     }

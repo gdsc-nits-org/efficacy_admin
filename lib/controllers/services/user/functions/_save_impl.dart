@@ -5,7 +5,7 @@ Future<UserModel?> _saveImpl({UserModel? user}) async {
   if (user == null) {
     user = UserController.currentUser;
     if (UserController.currentUser == null) {
-      await LocalDatabase.deleteCollection(LocalCollections.user);
+      await LocalDatabase.deleteAll();
       return null;
     } else {
       UserController.currentUser =
@@ -13,24 +13,19 @@ Future<UserModel?> _saveImpl({UserModel? user}) async {
       UserController.currentUser =
           UserController.currentUser!.copyWith(lastLocalUpdate: DateTime.now());
       await LocalDatabase.set(
-        LocalCollections.user,
-        LocalDocuments.currentUser,
-        UserController.currentUser!.toJson(),
+        LocalDocuments.currentUser.name,
+        [jsonEncode(UserController.currentUser!.toJson())],
       );
     }
   }
   user = UserController._removePassword(user!);
   user = user.copyWith(lastLocalUpdate: DateTime.now());
-  Map? res = await LocalDatabase.get(
-    LocalCollections.user,
-    LocalDocuments.users,
-  );
-  res ??= {};
+  List<String> data = LocalDatabase.get(LocalDocuments.users.name);
+  Map res = data.isEmpty ? {} : jsonDecode(data[0]);
   res[user.email] = user.toJson();
   await LocalDatabase.set(
-    LocalCollections.user,
-    LocalDocuments.users,
-    res,
+    LocalDocuments.users.name,
+    [jsonEncode(res)],
   );
   return user;
 }

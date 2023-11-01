@@ -316,7 +316,6 @@ class _SignUpPageUserDetailsState extends State<SignUpUserDetailsPage> {
           height: MediaQuery.of(context).size.height * 0.09,
           prefixIcon: Icons.email,
           controller: emailController,
-          initialValue: null,
           validator: Validator.isEmailValid,
         ),
         CustomTextField(
@@ -383,7 +382,6 @@ class _SignUpPageUserDetailsState extends State<SignUpUserDetailsPage> {
             controller: nameController,
             prefixIcon: Icons.person,
             label: "Name",
-            initialValue: null,
             height: MediaQuery.of(context).size.height * 0.09,
             validator: Validator.isNameValid,
           ),

@@ -9,23 +9,20 @@ import 'package:gap/gap.dart';
 class LoginPage extends StatefulWidget {
   //route
   static const String routeName = "/LoginPage";
-  const LoginPage({super.key});
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
 
-class _LoginPageState extends State<LoginPage>{
-  
-  bool hidePassword = true;
-  final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passController = TextEditingController();
-  IconData passVisibility = Icons.visibility;
+  const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool hidePassword = true;
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passController = TextEditingController();
+  IconData passVisibility = Icons.visibility;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -53,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
     double fieldHeight = height * 0.09;
 
     return WillPopScope(
-       onWillPop: () async {
+      onWillPop: () async {
         final quitCondition = await showExitWarning(context);
         return quitCondition ?? false;
       },
@@ -84,56 +81,66 @@ class _LoginPageState extends State<LoginPage> {
                 Column(
                   children: [
                     Form(
-                      key:_formKey,
-                      child: SizedBox(
-                        width: formWidth,
-                        child: Column(
-                          children: [
-                            CustomTextField(
-                              label: "Email",
-                              height: fieldHeight,
-                              controller: _emailController,
-                              validator: Validator.isEmailValid,
-                              prefixIcon: Icons.email,
-                            ),
-                            CustomTextField(
-                              label: "Password",
-                              height: fieldHeight,
-                              controller: _passController,
-                              hiddenText: hidePassword,
-                              validator: (value)=>Validator.nullCheck(value, "Password"),
-                              suffixIcon: IconButton(onPressed: (){
-                                if(passVisibility == Icons.visibility){
-                                  setState(() {
-                                    passVisibility = Icons.visibility_off;
-                                    hidePassword = false;
-                                  });
-                                }
-                                else{
-                                  setState(() {
-                                    passVisibility = Icons.visibility;
-                                    hidePassword = true;
-                                  });
-                                }
-                              }, icon: Icon(passVisibility, color: const Color.fromARGB(255, 67, 67, 67),)),
-                              prefixIcon: Icons.lock,
-                            ),
-                            Gap(fieldGap),
-                            ElevatedButton(
+                        key: _formKey,
+                        child: SizedBox(
+                          width: formWidth,
+                          child: Column(
+                            children: [
+                              CustomTextField(
+                                label: "Email",
+                                height: fieldHeight,
+                                controller: _emailController,
+                                validator: Validator.isEmailValid,
+                                prefixIcon: Icons.email,
+                              ),
+                              CustomTextField(
+                                label: "Password",
+                                height: fieldHeight,
+                                controller: _passController,
+                                hiddenText: hidePassword,
+                                validator: (value) =>
+                                    Validator.nullCheck(value, "Password"),
+                                suffixIcon: IconButton(
+                                    onPressed: () {
+                                      if (passVisibility == Icons.visibility) {
+                                        setState(() {
+                                          passVisibility = Icons.visibility_off;
+                                          hidePassword = false;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          passVisibility = Icons.visibility;
+                                          hidePassword = true;
+                                        });
+                                      }
+                                    },
+                                    icon: Icon(
+                                      passVisibility,
+                                      color:
+                                          const Color.fromARGB(255, 67, 67, 67),
+                                    )),
+                                prefixIcon: Icons.lock,
+                              ),
+                              Gap(fieldGap),
+                              ElevatedButton(
                                 onPressed: () {
-                                  if(_formKey.currentState!.validate()){
-                                    UserController.login(email: _emailController.text.toString(), password: _passController.text.toString());
+                                  if (_formKey.currentState!.validate()) {
+                                    UserController.login(
+                                        email: _emailController.text.toString(),
+                                        password:
+                                            _passController.text.toString());
                                   }
                                 },
                                 child: const Text("Login"),
-                            ),
-                          ].separate(fieldGap*0.5),
-                        ),
-                      )),
+                              ),
+                            ].separate(fieldGap * 0.5),
+                          ),
+                        )),
                     // Toggle button to signup page
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, SignUpUserDetailsPage.routeName);
+                        Navigator.pushNamed(
+                            context, SignUpUserDetailsPage.routeName);
                       },
                       child: RichText(
                         text: const TextSpan(

@@ -1,13 +1,24 @@
 import 'dart:io';
+import 'package:easy_stepper/easy_stepper.dart';
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/controllers/services/instituion/institution_controller.dart';
+import 'package:efficacy_admin/models/institution/institution_model.dart';
+import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
+import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/models/utils/constants.dart';
 import 'package:efficacy_admin/pages/pages.dart';
-import 'package:efficacy_admin/utils/utils.dart';
+import 'package:efficacy_admin/pages/signup/widgets/edit_form/edit_form.dart';
+import 'package:efficacy_admin/pages/signup/widgets/nav_buttons.dart';
+import 'package:efficacy_admin/pages/signup/widgets/steps.dart';
+import 'package:efficacy_admin/utils/exit_program.dart';
+import 'package:efficacy_admin/utils/validator.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
 import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
-
+import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -16,25 +27,37 @@ class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignUpPage> createState() => _SignUpPageUserDetailsState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpPageUserDetailsState extends State<SignUpPage> {
+  int currentStep = 0;
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController scholarIDController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   String selectedClub = 'GDSC';
   String gdscEmail = "gdsc@example.com";
+  String selectedDegree = 'BTech';
+  String selectedBranch = 'CSE';
+  String selectedInstitute = 'NIT Silchar';
 
-  List<String> clubs = [
-    'GDSC',
-    'Eco Club',
-    'Item 3',
-    'Item 4',
-  ];
+  List<String> institutes = [];
 
   File? _image;
+
+  Future<void> init() async {
+    institutes = (await InstitutionController.getAllInstitutions())
+        .map((model) => model.name)
+        .toList();
+    if (institutes.isNotEmpty) {
+      setState(() {
+        institutes;
+      });
+    }
+  }
 
   // Function to launch default email app
   Future<void> _launchEmail() async {
@@ -48,6 +71,19 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
+  int activeStep = 0;
+  bool takeStep = false;
+
+  bool backButtonDisableChecker() {
+    return activeStep == 0;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
   @override
   Widget build(BuildContext context) {
     //size of screen
@@ -57,6 +93,7 @@ class _SignUpPageState extends State<SignUpPage> {
     //size constants
     double gap = height * 0.02;
     double formWidth = width * 0.8;
+    double vMargin = width * 0.16;
 
     return WillPopScope(
       onWillPop: () async {
@@ -64,128 +101,129 @@ class _SignUpPageState extends State<SignUpPage> {
         return quitCondition ?? false;
       },
       child: Scaffold(
-        body: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ProfileImageViewer(
-                    onImageChange: (String? imagePath) {
-                      if (imagePath != null) _image = File(imagePath);
-                    },
-                  ),
-
-                  //login form
-                  Form(
-                    key: _formKey,
-                    child: SizedBox(
-                      width: formWidth,
-                      child: Column(
-                        children: [
-                          //email field
-                          TextFormField(
-                            controller: emailController,
-                            validator: Validator.isEmailValid,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                              hintText: "efficacy789@gmail.com",
-                            ),
-                          ),
-
-                          //name field
-                          TextFormField(
-                            controller: nameController,
-                            validator: Validator.isNameValid,
-                            decoration:
-                                const InputDecoration(hintText: "John Doe"),
-                          ),
-
-                          //scholar ID field
-                          TextFormField(
-                            controller: scholarIDController,
-                            validator: Validator.isScholarIDValid,
-                            decoration:
-                                const InputDecoration(hintText: "2212072"),
-                          ),
-
-                          //intl number field
-                          const CustomPhoneField(),
-
-                          //club menu field
-                          CustomDropDown(
-                            items: clubs,
-                            initialValue: selectedClub,
-                            onItemChanged: (String? newSelectedClub) {
-                              if (newSelectedClub != null) {
-                                selectedClub = newSelectedClub;
-                              }
-                            },
-                          ),
-
-                          //sign up button
-                          ElevatedButton(
-                            onPressed: () {
-                              _formKey.currentState!.validate();
-                            },
-                            child: const Text("Sign Up"),
-                          ),
-                          // Toggle button to login page
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  LoginPage.routeName,
-                                  (Route<dynamic> route) => false);
-                            },
-                            child: RichText(
-                              text: const TextSpan(
-                                  text: "Already have an account? ",
-                                  children: [
-                                    TextSpan(
-                                        text: "Log In",
-                                        style: TextStyle(
-                                            color: dark,
-                                            decoration:
-                                                TextDecoration.underline))
-                                  ],
-                                  style: TextStyle(color: shadow)),
-                            ),
-                          ),
-
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Club not in the list?",
-                                style: TextStyle(fontSize: 12, color: shadow),
-                              ),
-                              RichText(
-                                  text: TextSpan(
-                                text: "Mail us at ",
-                                children: [
-                                  TextSpan(
-                                    text: gdscEmail,
-                                    style: const TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        color: dark),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = _launchEmail,
-                                  )
-                                ],
-                                style: const TextStyle(
-                                    fontSize: 12, color: shadow),
-                              )),
-                            ],
-                          )
-                        ].separate(gap),
+        resizeToAvoidBottomInset: false,
+        body: Container(
+          margin: EdgeInsets.only(top: vMargin),
+          child: SizedBox(
+              width: width,
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Hey! Welcome to Efficacy",
+                        style: TextStyle(fontSize: 25),
                       ),
-                    ),
-                  )
-                ].separate(gap),
-              ),
-            ),
-          ),
+                      Steps(
+                        activeStep: activeStep,
+                        takeStep: takeStep,
+                        onPressedStep: (int step) {
+                          if (_formKey.currentState!.validate() &&
+                              (activeStep - step).abs() == 1) {
+                            setState(() {
+                              takeStep = true;
+                              activeStep = step;
+                            });
+                          }
+                        },
+                        onStepReached: (int index) {
+                          setState(() {
+                            activeStep = index;
+                          });
+                        },
+                      ),
+                      SizedBox(
+                        width: formWidth,
+                        // height: height * 0.45,
+                        child: EditForm(
+                          step: activeStep,
+                          emailController: emailController,
+                          passwordController: passwordController,
+                          nameController: nameController,
+                          scholarIDController: scholarIDController,
+                          phoneController: phoneController,
+                          onImageChanged: (String? imagePath) {
+                            if (imagePath != null) _image = File(imagePath);
+                          },
+                          selectedDegree: selectedDegree,
+                          onDegreeChanged: (String? newSelectedDegree) {
+                            if (newSelectedDegree != null) {
+                              selectedDegree = newSelectedDegree;
+                            }
+                          },
+                          selectedBranch: selectedBranch,
+                          onBranchChanged: (String? newSelectedBranch) {
+                            if (newSelectedBranch != null) {
+                              selectedBranch = newSelectedBranch;
+                            }
+                          },
+                          institutes: institutes,
+                          selectedInstitute: selectedInstitute,
+                          onInstituteChanged: (String? newSelectedInstitute) {
+                            if (newSelectedInstitute != null) {
+                              selectedInstitute = newSelectedInstitute;
+                            }
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.1,
+                        width: formWidth,
+                        child: NavButtons(
+                          activeStep: activeStep,
+                          onPressedBack: (int index) {
+                            if (!backButtonDisableChecker()) {
+                              setState(() {
+                                --activeStep;
+                              });
+                            }
+                          },
+                          onPressedNext: (int index) async {
+                            if (_formKey.currentState!.validate()) {
+                              if (index == 2) {
+                                await UserController.create(
+                                  UserModel(
+                                    name: nameController.text,
+                                    email: emailController.text,
+                                    scholarID: scholarIDController.text,
+                                    branch: Branch.values.firstWhere((branch) =>
+                                        branch.name == selectedBranch),
+                                    degree: Degree.values.firstWhere((degree) =>
+                                        degree.name == selectedDegree),
+                                  ),
+                                );
+                              } else {
+                                setState(() {
+                                  ++activeStep;
+                                });
+                              }
+                            }
+                          },
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.popAndPushNamed(
+                              context, LoginPage.routeName);
+                        },
+                        child: RichText(
+                          text: const TextSpan(
+                              text: "Already have an account? ",
+                              children: [
+                                TextSpan(
+                                    text: "Log In",
+                                    style: TextStyle(
+                                        color: dark,
+                                        decoration: TextDecoration.underline))
+                              ],
+                              style: TextStyle(color: shadow)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )),
         ),
       ),
     );

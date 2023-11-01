@@ -34,18 +34,21 @@ class CustomPhoneField extends StatelessWidget {
             style: Theme.of(context).textTheme.labelLarge,
           ),
         IntlPhoneField(
-              controller: controller,
-              decoration: InputDecoration(
-              labelText: label,
-              focusColor: const Color(0xFF05354C),
-              contentPadding:
-                  contentPadding ?? const EdgeInsets.symmetric(horizontal: 10),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              prefixIcon: Icon(prefixIcon, color: const Color.fromARGB(255, 67, 67, 67)),//const Color(0xFF05354C),),
-              suffixIcon: suffixIcon,
+          controller: controller,
+          decoration: InputDecoration(
+            labelText: label,
+            focusColor: const Color(0xFF05354C),
+            contentPadding:
+                contentPadding ?? const EdgeInsets.symmetric(horizontal: 10),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
             ),
+
+            prefixIcon: Icon(prefixIcon,
+                color: const Color.fromARGB(
+                    255, 67, 67, 67)), //const Color(0xFF05354C),),
+            suffixIcon: suffixIcon,
+          ),
           enabled: enabled,
           initialCountryCode: initialValue?.countryISOCode ?? "IN",
           initialValue: initialValue?.number,

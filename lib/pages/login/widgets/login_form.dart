@@ -2,7 +2,7 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/pages/homepage/homepage.dart';
-import 'package:efficacy_admin/pages/signup/signup_user_details.dart';
+import 'package:efficacy_admin/pages/signup/signup_page.dart';
 import 'package:efficacy_admin/utils/validator.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:flutter/material.dart';
@@ -102,9 +102,7 @@ class _LoginFormState extends State<LoginForm> {
         TextButton(
           onPressed: () {
             Navigator.pushNamedAndRemoveUntil(
-                context,
-                SignUpUserDetailsPage.routeName,
-                (Route<dynamic> route) => false);
+                context, SignUpPage.routeName, (Route<dynamic> route) => false);
           },
           child: RichText(
             text: const TextSpan(

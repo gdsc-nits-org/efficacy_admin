@@ -10,6 +10,7 @@ import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer
 import 'package:flutter/material.dart';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:gap/gap.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 class ProfilePage extends StatefulWidget {
   static const String routeName = '/ProfilePage';
@@ -23,11 +24,15 @@ class ProfilePage extends StatefulWidget {
 class _ProfileState extends State<ProfilePage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _nameController.text = UserController.currentUser!.name;
     _scholarIDController.text = UserController.currentUser!.scholarID;
+    phoneNumber = PhoneNumber.fromCompleteNumber(
+        completeNumber: UserController.currentUser!.phoneNumber!.number
+    );
+    _phoneController.text = phoneNumber.toString();
   }
+
 
   File? _img;
   bool editMode = false;
@@ -36,6 +41,9 @@ class _ProfileState extends State<ProfilePage> {
   //controllers
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _scholarIDController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+
+  PhoneNumber? phoneNumber;
 
   void enableEdit() {
     setState(() {
@@ -48,6 +56,7 @@ class _ProfileState extends State<ProfilePage> {
     UserController.currentUser = UserController.currentUser?.copyWith(
       name: _nameController.text,
       scholarID: _scholarIDController.text,
+      phoneNumber: PhoneNumber.fromCompleteNumber(completeNumber: _phoneController.text),
     );
     await UserController.update();
     setState(() {
@@ -111,7 +120,8 @@ class _ProfileState extends State<ProfilePage> {
                   title: "Name",
                   enabled: editMode ? true : false,
                 ),
-                const CustomPhoneField(
+                CustomPhoneField(
+                  controller: _phoneController,
                   title: "Phone",
                   enabled: false,
                 ),

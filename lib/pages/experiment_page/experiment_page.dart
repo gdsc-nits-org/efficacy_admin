@@ -7,7 +7,6 @@ import 'package:efficacy_admin/utils/local_database/constants.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:flutter/material.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
-import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
 class ExperimentPage extends StatefulWidget {

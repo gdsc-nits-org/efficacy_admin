@@ -24,26 +24,25 @@ Future<List<ClubModel>> _fetchAllClubsLocal({
   bool minified = true,
 }) async {
   List<ClubModel> filteredClubs = [];
-  Map? res =
-      await LocalDatabase.get(LocalCollections.club, LocalDocuments.clubs);
-  if (res != null) {
-    res = Formatter.convertMapToMapStringDynamic(res)!;
-    if (minified == true) {
-      for (dynamic model in res.values) {
+  List<String> data = LocalDatabase.get(LocalDocuments.clubs.name);
+  Map res = data.isEmpty ? {} : jsonDecode(data[0]);
+
+  res = Formatter.convertMapToMapStringDynamic(res)!;
+  if (minified == true) {
+    for (dynamic model in res.values) {
+      ClubModel clubModel = ClubModel.minifiedFromJson(model);
+      if (instituteName.isEmpty ||
+          instituteName.contains(clubModel.instituteName)) {
+        filteredClubs.add(clubModel);
+      }
+    }
+  } else {
+    for (dynamic model in res.values) {
+      if (!ClubController._isMinified(model)) {
         ClubModel clubModel = ClubModel.minifiedFromJson(model);
         if (instituteName.isEmpty ||
             instituteName.contains(clubModel.instituteName)) {
           filteredClubs.add(clubModel);
-        }
-      }
-    } else {
-      for (dynamic model in res.values) {
-        if (!ClubController._isMinified(model)) {
-          ClubModel clubModel = ClubModel.minifiedFromJson(model);
-          if (instituteName.isEmpty ||
-              instituteName.contains(clubModel.instituteName)) {
-            filteredClubs.add(clubModel);
-          }
         }
       }
     }

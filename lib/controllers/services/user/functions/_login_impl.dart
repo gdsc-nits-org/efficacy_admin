@@ -10,7 +10,7 @@ Future<UserModel?> _loginImpl({
     forceGet: true,
   ).first;
   if (user.isEmpty) {
-    throw Exception("User exists with the provided email. Please Log in");
+    throw Exception("Couldn't find user. Please Sign up");
   } else if (user.first.password == null) {
     throw Exception(
       "There has been some issue in the backend related to your data. Please contact the developers",

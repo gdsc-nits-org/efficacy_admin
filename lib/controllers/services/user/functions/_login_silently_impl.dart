@@ -1,15 +1,12 @@
 part of '../user_controller.dart';
 
 Stream<UserModel?> _loginSilentlyImpl() async* {
-  dynamic userData = await LocalDatabase.get(
-    LocalCollections.user,
-    LocalDocuments.currentUser,
-  );
-  if (userData == null) {
+  List<String> userData = LocalDatabase.get(LocalDocuments.currentUser.name);
+  if (userData.isEmpty) {
     yield null;
   } else {
     UserController.currentUser = UserModel.fromJson(
-      Formatter.convertMapToMapStringDynamic(userData)!,
+      Formatter.convertMapToMapStringDynamic(jsonDecode(userData[0]))!,
     );
     await UserController._gatherData();
     yield UserController.currentUser;

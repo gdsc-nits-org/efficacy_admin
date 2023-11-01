@@ -23,7 +23,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfileState extends State<ProfilePage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _nameController.text = UserController.currentUser!.name;
     _scholarIDController.text = UserController.currentUser!.scholarID;

@@ -31,16 +31,10 @@ Future<List<InvitationModel>> _fetchLocal({
 }) async {
   List<InvitationModel> invitations = [];
   if (forceGet) {
-    await LocalDatabase.deleteKey(
-      LocalCollections.invitations,
-      LocalDocuments.invitations,
-    );
+    await LocalDatabase.deleteKey(LocalDocuments.invitations.name);
   } else {
-    Map res = await LocalDatabase.get(
-          LocalCollections.invitations,
-          LocalDocuments.invitations,
-        ) ??
-        {};
+    List<String> data = LocalDatabase.get(LocalDocuments.invitations.name);
+    Map res = data.isEmpty ? {} : jsonDecode(data[0]);
     List<String> toDel = [];
     for (dynamic model in res.values) {
       model = Formatter.convertMapToMapStringDynamic(model);

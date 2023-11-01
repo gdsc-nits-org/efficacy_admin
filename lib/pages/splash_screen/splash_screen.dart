@@ -37,10 +37,17 @@ class _SplashScreenState extends State<SplashScreen> {
     init().then((duration) {
       debugPrint("Successfully completed all async tasks");
       debugPrint("Time taken: $duration ms");
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(
-              ProfilePage.routeName, (Route<dynamic> route) => false)
-          .then((value) => exit(0));
+      if (UserController.currentUser == null) {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(
+                LoginPage.routeName, (Route<dynamic> route) => false)
+            .then((value) => exit(0));
+      } else {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(
+                Homepage.routeName, (Route<dynamic> route) => false)
+            .then((value) => exit(0));
+      }
     });
   }
 

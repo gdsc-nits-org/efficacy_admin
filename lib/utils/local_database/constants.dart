@@ -6,4 +6,5 @@ enum LocalDocuments {
   clubs,
   eventCheckpoint,
   invitations,
+  institutions,
 }

@@ -1,6 +1,6 @@
 part of '../club_controller.dart';
 
-Stream<List<ClubModel>> _listAllClubsImpl({
+Stream<List<ClubModel>> _getAllClubsImpl({
   List<String> instituteName = const [],
   bool minified = true,
 }) async* {
@@ -12,7 +12,7 @@ Stream<List<ClubModel>> _listAllClubsImpl({
   );
   if (filteredClubs.isNotEmpty) yield filteredClubs;
 
-  filteredClubs = await _fetchAllClubsFromBacked(
+  filteredClubs = await _fetchAllClubsFromBackend(
     instituteName: instituteName,
     minified: minified,
   );
@@ -50,7 +50,7 @@ Future<List<ClubModel>> _fetchAllClubsLocal({
   return filteredClubs;
 }
 
-Future<List<ClubModel>> _fetchAllClubsFromBacked({
+Future<List<ClubModel>> _fetchAllClubsFromBackend({
   List<String> instituteName = const [],
   bool minified = true,
 }) async {

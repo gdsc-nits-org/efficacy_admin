@@ -35,6 +35,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController scholarIDController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -140,6 +141,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           step: activeStep,
                           emailController: emailController,
                           passwordController: passwordController,
+                          confirmPasswordController: confirmPasswordController,
                           nameController: nameController,
                           scholarIDController: scholarIDController,
                           phoneController: phoneController,
@@ -186,6 +188,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                                   UserModel(
                                     name: nameController.text,
                                     email: emailController.text,
+                                    password: passwordController.text,
                                     scholarID: scholarIDController.text,
                                     branch: Branch.values.firstWhere((branch) =>
                                         branch.name == selectedBranch),

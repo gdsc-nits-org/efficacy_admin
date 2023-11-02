@@ -1,11 +1,8 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
-import 'package:efficacy_admin/controllers/services/invitation/invitation_controller.dart';
-import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/models/club_position/club_position_model.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
-import 'package:efficacy_admin/widgets/custom_data_table/custom_data_table.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +37,7 @@ Widget _buildInvitationItem(String clubName, String clubPosition) {
               child: IconButton(
                 onPressed: () {
                   // Handle accept invitation
+                  // InvitationController.acceptInvitation();
                 },
                 icon: const Icon(
                   Icons.check,
@@ -52,6 +50,7 @@ Widget _buildInvitationItem(String clubName, String clubPosition) {
               child: IconButton(
                 onPressed: () {
                   // Handle reject invitation
+                  //InvitationController.rejectInvitation(invitation);
                 },
                 icon: const Icon(
                   Icons.close,
@@ -67,68 +66,45 @@ Widget _buildInvitationItem(String clubName, String clubPosition) {
 }
 
 Widget _buildInvitationsStream(double maxHeight) {
-  // To show UI for the time
-  return SingleChildScrollView(
-    physics: const AlwaysScrollableScrollPhysics(),
-    child: Container(
-      constraints: BoxConstraints(maxHeight: maxHeight),
-      child: ListView(children: [
-        _buildInvitationItem(
-          "GDSC",
-          "Flutter member",
+  return ConstrainedBox(
+    constraints: BoxConstraints(maxHeight: maxHeight),
+    child: StreamBuilder<List<InvitationModel>>(
+        stream: InvitationController.get(
+          senderID: UserController.currentUser?.id,
         ),
-        _buildInvitationItem(
-          "GDSC",
-          "Flutter moderator",
-        ),
-      ]),
-    ),
+        initialData: const [],
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              final invitations = snapshot.data;
+              if (invitations!.isNotEmpty) {
+                return SingleChildScrollView(
+                  child: Column(
+                    children: invitations.map((invitation) {
+                      return _buildInvitationItem(
+                        invitation.recipientID,
+                        invitation.clubPositionID,
+                      );
+                    }).toList(),
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                showErrorSnackBar(context, 'Error: ${snapshot.error}');
+                throw Exception('Error: ${snapshot.error}');
+              } else {
+                return const Text("No invitations");
+              }
+            } else {
+              // Found to run when no user is logged in
+              showErrorSnackBar(context, "Please login");
+              throw Exception("User not logged in");
+            }
+          } else {
+            // Works for all connection state but the one encountered here is ConnectionState.waiting
+            return const CircularProgressIndicator();
+          }
+        }),
   );
-
-  // TODO : Integrate with backend stream
-  // return StreamBuilder<List<InvitationModel>>(
-  //     stream: InvitationController.get(UserController.currentUser!.id!),
-  //     initialData: [
-  //       InvitationModel(
-  //           clubPositionID: "GDSC",
-  //           recipientID: "Saptarshi",
-  //           senderID: "Sap",
-  //           expiry: DateTime(2023, 12, 12, 00, 00))
-  //     ],
-  //     builder: (context, snapshot) {
-  //       if (snapshot.connectionState == ConnectionState.active) {
-  //         if (snapshot.hasData) {
-  //           final invitations = snapshot.data;
-
-  //           if (invitations!.isNotEmpty) {
-  //             return Column(
-  //               children: invitations.map((invitation) {
-  //                 return _buildInvitationItem(
-  //                   invitation.recipientID,
-  //                   invitation.clubPositionID,
-  //                 );
-  //               }).toList(),
-  //             );
-  //           } else if (snapshot.hasError) {
-  //             return _buildInvitationItem(
-  //               "invitation.recipientID",
-  //               "invitation.clubPositionID",
-  //             );
-  //             // showErrorSnackBar(context, 'Error: ${snapshot.error}');
-  //             // throw Exception('Error: ${snapshot.error}');
-  //           } else {
-  //             return const CircularProgressIndicator();
-  //           }
-  //         } else {
-  //           return _buildInvitationItem(
-  //             "invitation.recipientID",
-  //             "invitation.clubPositionID",
-  //           );
-  //         }
-  //       } else {
-  //         return const CircularProgressIndicator();
-  //       }
-  //     });
 }
 
 Widget _buildClubsStream(double maxHeight) {
@@ -138,11 +114,7 @@ Widget _buildClubsStream(double maxHeight) {
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         // Loading state
-        // return const CircularProgressIndicator();
-        return const Text(
-          'Loading...',
-          style: TextStyle(fontSize: 15, color: dark, height: 2),
-        );
+        return const CircularProgressIndicator();
       } else if (snapshot.hasError) {
         // Error state
         showErrorSnackBar(context, 'Error: ${snapshot.error}');

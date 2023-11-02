@@ -1,23 +1,23 @@
 part of '../invitation_controller.dart';
 
 Stream<List<InvitationModel>> _getImpl({
-  String? senderID,
+  String? recipientID,
   String? invitationID,
   bool forceGet = false,
 }) async* {
   List<InvitationModel> invitations = [];
-  if (senderID == null && invitationID == null) {
+  if (recipientID == null && invitationID == null) {
     throw ArgumentError("Either Invitation or Sender ID is required");
   }
   invitations = await _fetchLocal(
-    senderID: senderID,
+    recipientID: recipientID,
     invitationID: invitationID,
     forceGet: forceGet,
   );
   if (invitations.isNotEmpty) yield invitations;
 
   invitations = await _fetchFromBackend(
-    senderID: senderID,
+    recipientID: recipientID,
     invitationID: invitationID,
     forceGet: forceGet,
   );
@@ -25,7 +25,7 @@ Stream<List<InvitationModel>> _getImpl({
 }
 
 Future<List<InvitationModel>> _fetchLocal({
-  String? senderID,
+  String? recipientID,
   String? invitationID,
   bool forceGet = false,
 }) async {
@@ -42,7 +42,7 @@ Future<List<InvitationModel>> _fetchLocal({
       if (invitation.expiry!.millisecondsSinceEpoch <=
           DateTime.now().millisecondsSinceEpoch) {
         toDel.add(invitation.id!);
-      } else if (senderID != null && invitation.senderID == senderID) {
+      } else if (recipientID != null && invitation.recipientID == recipientID) {
         invitations.add(invitation);
       } else if (invitationID != null && invitation.id == invitationID) {
         invitations.add(invitation);
@@ -57,7 +57,7 @@ Future<List<InvitationModel>> _fetchLocal({
 }
 
 Future<List<InvitationModel>> _fetchFromBackend({
-  String? senderID,
+  String? recipientID,
   String? invitationID,
   bool forceGet = false,
 }) async {
@@ -66,8 +66,8 @@ Future<List<InvitationModel>> _fetchFromBackend({
       Database.instance.collection(InvitationController._collectionName);
 
   SelectorBuilder selectorBuilder = SelectorBuilder();
-  if (senderID != null) {
-    selectorBuilder.eq(InvitationFields.senderID.name, senderID);
+  if (recipientID != null) {
+    selectorBuilder.eq(InvitationFields.recipientID.name, recipientID);
   } else if (invitationID != null) {
     selectorBuilder.eq("_id", ObjectId.parse(invitationID));
   }

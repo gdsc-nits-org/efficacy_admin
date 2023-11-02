@@ -70,7 +70,7 @@ Widget _buildInvitationsStream(double maxHeight) {
     constraints: BoxConstraints(maxHeight: maxHeight),
     child: StreamBuilder<List<InvitationModel>>(
         stream: InvitationController.get(
-          senderID: UserController.currentUser?.id,
+          recipientID: UserController.currentUser?.id,
         ),
         initialData: const [],
         builder: (context, snapshot) {
@@ -82,7 +82,7 @@ Widget _buildInvitationsStream(double maxHeight) {
                   child: Column(
                     children: invitations.map((invitation) {
                       return _buildInvitationItem(
-                        invitation.recipientID,
+                        invitation.senderID,
                         invitation.clubPositionID,
                       );
                     }).toList(),

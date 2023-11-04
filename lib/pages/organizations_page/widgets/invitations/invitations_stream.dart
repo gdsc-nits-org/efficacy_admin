@@ -5,10 +5,15 @@ import 'package:efficacy_admin/pages/organizations_page/widgets/invitations/invi
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 
-Widget buildInvitationsStream(double maxHeight) {
-  return ConstrainedBox(
-    constraints: BoxConstraints(maxHeight: maxHeight),
-    child: StreamBuilder<List<InvitationModel>>(
+class InvitationsStream extends StatelessWidget {
+  final double maxHeight;
+  const InvitationsStream({super.key, required this.maxHeight});
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: maxHeight),
+      child: StreamBuilder<List<InvitationModel>>(
         stream: InvitationController.get(
           recipientID: UserController.currentUser?.id,
         ),
@@ -21,9 +26,9 @@ Widget buildInvitationsStream(double maxHeight) {
                 return SingleChildScrollView(
                   child: Column(
                     children: invitations.map((invitation) {
-                      return buildInvitationItem(
-                        invitation.senderID,
-                        invitation.clubPositionID,
+                      return InvitationItem(
+                        senderID: invitation.senderID,
+                        clubPositionID: invitation.clubPositionID,
                       );
                     }).toList(),
                   ),
@@ -43,6 +48,8 @@ Widget buildInvitationsStream(double maxHeight) {
             // Works for all connection state but the one encountered here is ConnectionState.waiting
             return const Center(child: CircularProgressIndicator());
           }
-        }),
-  );
+        },
+      ),
+    );
+  }
 }

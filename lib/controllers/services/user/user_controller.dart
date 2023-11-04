@@ -35,8 +35,6 @@ class UserController {
   }
 
   static Future<void> _gatherData() async {
-    clubs = [];
-    clubPositions = [];
     return await _gatherDataImpl();
   }
 
@@ -73,10 +71,14 @@ class UserController {
     required String email,
     required String password,
   }) async {
-    return await _loginImpl(
+    UserModel? user = await _loginImpl(
       email: email,
       password: password,
     );
+    if (user != null) {
+      await _gatherData();
+    }
+    return user;
   }
 
   /// Log in without internet i.e. from local database
@@ -95,12 +97,14 @@ class UserController {
   /// Else only the users not in database are fetched
   static Stream<List<UserModel>> get({
     String? email,
+    String? id,
     String? nameStartsWith,
     bool keepPassword = false,
     bool forceGet = false,
   }) {
     return _getImpl(
       email: email,
+      id: id,
       nameStartsWith: nameStartsWith,
       keepPassword: keepPassword,
       forceGet: forceGet,

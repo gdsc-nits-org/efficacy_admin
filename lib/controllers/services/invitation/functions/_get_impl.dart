@@ -74,8 +74,8 @@ Future<List<InvitationModel>> _fetchFromBackend({
       Database.instance.collection(InvitationController._collectionName);
 
   SelectorBuilder selectorBuilder = SelectorBuilder();
-  if (recipientID != null) {
-    selectorBuilder.eq(InvitationFields.recipientID.name, recipientID);
+  if (senderID != null) {
+    selectorBuilder.eq(InvitationFields.senderID.name, senderID);
   } else if (invitationID != null) {
     selectorBuilder.eq("_id", ObjectId.parse(invitationID));
   } else if (recipientID != null) {
@@ -93,11 +93,19 @@ Future<List<InvitationModel>> _fetchFromBackend({
       toDel.add(ObjectId.parse(invitations[i].id!));
     } else {
       filtered.add(await InvitationController._save(invitations[i]));
+      // Prefetching the data to show
+      List<ClubPositionModel> model = await ClubPositionController.get(
+              clubPositionID: invitations.last.clubPositionID)
+          .first;
+      if (model.isNotEmpty) {
+        await ClubController.get(id: model.first.id).first;
+        await UserController.get(id: filtered.last.senderID).first;
+      }
     }
   }
 
   selectorBuilder = SelectorBuilder();
-  selectorBuilder.all("_id", toDel);
+  selectorBuilder.oneFrom("_id", toDel);
   await collection.deleteMany(selectorBuilder);
 
   return filtered;

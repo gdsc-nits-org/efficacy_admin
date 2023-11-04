@@ -14,7 +14,6 @@ Stream<List<InvitationModel>> _getImpl({
   invitations = await _fetchLocal(
     recipientID: recipientID,
     invitationID: invitationID,
-    recipientID: recipientID,
     forceGet: forceGet,
   );
   if (invitations.isNotEmpty) yield invitations;
@@ -22,7 +21,6 @@ Stream<List<InvitationModel>> _getImpl({
   invitations = await _fetchFromBackend(
     recipientID: recipientID,
     invitationID: invitationID,
-    recipientID: recipientID,
     forceGet: forceGet,
   );
   yield invitations;
@@ -31,7 +29,6 @@ Stream<List<InvitationModel>> _getImpl({
 Future<List<InvitationModel>> _fetchLocal({
   String? recipientID,
   String? invitationID,
-  String? recipientID,
   bool forceGet = false,
 }) async {
   List<InvitationModel> invitations = [];
@@ -66,7 +63,6 @@ Future<List<InvitationModel>> _fetchLocal({
 Future<List<InvitationModel>> _fetchFromBackend({
   String? recipientID,
   String? invitationID,
-  String? recipientID,
   bool forceGet = false,
 }) async {
   List<InvitationModel> invitations = [];

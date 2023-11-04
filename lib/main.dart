@@ -14,14 +14,14 @@ class EfficacyAdmin extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Efficacy Admin',
       routes: {
         EventFullScreen.routeName: (context) =>
             const EventFullScreen(), //issue here
         Homepage.routeName: (context) => const Homepage(),
         ExperimentPage.routeName: (BuildContext context) =>
             const ExperimentPage(),
-        LoginPage.routeName: (context) => LoginPage(),
+        LoginPage.routeName: (context) => const LoginPage(),
         SplashScreen.routeName: (context) => const SplashScreen(),
         ProfilePage.routeName: (context) => const ProfilePage(),
         SignUpPage.routeName: (context) => const SignUpPage(),

@@ -184,6 +184,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                                     name: nameController.text,
                                     password: passwordController.text,
                                     email: emailController.text,
+                                    password: passwordController.text,
                                     scholarID: scholarIDController.text,
                                     branch: Branch.values.firstWhere((branch) =>
                                         branch.name == selectedBranch),

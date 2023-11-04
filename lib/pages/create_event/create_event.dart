@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
@@ -51,17 +52,17 @@ class _CreateEventState extends State<CreateEvent> {
   }
 
   //image variable
-  File? _image;
+  Uint8List? _image;
 
   //function to get image from gallery
   Future<void> _getImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-
+    Uint8List? temp = await ImageController.compressedImage(
+      source: ImageSource.gallery,
+      maxSize: 1024 * 1024,
+      context: context,
+    );
     setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {}
+      _image = temp;
     });
   }
 
@@ -125,7 +126,7 @@ class _CreateEventState extends State<CreateEvent> {
                     alignment: Alignment.topCenter,
                     child: GestureDetector(
                       onTap: () => _getImage(),
-                      child: Image.file(
+                      child: Image.memory(
                         _image!,
                         width: width,
                         fit: BoxFit.fitWidth,

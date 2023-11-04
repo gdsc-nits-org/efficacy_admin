@@ -1,17 +1,20 @@
 part of '../invitation_controller.dart';
 
 Stream<List<InvitationModel>> _getImpl({
+  String? senderID,
   String? recipientID,
   String? invitationID,
   bool forceGet = false,
 }) async* {
   List<InvitationModel> invitations = [];
-  if (recipientID == null && invitationID == null) {
-    throw ArgumentError("Either Invitation or Sender ID is required");
+  if (senderID == null && invitationID == null && recipientID == null) {
+    throw ArgumentError(
+        "Either Invitation or Sender ID or RecipientID is required");
   }
   invitations = await _fetchLocal(
     recipientID: recipientID,
     invitationID: invitationID,
+    recipientID: recipientID,
     forceGet: forceGet,
   );
   if (invitations.isNotEmpty) yield invitations;
@@ -19,6 +22,7 @@ Stream<List<InvitationModel>> _getImpl({
   invitations = await _fetchFromBackend(
     recipientID: recipientID,
     invitationID: invitationID,
+    recipientID: recipientID,
     forceGet: forceGet,
   );
   yield invitations;
@@ -27,6 +31,7 @@ Stream<List<InvitationModel>> _getImpl({
 Future<List<InvitationModel>> _fetchLocal({
   String? recipientID,
   String? invitationID,
+  String? recipientID,
   bool forceGet = false,
 }) async {
   List<InvitationModel> invitations = [];
@@ -47,6 +52,8 @@ Future<List<InvitationModel>> _fetchLocal({
       } else if (invitationID != null && invitation.id == invitationID) {
         invitations.add(invitation);
         break;
+      } else if (recipientID != null && invitation.recipientID == recipientID) {
+        invitations.add(invitation);
       }
     }
     for (String id in toDel) {
@@ -59,6 +66,7 @@ Future<List<InvitationModel>> _fetchLocal({
 Future<List<InvitationModel>> _fetchFromBackend({
   String? recipientID,
   String? invitationID,
+  String? recipientID,
   bool forceGet = false,
 }) async {
   List<InvitationModel> invitations = [];
@@ -70,6 +78,8 @@ Future<List<InvitationModel>> _fetchFromBackend({
     selectorBuilder.eq(InvitationFields.recipientID.name, recipientID);
   } else if (invitationID != null) {
     selectorBuilder.eq("_id", ObjectId.parse(invitationID));
+  } else if (recipientID != null) {
+    selectorBuilder.eq(InvitationFields.recipientID.name, recipientID);
   }
 
   List<Map<String, dynamic>> res =

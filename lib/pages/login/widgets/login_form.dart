@@ -54,8 +54,8 @@ class _LoginFormState extends State<LoginForm> {
                     height: fieldHeight,
                     controller: _passController,
                     hiddenText: hidePassword,
-                    validator: (value) =>
-                        Validator.nullCheck(value, "Password"),
+                    keyboardType: TextInputType.visiblePassword,
+                    validator: (value) => Validator.isPasswordValid(value),
                     suffixIcon: IconButton(
                         onPressed: () {
                           if (passVisibility == Icons.visibility) {

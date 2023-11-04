@@ -1,24 +1,14 @@
 import 'dart:io';
-import 'package:easy_stepper/easy_stepper.dart';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/services/instituion/institution_controller.dart';
-import 'package:efficacy_admin/models/institution/institution_model.dart';
-import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
-import 'package:efficacy_admin/models/utils/constants.dart';
 import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/pages/signup/widgets/edit_form/edit_form.dart';
 import 'package:efficacy_admin/pages/signup/widgets/nav_buttons.dart';
 import 'package:efficacy_admin/pages/signup/widgets/steps.dart';
 import 'package:efficacy_admin/utils/exit_program.dart';
-import 'package:efficacy_admin/utils/validator.dart';
-import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
-import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
-import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
-import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -35,6 +25,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController scholarIDController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -140,6 +131,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           step: activeStep,
                           emailController: emailController,
                           passwordController: passwordController,
+                          confirmPasswordController: confirmPasswordController,
                           nameController: nameController,
                           scholarIDController: scholarIDController,
                           phoneController: phoneController,

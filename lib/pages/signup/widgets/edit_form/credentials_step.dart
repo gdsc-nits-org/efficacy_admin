@@ -65,7 +65,7 @@ class _CredentialsStepState extends State<CredentialsStep> {
               color: const Color.fromARGB(255, 67, 67, 67),
             )),
         controller: widget.passwordController,
-        validator: (value) => Validator.nullCheck(value, "Password"),
+        validator: (value) => Validator.isPasswordValid(value),
       ),
       CustomTextField(
         hiddenText: hideConfPassword,

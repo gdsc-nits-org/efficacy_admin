@@ -46,6 +46,17 @@ class Validator {
     return null;
   }
 
+  static String? isPasswordValid(String? password) {
+    String? res = nullCheck(password, "Password");
+    if (res != null) {
+      return res;
+    }
+    if (password!.length < 6) {
+      return "Password cannot be shorter than 6 character";
+    }
+    return null;
+  }
+
   static String? isConfirmPassword(String? password, String? confirmPassword) {
     String? res = nullCheck(confirmPassword, "Confirm Password");
     if (res != null) {

@@ -31,6 +31,7 @@ class PersonalInfoStep extends StatelessWidget {
           label: "Name",
           height: MediaQuery.of(context).size.height * 0.09,
           validator: Validator.isNameValid,
+          keyboardType: TextInputType.name,
         ),
         CustomTextField(
           controller: scholarIDController,
@@ -38,6 +39,7 @@ class PersonalInfoStep extends StatelessWidget {
           label: "Scholar ID",
           height: MediaQuery.of(context).size.height * 0.09,
           validator: Validator.isScholarIDValid,
+          keyboardType: TextInputType.number,
         ),
         CustomPhoneField(
           controller: phoneController,

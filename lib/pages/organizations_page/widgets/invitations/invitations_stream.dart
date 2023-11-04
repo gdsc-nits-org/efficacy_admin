@@ -41,7 +41,7 @@ Widget buildInvitationsStream(double maxHeight) {
             }
           } else {
             // Works for all connection state but the one encountered here is ConnectionState.waiting
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           }
         }),
   );

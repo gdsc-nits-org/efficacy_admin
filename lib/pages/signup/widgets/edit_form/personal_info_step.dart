@@ -3,16 +3,17 @@ import 'package:efficacy_admin/utils/validator.dart';
 import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 class PersonalInfoStep extends StatelessWidget {
   final TextEditingController nameController;
   final TextEditingController scholarIDController;
-  final TextEditingController phoneController;
+  final void Function(PhoneNumber? newPhnNo)? onPhnNoChanged;
   const PersonalInfoStep({
     super.key,
     required this.nameController,
     required this.scholarIDController,
-    required this.phoneController,
+    this.onPhnNoChanged,
   });
 
   @override
@@ -40,7 +41,8 @@ class PersonalInfoStep extends StatelessWidget {
           validator: Validator.isScholarIDValid,
         ),
         CustomPhoneField(
-          controller: phoneController,
+          helperText: "* Optional",
+          onPhnNoChanged: onPhnNoChanged,
           label: "Phone No.",
         ),
       ].separate(MediaQuery.of(context).size.height * 0.02),

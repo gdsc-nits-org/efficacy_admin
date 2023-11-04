@@ -1,24 +1,15 @@
 import 'dart:io';
-import 'package:easy_stepper/easy_stepper.dart';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/services/instituion/institution_controller.dart';
-import 'package:efficacy_admin/models/institution/institution_model.dart';
-import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
-import 'package:efficacy_admin/models/utils/constants.dart';
 import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/pages/signup/widgets/edit_form/edit_form.dart';
 import 'package:efficacy_admin/pages/signup/widgets/nav_buttons.dart';
 import 'package:efficacy_admin/pages/signup/widgets/steps.dart';
 import 'package:efficacy_admin/utils/exit_program.dart';
-import 'package:efficacy_admin/utils/validator.dart';
-import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
-import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
-import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
-import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -35,14 +26,15 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confPasswordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController scholarIDController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
   String selectedClub = 'GDSC';
   String gdscEmail = "gdsc@example.com";
   String selectedDegree = 'BTech';
   String selectedBranch = 'CSE';
   String selectedInstitute = 'NIT Silchar';
+  PhoneNumber? phoneNumber;
 
   List<String> institutes = [];
 
@@ -140,9 +132,14 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           step: activeStep,
                           emailController: emailController,
                           passwordController: passwordController,
+                          confPasswordController: confPasswordController,
                           nameController: nameController,
                           scholarIDController: scholarIDController,
-                          phoneController: phoneController,
+                          onPhnNoChanged: (PhoneNumber? newPhnNo) {
+                            if (newPhnNo != null) {
+                              phoneNumber = newPhnNo;
+                            }
+                          },
                           onImageChanged: (String? imagePath) {
                             if (imagePath != null) _image = File(imagePath);
                           },
@@ -185,14 +182,24 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                                 await UserController.create(
                                   UserModel(
                                     name: nameController.text,
+                                    password: passwordController.text,
                                     email: emailController.text,
                                     scholarID: scholarIDController.text,
                                     branch: Branch.values.firstWhere((branch) =>
                                         branch.name == selectedBranch),
                                     degree: Degree.values.firstWhere((degree) =>
                                         degree.name == selectedDegree),
+                                    phoneNumber: phoneNumber
                                   ),
                                 );
+                                if(mounted){
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    Homepage.routeName,
+                                    (route) => false,
+                                  );
+                                }
+                                  
                               } else {
                                 setState(() {
                                   ++activeStep;

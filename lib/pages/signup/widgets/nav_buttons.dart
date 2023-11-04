@@ -19,6 +19,7 @@ class NavButtons extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
+              padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
               alignment: Alignment.centerLeft,
               child: ElevatedButton(
                 onPressed: () => onPressedBack(activeStep),
@@ -34,9 +35,10 @@ class NavButtons extends StatelessWidget {
                 ),
               )),
         ),
-        Gap(MediaQuery.of(context).size.width * 0.1),
+        Gap(MediaQuery.of(context).size.width * 0.06),
         Expanded(
           child: Container(
+              padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.05),
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 onPressed: () => onPressedNext(activeStep),

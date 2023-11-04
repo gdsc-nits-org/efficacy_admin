@@ -12,6 +12,7 @@ Stream<List<InvitationModel>> _getImpl({
         "Either Invitation or Sender ID or RecipientID is required");
   }
   invitations = await _fetchLocal(
+    senderID: senderID,
     recipientID: recipientID,
     invitationID: invitationID,
     forceGet: forceGet,
@@ -19,6 +20,7 @@ Stream<List<InvitationModel>> _getImpl({
   if (invitations.isNotEmpty) yield invitations;
 
   invitations = await _fetchFromBackend(
+    senderID: senderID,
     recipientID: recipientID,
     invitationID: invitationID,
     forceGet: forceGet,
@@ -27,6 +29,7 @@ Stream<List<InvitationModel>> _getImpl({
 }
 
 Future<List<InvitationModel>> _fetchLocal({
+  String? senderID,
   String? recipientID,
   String? invitationID,
   bool forceGet = false,
@@ -49,7 +52,7 @@ Future<List<InvitationModel>> _fetchLocal({
       } else if (invitationID != null && invitation.id == invitationID) {
         invitations.add(invitation);
         break;
-      } else if (recipientID != null && invitation.recipientID == recipientID) {
+      } else if (senderID != null && invitation.senderID == senderID) {
         invitations.add(invitation);
       }
     }
@@ -61,6 +64,7 @@ Future<List<InvitationModel>> _fetchLocal({
 }
 
 Future<List<InvitationModel>> _fetchFromBackend({
+  String? senderID,
   String? recipientID,
   String? invitationID,
   bool forceGet = false,

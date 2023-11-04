@@ -21,9 +21,9 @@ Future<String> _uploadImageImpl({
     fileName = userName!;
   }
   Cloudinary cloudinary = Cloudinary.signedConfig(
-    apiKey: dotenv.env[EnvValues.CLOUDINARY_API_KEY]!,
-    apiSecret: dotenv.env[EnvValues.CLOUDINARY_API_SECRET]!,
-    cloudName: dotenv.env[EnvValues.CLOUDINARY_CLOUD_NAME]!,
+    apiKey: dotenv.env[EnvValues.CLOUDINARY_API_KEY.name]!,
+    apiSecret: dotenv.env[EnvValues.CLOUDINARY_API_SECRET.name]!,
+    cloudName: dotenv.env[EnvValues.CLOUDINARY_CLOUD_NAME.name]!,
   );
   CloudinaryResponse response = await cloudinary.upload(
     fileBytes: img.toList(),

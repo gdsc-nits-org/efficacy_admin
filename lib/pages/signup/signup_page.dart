@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/services/instituion/institution_controller.dart';
@@ -9,6 +10,7 @@ import 'package:efficacy_admin/pages/signup/widgets/nav_buttons.dart';
 import 'package:efficacy_admin/pages/signup/widgets/steps.dart';
 import 'package:efficacy_admin/utils/exit_program.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -28,16 +30,15 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController scholarIDController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  String selectedClub = 'GDSC';
+  PhoneNumber? phoneNumber;
   String gdscEmail = "gdsc@example.com";
-  String selectedDegree = 'BTech';
-  String selectedBranch = 'CSE';
+  String selectedDegree = Degree.BTech.name;
+  String selectedBranch = Degree.BTech.name;
   String selectedInstitute = 'NIT Silchar';
 
   List<String> institutes = [];
 
-  File? _image;
+  Uint8List? _image;
 
   Future<void> init() async {
     institutes = (await InstitutionController.getAllInstitutions())
@@ -131,12 +132,15 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           step: activeStep,
                           emailController: emailController,
                           passwordController: passwordController,
+                          imageData: _image,
                           confirmPasswordController: confirmPasswordController,
                           nameController: nameController,
                           scholarIDController: scholarIDController,
-                          phoneController: phoneController,
-                          onImageChanged: (String? imagePath) {
-                            if (imagePath != null) _image = File(imagePath);
+                          onPhoneChanged: (PhoneNumber newPhoneNumber) {
+                            phoneNumber = newPhoneNumber;
+                          },
+                          onImageChanged: (Uint8List? newImage) {
+                            _image = newImage;
                           },
                           selectedDegree: selectedDegree,
                           onDegreeChanged: (String? newSelectedDegree) {
@@ -174,18 +178,36 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           onPressedNext: (int index) async {
                             if (_formKey.currentState!.validate()) {
                               if (index == 2) {
+                                UploadInformation? info;
+                                if (_image != null) {
+                                  info = await ImageController.uploadImage(
+                                    img: _image!,
+                                    userName: nameController.text,
+                                    folder: ImageFolder.userImage,
+                                  );
+                                }
                                 await UserController.create(
                                   UserModel(
                                     name: nameController.text,
                                     email: emailController.text,
                                     password: passwordController.text,
                                     scholarID: scholarIDController.text,
+                                    userPhoto: info?.url,
+                                    userPhotoPublicID: info?.publicID,
+                                    phoneNumber: phoneNumber,
                                     branch: Branch.values.firstWhere((branch) =>
                                         branch.name == selectedBranch),
                                     degree: Degree.values.firstWhere((degree) =>
                                         degree.name == selectedDegree),
                                   ),
                                 );
+                                if (mounted) {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    Homepage.routeName,
+                                    (route) => false,
+                                  );
+                                }
                               } else {
                                 setState(() {
                                   ++activeStep;

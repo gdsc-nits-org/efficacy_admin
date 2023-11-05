@@ -13,7 +13,7 @@ class InstitutionModel with _$InstitutionModel {
     DateTime? lastLocalUpdate,
   }) = _InstitutionModel;
 
-  factory InstitutionModel.fromJson(Map<String, dynamic> json) {
+  factory InstitutionModel.fromJson(Map<String, Object?> json) {
     if (json["_id"] != null && json["_id"] is ObjectId) {
       json["_id"] = (json["_id"] as ObjectId).toHexString();
     }

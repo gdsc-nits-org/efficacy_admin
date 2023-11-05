@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:efficacy_admin/pages/signup/widgets/edit_form/credentials_step.dart';
 import 'package:efficacy_admin/pages/signup/widgets/edit_form/misc_step.dart';
 import 'package:efficacy_admin/pages/signup/widgets/edit_form/personal_info_step.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 class EditForm extends StatefulWidget {
   final int step;
@@ -10,9 +13,10 @@ class EditForm extends StatefulWidget {
   final TextEditingController confirmPasswordController;
   final TextEditingController nameController;
   final TextEditingController scholarIDController;
-  final TextEditingController phoneController;
-  final void Function(String? newPath) onImageChanged;
+  final void Function(PhoneNumber) onPhoneChanged;
+  final void Function(Uint8List? img) onImageChanged;
   final String selectedDegree;
+  final Uint8List? imageData;
   final void Function(String? newDegree) onDegreeChanged;
   final String selectedBranch;
   final void Function(String? newBranch) onBranchChanged;
@@ -27,7 +31,8 @@ class EditForm extends StatefulWidget {
     required this.confirmPasswordController,
     required this.nameController,
     required this.scholarIDController,
-    required this.phoneController,
+    this.imageData,
+    required this.onPhoneChanged,
     required this.onImageChanged,
     required this.selectedDegree,
     required this.onDegreeChanged,
@@ -55,13 +60,14 @@ class _EditFormState extends State<EditForm> {
       return PersonalInfoStep(
         nameController: widget.nameController,
         scholarIDController: widget.scholarIDController,
-        phoneController: widget.phoneController,
+        onPhoneChanged: widget.onPhoneChanged,
       );
     } else {
       return MiscStep(
         onImageChanged: widget.onImageChanged,
         selectedDegree: widget.selectedDegree,
         onDegreeChanged: widget.onDegreeChanged,
+        imageData: widget.imageData,
         selectedBranch: widget.selectedBranch,
         onBranchChanged: widget.onBranchChanged,
         institutes: widget.institutes,

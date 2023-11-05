@@ -50,12 +50,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          DrawerHeader(
-              decoration: const BoxDecoration(color: dark),
-              child: ProfileImageViewer(
-                enabled: false,
-                imagePath: UserController.currentUser?.userPhoto,
-              )),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, ProfilePage.routeName);
+            },
+            child: AbsorbPointer(
+              child: DrawerHeader(
+                decoration: const BoxDecoration(color: dark),
+                child: ProfileImageViewer(
+                  enabled: false,
+                  imagePath: UserController.currentUser?.userPhoto,
+                ),
+              ),
+            ),
+          ),
           ListTile(
             title: const Text('Home'),
             selected: routeName == "/homePage",

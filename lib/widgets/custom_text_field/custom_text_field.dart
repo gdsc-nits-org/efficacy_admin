@@ -41,6 +41,9 @@ class CustomTextField extends StatelessWidget {
         SizedBox(
           height: height,
           child: TextFormField(
+            onTapOutside: (PointerDownEvent event) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
             keyboardType: keyboardType,
             obscureText: hiddenText,
             controller: controller,
@@ -52,11 +55,12 @@ class CustomTextField extends StatelessWidget {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
-              prefixIcon: Icon(prefixIcon, color: const Color.fromARGB(255, 67, 67, 67)),//const Color(0xFF05354C),),
+              prefixIcon: Icon(prefixIcon,
+                  color: const Color.fromARGB(
+                      255, 67, 67, 67)), //const Color(0xFF05354C),),
               suffixIcon: suffixIcon,
             ),
-            validator:(value)=>
-              validator!(value),
+            validator: (value) => validator!(value),
             enabled: enabled,
           ),
         ),

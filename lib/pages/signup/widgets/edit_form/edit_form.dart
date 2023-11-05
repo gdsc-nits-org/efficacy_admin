@@ -8,7 +8,7 @@ class EditForm extends StatefulWidget {
   final int step;
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  final TextEditingController confPasswordController;
+  final TextEditingController confirmPasswordController;
   final TextEditingController nameController;
   final TextEditingController scholarIDController;
   final void Function(PhoneNumber? newPhnNo)? onPhnNoChanged;
@@ -25,7 +25,7 @@ class EditForm extends StatefulWidget {
     required this.step,
     required this.emailController,
     required this.passwordController,
-    required this.confPasswordController,
+    required this.confirmPasswordController,
     required this.nameController,
     required this.scholarIDController,
     this.onPhnNoChanged,
@@ -50,7 +50,7 @@ class _EditFormState extends State<EditForm> {
       return CredentialsStep(
         emailController: widget.emailController,
         passwordController: widget.passwordController,
-        confPasswordController: widget.confPasswordController,
+        confirmPasswordController: widget.confirmPasswordController,
       );
     } else if (widget.step == 1) {
       return PersonalInfoStep(

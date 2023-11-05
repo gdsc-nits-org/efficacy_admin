@@ -13,16 +13,16 @@ Stream<List<InvitationModel>> _getImpl({
   }
   invitations = await _fetchLocal(
     senderID: senderID,
-    invitationID: invitationID,
     recipientID: recipientID,
+    invitationID: invitationID,
     forceGet: forceGet,
   );
   if (invitations.isNotEmpty) yield invitations;
 
   invitations = await _fetchFromBackend(
     senderID: senderID,
-    invitationID: invitationID,
     recipientID: recipientID,
+    invitationID: invitationID,
     forceGet: forceGet,
   );
   yield invitations;
@@ -30,8 +30,8 @@ Stream<List<InvitationModel>> _getImpl({
 
 Future<List<InvitationModel>> _fetchLocal({
   String? senderID,
-  String? invitationID,
   String? recipientID,
+  String? invitationID,
   bool forceGet = false,
 }) async {
   List<InvitationModel> invitations = [];
@@ -47,12 +47,12 @@ Future<List<InvitationModel>> _fetchLocal({
       if (invitation.expiry!.millisecondsSinceEpoch <=
           DateTime.now().millisecondsSinceEpoch) {
         toDel.add(invitation.id!);
-      } else if (senderID != null && invitation.senderID == senderID) {
+      } else if (recipientID != null && invitation.recipientID == recipientID) {
         invitations.add(invitation);
       } else if (invitationID != null && invitation.id == invitationID) {
         invitations.add(invitation);
         break;
-      } else if (recipientID != null && invitation.recipientID == recipientID) {
+      } else if (senderID != null && invitation.senderID == senderID) {
         invitations.add(invitation);
       }
     }
@@ -65,8 +65,8 @@ Future<List<InvitationModel>> _fetchLocal({
 
 Future<List<InvitationModel>> _fetchFromBackend({
   String? senderID,
-  String? invitationID,
   String? recipientID,
+  String? invitationID,
   bool forceGet = false,
 }) async {
   List<InvitationModel> invitations = [];
@@ -93,11 +93,19 @@ Future<List<InvitationModel>> _fetchFromBackend({
       toDel.add(ObjectId.parse(invitations[i].id!));
     } else {
       filtered.add(await InvitationController._save(invitations[i]));
+      // Prefetching the data to show
+      List<ClubPositionModel> model = await ClubPositionController.get(
+              clubPositionID: invitations.last.clubPositionID)
+          .first;
+      if (model.isNotEmpty) {
+        await ClubController.get(id: model.first.id).first;
+        await UserController.get(id: filtered.last.senderID).first;
+      }
     }
   }
 
   selectorBuilder = SelectorBuilder();
-  selectorBuilder.all("_id", toDel);
+  selectorBuilder.oneFrom("_id", toDel);
   await collection.deleteMany(selectorBuilder);
 
   return filtered;

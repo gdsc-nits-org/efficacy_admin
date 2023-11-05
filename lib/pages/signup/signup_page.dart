@@ -26,7 +26,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController confPasswordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController scholarIDController = TextEditingController();
   String selectedClub = 'GDSC';
@@ -131,7 +131,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           step: activeStep,
                           emailController: emailController,
                           passwordController: passwordController,
-                          confPasswordController: confPasswordController,
+                          confirmPasswordController: confirmPasswordController,
                           nameController: nameController,
                           scholarIDController: scholarIDController,
                           onPhnNoChanged: (PhoneNumber? newPhnNo) {

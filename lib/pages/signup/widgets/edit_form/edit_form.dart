@@ -2,6 +2,7 @@ import 'package:efficacy_admin/pages/signup/widgets/edit_form/credentials_step.d
 import 'package:efficacy_admin/pages/signup/widgets/edit_form/misc_step.dart';
 import 'package:efficacy_admin/pages/signup/widgets/edit_form/personal_info_step.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 class EditForm extends StatefulWidget {
   final int step;
@@ -10,7 +11,7 @@ class EditForm extends StatefulWidget {
   final TextEditingController confirmPasswordController;
   final TextEditingController nameController;
   final TextEditingController scholarIDController;
-  final TextEditingController phoneController;
+  final void Function(PhoneNumber? newPhnNo)? onPhnNoChanged;
   final void Function(String? newPath) onImageChanged;
   final String selectedDegree;
   final void Function(String? newDegree) onDegreeChanged;
@@ -27,7 +28,7 @@ class EditForm extends StatefulWidget {
     required this.confirmPasswordController,
     required this.nameController,
     required this.scholarIDController,
-    required this.phoneController,
+    this.onPhnNoChanged,
     required this.onImageChanged,
     required this.selectedDegree,
     required this.onDegreeChanged,
@@ -55,7 +56,7 @@ class _EditFormState extends State<EditForm> {
       return PersonalInfoStep(
         nameController: widget.nameController,
         scholarIDController: widget.scholarIDController,
-        phoneController: widget.phoneController,
+        onPhnNoChanged: widget.onPhnNoChanged,
       );
     } else {
       return MiscStep(

@@ -9,6 +9,7 @@ import 'package:efficacy_admin/pages/signup/widgets/nav_buttons.dart';
 import 'package:efficacy_admin/pages/signup/widgets/steps.dart';
 import 'package:efficacy_admin/utils/exit_program.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -25,15 +26,16 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController scholarIDController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
   String selectedClub = 'GDSC';
   String gdscEmail = "gdsc@example.com";
   String selectedDegree = 'BTech';
   String selectedBranch = 'CSE';
   String selectedInstitute = 'NIT Silchar';
+  PhoneNumber? phoneNumber;
 
   List<String> institutes = [];
 
@@ -134,7 +136,11 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           confirmPasswordController: confirmPasswordController,
                           nameController: nameController,
                           scholarIDController: scholarIDController,
-                          phoneController: phoneController,
+                          onPhnNoChanged: (PhoneNumber? newPhnNo) {
+                            if (newPhnNo != null) {
+                              phoneNumber = newPhnNo;
+                            }
+                          },
                           onImageChanged: (String? imagePath) {
                             if (imagePath != null) _image = File(imagePath);
                           },
@@ -177,15 +183,24 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                                 await UserController.create(
                                   UserModel(
                                     name: nameController.text,
-                                    email: emailController.text,
                                     password: passwordController.text,
+                                    email: emailController.text,
                                     scholarID: scholarIDController.text,
                                     branch: Branch.values.firstWhere((branch) =>
                                         branch.name == selectedBranch),
                                     degree: Degree.values.firstWhere((degree) =>
                                         degree.name == selectedDegree),
+                                    phoneNumber: phoneNumber
                                   ),
                                 );
+                                if(mounted){
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    Homepage.routeName,
+                                    (route) => false,
+                                  );
+                                }
+                                  
                               } else {
                                 setState(() {
                                   ++activeStep;

@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 class CredentialsStep extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  final TextEditingController confPasswordController;
+  final TextEditingController confirmPasswordController;
   const CredentialsStep({
     super.key,
     required this.emailController,
     required this.passwordController,
-    required this.confPasswordController,
+    required this.confirmPasswordController
   });
 
   @override
@@ -65,11 +65,10 @@ class _CredentialsStepState extends State<CredentialsStep> {
               color: const Color.fromARGB(255, 67, 67, 67),
             )),
         controller: widget.passwordController,
-        validator: (value) => Validator.nullCheck(value, "Password"),
+        validator: (value) => Validator.isPasswordValid(value),
       ),
       CustomTextField(
         hiddenText: hideConfPassword,
-        controller: widget.confPasswordController,
         height: MediaQuery.of(context).size.height * 0.09,
         label: "Confirm Password",
         prefixIcon: Icons.lock,
@@ -91,6 +90,7 @@ class _CredentialsStepState extends State<CredentialsStep> {
               confirmPasswordVisibility,
               color: const Color.fromARGB(255, 67, 67, 67),
             )),
+            controller: widget.confirmPasswordController,
         validator: (value) => Validator.isConfirmPassword(
           widget.passwordController.text.toString(),
           value.toString(),

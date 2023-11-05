@@ -45,11 +45,13 @@ class InvitationController {
 
   static Stream<List<InvitationModel>> get({
     String? senderID,
+    String? recipientID,
     String? invitationID,
     bool forceGet = false,
   }) {
     return _getImpl(
       senderID: senderID,
+      recipientID: recipientID,
       invitationID: invitationID,
       forceGet: forceGet,
     );

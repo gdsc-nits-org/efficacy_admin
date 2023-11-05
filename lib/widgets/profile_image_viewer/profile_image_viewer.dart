@@ -8,13 +8,13 @@ import 'dart:io';
 
 class ProfileImageViewer extends StatefulWidget {
   final double height;
-  final File? image;
+  final String? imagePath;
   final bool enabled;
   final void Function(String)? onImageChange;
   const ProfileImageViewer({
     super.key,
     this.height = 150,
-    this.image,
+    this.imagePath,
     this.enabled = true,
     this.onImageChange,
   });
@@ -100,13 +100,13 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
   @override
   void initState() {
     super.initState();
-    _image = widget.image;
+    _image = widget.imagePath == null ? null : File(widget.imagePath!);
   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => (widget.enabled)?_showPicker(context):null,
+      onTap: () => (widget.enabled) ? _showPicker(context) : null,
       child: CircleAvatar(
         backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
         radius: widget.height / 2,

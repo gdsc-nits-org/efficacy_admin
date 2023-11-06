@@ -2,6 +2,7 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
+import 'package:flutter/rendering.dart';
 import 'utils/create_event_utils.dart';
 import 'widgets/custom_text_field.dart';
 import 'widgets/date_time_picker.dart';
@@ -10,10 +11,9 @@ import 'package:flutter/material.dart';
 
 class EventForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
-  const EventForm({
-    super.key,
-    required this.formKey,
-  });
+  final ScrollController scrollController;
+  const EventForm(
+      {super.key, required this.formKey, required this.scrollController});
 
   @override
   State<EventForm> createState() => _EventFormState();
@@ -22,6 +22,18 @@ class EventForm extends StatefulWidget {
 class _EventFormState extends State<EventForm> {
   //moderator declaration
   List<UserModel> moderators = [];
+  TextEditingController clubController = TextEditingController();
+
+  Future<List<String>> convertStreamToList(
+      Stream<List<UserModel>> userStream) async {
+    final List<String> result = [];
+    await for (List<UserModel> userList in userStream) {
+      for (UserModel user in userList) {
+        result.add(user.name);
+      }
+    }
+    return result;
+  }
 
   Future<void> prepareData() async {
     /// User is created
@@ -129,9 +141,11 @@ class _EventFormState extends State<EventForm> {
       child: Form(
         key: widget.formKey,
         child: SingleChildScrollView(
+          controller: widget.scrollController,
           child: Column(
             children: [
               CustomDropDown(
+                controller: clubController,
                 items: UserController.clubs.map((club) => club.name).toList(),
               ),
               //title
@@ -265,9 +279,10 @@ class _EventFormState extends State<EventForm> {
                   children: [
                     Icon(
                       Icons.person_2_outlined,
-                      color: Colors.black54,
+                      color: const Color.fromARGB(137, 93, 77, 77),
                       size: iconSize,
                     ),
+                    // CustomDropDown()
                     // Padding(
                     //   padding: EdgeInsets.only(left: padding),
                     //   child: CustomDropMenu(

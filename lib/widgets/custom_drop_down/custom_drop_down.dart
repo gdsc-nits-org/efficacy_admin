@@ -7,8 +7,10 @@ class CustomDropDown extends StatefulWidget {
   final String? title;
   final bool enabled;
   final void Function(String?)? onItemChanged;
+  final TextEditingController? controller;
   const CustomDropDown({
     super.key,
+    this.controller,
     this.items = const [],
     this.initialValue,
     this.enabled = true,
@@ -30,6 +32,10 @@ class _CustomDropDownState extends State<CustomDropDown> {
     if (currentlySelected == null && widget.items.isNotEmpty) {
       currentlySelected = widget.items.first;
     }
+  }
+
+  String? getCurrentlySelected() {
+    return currentlySelected;
   }
 
   @override

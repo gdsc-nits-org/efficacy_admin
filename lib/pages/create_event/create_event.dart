@@ -97,8 +97,9 @@ class _CreateEventState extends State<CreateEvent> {
                 ),
               ],
             ),
-            panel: EventForm(
+            panelBuilder: (sc) => EventForm(
               formKey: _formKey,
+              scrollController: sc,
             ),
             body: _image == null
                 ? Stack(

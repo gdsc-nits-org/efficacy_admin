@@ -1,15 +1,18 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:flutter/material.dart';
 
 class InvitationItem extends StatelessWidget {
   final String clubPositionID;
   final String senderID;
+  final InvitationModel invitation;
   const InvitationItem({
     super.key,
     required this.clubPositionID,
     required this.senderID,
+    required this.invitation,
   });
 
   @override
@@ -86,7 +89,7 @@ class InvitationItem extends StatelessWidget {
                 child: IconButton(
                   onPressed: () async {
                     // Handle accept invitation
-                    // await InvitationController.acceptInvitation();
+                    await InvitationController.acceptInvitation(invitation.id!);
                   },
                   icon: const Icon(
                     Icons.check,

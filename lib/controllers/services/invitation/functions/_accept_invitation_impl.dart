@@ -7,10 +7,8 @@ Future<void> _acceptInvitationImpl(String invitationID) async {
 
   // Gathering the required data
   // If anything is not found or is invalid it throws an exception
-  List<InvitationModel> invitations = await InvitationController.get(
-    invitationID: invitationID,
-    forceGet: true,
-  ).first;
+  List<InvitationModel> invitations =
+      await InvitationController.get(invitationID: invitationID).last;
 
   if (invitations.isEmpty) {
     throw Exception("Invitation expired");

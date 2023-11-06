@@ -47,14 +47,14 @@ class MiscStep extends StatelessWidget {
         CustomDropDown(
           title: "Degree",
           items: Degree.values.map((degree) => degree.name).toList(),
-          initialValue: selectedDegree,
-          onItemChanged: onDegreeChanged,
+          value: selectedDegree,
+          onChanged: onDegreeChanged,
         ),
         CustomDropDown(
           title: "Branch",
           items: Branch.values.map((branch) => branch.name).toList(),
-          initialValue: selectedBranch,
-          onItemChanged: onBranchChanged,
+          value: selectedBranch,
+          onChanged: onBranchChanged,
         ),
       ].separate(MediaQuery.of(context).size.height * 0.016),
     );

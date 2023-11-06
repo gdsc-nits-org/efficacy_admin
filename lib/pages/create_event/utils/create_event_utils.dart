@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/pages/create_event/widgets/custom_drop_down.dart';
 import 'package:flutter/material.dart';
 
 Size size = 0 as Size;
@@ -28,18 +27,3 @@ double fontSize = 20;
 double endGap = height * 0.1;
 //color
 Color textColor = dark;
-
-TextEditingController titleController = TextEditingController();
-TextEditingController clubIDController = TextEditingController();
-TextEditingController shortDescController = TextEditingController();
-TextEditingController longDescController = TextEditingController();
-TextEditingController googleUrlController = TextEditingController();
-TextEditingController fbUrlController = TextEditingController();
-TextEditingController venueController = TextEditingController();
-
-String? selectedModerator;
-
-DateTime selectedDate1 = DateTime.now();
-DateTime selectedDate2 = DateTime.now();
-TimeOfDay selectedTime1 = TimeOfDay.now();
-TimeOfDay selectedTime2 = TimeOfDay.now();

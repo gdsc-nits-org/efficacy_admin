@@ -1,7 +1,8 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/models.dart';
-import 'package:efficacy_admin/pages/create_event/widgets/custom_drop_down.dart';
+import 'package:efficacy_admin/pages/create_event/widgets/club_drop_down.dart';
+import 'package:efficacy_admin/pages/create_event/widgets/contacts_drop_down.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
 import 'utils/create_event_utils.dart';
 import 'widgets/custom_text_field.dart';
@@ -12,8 +13,50 @@ import 'package:flutter/material.dart';
 class EventForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final ScrollController scrollController;
-  const EventForm(
-      {super.key, required this.formKey, required this.scrollController});
+  final TextEditingController titleController;
+  final TextEditingController shortDescController;
+  final TextEditingController longDescController;
+  final TextEditingController googleUrlController;
+  final TextEditingController fbUrlController;
+  final TextEditingController venueController;
+
+  final UserModel? selectedModerator;
+  final DateTime selectedDate1;
+  final DateTime selectedDate2;
+  final TimeOfDay selectedTime1;
+  final TimeOfDay selectedTime2;
+  final ClubModel? selectedClub;
+
+  final void Function(UserModel?) onSelectedModeratorChanged;
+  final void Function(DateTime) onSelectedDate1Changed;
+  final void Function(DateTime) onSelectedDate2Changed;
+  final void Function(TimeOfDay) onSelectedTime1Changed;
+  final void Function(TimeOfDay) onSelectedTime2Changed;
+  final void Function(ClubModel) onSelectedClubModelChanged;
+
+  const EventForm({
+    super.key,
+    required this.formKey,
+    required this.scrollController,
+    this.selectedModerator,
+    required this.titleController,
+    required this.shortDescController,
+    required this.longDescController,
+    required this.googleUrlController,
+    required this.fbUrlController,
+    required this.venueController,
+    required this.onSelectedDate1Changed,
+    required this.onSelectedDate2Changed,
+    required this.onSelectedTime1Changed,
+    required this.onSelectedTime2Changed,
+    required this.selectedDate1,
+    required this.selectedDate2,
+    required this.selectedTime1,
+    required this.selectedTime2,
+    required this.onSelectedModeratorChanged,
+    this.selectedClub,
+    required this.onSelectedClubModelChanged,
+  });
 
   @override
   State<EventForm> createState() => _EventFormState();
@@ -21,21 +64,24 @@ class EventForm extends StatefulWidget {
 
 class _EventFormState extends State<EventForm> {
   //moderator declaration
-  List<String> moderators = [];
-  String? selectedClub;
+  List<UserModel> moderators = [];
+  ClubModel? selectedClub;
+  late DateTime selectedDate1;
+  late DateTime selectedDate2;
+  late TimeOfDay selectedTime1;
+  late TimeOfDay selectedTime2;
+  late UserModel? selectedModerator;
 
-  Future<List<String>> getContacts() async {
-    List<String> users = [];
-    List<ClubModel> clubs =
-        await ClubController.get(clubName: selectedClub).first;
-    if (clubs.isNotEmpty) {
+  Future<List<UserModel>> getContacts() async {
+    List<UserModel> users = [];
+    if (selectedClub != null) {
       for (MapEntry<String, List<String>> position
-          in clubs.first.members.entries) {
+          in selectedClub!.members.entries) {
         for (String userMail in position.value) {
           List<UserModel> user =
               await UserController.get(email: userMail).first;
           if (user.isNotEmpty) {
-            users.add(user.first.name);
+            users.add(user.first);
           }
         }
       }
@@ -115,9 +161,9 @@ class _EventFormState extends State<EventForm> {
     if (picked != null) {
       setState(() {
         if (pickerNumber == 1) {
-          selectedDate1 = picked;
+          widget.onSelectedDate1Changed(picked);
         } else {
-          selectedDate2 = picked;
+          widget.onSelectedDate2Changed(picked);
         }
       });
     }
@@ -133,12 +179,23 @@ class _EventFormState extends State<EventForm> {
     if (picked != null) {
       setState(() {
         if (pickerNumber == 1) {
-          selectedTime1 = picked;
+          widget.onSelectedTime1Changed(picked);
         } else {
-          selectedTime2 = picked;
+          widget.onSelectedTime2Changed(picked);
         }
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    selectedDate1 = widget.selectedDate1;
+    selectedDate2 = widget.selectedDate2;
+    selectedTime1 = widget.selectedTime1;
+    selectedTime2 = widget.selectedTime2;
+    selectedModerator = widget.selectedModerator;
+    selectedClub = widget.selectedClub;
   }
 
   @override
@@ -152,21 +209,22 @@ class _EventFormState extends State<EventForm> {
           controller: widget.scrollController,
           child: Column(
             children: [
-              CustomDropDown(
-                items: UserController.clubs.map((club) => club.name).toList(),
-                onItemChanged: (String? newClub) async {
-                  if (newClub != null) {
-                    selectedClub = newClub;
-                    List<String> contacts = await getContacts();
-                    setState(() {
-                      moderators = contacts;
-                    });
-                  }
-                },
+              Row(
+                children: [
+                  ClubDropDown(
+                    items: UserController.clubs,
+                    value: selectedClub,
+                    onChanged: (ClubModel? newClub) {
+                      if (newClub != null) {
+                        widget.onSelectedClubModelChanged(newClub);
+                      }
+                    },
+                  ),
+                ],
               ),
               //title
               CustomField(
-                controller: titleController,
+                controller: widget.titleController,
                 hintText: 'Event Title',
                 icon: Icons.title,
                 validator: (value) {
@@ -178,7 +236,7 @@ class _EventFormState extends State<EventForm> {
               ),
               //short description
               CustomField(
-                controller: shortDescController,
+                controller: widget.shortDescController,
                 icon: Icons.format_align_right_rounded,
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -193,7 +251,7 @@ class _EventFormState extends State<EventForm> {
                 hintText: 'Long Description',
                 validator: (value) => null,
                 icon: Icons.format_align_right_rounded,
-                controller: longDescController,
+                controller: widget.longDescController,
                 maxLines: 6,
               ),
               //start date and time
@@ -243,12 +301,12 @@ class _EventFormState extends State<EventForm> {
                   return null;
                 },
                 icon: Icons.house,
-                controller: venueController,
+                controller: widget.venueController,
                 maxLines: 1,
               ),
               //google form
               UrlInput(
-                controller: googleUrlController,
+                controller: widget.googleUrlController,
                 icon: Icons.link_outlined,
                 hintText: 'Google Form URL',
                 validator: (value) {
@@ -259,9 +317,9 @@ class _EventFormState extends State<EventForm> {
                   return '';
                 },
               ),
-              //FB form URL
+              // //FB form URL
               UrlInput(
-                controller: fbUrlController,
+                controller: widget.fbUrlController,
                 icon: Icons.link_outlined,
                 hintText: 'FaceBook Link',
                 validator: (value) {
@@ -298,20 +356,14 @@ class _EventFormState extends State<EventForm> {
                       color: const Color.fromARGB(137, 93, 77, 77),
                       size: iconSize,
                     ),
-                    // CustomDropDown()
                     Padding(
                       padding: EdgeInsets.only(left: padding),
-                      child: CustomDropMenu(
-                        items: moderators.map((String moderator) {
-                          return DropdownMenuItem<String>(
-                            value: moderator,
-                            child: Text(moderator),
-                          );
-                        }).toList(),
+                      child: ContactsDropDown(
+                        items: moderators,
                         value: selectedModerator,
-                        onChanged: (String? newValue) {
+                        onChanged: (UserModel? newModerator) {
                           setState(() {
-                            selectedModerator = newValue;
+                            widget.onSelectedModeratorChanged(newModerator);
                           });
                         },
                       ),

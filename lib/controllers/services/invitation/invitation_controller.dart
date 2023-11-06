@@ -17,6 +17,7 @@ part 'functions/_delete_impl.dart';
 part 'functions/_accept_invitation_impl.dart';
 part 'functions/_check_permission_impl.dart';
 part 'functions/_any_pending_invitation_impl.dart';
+part 'functions/_reject_invitation_impl.dart';
 
 class InvitationController {
   static const String _collectionName = "invitations";
@@ -70,7 +71,7 @@ class InvitationController {
   }
 
   static Future<void> rejectInvitation(InvitationModel invitation) async {
-    return await delete(invitation);
+    return await _rejectInvitationImpl(invitation);
   }
 
   static Future<bool> anyPendingInvitation() async {

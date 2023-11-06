@@ -1,8 +1,8 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/pages/create_event/widgets/custom_drop_down.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
-import 'package:flutter/rendering.dart';
 import 'utils/create_event_utils.dart';
 import 'widgets/custom_text_field.dart';
 import 'widgets/date_time_picker.dart';
@@ -21,18 +21,26 @@ class EventForm extends StatefulWidget {
 
 class _EventFormState extends State<EventForm> {
   //moderator declaration
-  List<UserModel> moderators = [];
-  TextEditingController clubController = TextEditingController();
+  List<String> moderators = [];
+  String? selectedClub;
 
-  Future<List<String>> convertStreamToList(
-      Stream<List<UserModel>> userStream) async {
-    final List<String> result = [];
-    await for (List<UserModel> userList in userStream) {
-      for (UserModel user in userList) {
-        result.add(user.name);
+  Future<List<String>> getContacts() async {
+    List<String> users = [];
+    List<ClubModel> clubs =
+        await ClubController.get(clubName: selectedClub).first;
+    if (clubs.isNotEmpty) {
+      for (MapEntry<String, List<String>> position
+          in clubs.first.members.entries) {
+        for (String userMail in position.value) {
+          List<UserModel> user =
+              await UserController.get(email: userMail).first;
+          if (user.isNotEmpty) {
+            users.add(user.first.name);
+          }
+        }
       }
     }
-    return result;
+    return users;
   }
 
   Future<void> prepareData() async {
@@ -145,8 +153,16 @@ class _EventFormState extends State<EventForm> {
           child: Column(
             children: [
               CustomDropDown(
-                controller: clubController,
                 items: UserController.clubs.map((club) => club.name).toList(),
+                onItemChanged: (String? newClub) async {
+                  if (newClub != null) {
+                    selectedClub = newClub;
+                    List<String> contacts = await getContacts();
+                    setState(() {
+                      moderators = contacts;
+                    });
+                  }
+                },
               ),
               //title
               CustomField(
@@ -283,23 +299,23 @@ class _EventFormState extends State<EventForm> {
                       size: iconSize,
                     ),
                     // CustomDropDown()
-                    // Padding(
-                    //   padding: EdgeInsets.only(left: padding),
-                    //   child: CustomDropMenu(
-                    //     items: moderators.map((Moderator moderator) {
-                    //       return DropdownMenuItem<Moderator>(
-                    //         value: moderator,
-                    //         child: Text(moderator.name),
-                    //       );
-                    //     }).toList(),
-                    //     value: selectedModerator,
-                    //     onChanged: (Moderator? newValue) {
-                    //       setState(() {
-                    //         selectedModerator = newValue;
-                    //       });
-                    //     },
-                    //   ),
-                    // ),
+                    Padding(
+                      padding: EdgeInsets.only(left: padding),
+                      child: CustomDropMenu(
+                        items: moderators.map((String moderator) {
+                          return DropdownMenuItem<String>(
+                            value: moderator,
+                            child: Text(moderator),
+                          );
+                        }).toList(),
+                        value: selectedModerator,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedModerator = newValue;
+                          });
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),

@@ -37,7 +37,7 @@ TextEditingController googleUrlController = TextEditingController();
 TextEditingController fbUrlController = TextEditingController();
 TextEditingController venueController = TextEditingController();
 
-Moderator? selectedModerator;
+String? selectedModerator;
 
 DateTime selectedDate1 = DateTime.now();
 DateTime selectedDate2 = DateTime.now();

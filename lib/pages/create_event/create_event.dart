@@ -41,7 +41,7 @@ class _CreateEventState extends State<CreateEvent> {
         facebookPostURL:
             fbUrlController.text.isNotEmpty ? fbUrlController.text : null,
         venue: venueController.text,
-        contacts: [selectedModerator.toString()],
+        contacts: selectedModerator != null ? [selectedModerator!] : [],
         clubID: clubIDController.text,
       );
       EventController.create(event);

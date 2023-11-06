@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
 
-//moderator class
-class Moderator {
-  String name;
-
-  Moderator(this.name);
-}
-
-
 class CustomDropMenu extends StatelessWidget {
-  final List<DropdownMenuItem<Moderator>> items;
-  final Moderator? value;
-  final void Function(Moderator?) onChanged;
+  final List<DropdownMenuItem<String>> items;
+  final String? value;
+  final void Function(String?) onChanged;
 
-  const CustomDropMenu({super.key,
+  const CustomDropMenu({
+    super.key,
     required this.items,
     required this.value,
     required this.onChanged,
@@ -21,7 +14,7 @@ class CustomDropMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<Moderator>(
+    return DropdownButton<String>(
       items: items,
       value: value,
       onChanged: onChanged,

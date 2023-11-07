@@ -209,6 +209,16 @@ class _EventFormState extends State<EventForm> {
           controller: widget.scrollController,
           child: Column(
             children: [
+              Padding(
+                padding: EdgeInsets.only(left: padding),
+                child: Text(
+                  "Select Club",
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: fontSize,
+                  ),
+                ),
+              ),
               Row(
                 children: [
                   ClubDropDown(

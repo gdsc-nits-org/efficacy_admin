@@ -1,12 +1,3 @@
-enum LocalCollections {
-  user,
-  event,
-  club,
-  clubPosition,
-  checkpoints,
-  invitations,
-}
-
 enum LocalDocuments {
   currentUser,
   users,
@@ -15,4 +6,5 @@ enum LocalDocuments {
   clubs,
   eventCheckpoint,
   invitations,
+  institutions,
 }

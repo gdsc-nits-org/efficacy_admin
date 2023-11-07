@@ -1,21 +1,21 @@
-
 import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/models/models.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropDown extends StatefulWidget {
   final List<String> items;
-  final String? initialValue;
+  final String? value;
   final String? title;
   final bool enabled;
-  final void Function(String?)? onItemChanged;
+  final void Function(String?)? onChanged;
+  final TextEditingController? controller;
   const CustomDropDown({
     super.key,
+    this.controller,
     this.items = const [],
-    this.initialValue,
+    this.value,
     this.enabled = true,
     this.title,
-    this.onItemChanged,
+    this.onChanged,
   });
 
   @override
@@ -28,7 +28,14 @@ class _CustomDropDownState extends State<CustomDropDown> {
   @override
   void initState() {
     super.initState();
-    currentlySelected = widget.initialValue ?? widget.items.first;
+    currentlySelected = widget.value;
+    if (currentlySelected == null && widget.items.isNotEmpty) {
+      currentlySelected = widget.items.first;
+    }
+  }
+
+  String? getCurrentlySelected() {
+    return currentlySelected;
   }
 
   @override
@@ -41,7 +48,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
             widget.title!,
             style: Theme.of(context).textTheme.labelLarge,
           ),
-        DropdownButtonFormField(
+        DropdownButton(
           dropdownColor: paleBlue,
           isExpanded: true,
           value: currentlySelected,
@@ -57,8 +64,8 @@ class _CustomDropDownState extends State<CustomDropDown> {
                   setState(() {
                     currentlySelected = newValue!;
                   });
-                  if (widget.onItemChanged != null) {
-                    widget.onItemChanged!(newValue);
+                  if (widget.onChanged != null) {
+                    widget.onChanged!(newValue);
                   }
                 },
         ),

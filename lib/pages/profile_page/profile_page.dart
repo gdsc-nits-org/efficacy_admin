@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
+import 'dart:typed_data';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/profile_page/widgets/buttons.dart';
@@ -27,21 +27,27 @@ class _ProfileState extends State<ProfilePage> {
     super.initState();
     _nameController.text = UserController.currentUser!.name;
     _scholarIDController.text = UserController.currentUser!.scholarID;
+
     phoneNumber = PhoneNumber.fromCompleteNumber(
-        completeNumber: UserController.currentUser!.phoneNumber!.number
-    );
+        completeNumber: UserController.currentUser!.phoneNumber!.number);
     _phoneController.text = phoneNumber.toString();
   }
 
-
   File? _img;
+
   bool editMode = false;
   bool showButton = false;
 
   //controllers
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _scholarIDController = TextEditingController();
+
   final TextEditingController _phoneController = TextEditingController();
+
+  final TextEditingController _emailController = TextEditingController();
+  String selectedDegree = Degree.BTech.name;
+  String selectedBranch = Degree.BTech.name;
+  Uint8List? image;
 
   PhoneNumber? phoneNumber;
 
@@ -53,27 +59,35 @@ class _ProfileState extends State<ProfilePage> {
   }
 
   void saveUpdates() async {
+    UploadInformation info = UploadInformation(
+      url: UserController.currentUser?.userPhoto,
+      publicID: UserController.currentUser?.userPhotoPublicID,
+    );
+    if (image != null) {
+      info = await ImageController.uploadImage(
+        img: image!,
+        folder: ImageFolder.userImage,
+        publicID: UserController.currentUser?.userPhotoPublicID,
+        userName: _nameController.text,
+      );
+    }
     UserController.currentUser = UserController.currentUser?.copyWith(
       name: _nameController.text,
       scholarID: _scholarIDController.text,
-      phoneNumber: PhoneNumber.fromCompleteNumber(completeNumber: _phoneController.text),
+      phoneNumber:
+          PhoneNumber.fromCompleteNumber(completeNumber: _phoneController.text),
+      userPhoto: info.url,
+      userPhotoPublicID: info.publicID,
+      branch:
+          Branch.values.firstWhere((branch) => branch.name == selectedBranch),
+      degree:
+          Degree.values.firstWhere((degree) => degree.name == selectedDegree),
     );
     await UserController.update();
     setState(() {
       editMode = false;
       showButton = false;
     });
-  }
-
-  Widget imageView(String? s) {
-    if (s != null) {
-      _img = File(s);
-      return ProfileImageViewer(
-        enabled: false,
-        image: _img,
-      );
-    }
-    return const ProfileImageViewer(enabled: false);
   }
 
   @override
@@ -113,34 +127,54 @@ class _ProfileState extends State<ProfilePage> {
                 ),
                 Gap(gap),
 
-                imageView(UserController.currentUser?.userPhoto),
+                ProfileImageViewer(
+                  enabled: editMode,
+                  imagePath: UserController.currentUser?.userPhoto,
+                  imageData: image,
+                  onImageChange: (Uint8List? newImage) {
+                    image = newImage;
+                  },
+                ),
 
                 CustomTextField(
                   controller: _nameController,
                   title: "Name",
-                  enabled: editMode ? true : false,
+                  enabled: editMode,
+                ),
+
+                CustomPhoneField(
+                  title: "Phone",
+                  onPhoneChanged: (PhoneNumber) {},
+                ),
+                CustomTextField(
+                  controller: _emailController,
+                  title: "Email",
+                  enabled: false,
                 ),
                 CustomPhoneField(
-                  controller: _phoneController,
                   title: "Phone",
-                  enabled: false,
+                  initialValue: phoneNumber,
+                  onPhoneChanged: (PhoneNumber newPhoneNumber) {
+                    phoneNumber = newPhoneNumber;
+                  },
+                  enabled: editMode,
                 ),
                 CustomTextField(
                   controller: _scholarIDController,
                   title: "ScholarID",
-                  enabled: editMode ? true : false,
+                  enabled: editMode,
                 ),
                 CustomDropDown(
                   title: "Branch",
                   items: Branch.values.map((branch) => branch.name).toList(),
-                  enabled: editMode ? true : false,
-                  initialValue: UserController.currentUser!.branch.name,
+                  enabled: editMode,
+                  value: UserController.currentUser!.branch.name,
                 ),
                 CustomDropDown(
                   title: "Degree",
                   items: Degree.values.map((degree) => degree.name).toList(),
-                  enabled: editMode ? true : false,
-                  initialValue: UserController.currentUser!.degree.name,
+                  enabled: editMode,
+                  value: UserController.currentUser!.degree.name,
                 ),
                 // CustomDataTable(
                 //   columnspace: width*0.35,

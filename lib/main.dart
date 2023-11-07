@@ -14,24 +14,24 @@ class EfficacyAdmin extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Efficacy Admin',
       routes: {
         EventFullScreen.routeName: (context) =>
             const EventFullScreen(), //issue here
         Homepage.routeName: (context) => const Homepage(),
         ExperimentPage.routeName: (BuildContext context) =>
             const ExperimentPage(),
-        LoginPage.routeName: (context) =>  const LoginPage(),
+        LoginPage.routeName: (context) => const LoginPage(),
+
         SplashScreen.routeName: (context) => const SplashScreen(),
-        SignUpPage.routeName: (context) => const SignUpPage(),
         ProfilePage.routeName: (context) => const ProfilePage(),
-        SignUpUserDetailsPage.routeName: (context) => const SignUpUserDetailsPage(),
+        SignUpPage.routeName: (context) => const SignUpPage(),
         CreateEvent.routeName: (context) => const CreateEvent(),
-        OrganizationsPage.routeName:(context) => const OrganizationsPage()
+        OrganizationsPage.routeName: (context) => const OrganizationsPage()
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,
-      initialRoute: SplashScreen.routeName,      //ExperimentPage.routeName,
+      initialRoute: SplashScreen.routeName, //ExperimentPage.routeName,
     );
   }
 }

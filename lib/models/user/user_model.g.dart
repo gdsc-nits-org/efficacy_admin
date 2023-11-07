@@ -11,11 +11,12 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       id: json['_id'] as String?,
       name: json['name'] as String,
       phoneNumber: const PhoneNumberSerializer()
-          .fromJson(json['phoneNumber'] as Map<String, String?>?),
+          .fromJson(json['phoneNumber'] as Map<String, dynamic>?),
       password: json['password'] as String?,
       email: json['email'] as String,
       scholarID: json['scholarID'] as String,
       userPhoto: json['userPhoto'] as String?,
+      userPhotoPublicID: json['userPhotoPublicID'] as String?,
       branch: $enumDecode(_$BranchEnumMap, json['branch']),
       degree: $enumDecode(_$DegreeEnumMap, json['degree']),
       socials: (json['socials'] as Map<String, dynamic>?)?.map(
@@ -40,6 +41,7 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'email': instance.email,
       'scholarID': instance.scholarID,
       'userPhoto': instance.userPhoto,
+      'userPhotoPublicID': instance.userPhotoPublicID,
       'branch': _$BranchEnumMap[instance.branch]!,
       'degree': _$DegreeEnumMap[instance.degree]!,
       'socials':

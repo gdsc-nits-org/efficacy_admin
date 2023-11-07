@@ -29,28 +29,22 @@ Future<List<ClubPositionModel>> _fetchLocal({
   List<ClubPositionModel> filteredClubPositions = [];
 
   if (forceGet) {
-    await LocalDatabase.deleteKey(
-      LocalCollections.clubPosition,
-      LocalDocuments.clubPositions,
-    );
+    await LocalDatabase.deleteKey(LocalDocuments.clubPositions.name);
   } else {
-    Map? res = await LocalDatabase.get(
-      LocalCollections.clubPosition,
-      LocalDocuments.clubPositions,
-    );
-    if (res != null) {
-      if (clubPositionID != null && res.containsKey(clubPositionID)) {
-        return [
-          ClubPositionModel.fromJson(
-            Formatter.convertMapToMapStringDynamic(res[clubPositionID])!,
-          )
-        ];
-      } else if (clubID != null) {
-        for (dynamic model in res.values) {
-          model = Formatter.convertMapToMapStringDynamic(model);
-          if (model[ClubPositionFields.clubID.name] == clubID) {
-            filteredClubPositions.add(ClubPositionModel.fromJson(model));
-          }
+    List<String> data = LocalDatabase.get(LocalDocuments.clubPositions.name);
+
+    Map res = data.isEmpty ? {} : jsonDecode(data[0]);
+    if (clubPositionID != null && res.containsKey(clubPositionID)) {
+      return [
+        ClubPositionModel.fromJson(
+          Formatter.convertMapToMapStringDynamic(res[clubPositionID])!,
+        )
+      ];
+    } else if (clubID != null) {
+      for (dynamic model in res.values) {
+        model = Formatter.convertMapToMapStringDynamic(model);
+        if (model[ClubPositionFields.clubID.name] == clubID) {
+          filteredClubPositions.add(ClubPositionModel.fromJson(model));
         }
       }
     }

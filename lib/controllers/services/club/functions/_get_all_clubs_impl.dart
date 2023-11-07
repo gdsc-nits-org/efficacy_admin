@@ -1,6 +1,6 @@
 part of '../club_controller.dart';
 
-Stream<List<ClubModel>> _listAllClubsImpl({
+Stream<List<ClubModel>> _getAllClubsImpl({
   List<String> instituteName = const [],
   bool minified = true,
 }) async* {
@@ -12,7 +12,7 @@ Stream<List<ClubModel>> _listAllClubsImpl({
   );
   if (filteredClubs.isNotEmpty) yield filteredClubs;
 
-  filteredClubs = await _fetchAllClubsFromBacked(
+  filteredClubs = await _fetchAllClubsFromBackend(
     instituteName: instituteName,
     minified: minified,
   );
@@ -24,26 +24,25 @@ Future<List<ClubModel>> _fetchAllClubsLocal({
   bool minified = true,
 }) async {
   List<ClubModel> filteredClubs = [];
-  Map? res =
-      await LocalDatabase.get(LocalCollections.club, LocalDocuments.clubs);
-  if (res != null) {
-    res = Formatter.convertMapToMapStringDynamic(res)!;
-    if (minified == true) {
-      for (dynamic model in res.values) {
+  List<String> data = LocalDatabase.get(LocalDocuments.clubs.name);
+  Map res = data.isEmpty ? {} : jsonDecode(data[0]);
+
+  res = Formatter.convertMapToMapStringDynamic(res)!;
+  if (minified == true) {
+    for (dynamic model in res.values) {
+      ClubModel clubModel = ClubModel.minifiedFromJson(model);
+      if (instituteName.isEmpty ||
+          instituteName.contains(clubModel.instituteName)) {
+        filteredClubs.add(clubModel);
+      }
+    }
+  } else {
+    for (dynamic model in res.values) {
+      if (!ClubController._isMinified(model)) {
         ClubModel clubModel = ClubModel.minifiedFromJson(model);
         if (instituteName.isEmpty ||
             instituteName.contains(clubModel.instituteName)) {
           filteredClubs.add(clubModel);
-        }
-      }
-    } else {
-      for (dynamic model in res.values) {
-        if (!ClubController._isMinified(model)) {
-          ClubModel clubModel = ClubModel.minifiedFromJson(model);
-          if (instituteName.isEmpty ||
-              instituteName.contains(clubModel.instituteName)) {
-            filteredClubs.add(clubModel);
-          }
         }
       }
     }
@@ -51,7 +50,7 @@ Future<List<ClubModel>> _fetchAllClubsLocal({
   return filteredClubs;
 }
 
-Future<List<ClubModel>> _fetchAllClubsFromBacked({
+Future<List<ClubModel>> _fetchAllClubsFromBackend({
   List<String> instituteName = const [],
   bool minified = true,
 }) async {

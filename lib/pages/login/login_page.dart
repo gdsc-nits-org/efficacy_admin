@@ -1,38 +1,27 @@
 import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/controllers/controllers.dart';
-import 'package:efficacy_admin/pages/pages.dart';
+import 'package:efficacy_admin/pages/login/widgets/login_form.dart';
 import 'package:efficacy_admin/utils/utils.dart';
-import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 class LoginPage extends StatefulWidget {
   //route
   static const String routeName = "/LoginPage";
 
+<<<<<<< HEAD
   const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
+=======
+>>>>>>> 7fb075701fd28622c504257b0347d1f52623267a
 class _LoginPageState extends State<LoginPage> {
   bool hidePassword = true;
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
   IconData passVisibility = Icons.visibility;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    login();
-  }
-
-  void login() async {
-    await UserController.login(email: "raj@gmail.com", password: "123456");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +31,8 @@ class _LoginPageState extends State<LoginPage> {
     double height = size.height;
     //size constants
     double avatarRadius = width * 0.15;
-    double fieldGap = height * 0.005;
     double gap = height * 0.05;
-    double smallGap = height * 0.01;
     double messageFieldWidth = 0.85;
-    double formWidth = width * 0.8;
-    double fieldHeight = height * 0.09;
 
     return WillPopScope(
       onWillPop: () async {
@@ -78,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
+<<<<<<< HEAD
                 Column(
                   children: [
                     Form(
@@ -157,6 +143,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ].separate(smallGap),
                 ),
+=======
+                const LoginForm(),
+>>>>>>> 7fb075701fd28622c504257b0347d1f52623267a
               ].separate(gap),
             ),
           ),

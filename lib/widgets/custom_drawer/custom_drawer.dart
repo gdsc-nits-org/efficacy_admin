@@ -14,19 +14,6 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  File? _img;
-
-  Widget imageView(String? s) {
-    if (s != null) {
-      _img = File(s);
-      return ProfileImageViewer(
-        enabled: false,
-        image: _img,
-      );
-    }
-    return const ProfileImageViewer(enabled: false);
-  }
-
   late bool pendingInvites = false;
 
   Future<void> init() async {
@@ -63,9 +50,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(color: dark),
-            child: imageView(UserController.currentUser?.userPhoto),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, ProfilePage.routeName);
+            },
+            child: AbsorbPointer(
+              child: DrawerHeader(
+                decoration: const BoxDecoration(color: dark),
+                child: ProfileImageViewer(
+                  enabled: false,
+                  imagePath: UserController.currentUser?.userPhoto,
+                ),
+              ),
+            ),
           ),
           ListTile(
             title: const Text('Home'),
@@ -100,8 +97,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
             title: const Text('Log out'),
             onTap: () async {
               await UserController.logOut();
+
               if (mounted) {
-                Navigator.pop(context);
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   LoginPage.routeName,

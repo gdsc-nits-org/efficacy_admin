@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/utils/local_database/constants.dart';
@@ -45,13 +47,10 @@ class ForegroundService {
 Future<bool> _dataSync() async {
   if (!dotenv.isInitialized) await dotenv.load();
   await LocalDatabase.init();
-  dynamic data = await LocalDatabase.get(
-    LocalCollections.user,
-    LocalDocuments.currentUser,
-  );
-  if (data != null) {
-    UserModel currentUser =
-        UserModel.fromJson(Formatter.convertMapToMapStringDynamic(data)!);
+  List<String> data = LocalDatabase.get(LocalDocuments.currentUser.name);
+  if (data.isNotEmpty) {
+    UserModel currentUser = UserModel.fromJson(
+        Formatter.convertMapToMapStringDynamic(jsonDecode(data[0]))!);
     await Database.init();
     List<String> clubs = [];
     for (String clubPositionID in currentUser.position) {
@@ -62,15 +61,14 @@ Future<bool> _dataSync() async {
         clubs.addAll(pos.map((p) => p.clubID).toList());
       }
     }
-    DateTime previousCheckpoint = await LocalDatabase.get(
-          LocalCollections.checkpoints,
-          LocalDocuments.eventCheckpoint,
-        ) ??
-        DateTime.now();
+    data = LocalDatabase.get(LocalDocuments.eventCheckpoint.name);
+    if (data.isEmpty) {
+      return false;
+    }
+    DateTime previousCheckpoint = DateTime.parse(data[0]);
     await LocalDatabase.set(
-      LocalCollections.checkpoints,
-      LocalDocuments.eventCheckpoint,
-      DateTime.now(),
+      LocalDocuments.eventCheckpoint.name,
+      [DateTime.now().toIso8601String()],
     );
     for (String clubID in clubs) {
       if (await EventController.isAnyUpdate(

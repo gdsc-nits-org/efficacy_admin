@@ -1,6 +1,6 @@
 part of '../club_controller.dart';
 
-Future<ClubModel?> _updateImpl(ClubModel club) async {
+Future<ClubModel> _updateImpl(ClubModel club) async {
   DbCollection collection =
       Database.instance.collection(ClubController._collectionName);
   if (club.id == null) {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
@@ -15,6 +17,7 @@ part 'functions/_delete_impl.dart';
 part 'functions/_accept_invitation_impl.dart';
 part 'functions/_check_permission_impl.dart';
 part 'functions/_any_pending_invitation_impl.dart';
+part 'functions/_reject_invitation_impl.dart';
 
 class InvitationController {
   static const String _collectionName = "invitations";
@@ -43,11 +46,13 @@ class InvitationController {
 
   static Stream<List<InvitationModel>> get({
     String? senderID,
+    String? recipientID,
     String? invitationID,
     bool forceGet = false,
   }) {
     return _getImpl(
       senderID: senderID,
+      recipientID: recipientID,
       invitationID: invitationID,
       forceGet: forceGet,
     );
@@ -63,6 +68,10 @@ class InvitationController {
 
   static Future<void> acceptInvitation(String invitationID) async {
     return await _acceptInvitationImpl(invitationID);
+  }
+
+  static Future<void> rejectInvitation(InvitationModel invitation) async {
+    return await _rejectInvitationImpl(invitation);
   }
 
   static Future<bool> anyPendingInvitation() async {

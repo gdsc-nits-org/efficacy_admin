@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/controllers/utils/comparator.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
@@ -15,7 +17,7 @@ part 'functions/_create_impl.dart';
 part 'functions/_update_impl.dart';
 part 'functions/_get_impl.dart';
 part 'functions/_get_name_impl.dart';
-part 'functions/_list_all_clubs_impl.dart';
+part 'functions/_get_all_clubs_impl.dart';
 
 class ClubController {
   const ClubController._();
@@ -48,7 +50,7 @@ class ClubController {
     return await _createImpl(club);
   }
 
-  static Future<ClubModel?> update(ClubModel club) async {
+  static Future<ClubModel> update(ClubModel club) async {
     await _checkPermission(
       clubID: club.id!,
       forView: false,
@@ -82,11 +84,11 @@ class ClubController {
 
   /// In minified only the club id, name and institute name is returned
   /// Recommended to use minified
-  static Stream<List<ClubModel>> listAllClubs({
+  static Stream<List<ClubModel>> getAllClubs({
     List<String> instituteName = const [],
     bool minified = true,
   }) {
-    return _listAllClubsImpl(
+    return _getAllClubsImpl(
       instituteName: instituteName,
       minified: minified,
     );

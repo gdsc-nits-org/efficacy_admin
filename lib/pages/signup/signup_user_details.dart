@@ -393,7 +393,7 @@ class _SignUpPageUserDetailsState extends State<SignUpUserDetailsPage> {
             validator: Validator.isScholarIDValid,
           ),
           CustomPhoneField(
-            controller: phnoController,
+            onPhoneChanged: (p0) {},
             label: "Phone No.",
           ),
         ].separate(MediaQuery.of(context).size.height * 0.02),
@@ -408,39 +408,19 @@ class _SignUpPageUserDetailsState extends State<SignUpUserDetailsPage> {
               )),
           ProfileImageViewer(
             height: 100,
-            onImageChange: (String? imagePath) {
-              if (imagePath != null) _image = File(imagePath);
-            },
+            onImageChange: (p0) {},
           ),
           CustomDropDown(
             title: "Degree",
             items: Degree.values.map((degree) => degree.name).toList(),
-            initialValue: selectedDegree,
-            onItemChanged: (String? newSelectedDegree) {
-              if (newSelectedDegree != null) {
-                selectedDegree = newSelectedDegree;
-              }
-            },
           ),
           CustomDropDown(
             title: "Branch",
             items: Branch.values.map((branch) => branch.name).toList(),
-            initialValue: selectedBranch,
-            onItemChanged: (String? newSelectedBranch) {
-              if (newSelectedBranch != null) {
-                selectedBranch = newSelectedBranch;
-              }
-            },
           ),
           CustomDropDown(
             title: "Institute",
             items: institute,
-            initialValue: selectedInstitute,
-            onItemChanged: (String? newSelectedInstitute) {
-              if (newSelectedInstitute != null) {
-                selectedInstitute = newSelectedInstitute;
-              }
-            },
           ),
         ].separate(MediaQuery.of(context).size.height * 0.016),
       ),

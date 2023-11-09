@@ -2,7 +2,9 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
+import 'package:efficacy_admin/models/user/user_model.dart';
 import 'event_form.dart';
 import 'utils/create_event_utils.dart';
 import 'widgets/upload_button.dart';
@@ -25,6 +27,21 @@ class _CreateEventState extends State<CreateEvent> {
   //form variables
   final _formKey = GlobalKey<FormState>();
 
+  TextEditingController titleController = TextEditingController();
+  TextEditingController shortDescController = TextEditingController();
+  TextEditingController longDescController = TextEditingController();
+  TextEditingController googleUrlController = TextEditingController();
+  TextEditingController fbUrlController = TextEditingController();
+  TextEditingController venueController = TextEditingController();
+
+  UserModel? selectedModerator;
+  ClubModel? selectedClub;
+
+  DateTime selectedDate1 = DateTime.now();
+  DateTime selectedDate2 = DateTime.now();
+  TimeOfDay selectedTime1 = TimeOfDay.now();
+  TimeOfDay selectedTime2 = TimeOfDay.now();
+
   //form validate function
   void _validateForm() {
     if (_formKey.currentState!.validate()) {
@@ -41,8 +58,8 @@ class _CreateEventState extends State<CreateEvent> {
         facebookPostURL:
             fbUrlController.text.isNotEmpty ? fbUrlController.text : null,
         venue: venueController.text,
-        contacts: [selectedModerator.toString()],
-        clubID: clubIDController.text,
+        contacts: selectedModerator != null ? [selectedModerator!.email] : [],
+        clubID: selectedClub!.id!,
       );
       EventController.create(event);
     } else {
@@ -82,9 +99,7 @@ class _CreateEventState extends State<CreateEvent> {
             header: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  width: width * 0.33,
-                ),
+                SizedBox(width: width * 0.33),
                 Container(
                   height: 3,
                   width: width * 0.35,
@@ -97,8 +112,51 @@ class _CreateEventState extends State<CreateEvent> {
                 ),
               ],
             ),
-            panel: EventForm(
+            panelBuilder: (sc) => EventForm(
               formKey: _formKey,
+              scrollController: sc,
+              titleController: titleController,
+              shortDescController: shortDescController,
+              longDescController: longDescController,
+              googleUrlController: googleUrlController,
+              fbUrlController: fbUrlController,
+              venueController: venueController,
+              selectedDate1: selectedDate1,
+              selectedClub: selectedClub,
+              onSelectedClubModelChanged: (ClubModel clubModel) {
+                setState(() {
+                  selectedClub = clubModel;
+                });
+              },
+              onSelectedDate1Changed: (DateTime newDate) {
+                setState(() {
+                  selectedDate1 = newDate;
+                });
+              },
+              selectedDate2: selectedDate2,
+              onSelectedDate2Changed: (DateTime newDate) {
+                setState(() {
+                  selectedDate2 = newDate;
+                });
+              },
+              selectedTime1: selectedTime1,
+              onSelectedTime1Changed: (TimeOfDay newTime) {
+                setState(() {
+                  selectedTime1 = newTime;
+                });
+              },
+              selectedTime2: selectedTime2,
+              onSelectedTime2Changed: (TimeOfDay newTime) {
+                setState(() {
+                  selectedTime2 = newTime;
+                });
+              },
+              selectedModerator: selectedModerator,
+              onSelectedModeratorChanged: (UserModel? newModerator) {
+                setState(() {
+                  selectedModerator = newModerator;
+                });
+              },
             ),
             body: _image == null
                 ? Stack(

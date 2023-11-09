@@ -33,7 +33,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
   PhoneNumber? phoneNumber;
   String gdscEmail = "gdsc@example.com";
   String selectedDegree = Degree.BTech.name;
-  String selectedBranch = Degree.BTech.name;
+  String selectedBranch = Branch.CSE.name;
   String selectedInstitute = 'NIT Silchar';
 
   List<String> institutes = [];

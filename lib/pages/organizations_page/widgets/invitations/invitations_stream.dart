@@ -29,6 +29,7 @@ class InvitationsStream extends StatelessWidget {
                       return InvitationItem(
                         senderID: invitation.senderID,
                         clubPositionID: invitation.clubPositionID,
+                        invitation: invitation,
                       );
                     }).toList(),
                   ),

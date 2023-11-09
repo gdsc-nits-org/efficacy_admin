@@ -7,10 +7,12 @@ import 'package:flutter/material.dart';
 class InvitationItem extends StatelessWidget {
   final String clubPositionID;
   final String senderID;
+  final InvitationModel invitation;
   const InvitationItem({
     super.key,
     required this.clubPositionID,
     required this.senderID,
+    required this.invitation,
   });
 
   @override
@@ -87,7 +89,7 @@ class InvitationItem extends StatelessWidget {
                 child: IconButton(
                   onPressed: () async {
                     // Handle accept invitation
-                    await InvitationController.acceptInvitation(clubPositionID);
+                    await InvitationController.acceptInvitation(invitation.id!);
                   },
                   icon: const Icon(
                     Icons.check,

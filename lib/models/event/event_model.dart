@@ -22,7 +22,7 @@ class EventModel with _$EventModel {
     String? facebookPostURL,
     required String venue,
 
-    /// Ids of the responsible members for the event
+    /// Email of the responsible members for the event
     required List<String> contacts,
 
     /// Users who liked the event

@@ -157,13 +157,13 @@ class _ProfileState extends State<ProfilePage> {
                   title: "Branch",
                   items: Branch.values.map((branch) => branch.name).toList(),
                   enabled: editMode,
-                  initialValue: UserController.currentUser!.branch.name,
+                  value: UserController.currentUser!.branch.name,
                 ),
                 CustomDropDown(
                   title: "Degree",
                   items: Degree.values.map((degree) => degree.name).toList(),
                   enabled: editMode,
-                  initialValue: UserController.currentUser!.degree.name,
+                  value: UserController.currentUser!.degree.name,
                 ),
                 // CustomDataTable(
                 //   columnspace: width*0.35,

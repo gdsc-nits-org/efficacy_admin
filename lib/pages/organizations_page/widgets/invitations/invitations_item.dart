@@ -1,5 +1,6 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:flutter/material.dart';
 
@@ -86,7 +87,7 @@ class InvitationItem extends StatelessWidget {
                 child: IconButton(
                   onPressed: () async {
                     // Handle accept invitation
-                    // await InvitationController.acceptInvitation();
+                    await InvitationController.acceptInvitation(clubPositionID);
                   },
                   icon: const Icon(
                     Icons.check,
@@ -99,7 +100,10 @@ class InvitationItem extends StatelessWidget {
                 child: IconButton(
                   onPressed: () async {
                     // Handle reject invitation
-                    // await  InvitationController.rejectInvitation(invitation);
+                    await InvitationController.rejectInvitation(InvitationModel(
+                        clubPositionID: clubPositionID,
+                        senderID: senderID,
+                        recipientID: UserController.currentUser!.id!));
                   },
                   icon: const Icon(
                     Icons.close,

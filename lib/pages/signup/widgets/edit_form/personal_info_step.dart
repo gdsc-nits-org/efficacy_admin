@@ -8,12 +8,12 @@ import 'package:intl_phone_field/phone_number.dart';
 class PersonalInfoStep extends StatelessWidget {
   final TextEditingController nameController;
   final TextEditingController scholarIDController;
-  final void Function(PhoneNumber? newPhnNo)? onPhnNoChanged;
+  final void Function(PhoneNumber) onPhoneChanged;
   const PersonalInfoStep({
     super.key,
     required this.nameController,
     required this.scholarIDController,
-    this.onPhnNoChanged,
+    required this.onPhoneChanged,
   });
 
   @override
@@ -43,8 +43,7 @@ class PersonalInfoStep extends StatelessWidget {
           keyboardType: TextInputType.number,
         ),
         CustomPhoneField(
-          helperText: "* Optional",
-          onPhnNoChanged: onPhnNoChanged,
+          onPhoneChanged: onPhoneChanged,
           label: "Phone No.",
         ),
       ].separate(MediaQuery.of(context).size.height * 0.02),

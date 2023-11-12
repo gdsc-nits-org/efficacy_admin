@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/services/instituion/institution_controller.dart';
@@ -29,16 +30,15 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController scholarIDController = TextEditingController();
-  String selectedClub = 'GDSC';
-  String gdscEmail = "gdsc@example.com";
-  String selectedDegree = 'BTech';
-  String selectedBranch = 'CSE';
-  String selectedInstitute = 'NIT Silchar';
   PhoneNumber? phoneNumber;
+  String gdscEmail = "gdsc@example.com";
+  String selectedDegree = Degree.BTech.name;
+  String selectedBranch = Branch.CSE.name;
+  String selectedInstitute = 'NIT Silchar';
 
   List<String> institutes = [];
 
-  File? _image;
+  Uint8List? _image;
 
   Future<void> init() async {
     institutes = (await InstitutionController.getAllInstitutions())
@@ -134,13 +134,11 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           confirmPasswordController: confirmPasswordController,
                           nameController: nameController,
                           scholarIDController: scholarIDController,
-                          onPhnNoChanged: (PhoneNumber? newPhnNo) {
-                            if (newPhnNo != null) {
-                              phoneNumber = newPhnNo;
-                            }
+                          onPhoneChanged: (PhoneNumber newPhoneNumber) {
+                            phoneNumber = newPhoneNumber;
                           },
-                          onImageChanged: (String? imagePath) {
-                            if (imagePath != null) _image = File(imagePath);
+                          onImageChanged: (Uint8List? newImage) {
+                            _image = newImage;
                           },
                           selectedDegree: selectedDegree,
                           onDegreeChanged: (String? newSelectedDegree) {
@@ -178,27 +176,36 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           onPressedNext: (int index) async {
                             if (_formKey.currentState!.validate()) {
                               if (index == 2) {
+                                UploadInformation? info;
+                                if (_image != null) {
+                                  info = await ImageController.uploadImage(
+                                    img: _image!,
+                                    userName: nameController.text,
+                                    folder: ImageFolder.userImage,
+                                  );
+                                }
                                 await UserController.create(
                                   UserModel(
                                     name: nameController.text,
-                                    password: passwordController.text,
                                     email: emailController.text,
+                                    password: passwordController.text,
                                     scholarID: scholarIDController.text,
+                                    userPhoto: info?.url,
+                                    userPhotoPublicID: info?.publicID,
+                                    phoneNumber: phoneNumber,
                                     branch: Branch.values.firstWhere((branch) =>
                                         branch.name == selectedBranch),
                                     degree: Degree.values.firstWhere((degree) =>
                                         degree.name == selectedDegree),
-                                    phoneNumber: phoneNumber
                                   ),
                                 );
-                                if(mounted){
+                                if (mounted) {
                                   Navigator.pushNamedAndRemoveUntil(
                                     context,
                                     Homepage.routeName,
                                     (route) => false,
                                   );
                                 }
-                                  
                               } else {
                                 setState(() {
                                   ++activeStep;

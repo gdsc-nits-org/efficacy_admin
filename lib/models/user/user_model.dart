@@ -16,6 +16,7 @@ class UserModel with _$UserModel {
     required String email,
     required String scholarID,
     String? userPhoto,
+    String? userPhotoPublicID,
     required Branch branch,
     required Degree degree,
     @Default({}) Map<Social, String> socials,

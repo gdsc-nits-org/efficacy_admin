@@ -29,6 +29,7 @@ mixin _$UserModel {
   String get email => throw _privateConstructorUsedError;
   String get scholarID => throw _privateConstructorUsedError;
   String? get userPhoto => throw _privateConstructorUsedError;
+  String? get userPhotoPublicID => throw _privateConstructorUsedError;
   Branch get branch => throw _privateConstructorUsedError;
   Degree get degree => throw _privateConstructorUsedError;
   Map<Social, String> get socials => throw _privateConstructorUsedError;
@@ -56,6 +57,7 @@ abstract class $UserModelCopyWith<$Res> {
       String email,
       String scholarID,
       String? userPhoto,
+      String? userPhotoPublicID,
       Branch branch,
       Degree degree,
       Map<Social, String> socials,
@@ -83,6 +85,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? email = null,
     Object? scholarID = null,
     Object? userPhoto = freezed,
+    Object? userPhotoPublicID = freezed,
     Object? branch = null,
     Object? degree = null,
     Object? socials = null,
@@ -117,6 +120,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
       userPhoto: freezed == userPhoto
           ? _value.userPhoto
           : userPhoto // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userPhotoPublicID: freezed == userPhotoPublicID
+          ? _value.userPhotoPublicID
+          : userPhotoPublicID // ignore: cast_nullable_to_non_nullable
               as String?,
       branch: null == branch
           ? _value.branch
@@ -158,6 +165,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
       String email,
       String scholarID,
       String? userPhoto,
+      String? userPhotoPublicID,
       Branch branch,
       Degree degree,
       Map<Social, String> socials,
@@ -183,6 +191,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? email = null,
     Object? scholarID = null,
     Object? userPhoto = freezed,
+    Object? userPhotoPublicID = freezed,
     Object? branch = null,
     Object? degree = null,
     Object? socials = null,
@@ -217,6 +226,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
       userPhoto: freezed == userPhoto
           ? _value.userPhoto
           : userPhoto // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userPhotoPublicID: freezed == userPhotoPublicID
+          ? _value.userPhotoPublicID
+          : userPhotoPublicID // ignore: cast_nullable_to_non_nullable
               as String?,
       branch: null == branch
           ? _value.branch
@@ -253,6 +266,7 @@ class _$UserModelImpl implements _UserModel {
       required this.email,
       required this.scholarID,
       this.userPhoto,
+      this.userPhotoPublicID,
       required this.branch,
       required this.degree,
       final Map<Social, String> socials = const {},
@@ -280,6 +294,8 @@ class _$UserModelImpl implements _UserModel {
   final String scholarID;
   @override
   final String? userPhoto;
+  @override
+  final String? userPhotoPublicID;
   @override
   final Branch branch;
   @override
@@ -310,7 +326,7 @@ class _$UserModelImpl implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, phoneNumber: $phoneNumber, password: $password, email: $email, scholarID: $scholarID, userPhoto: $userPhoto, branch: $branch, degree: $degree, socials: $socials, position: $position, lastLocalUpdate: $lastLocalUpdate)';
+    return 'UserModel(id: $id, name: $name, phoneNumber: $phoneNumber, password: $password, email: $email, scholarID: $scholarID, userPhoto: $userPhoto, userPhotoPublicID: $userPhotoPublicID, branch: $branch, degree: $degree, socials: $socials, position: $position, lastLocalUpdate: $lastLocalUpdate)';
   }
 
   @override
@@ -329,6 +345,8 @@ class _$UserModelImpl implements _UserModel {
                 other.scholarID == scholarID) &&
             (identical(other.userPhoto, userPhoto) ||
                 other.userPhoto == userPhoto) &&
+            (identical(other.userPhotoPublicID, userPhotoPublicID) ||
+                other.userPhotoPublicID == userPhotoPublicID) &&
             (identical(other.branch, branch) || other.branch == branch) &&
             (identical(other.degree, degree) || other.degree == degree) &&
             const DeepCollectionEquality().equals(other._socials, _socials) &&
@@ -348,6 +366,7 @@ class _$UserModelImpl implements _UserModel {
       email,
       scholarID,
       userPhoto,
+      userPhotoPublicID,
       branch,
       degree,
       const DeepCollectionEquality().hash(_socials),
@@ -377,6 +396,7 @@ abstract class _UserModel implements UserModel {
       required final String email,
       required final String scholarID,
       final String? userPhoto,
+      final String? userPhotoPublicID,
       required final Branch branch,
       required final Degree degree,
       final Map<Social, String> socials,
@@ -402,6 +422,8 @@ abstract class _UserModel implements UserModel {
   String get scholarID;
   @override
   String? get userPhoto;
+  @override
+  String? get userPhotoPublicID;
   @override
   Branch get branch;
   @override

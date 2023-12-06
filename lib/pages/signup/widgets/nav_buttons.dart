@@ -19,17 +19,21 @@ class NavButtons extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-              padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
+              padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.05),
               alignment: Alignment.centerLeft,
               child: ElevatedButton(
                 onPressed: () => onPressedBack(activeStep),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(
                       Icons.arrow_back_sharp,
                     ),
-                    Gap(MediaQuery.of(context).size.width * 0.01),
+                    Gap(MediaQuery.of(context).size.width * 0.005),
                     const Text("Back"),
                   ],
                 ),
@@ -38,10 +42,14 @@ class NavButtons extends StatelessWidget {
         Gap(MediaQuery.of(context).size.width * 0.06),
         Expanded(
           child: Container(
-              padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.05),
+              padding: EdgeInsets.only(
+                  right: MediaQuery.of(context).size.width * 0.01),
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 onPressed: () => onPressedNext(activeStep),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

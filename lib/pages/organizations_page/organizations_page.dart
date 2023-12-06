@@ -37,17 +37,12 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
     return Scaffold(
       appBar: const CustomAppBar(),
       endDrawer: const CustomDrawer(),
-      floatingActionButton: Align(
-          alignment: Alignment.bottomRight,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FloatingActionButton(
-                  onPressed: () {}, child: const Text("Invite")),
-              FloatingActionButton(
-                  onPressed: () {}, child: const Text("Create")),
-            ].separate(gap),
-          )),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        heroTag: "Create club",
+        tooltip: "Create a new club",
+        child: const Icon(Icons.add),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(pad),

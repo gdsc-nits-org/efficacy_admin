@@ -46,7 +46,9 @@ class _HomepageState extends State<Homepage> {
             events: eventList,
           ),
           Visibility(
-            visible: currentTabIndex == 0,
+            visible: currentTabIndex == 0 &&
+                UserController.currentUser != null &&
+                UserController.currentUser!.position.isNotEmpty,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 12.0, right: 12.0),
               child: Align(

@@ -4,6 +4,7 @@ import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 import 'widgets/clubs/clubs_stream.dart';
 import 'widgets/invitations/invitations_stream.dart';
@@ -31,11 +32,17 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
     //   InvitationModel(
     //       clubPositionID: "653e0c671bde28c6db2d4c5d",
     //       senderID: "653e0b6c1bde28c6db2d4c5a",
-    //       recipientID: "653e0b6c1bde28c6db2d4c5a"),
+    //       recipientID: UserController.currentUser!.id!),
     // );
     return Scaffold(
       appBar: const CustomAppBar(),
       endDrawer: const CustomDrawer(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        heroTag: "Create club",
+        tooltip: "Create a new club",
+        child: const Icon(Icons.add),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(pad),

@@ -123,38 +123,38 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => (widget.enabled) ? _showPicker(context) : null,
-      child: CircleAvatar(
-        backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
-        radius: widget.height / 2,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(widget.height / 2),
-          clipBehavior: Clip.hardEdge,
-          child: _image != null
-              ? Image.memory(
-                  _image!,
-                  fit: BoxFit.fitHeight,
-                  height: widget.height,
-                  width: widget.height,
-                )
-              : widget.imagePath != null
-                  ? CachedNetworkImage(
-                      imageUrl: widget.imagePath!,
-                      fit: BoxFit.fitHeight,
-                      height: widget.height,
-                      width: widget.height,
-                      errorWidget: (BuildContext context, _, __) {
-                        return Icon(
-                          CupertinoIcons.person_alt_circle,
-                          size: widget.height,
-                        );
-                      },
-                    )
-                  : Icon(
-                      CupertinoIcons.person_alt_circle,
-                      size: widget.height,
-                    ),
+    return Center(
+      child: InkWell(
+        onTap: () => (widget.enabled) ? _showPicker(context) : null,
+        child: CircleAvatar(
+          backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
+          radius: widget.height / 2,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(widget.height / 2),
+            // clipBehavior: Clip.hardEdge,
+            child: _image != null
+                ? Image.memory(
+                    _image!,
+                    fit: BoxFit.cover,
+                    height: widget.height,
+                  )
+                : widget.imagePath != null
+                    ? CachedNetworkImage(
+                        imageUrl: widget.imagePath!,
+                        fit: BoxFit.cover,
+                        height: widget.height,
+                        errorWidget: (BuildContext context, _, __) {
+                          return Icon(
+                            CupertinoIcons.person_alt_circle,
+                            size: widget.height,
+                          );
+                        },
+                      )
+                    : Icon(
+                        CupertinoIcons.person_alt_circle,
+                        size: widget.height,
+                      ),
+          ),
         ),
       ),
     );

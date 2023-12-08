@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'dart:typed_data';
-import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/profile_page/widgets/buttons.dart';
@@ -169,7 +167,8 @@ class _ProfileState extends State<ProfilePage> {
                 //   columnspace: width*0.35,
                 //   columns: const ["ClubId", "Position"],
                 //   rows: (UserController.currentUser?.position)??const [],
-                // )
+                // ),
+                const DeleteProfileButton(),
               ].separate(gap),
             ),
           ),

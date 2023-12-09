@@ -15,7 +15,7 @@ class CustomField extends StatelessWidget {
     this.obscureText = false,
     required this.validator,
     this.maxLines = 1,
-    this.textInputType
+    this.textInputType,
   });
 
   @override

@@ -1,6 +1,4 @@
 import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/controllers/controllers.dart';
-import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/create_club/utils/create_club_utils.dart';
 import 'package:efficacy_admin/pages/create_club/widgets/custom_field.dart';
 import 'package:efficacy_admin/pages/create_event/widgets/url_input.dart';
@@ -12,32 +10,32 @@ class ClubForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final ScrollController scrollController;
   final TextEditingController nameController;
-  final TextEditingController DescController;
+  final TextEditingController descController;
   final TextEditingController githubUrlController;
   final TextEditingController fbUrlController;
   final TextEditingController instaController;
   final TextEditingController linkedinController;
   final TextEditingController emailController;
+  final TextEditingController instituteController;
 
-
-  const ClubForm({
-    super.key,
-    required this.formKey,
-    required this.scrollController,
-    required this.nameController,
-    required this.DescController,
-    required this.githubUrlController,
-    required this.fbUrlController,
-    required this.instaController,
-    required this.linkedinController, required this.emailController,
-  });
+  const ClubForm(
+      {super.key,
+      required this.formKey,
+      required this.scrollController,
+      required this.nameController,
+      required this.descController,
+      required this.githubUrlController,
+      required this.fbUrlController,
+      required this.instaController,
+      required this.linkedinController,
+      required this.emailController,
+      required this.instituteController});
 
   @override
   State<ClubForm> createState() => _ClubFormState();
 }
 
 class _ClubFormState extends State<ClubForm> {
-
   Future<void> prepareData() async {
     /// User is created
     // print(await UserController.create(
@@ -121,12 +119,29 @@ class _ClubFormState extends State<ClubForm> {
                   return null;
                 },
               ),
+              //institute name
+              CustomField(
+                controller: widget.instituteController,
+                hintText: "Institute Name",
+                icon: FontAwesomeIcons.institution,
+                validator: (name) {
+                  if (name!.isEmpty) {
+                    return "institute name cannot be empty";
+                  }
+                  return null;
+                },
+              ),
               //club description
               CustomField(
                 hintText: 'Club Description',
-                validator: (value) => null,
-                icon: Icons.format_align_right_rounded,
-                controller: widget.DescController,
+                validator: (value) {
+                    if(value!.isEmpty){
+                      return "description cannot be empty";
+                    }
+                    return null;
+                },
+                icon: FontAwesomeIcons.alignLeft,
+                controller: widget.descController,
                 maxLines: 6,
               ),
               //phone number
@@ -136,20 +151,22 @@ class _ClubFormState extends State<ClubForm> {
                   onPhoneChanged: (phoneNumber) {},
                 ),
               ),
-              CustomField(controller: widget.emailController,
+              CustomField(
+                controller: widget.emailController,
                 textInputType: TextInputType.emailAddress,
                 hintText: "email address",
                 icon: Icons.mail,
                 validator: (email) {
-                    return null;
-                },),
+                  return null;
+                },
+              ),
               //facebook link
               UrlInput(
                 controller: widget.fbUrlController,
                 icon: FontAwesomeIcons.facebook,
                 hintText: 'Facebook page URL',
                 validator: (value) {
-                  return '';
+                  return null;
                 },
               ),
               //github link
@@ -158,7 +175,7 @@ class _ClubFormState extends State<ClubForm> {
                 icon: FontAwesomeIcons.github,
                 hintText: 'GitHub profile URL',
                 validator: (value) {
-                  return '';
+                  return null;
                 },
               ),
               //insta link

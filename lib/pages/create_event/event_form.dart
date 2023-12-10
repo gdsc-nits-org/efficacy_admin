@@ -210,7 +210,12 @@ class _EventFormState extends State<EventForm> {
           child: Column(
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: padding),
+                    child: const Text("Select Club"),
+                  ),
                   ClubDropDown(
                     items: UserController.clubs,
                     value: selectedClub,
@@ -220,7 +225,7 @@ class _EventFormState extends State<EventForm> {
                       }
                     },
                   ),
-                ],
+                ].separate(5),
               ),
               //title
               CustomField(

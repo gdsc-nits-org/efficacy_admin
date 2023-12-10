@@ -118,7 +118,6 @@ class _ProfileState extends State<ProfilePage> {
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 Gap(gap),
-
                 ProfileImageViewer(
                   enabled: editMode,
                   imagePath: UserController.currentUser?.userPhoto,
@@ -127,7 +126,6 @@ class _ProfileState extends State<ProfilePage> {
                     image = newImage;
                   },
                 ),
-
                 CustomTextField(
                   controller: _nameController,
                   title: "Name",
@@ -163,11 +161,6 @@ class _ProfileState extends State<ProfilePage> {
                   enabled: editMode,
                   value: UserController.currentUser!.degree.name,
                 ),
-                // CustomDataTable(
-                //   columnspace: width*0.35,
-                //   columns: const ["ClubId", "Position"],
-                //   rows: (UserController.currentUser?.position)??const [],
-                // ),
                 const DeleteProfileButton(),
               ].separate(gap),
             ),

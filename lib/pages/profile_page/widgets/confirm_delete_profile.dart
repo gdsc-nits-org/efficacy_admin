@@ -82,33 +82,35 @@ class _ConfirmDelProfileState extends State<ConfirmDelProfile> {
                 LoginPage.routeName,
                 (route) => false,
               );
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: const Text('Profile deleted!'),
-                  backgroundColor:
-                      Theme.of(context).colorScheme.primary.withOpacity(0.9),
-                  duration: const Duration(seconds: 5),
-                  behavior: SnackBarBehavior.fixed,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              );
+              throw Exception("Profile Deleted!");
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(
+              //     content: const Text('Profile deleted!'),
+              //     backgroundColor:
+              //         Theme.of(context).colorScheme.primary.withOpacity(0.9),
+              //     duration: const Duration(seconds: 5),
+              //     behavior: SnackBarBehavior.fixed,
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(10.0),
+              //     ),
+              //   ),
+              // );
             } else {
               if (!dialogContext.mounted) return;
               Navigator.of(dialogContext).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: const Text('Invalid password'),
-                  backgroundColor:
-                      Theme.of(context).colorScheme.primary.withOpacity(0.9),
-                  duration: const Duration(seconds: 5),
-                  behavior: SnackBarBehavior.fixed,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              );
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(
+              //     content: const Text('Invalid!'),
+              //     backgroundColor:
+              //         Theme.of(context).colorScheme.primary.withOpacity(0.9),
+              //     duration: const Duration(seconds: 5),
+              //     behavior: SnackBarBehavior.fixed,
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(10.0),
+              //     ),
+              //   ),
+              // );
+              throw Exception("Invalid password");
             }
           },
           child: const Text('Confirm', style: TextStyle(color: Colors.red)),

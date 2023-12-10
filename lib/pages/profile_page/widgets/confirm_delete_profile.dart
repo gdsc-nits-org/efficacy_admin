@@ -2,6 +2,7 @@ import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/utils/utils.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
+import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../../login/login_page.dart';
@@ -76,41 +77,17 @@ class _ConfirmDelProfileState extends State<ConfirmDelProfile> {
             if (Encryptor.isValid(user.first.password!, enteredPassword)) {
               await UserController.delete();
               if (!dialogContext.mounted) return;
+              showErrorSnackBar(context, "Profile Deleted!");
               Navigator.of(dialogContext).pop();
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 LoginPage.routeName,
                 (route) => false,
               );
-              throw Exception("Profile Deleted!");
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //   SnackBar(
-              //     content: const Text('Profile deleted!'),
-              //     backgroundColor:
-              //         Theme.of(context).colorScheme.primary.withOpacity(0.9),
-              //     duration: const Duration(seconds: 5),
-              //     behavior: SnackBarBehavior.fixed,
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(10.0),
-              //     ),
-              //   ),
-              // );
             } else {
               if (!dialogContext.mounted) return;
+              showErrorSnackBar(context, "Invalid Password");
               Navigator.of(dialogContext).pop();
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //   SnackBar(
-              //     content: const Text('Invalid!'),
-              //     backgroundColor:
-              //         Theme.of(context).colorScheme.primary.withOpacity(0.9),
-              //     duration: const Duration(seconds: 5),
-              //     behavior: SnackBarBehavior.fixed,
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(10.0),
-              //     ),
-              //   ),
-              // );
-              throw Exception("Invalid password");
             }
           },
           child: const Text('Confirm', style: TextStyle(color: Colors.red)),

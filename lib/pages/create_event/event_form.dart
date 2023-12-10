@@ -209,22 +209,15 @@ class _EventFormState extends State<EventForm> {
           controller: widget.scrollController,
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: padding),
-                child: Text(
-                  "Select Club",
-                  style: TextStyle(
-                    color: textColor,
-                    fontSize: fontSize,
-                  ),
-                ),
-              ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: padding),
-                    child: const Text("Select Club"),
+                    child: Text(
+                      "Club ",
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
                   ),
                   ClubDropDown(
                     items: UserController.clubs,

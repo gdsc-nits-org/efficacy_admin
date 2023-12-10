@@ -4,7 +4,7 @@ import 'package:mongo_dart/mongo_dart.dart';
 part 'institution_model.freezed.dart';
 part 'institution_model.g.dart';
 
-@freezed
+@Freezed(fromJson: true, toJson: true)
 class InstitutionModel with _$InstitutionModel {
   const InstitutionModel._();
   const factory InstitutionModel({

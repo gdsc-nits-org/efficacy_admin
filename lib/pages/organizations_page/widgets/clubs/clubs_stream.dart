@@ -29,46 +29,36 @@ class _ClubsStreamState extends State<ClubsStream> {
               itemCount: clubs.length,
               itemBuilder: (context, index) {
                 final club = clubs[index];
-                return Card(
-                  color: light,
-                  elevation: ClubsStream.elevation,
-                  surfaceTintColor: dark,
-                  shadowColor: dark,
-                  child: ListTile(
-                    title: Text(
-                      'Club: ${club.name}',
-                      style: const TextStyle(
-                        fontSize: ClubsStream.bigFontSize,
-                        fontWeight: FontWeight.bold,
+                return ListTile(
+                  title: Text(
+                    club.name,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Institute: ${club.instituteName}',
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Institute: ${club.instituteName}',
-                          style: const TextStyle(
-                            fontSize: ClubsStream.smallFontSize,
-                          ),
-                        ),
-                        Text(
-                          'Description: ${club.description}',
-                          style: const TextStyle(
-                            fontSize: ClubsStream.smallFontSize,
-                          ),
-                        ),
-                      ],
-                    ),
-                    onTap: () {},
-                    leading: ClipOval(
-                      child: Image(
-                        image: NetworkImage(club.clubLogoURL),
-                        errorBuilder: (context, error, stackTrace) =>
-                            const Icon(Icons.people),
-                        width: 50, // Adjust the width as needed
-                        height: 50, // Adjust the height as needed
-                        fit: BoxFit.cover,
+                      Text(
+                        'Email: ${club.email}',
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
+                    ],
+                  ),
+                  onTap: () {},
+                  leading: ClipOval(
+                    child: Image(
+                      image: NetworkImage(club.clubLogoURL),
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.people),
+                      width: 50, // Adjust the width as needed
+                      height: 50, // Adjust the height as needed
+                      fit: BoxFit.cover,
                     ),
                   ),
                 );

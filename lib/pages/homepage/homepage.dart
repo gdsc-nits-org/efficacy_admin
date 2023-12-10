@@ -56,14 +56,6 @@ class _HomepageState extends State<Homepage> {
                 child: FloatingActionButton(
                   onPressed: () async {
                     Navigator.pushNamed(context, CreateEvent.routeName);
-                    // XFile? file = await ImagePicker()
-                    //     .pickImage(source: ImageSource.gallery);
-                    // if (file != null) {
-                    //   ImageController.uploadImage(
-                    //       img: await file.readAsBytes(),
-                    //       clubName: "GDSC",
-                    //       eventName: "Flutter");
-                    // }
                   }, //define add event function here
                   child: const Icon(Icons.add),
                 ),

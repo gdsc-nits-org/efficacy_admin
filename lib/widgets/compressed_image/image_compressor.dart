@@ -41,7 +41,7 @@ class ImageCompressorState extends State<ImageCompressor> {
     super.initState();
 
     img = widget.image;
-    quality = max(widget.maxQuality.toDouble(), 80);
+    quality = min(widget.maxQuality.toDouble(), 80);
     image = Image.memory(img).image;
     image
         .resolve(const ImageConfiguration())

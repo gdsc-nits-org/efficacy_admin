@@ -19,7 +19,9 @@ class ClubModel with _$ClubModel {
     required String email,
     @PhoneNumberSerializer() PhoneNumber? phoneNumber,
     required String clubLogoURL,
+    String? clubLogoPublicId,
     String? clubBannerURL,
+    String? clubBannerPublicId,
 
     /// Map<ClubPositionModelID, List<Member Email>>
     /// Cannot use clubPositionModel

@@ -26,13 +26,11 @@ class _ProfileState extends State<ProfilePage> {
     super.initState();
     _nameController.text = UserController.currentUser!.name;
     _scholarIDController.text = UserController.currentUser!.scholarID;
-
-    phoneNumber = PhoneNumber.fromCompleteNumber(
-        completeNumber: UserController.currentUser!.phoneNumber!.number);
-    _phoneController.text = phoneNumber.toString();
+    _emailController.text = UserController.currentUser!.email;
+    selectedDegree = UserController.currentUser!.degree.name;
+    selectedBranch = UserController.currentUser!.branch.name;
+    phoneNumber = UserController.currentUser!.phoneNumber;
   }
-
-  File? _img;
 
   bool editMode = false;
   bool showButton = false;
@@ -40,14 +38,10 @@ class _ProfileState extends State<ProfilePage> {
   //controllers
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _scholarIDController = TextEditingController();
-
-  final TextEditingController _phoneController = TextEditingController();
-
   final TextEditingController _emailController = TextEditingController();
   String selectedDegree = Degree.BTech.name;
   String selectedBranch = Degree.BTech.name;
   Uint8List? image;
-
   PhoneNumber? phoneNumber;
 
   void enableEdit() {
@@ -73,10 +67,9 @@ class _ProfileState extends State<ProfilePage> {
     UserController.currentUser = UserController.currentUser?.copyWith(
       name: _nameController.text,
       scholarID: _scholarIDController.text,
-      phoneNumber:
-          PhoneNumber.fromCompleteNumber(completeNumber: _phoneController.text),
       userPhoto: info.url,
       userPhotoPublicID: info.publicID,
+      phoneNumber: phoneNumber,
       branch:
           Branch.values.firstWhere((branch) => branch.name == selectedBranch),
       degree:
@@ -137,11 +130,6 @@ class _ProfileState extends State<ProfilePage> {
                   controller: _nameController,
                   title: "Name",
                   enabled: editMode,
-                ),
-
-                CustomPhoneField(
-                  title: "Phone",
-                  onPhoneChanged: (PhoneNumber) {},
                 ),
                 CustomTextField(
                   controller: _emailController,

@@ -77,17 +77,16 @@ class _ConfirmDelProfileState extends State<ConfirmDelProfile> {
             if (Encryptor.isValid(user.first.password!, enteredPassword)) {
               await UserController.delete();
               if (!dialogContext.mounted) return;
-              showErrorSnackBar(context, "Profile Deleted!");
-              Navigator.of(dialogContext).pop();
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 LoginPage.routeName,
                 (route) => false,
               );
+              showErrorSnackBar(context, "Profile Deleted!");
             } else {
               if (!dialogContext.mounted) return;
-              showErrorSnackBar(context, "Invalid Password");
               Navigator.of(dialogContext).pop();
+              showErrorSnackBar(context, "Invalid Password");
             }
           },
           child: const Text('Confirm', style: TextStyle(color: Colors.red)),

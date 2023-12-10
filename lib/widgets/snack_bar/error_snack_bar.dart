@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 
 SnackBar _errorSnackBar(String message, BuildContext context) {
-  /// TODO: Update the design
   return SnackBar(
-    content: Text(message),
-    backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.9),
-    duration: const Duration(seconds: 5),
-    behavior: SnackBarBehavior.floating,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0),
+    content: Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.9),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          width: MediaQuery.of(context).size.width,
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          child: Text(message),
+        ),
+      ],
     ),
+    backgroundColor: Colors.transparent,
+    duration: const Duration(seconds: 5),
+    elevation: 0,
+    behavior: SnackBarBehavior.fixed,
   );
 }
 

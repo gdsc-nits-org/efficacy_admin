@@ -1,4 +1,5 @@
 import 'package:efficacy_admin/pages/profile_page/widgets/confirm_delete_profile.dart';
+import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 
 class EditButton extends StatelessWidget {
@@ -75,8 +76,8 @@ class DeleteProfileButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(pad),
       child: ElevatedButton(
-        style:
-            const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.red)),
+        style: const ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll(Colors.red)),
         onPressed: () {
           showDialog(
             context: context,

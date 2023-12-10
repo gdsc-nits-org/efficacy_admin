@@ -23,7 +23,7 @@ class ErrorHandler {
 
   static void _flutterErrorBuilder(BuildContext context) {
     FlutterError.onError = (FlutterErrorDetails details) {
-      // debugPrint(details.exception.toString());
+      debugPrint(details.exception.toString());
 
       /// TODO: Improvise required
       /// The message should not always render what it gets as sometimes it might be too large

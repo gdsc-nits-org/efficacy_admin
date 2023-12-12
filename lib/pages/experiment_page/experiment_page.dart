@@ -21,34 +21,21 @@ class _ExperimentPageState extends State<ExperimentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FractionallySizedBox(
-        widthFactor: 1,
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () async {
-                // print(
-                //   await ClubController.update(
-                //     const ClubModel(
-                //       id: "653d0552e696c108109aeb0a",
-                //       name: "name4",
-                //       instituteName: "instituteName",
-                //       description: "description",
-                //       email: "email",
-                //       clubLogoURL: "clubLogoURL",
-                //       members: {},
-                //     ),
-                //   ),
-                // );
-              },
+              onPressed: () async {},
               child: const Text("Task 1"),
             ),
             ElevatedButton(
-              onPressed: () async {},
+              onPressed: () async {
+                throw Exception("Expected exception");
+              },
               child: const Text("Log Out"),
             ),
-          ].separate(10),
+          ].separate(1000),
         ),
       ),
     );

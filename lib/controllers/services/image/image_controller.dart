@@ -25,7 +25,9 @@ class UploadInformation {
 
 enum ImageFolder {
   eventThumbnail("events/posters"),
-  userImage("users/profile");
+  userImage("users/profile"),
+  clubImage("clubs/club"),
+  clubBanner("clubs/banner");
 
   final String name;
   const ImageFolder(this.name);

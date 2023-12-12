@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'dart:typed_data';
-import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/profile_page/widgets/buttons.dart';
@@ -120,7 +118,6 @@ class _ProfileState extends State<ProfilePage> {
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 Gap(gap),
-
                 ProfileImageViewer(
                   enabled: editMode,
                   imagePath: UserController.currentUser?.userPhoto,
@@ -129,7 +126,6 @@ class _ProfileState extends State<ProfilePage> {
                     image = newImage;
                   },
                 ),
-
                 CustomTextField(
                   controller: _nameController,
                   title: "Name",
@@ -165,11 +161,7 @@ class _ProfileState extends State<ProfilePage> {
                   enabled: editMode,
                   value: UserController.currentUser!.degree.name,
                 ),
-                // CustomDataTable(
-                //   columnspace: width*0.35,
-                //   columns: const ["ClubId", "Position"],
-                //   rows: (UserController.currentUser?.position)??const [],
-                // )
+                const DeleteProfileButton(),
               ].separate(gap),
             ),
           ),

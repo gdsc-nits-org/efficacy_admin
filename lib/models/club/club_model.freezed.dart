@@ -30,7 +30,9 @@ mixin _$ClubModel {
   @PhoneNumberSerializer()
   PhoneNumber? get phoneNumber => throw _privateConstructorUsedError;
   String get clubLogoURL => throw _privateConstructorUsedError;
+  String? get clubLogoPublicId => throw _privateConstructorUsedError;
   String? get clubBannerURL => throw _privateConstructorUsedError;
+  String? get clubBannerPublicId => throw _privateConstructorUsedError;
 
   /// Map<ClubPositionModelID, List<Member Email>>
   /// Cannot use clubPositionModel
@@ -61,7 +63,9 @@ abstract class $ClubModelCopyWith<$Res> {
       String email,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String clubLogoURL,
+      String? clubLogoPublicId,
       String? clubBannerURL,
+      String? clubBannerPublicId,
       Map<String, List<String>> members,
       List<String> followers,
       DateTime? lastLocalUpdate});
@@ -88,7 +92,9 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
     Object? email = null,
     Object? phoneNumber = freezed,
     Object? clubLogoURL = null,
+    Object? clubLogoPublicId = freezed,
     Object? clubBannerURL = freezed,
+    Object? clubBannerPublicId = freezed,
     Object? members = null,
     Object? followers = null,
     Object? lastLocalUpdate = freezed,
@@ -126,9 +132,17 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
           ? _value.clubLogoURL
           : clubLogoURL // ignore: cast_nullable_to_non_nullable
               as String,
+      clubLogoPublicId: freezed == clubLogoPublicId
+          ? _value.clubLogoPublicId
+          : clubLogoPublicId // ignore: cast_nullable_to_non_nullable
+              as String?,
       clubBannerURL: freezed == clubBannerURL
           ? _value.clubBannerURL
           : clubBannerURL // ignore: cast_nullable_to_non_nullable
+              as String?,
+      clubBannerPublicId: freezed == clubBannerPublicId
+          ? _value.clubBannerPublicId
+          : clubBannerPublicId // ignore: cast_nullable_to_non_nullable
               as String?,
       members: null == members
           ? _value.members
@@ -163,7 +177,9 @@ abstract class _$$ClubModelImplCopyWith<$Res>
       String email,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String clubLogoURL,
+      String? clubLogoPublicId,
       String? clubBannerURL,
+      String? clubBannerPublicId,
       Map<String, List<String>> members,
       List<String> followers,
       DateTime? lastLocalUpdate});
@@ -188,7 +204,9 @@ class __$$ClubModelImplCopyWithImpl<$Res>
     Object? email = null,
     Object? phoneNumber = freezed,
     Object? clubLogoURL = null,
+    Object? clubLogoPublicId = freezed,
     Object? clubBannerURL = freezed,
+    Object? clubBannerPublicId = freezed,
     Object? members = null,
     Object? followers = null,
     Object? lastLocalUpdate = freezed,
@@ -226,9 +244,17 @@ class __$$ClubModelImplCopyWithImpl<$Res>
           ? _value.clubLogoURL
           : clubLogoURL // ignore: cast_nullable_to_non_nullable
               as String,
+      clubLogoPublicId: freezed == clubLogoPublicId
+          ? _value.clubLogoPublicId
+          : clubLogoPublicId // ignore: cast_nullable_to_non_nullable
+              as String?,
       clubBannerURL: freezed == clubBannerURL
           ? _value.clubBannerURL
           : clubBannerURL // ignore: cast_nullable_to_non_nullable
+              as String?,
+      clubBannerPublicId: freezed == clubBannerPublicId
+          ? _value.clubBannerPublicId
+          : clubBannerPublicId // ignore: cast_nullable_to_non_nullable
               as String?,
       members: null == members
           ? _value._members
@@ -258,7 +284,9 @@ class _$ClubModelImpl extends _ClubModel {
       required this.email,
       @PhoneNumberSerializer() this.phoneNumber,
       required this.clubLogoURL,
+      this.clubLogoPublicId,
       this.clubBannerURL,
+      this.clubBannerPublicId,
       required final Map<String, List<String>> members,
       final List<String> followers = const [],
       this.lastLocalUpdate})
@@ -296,7 +324,11 @@ class _$ClubModelImpl extends _ClubModel {
   @override
   final String clubLogoURL;
   @override
+  final String? clubLogoPublicId;
+  @override
   final String? clubBannerURL;
+  @override
+  final String? clubBannerPublicId;
 
   /// Map<ClubPositionModelID, List<Member Email>>
   /// Cannot use clubPositionModel
@@ -330,7 +362,7 @@ class _$ClubModelImpl extends _ClubModel {
 
   @override
   String toString() {
-    return 'ClubModel(id: $id, name: $name, instituteName: $instituteName, description: $description, socials: $socials, email: $email, phoneNumber: $phoneNumber, clubLogoURL: $clubLogoURL, clubBannerURL: $clubBannerURL, members: $members, followers: $followers, lastLocalUpdate: $lastLocalUpdate)';
+    return 'ClubModel(id: $id, name: $name, instituteName: $instituteName, description: $description, socials: $socials, email: $email, phoneNumber: $phoneNumber, clubLogoURL: $clubLogoURL, clubLogoPublicId: $clubLogoPublicId, clubBannerURL: $clubBannerURL, clubBannerPublicId: $clubBannerPublicId, members: $members, followers: $followers, lastLocalUpdate: $lastLocalUpdate)';
   }
 
   @override
@@ -350,8 +382,12 @@ class _$ClubModelImpl extends _ClubModel {
                 other.phoneNumber == phoneNumber) &&
             (identical(other.clubLogoURL, clubLogoURL) ||
                 other.clubLogoURL == clubLogoURL) &&
+            (identical(other.clubLogoPublicId, clubLogoPublicId) ||
+                other.clubLogoPublicId == clubLogoPublicId) &&
             (identical(other.clubBannerURL, clubBannerURL) ||
                 other.clubBannerURL == clubBannerURL) &&
+            (identical(other.clubBannerPublicId, clubBannerPublicId) ||
+                other.clubBannerPublicId == clubBannerPublicId) &&
             const DeepCollectionEquality().equals(other._members, _members) &&
             const DeepCollectionEquality()
                 .equals(other._followers, _followers) &&
@@ -371,7 +407,9 @@ class _$ClubModelImpl extends _ClubModel {
       email,
       phoneNumber,
       clubLogoURL,
+      clubLogoPublicId,
       clubBannerURL,
+      clubBannerPublicId,
       const DeepCollectionEquality().hash(_members),
       const DeepCollectionEquality().hash(_followers),
       lastLocalUpdate);
@@ -400,7 +438,9 @@ abstract class _ClubModel extends ClubModel {
       required final String email,
       @PhoneNumberSerializer() final PhoneNumber? phoneNumber,
       required final String clubLogoURL,
+      final String? clubLogoPublicId,
       final String? clubBannerURL,
+      final String? clubBannerPublicId,
       required final Map<String, List<String>> members,
       final List<String> followers,
       final DateTime? lastLocalUpdate}) = _$ClubModelImpl;
@@ -428,7 +468,11 @@ abstract class _ClubModel extends ClubModel {
   @override
   String get clubLogoURL;
   @override
+  String? get clubLogoPublicId;
+  @override
   String? get clubBannerURL;
+  @override
+  String? get clubBannerPublicId;
   @override
 
   /// Map<ClubPositionModelID, List<Member Email>>

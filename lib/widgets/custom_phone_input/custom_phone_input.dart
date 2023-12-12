@@ -36,7 +36,7 @@ class CustomPhoneField extends StatelessWidget {
         IntlPhoneField(
           decoration: InputDecoration(
             labelText: label,
-
+            counter: const Offstage(),
             focusColor: const Color(0xFF05354C),
             contentPadding:
                 contentPadding ?? const EdgeInsets.symmetric(horizontal: 10),

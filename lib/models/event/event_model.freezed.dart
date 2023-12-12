@@ -32,7 +32,7 @@ mixin _$EventModel {
   String? get facebookPostURL => throw _privateConstructorUsedError;
   String get venue => throw _privateConstructorUsedError;
 
-  /// Ids of the responsible members for the event
+  /// Email of the responsible members for the event
   List<String> get contacts => throw _privateConstructorUsedError;
 
   /// Users who liked the event
@@ -345,10 +345,10 @@ class _$EventModelImpl extends _EventModel {
   @override
   final String venue;
 
-  /// Ids of the responsible members for the event
+  /// Email of the responsible members for the event
   final List<String> _contacts;
 
-  /// Ids of the responsible members for the event
+  /// Email of the responsible members for the event
   @override
   List<String> get contacts {
     if (_contacts is EqualUnmodifiableListView) return _contacts;
@@ -495,7 +495,7 @@ abstract class _EventModel extends EventModel {
   String get venue;
   @override
 
-  /// Ids of the responsible members for the event
+  /// Email of the responsible members for the event
   List<String> get contacts;
   @override
 

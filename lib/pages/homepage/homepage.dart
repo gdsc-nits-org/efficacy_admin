@@ -46,7 +46,9 @@ class _HomepageState extends State<Homepage> {
             events: eventList,
           ),
           Visibility(
-            visible: currentTabIndex == 0,
+            visible: currentTabIndex == 0 &&
+                UserController.currentUser != null &&
+                UserController.currentUser!.position.isNotEmpty,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 12.0, right: 12.0),
               child: Align(
@@ -54,14 +56,6 @@ class _HomepageState extends State<Homepage> {
                 child: FloatingActionButton(
                   onPressed: () async {
                     Navigator.pushNamed(context, CreateEvent.routeName);
-                    // XFile? file = await ImagePicker()
-                    //     .pickImage(source: ImageSource.gallery);
-                    // if (file != null) {
-                    //   ImageController.uploadImage(
-                    //       img: await file.readAsBytes(),
-                    //       clubName: "GDSC",
-                    //       eventName: "Flutter");
-                    // }
                   }, //define add event function here
                   child: const Icon(Icons.add),
                 ),

@@ -1,3 +1,5 @@
+import 'package:efficacy_admin/pages/profile_page/widgets/confirm_delete_profile.dart';
+import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 
 class EditButton extends StatelessWidget {
@@ -9,17 +11,20 @@ class EditButton extends StatelessWidget {
   Widget build(BuildContext context) {
     //size constants
     double fontSize = 30;
-    return IconButton(
-      tooltip: "Edit Profile",
-       style: const ButtonStyle(
-         backgroundColor: MaterialStatePropertyAll(Colors.transparent)
-       ),
-        onPressed: onPressed,
-        icon: Icon(
-          Icons.edit,
-          size: fontSize,
-          color: Colors.black,
-        ));
+    double pad = 18.0;
+    return Padding(
+      padding: EdgeInsets.all(pad),
+      child: IconButton(
+          tooltip: "Edit Profile",
+          style: const ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(Colors.transparent)),
+          onPressed: onPressed,
+          icon: Icon(
+            Icons.edit,
+            size: fontSize,
+            color: Colors.black,
+          )),
+    );
   }
 }
 
@@ -55,6 +60,33 @@ class SaveButton extends StatelessWidget {
               style: TextStyle(fontSize: fontSize),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class DeleteProfileButton extends StatelessWidget {
+  const DeleteProfileButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    double fontSize = 20;
+    double pad = 18.0;
+    return Padding(
+      padding: EdgeInsets.all(pad),
+      child: ElevatedButton(
+        style: const ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll(Colors.red)),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => const ConfirmDelProfile(),
+          );
+        },
+        child: Text(
+          "Delete Profile",
+          style: TextStyle(fontSize: fontSize),
         ),
       ),
     );

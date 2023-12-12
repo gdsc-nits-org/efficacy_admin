@@ -1,10 +1,10 @@
-import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/services/services.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:flutter/material.dart';
 
 class ClubsStream extends StatefulWidget {
   final double maxHeight;
+
   const ClubsStream({
     super.key,
     required this.maxHeight,
@@ -12,6 +12,9 @@ class ClubsStream extends StatefulWidget {
   static const double bigFontSize = 18;
   static const double smallFontSize = 14;
   static const double elevation = 5;
+  static const double smallPadding = 8;
+  static const double largePadding = 16;
+  static const double imageWidth = 40;
 
   @override
   State<ClubsStream> createState() => _ClubsStreamState();
@@ -29,36 +32,51 @@ class _ClubsStreamState extends State<ClubsStream> {
               itemCount: clubs.length,
               itemBuilder: (context, index) {
                 final club = clubs[index];
-                return ListTile(
-                  title: Text(
-                    club.name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Institute: ${club.instituteName}',
-                        style: Theme.of(context).textTheme.labelMedium,
+                return Padding(
+                  padding: const EdgeInsets.only(
+                      top: ClubsStream.smallPadding,
+                      bottom: ClubsStream.smallPadding),
+                  child: Card(
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.only(
+                          left: ClubsStream.smallPadding,
+                          right: ClubsStream.largePadding,
+                          top: ClubsStream.largePadding,
+                          bottom: ClubsStream.largePadding),
+                      title: Text(
+                        club.name,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                        'Email: ${club.email}',
-                        style: Theme.of(context).textTheme.labelMedium,
+                      trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Institute: ${club.instituteName}',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                          Text(
+                            'Email: ${club.email}',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  onTap: () {},
-                  leading: ClipOval(
-                    child: Image(
-                      image: NetworkImage(club.clubLogoURL),
-                      errorBuilder: (context, error, stackTrace) =>
-                          const Icon(Icons.people),
-                      width: 50, // Adjust the width as needed
-                      height: 50, // Adjust the height as needed
-                      fit: BoxFit.cover,
+                      onTap: () {},
+                      leading: ClipOval(
+                        child: Image(
+                          image: NetworkImage(club.clubLogoURL),
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(Icons.people),
+                          width: ClubsStream.imageWidth,
+                          // Adjust the width as needed
+                          height: ClubsStream.imageWidth,
+                          // Adjust the height as needed
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
                 );

@@ -23,6 +23,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   int currentTabIndex = 0;
+  bool test = false;
 
   void navigator(Status buttonMessage) {
     setState(() {
@@ -33,7 +34,16 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: CustomAppBar(
+        actions: [
+          if (test == true)
+            Container(
+              color: Colors.red,
+              height: 50,
+              width: 50,
+            )
+        ],
+      ),
       endDrawer: const CustomDrawer(),
       body: Column(
         children: [
@@ -55,7 +65,10 @@ class _HomepageState extends State<Homepage> {
                 alignment: Alignment.centerRight,
                 child: FloatingActionButton(
                   onPressed: () async {
-                    Navigator.pushNamed(context, CreateEvent.routeName);
+                    setState(() {
+                      test = !test;
+                    });
+                    // Navigator.pushNamed(context, CreateEvent.routeName);
                   }, //define add event function here
                   child: const Icon(Icons.add),
                 ),

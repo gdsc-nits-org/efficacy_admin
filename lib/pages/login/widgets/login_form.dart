@@ -1,5 +1,6 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
+import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/pages/homepage/homepage.dart';
 import 'package:efficacy_admin/pages/signup/signup_page.dart';
@@ -80,17 +81,25 @@ class _LoginFormState extends State<LoginForm> {
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        UserModel? user = await UserController.login(
-                          email: _emailController.text.toString(),
-                          password: _passController.text.toString(),
+                        UserModel? user;
+                        showLoadingOverlay(
+                          context: context,
+                          asyncTask: () async {
+                            user = await UserController.login(
+                              email: _emailController.text.toString(),
+                              password: _passController.text.toString(),
+                            );
+                          },
+                          onCompleted: () {
+                            if (user != null && mounted) {
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                Homepage.routeName,
+                                (route) => false,
+                              );
+                            }
+                          },
                         );
-                        if (user != null && mounted) {
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            Homepage.routeName,
-                            (route) => false,
-                          );
-                        }
                       }
                     },
                     child: const Text("Login"),

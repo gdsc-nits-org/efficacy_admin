@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String? title;
-  final Widget? actionButton;
-  const CustomAppBar({Key? key, this.title, this.actionButton})
-      : super(key: key);
+  final List<Widget> actions;
+  const CustomAppBar({
+    super.key,
+    this.title,
+    this.actions = const [],
+  });
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -19,7 +22,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _CustomAppBarState extends State<CustomAppBar> {
   late bool pendingInvites = false;
   late String _displayedTitle;
-  late Widget _Button;
+
   Future<void> init() async {
     pendingInvites = await InvitationController.anyPendingInvitation();
     if (pendingInvites) {
@@ -33,7 +36,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     init();
     super.initState();
     _displayedTitle = widget.title ?? 'Efficacy';
-    _Button = widget.actionButton ?? const SizedBox.shrink();
+    // _Button = widget.actionButton ?? const SizedBox.shrink();
   }
 
   void updateAppBar() {
@@ -74,7 +77,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       //     style:
       //         ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.transparent),)),
       actions: [
-        _Button,
+        ...widget.actions,
         Stack(
           children: [
             // App drawer button

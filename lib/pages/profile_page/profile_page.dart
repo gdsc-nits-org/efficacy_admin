@@ -93,15 +93,15 @@ class _ProfileState extends State<ProfilePage> {
     double vMargin = width * 0.16;
 
     return Scaffold(
-      endDrawer: CustomDrawer(),
-      appBar: CustomAppBar(
-        title: "Profile",
-        actionButton: EditButton(
+      endDrawer: const CustomDrawer(),
+      appBar: CustomAppBar(title: "Profile", actions: [
+        if(editMode==false)
+        EditButton(
           onPressed: () {
             enableEdit();
           },
         ),
-      ),
+      ]),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: editMode
           ? SaveButton(onPressed: () {

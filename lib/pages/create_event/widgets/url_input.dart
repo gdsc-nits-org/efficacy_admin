@@ -5,9 +5,11 @@ class UrlInput extends StatelessWidget {
   final IconData icon;
   final String hintText;
   final String? Function(String?) validator;
+  final bool enabled;
 
   const UrlInput({
     super.key,
+    required this.enabled,
     required this.controller,
     required this.icon,
     required this.hintText,
@@ -24,6 +26,7 @@ class UrlInput extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: padding, right: padding),
       child: TextFormField(
+        enabled: enabled,
         controller: controller,
         validator: validator,
         keyboardType: TextInputType.url,

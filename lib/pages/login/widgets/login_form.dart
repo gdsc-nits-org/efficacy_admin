@@ -102,7 +102,10 @@ class _LoginFormState extends State<LoginForm> {
         TextButton(
           onPressed: () {
             Navigator.pushNamedAndRemoveUntil(
-                context, SignUpPage.routeName, (Route<dynamic> route) => false);
+              context,
+              SignUpPage.routeName,
+              (Route<dynamic> route) => false,
+            );
           },
           child: RichText(
             text: const TextSpan(

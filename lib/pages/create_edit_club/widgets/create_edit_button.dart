@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-class CreateButton extends StatelessWidget {
+class CreateEditButton extends StatelessWidget {
   final void Function() onPressed;
-  const CreateButton({super.key, required this.onPressed});
+  final String label;
+  const CreateEditButton({super.key, required this.onPressed,required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class CreateButton extends StatelessWidget {
       child: FloatingActionButton(
         onPressed: onPressed,
         child: Text(
-          'Create',
+          label,
           style: TextStyle(fontSize: buttonFontSize),
         ),
       ),

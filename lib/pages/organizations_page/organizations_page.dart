@@ -30,7 +30,7 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
     double gap = height * 0.02;
 
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: const CustomAppBar(title: "Organizations"),
       endDrawer: const CustomDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

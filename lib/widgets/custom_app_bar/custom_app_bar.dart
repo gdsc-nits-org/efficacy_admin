@@ -3,7 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+  final List<Widget> actions;
+  const CustomAppBar({
+    super.key,
+    this.actions = const [],
+  });
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -13,7 +17,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
-  late bool pendingInvites=false;
+  late bool pendingInvites = false;
 
   Future<void> init() async {
     pendingInvites = await InvitationController.anyPendingInvitation();
@@ -48,6 +52,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       //     style:
       //         ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.transparent),)),
       actions: [
+        ...widget.actions,
         Stack(
           children: [
             // App drawer button

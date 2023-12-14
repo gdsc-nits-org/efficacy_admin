@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/profile_page/widgets/buttons.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
@@ -64,22 +65,29 @@ class _ProfileState extends State<ProfilePage> {
         userName: _nameController.text,
       );
     }
-    UserController.currentUser = UserController.currentUser?.copyWith(
-      name: _nameController.text,
-      scholarID: _scholarIDController.text,
-      userPhoto: info.url,
-      userPhotoPublicID: info.publicID,
-      phoneNumber: phoneNumber,
-      branch:
-          Branch.values.firstWhere((branch) => branch.name == selectedBranch),
-      degree:
-          Degree.values.firstWhere((degree) => degree.name == selectedDegree),
+    showLoadingOverlay(
+      context: context,
+      asyncTask: () async {
+        UserController.currentUser = UserController.currentUser?.copyWith(
+          name: _nameController.text,
+          scholarID: _scholarIDController.text,
+          userPhoto: info.url,
+          userPhotoPublicID: info.publicID,
+          phoneNumber: phoneNumber,
+          branch: Branch.values
+              .firstWhere((branch) => branch.name == selectedBranch),
+          degree: Degree.values
+              .firstWhere((degree) => degree.name == selectedDegree),
+        );
+        await UserController.update();
+      },
+      onCompleted: () {
+        setState(() {
+          editMode = false;
+          showButton = false;
+        });
+      },
     );
-    await UserController.update();
-    setState(() {
-      editMode = false;
-      showButton = false;
-    });
   }
 
   @override

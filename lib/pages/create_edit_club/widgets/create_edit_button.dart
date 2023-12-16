@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class CreateEditButton extends StatelessWidget {
   final void Function() onPressed;
   final String label;
-  const CreateEditButton({super.key, required this.onPressed,required this.label});
+  const CreateEditButton(
+      {super.key, required this.onPressed, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,7 @@ class CreateEditButton extends StatelessWidget {
       width: buttonWidth,
       child: FloatingActionButton(
         onPressed: onPressed,
+        heroTag: label,
         child: Text(
           label,
           style: TextStyle(fontSize: buttonFontSize),

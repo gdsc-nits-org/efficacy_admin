@@ -47,17 +47,20 @@ Future<List<UserModel>> _fetchLocal({
       Map users = jsonDecode(data[0]);
       if (email != null) {
         if (users.containsKey(email)) {
-          filteredUsers.add(
-            UserModel.fromJson(
-                Formatter.convertMapToMapStringDynamic(users[email])!),
+          UserModel user = UserModel.fromJson(
+            Formatter.convertMapToMapStringDynamic(users[email])!,
           );
+          if (user.app == appName) {
+            filteredUsers.add(user);
+          }
         }
       } else if (nameStartsWith != null) {
         for (dynamic user in users.values) {
           if (user != null &&
               (user[UserFields.name.name] as String)
                   .toLowerCase()
-                  .startsWith(nameStartsWith.toLowerCase())) {
+                  .startsWith(nameStartsWith.toLowerCase()) &&
+              (user[UserFields.app.name] as String) == appName) {
             filteredUsers.add(UserModel.fromJson(
               Formatter.convertMapToMapStringDynamic(user)!,
             ));
@@ -65,7 +68,9 @@ Future<List<UserModel>> _fetchLocal({
         }
       } else if (id != null) {
         for (dynamic user in users.values) {
-          if (user != null && user["id"] == id.toString()) {
+          if (user != null &&
+              user["id"] == id.toString() &&
+              (user[UserFields.app.name] as String) == appName) {
             filteredUsers.add(UserModel.fromJson(
               Formatter.convertMapToMapStringDynamic(user)!,
             ));
@@ -90,6 +95,7 @@ Future<List<UserModel>> _fetchFromBackend({
   DbCollection collection =
       Database.instance.collection(UserController._collectionName);
   SelectorBuilder selectorBuilder = SelectorBuilder();
+  selectorBuilder.eq(UserFields.app.name, appName);
   if (nameStartsWith != null) {
     selectorBuilder.match(
       UserFields.name.name,

@@ -14,6 +14,7 @@ Stream<UserModel?> _loginSilentlyImpl() async* {
     DbCollection collection =
         Database.instance.collection(UserController._collectionName);
     SelectorBuilder selectorBuilder = SelectorBuilder();
+    selectorBuilder.eq(UserFields.app.name, appName);
     selectorBuilder.eq(
         UserFields.email.name, UserController.currentUser!.email);
     Map<String, dynamic>? res = await collection.findOne(selectorBuilder);

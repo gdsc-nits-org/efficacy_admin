@@ -8,12 +8,14 @@ Future<void> _deleteImpl() async {
     throw Exception("Please Login to your account");
   }
   if ((await UserController.get(
-              email: UserController.currentUser!.email, forceGet: true)
-          .first)
+    email: UserController.currentUser!.email,
+    forceGet: true,
+  ).first)
       .isEmpty) {
     throw Exception("Couldn't find user");
   } else {
     SelectorBuilder selectorBuilder = SelectorBuilder();
+    selectorBuilder.eq(UserFields.app.name, appName);
     for (ClubModel club in UserController.clubs) {
       Map<String, List<String>> members = club.members;
 

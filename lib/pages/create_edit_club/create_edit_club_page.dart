@@ -54,10 +54,10 @@ class _CreateEditClubState extends State<CreateEditClub> {
     if (_createMode == false) {
       nameController.text = club?.name ?? "NIL";
       descController.text = club?.description ?? "NIL";
-      // githubUrlController.text = club?.githubLink ?? "";
-      // fbUrlController.text = club?.facebookLink ?? "";
-      // instaController.text = club?.instagramLink ?? "";
-      // linkedinController.text = club?.linkedInLink ?? "";
+      githubUrlController.text = club?.socials[Social.github] ?? "";
+      fbUrlController.text = club?.socials[Social.facebook] ?? "";
+      instaController.text = club?.socials[Social.instagram] ?? "";
+      linkedinController.text = club?.socials[Social.linkedin] ?? "";
       instituteName = club?.instituteName ?? "NIT, Silchar";
       _clubImgPath = club?.clubLogoURL;
       _bannerImgPath = club?.clubBannerURL;

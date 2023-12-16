@@ -93,6 +93,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
           ),
           ListTile(
+            title: const Text('Profile'),
+            selected: routeName == "/ProfilePage",
+            selectedColor: light,
+            selectedTileColor: dark,
+            onTap: () {
+              // Close the drawer
+              Navigator.pop(context);
+              // Navigate to Profile page
+              Navigator.of(context).pushNamed(
+                ProfilePage.routeName,
+              );
+            },
+          ),
+          ListTile(
             title: const Text('Log out'),
             onTap: () async {
               await UserController.logOut();

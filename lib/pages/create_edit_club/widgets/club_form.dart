@@ -1,7 +1,7 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
-import 'package:efficacy_admin/pages/create_club/utils/create_club_utils.dart';
-import 'package:efficacy_admin/pages/create_club/widgets/custom_field.dart';
+import 'package:efficacy_admin/pages/create_edit_club/utils/create_edit_club_utils.dart';
+import 'package:efficacy_admin/pages/create_edit_club/widgets/custom_field.dart';
 import 'package:efficacy_admin/pages/create_event/widgets/url_input.dart';
 import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl_phone_field/phone_number.dart';
 
 class ClubForm extends StatelessWidget {
+  final bool editMode;
   final GlobalKey<FormState> formKey;
   final ScrollController scrollController;
   final TextEditingController nameController;
@@ -23,6 +24,7 @@ class ClubForm extends StatelessWidget {
 
   const ClubForm({
     super.key,
+    required this.editMode,
     required this.formKey,
     required this.scrollController,
     required this.nameController,
@@ -49,6 +51,7 @@ class ClubForm extends StatelessWidget {
             children: [
               //Name
               CustomField(
+                enabled: editMode,
                 controller: nameController,
                 hintText: 'Club Name',
                 icon: Icons.title,
@@ -61,10 +64,10 @@ class ClubForm extends StatelessWidget {
               ),
               //institute name
               CustomField(
+                enabled: editMode,
                 hintText: "Institute Name",
                 initialValue: "NIT, Silchar",
-                enabled: false,
-                icon: FontAwesomeIcons.institution,
+                icon: FontAwesomeIcons.buildingColumns,
                 validator: (name) {
                   if (name!.isEmpty) {
                     return "institute name cannot be empty";
@@ -74,6 +77,7 @@ class ClubForm extends StatelessWidget {
               ),
               //club description
               CustomField(
+                enabled: editMode,
                 hintText: 'Club Description',
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -89,11 +93,13 @@ class ClubForm extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: padding, right: padding),
                 child: CustomPhoneField(
+                  enabled: editMode,
                   initialValue: phoneNumber,
                   onPhoneChanged: onPhoneChanged,
                 ),
               ),
               CustomField(
+                enabled: editMode,
                 controller: emailController,
                 textInputType: TextInputType.emailAddress,
                 hintText: "email address",
@@ -104,6 +110,7 @@ class ClubForm extends StatelessWidget {
               ),
               //facebook link
               UrlInput(
+                enabled: editMode,
                 controller: fbUrlController,
                 icon: FontAwesomeIcons.facebook,
                 hintText: 'Facebook page URL',
@@ -113,6 +120,7 @@ class ClubForm extends StatelessWidget {
               ),
               //github link
               UrlInput(
+                enabled: editMode,
                 controller: githubUrlController,
                 icon: FontAwesomeIcons.github,
                 hintText: 'GitHub profile URL',
@@ -122,6 +130,7 @@ class ClubForm extends StatelessWidget {
               ),
               //insta link
               UrlInput(
+                enabled: editMode,
                 controller: instaController,
                 icon: FontAwesomeIcons.instagram,
                 hintText: 'Instagram page URL',
@@ -131,6 +140,7 @@ class ClubForm extends StatelessWidget {
               ),
               //linked in link
               UrlInput(
+                enabled: editMode,
                 controller: linkedinController,
                 icon: FontAwesomeIcons.linkedinIn,
                 hintText: 'LinkedIn page URL',

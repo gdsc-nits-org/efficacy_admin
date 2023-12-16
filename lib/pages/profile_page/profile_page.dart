@@ -2,6 +2,8 @@ import 'dart:typed_data';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/profile_page/widgets/buttons.dart';
+import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
 import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
@@ -33,7 +35,6 @@ class _ProfileState extends State<ProfilePage> {
   }
 
   bool editMode = false;
-  bool showButton = false;
 
   //controllers
   final TextEditingController _nameController = TextEditingController();
@@ -47,7 +48,6 @@ class _ProfileState extends State<ProfilePage> {
   void enableEdit() {
     setState(() {
       editMode = true;
-      showButton = true;
     });
   }
 
@@ -78,7 +78,6 @@ class _ProfileState extends State<ProfilePage> {
     await UserController.update();
     setState(() {
       editMode = false;
-      showButton = false;
     });
   }
 
@@ -94,16 +93,21 @@ class _ProfileState extends State<ProfilePage> {
     double vMargin = width * 0.16;
 
     return Scaffold(
-      floatingActionButtonLocation: showButton
-          ? FloatingActionButtonLocation.endFloat
-          : FloatingActionButtonLocation.endTop,
-      floatingActionButton: showButton
-          ? SaveButton(
-              onPressed: () => saveUpdates(),
-            )
-          : EditButton(
-              onPressed: () => enableEdit(),
-            ),
+      endDrawer: const CustomDrawer(),
+      appBar: CustomAppBar(title: "Profile", actions: [
+        if(editMode==false)
+        EditButton(
+          onPressed: () {
+            enableEdit();
+          },
+        ),
+      ]),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: editMode
+          ? SaveButton(onPressed: () {
+              saveUpdates();
+            })
+          : null,
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -113,11 +117,6 @@ class _ProfileState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "Account Details",
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                Gap(gap),
                 ProfileImageViewer(
                   enabled: editMode,
                   imagePath: UserController.currentUser?.userPhoto,

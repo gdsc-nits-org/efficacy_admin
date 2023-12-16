@@ -314,6 +314,7 @@ class _EventFormState extends State<EventForm> {
               ),
               //google form
               UrlInput(
+                enabled: true,
                 controller: widget.googleUrlController,
                 icon: Icons.link_outlined,
                 hintText: 'Google Form URL',
@@ -327,6 +328,7 @@ class _EventFormState extends State<EventForm> {
               ),
               // //FB form URL
               UrlInput(
+                enabled: true,
                 controller: widget.fbUrlController,
                 icon: Icons.link_outlined,
                 hintText: 'FaceBook Link',

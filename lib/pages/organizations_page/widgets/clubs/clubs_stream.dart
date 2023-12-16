@@ -1,5 +1,6 @@
 import 'package:efficacy_admin/controllers/services/services.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
+import 'package:efficacy_admin/pages/create_edit_club/create_edit_club_page.dart';
 import 'package:flutter/material.dart';
 
 class ClubsStream extends StatefulWidget {
@@ -64,7 +65,17 @@ class _ClubsStreamState extends State<ClubsStream> {
                           ),
                         ],
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CreateEditClub(
+                              createMode: false,
+                              club: club,
+                            ),
+                          ),
+                        );
+                      },
                       leading: ClipOval(
                         child: Image(
                           image: NetworkImage(club.clubLogoURL),

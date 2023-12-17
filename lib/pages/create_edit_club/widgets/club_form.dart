@@ -64,7 +64,7 @@ class ClubForm extends StatelessWidget {
               ),
               //institute name
               CustomField(
-                enabled: editMode,
+                enabled: false,
                 hintText: "Institute Name",
                 initialValue: "NIT, Silchar",
                 icon: FontAwesomeIcons.buildingColumns,

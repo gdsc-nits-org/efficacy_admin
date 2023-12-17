@@ -43,7 +43,7 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
                 club: null,
               ),
             ),
-          );
+          ).then((value) => setState(() {}));
         },
         heroTag: "Create club",
         tooltip: "Create a new club",

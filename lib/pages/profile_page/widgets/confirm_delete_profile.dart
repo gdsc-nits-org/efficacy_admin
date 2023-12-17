@@ -1,4 +1,5 @@
 import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/utils/utils.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
@@ -65,29 +66,42 @@ class _ConfirmDelProfileState extends State<ConfirmDelProfile> {
       ),
       actions: [
         TextButton(
-          onPressed: () async {
-            BuildContext dialogContext = context;
-            String enteredPassword = _passController.text;
-            List<UserModel> user = await UserController.get(
-              email: UserController.currentUser!.email,
-              keepPassword: true,
-              forceGet: true,
-            ).first;
-
-            if (Encryptor.isValid(user.first.password!, enteredPassword)) {
-              await UserController.delete();
-              if (!dialogContext.mounted) return;
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                LoginPage.routeName,
-                (route) => false,
-              );
-              showErrorSnackBar(context, "Profile Deleted!");
-            } else {
-              if (!dialogContext.mounted) return;
-              Navigator.of(dialogContext).pop();
-              showErrorSnackBar(context, "Invalid Password");
-            }
+          onPressed: () {
+            List<UserModel> user = [];
+            showLoadingOverlay(
+                context: context,
+                asyncTask: () async {
+                  user = await UserController.get(
+                    email: UserController.currentUser!.email,
+                    keepPassword: true,
+                    forceGet: true,
+                  ).first;
+                },
+                onCompleted: () {
+                  BuildContext dialogContext = context;
+                  String enteredPassword = _passController.text;
+                  if (Encryptor.isValid(
+                      user.first.password!, enteredPassword)) {
+                    showLoadingOverlay(
+                        context: context,
+                        asyncTask: () async {
+                          await UserController.delete();
+                        },
+                        onCompleted: () {
+                          if (!dialogContext.mounted) return;
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            LoginPage.routeName,
+                            (route) => false,
+                          );
+                          showErrorSnackBar(context, "Profile Deleted!");
+                        });
+                  } else {
+                    if (!dialogContext.mounted) return;
+                    Navigator.of(dialogContext).pop();
+                    showErrorSnackBar(context, "Invalid Password");
+                  }
+                });
           },
           child: const Text('Confirm', style: TextStyle(color: Colors.red)),
         ),

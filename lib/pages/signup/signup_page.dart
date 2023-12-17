@@ -186,7 +186,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                                     folder: ImageFolder.userImage,
                                   );
                                 }
-                                await UserController.create(
+                                UserModel? user = await UserController.create(
                                   UserModel(
                                     name: nameController.text,
                                     email: emailController.text,
@@ -201,7 +201,9 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                                         degree.name == selectedDegree),
                                   ),
                                 );
-                                if (mounted) {
+                                if (user == null) {
+                                  throw Exception("Could not create user");
+                                } else if (mounted) {
                                   Navigator.pushNamedAndRemoveUntil(
                                     context,
                                     Homepage.routeName,

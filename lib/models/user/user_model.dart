@@ -29,6 +29,9 @@ class UserModel with _$UserModel {
 
     /// List<ClubPositionID>
     @Default([]) List<String> position,
+
+    /// List<ClubID>
+    @Default([]) List<String> following,
     DateTime? lastLocalUpdate,
   }) = _UserModel;
 

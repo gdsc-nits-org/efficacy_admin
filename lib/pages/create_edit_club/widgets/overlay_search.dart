@@ -1,3 +1,4 @@
+import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,7 @@ class OverlaySearch extends StatefulWidget {
 }
 
 class _OverlaySearchState extends State<OverlaySearch> {
-  List<UserModel> ? userList;
+  List<UserModel>? userList;
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -32,7 +33,7 @@ class _OverlaySearchState extends State<OverlaySearch> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _searchController,
               onChanged: (value) {
@@ -41,7 +42,7 @@ class _OverlaySearchState extends State<OverlaySearch> {
               },
               decoration: InputDecoration(
                 hintText: 'Search users...',
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -50,7 +51,7 @@ class _OverlaySearchState extends State<OverlaySearch> {
           ),
           Expanded(
             child: userList == null
-                ? Center(
+                ? const Center(
                     child: Text(
                     "No user found",
                     style: TextStyle(color: Colors.black),
@@ -61,7 +62,14 @@ class _OverlaySearchState extends State<OverlaySearch> {
                       return ListTile(
                         title: Text(userList![index].name),
                         subtitle: Text(userList![index].email),
-                        onTap: () {},//invite user logic to be added later
+                        onTap: () {
+                          InvitationController.create(InvitationModel(
+                              clubPositionID: UserController
+                                  .currentUser!.position
+                                  .toString(),
+                              senderID: UserController.currentUser!.id ?? "",
+                              recipientID: userList![index].id ?? ""));
+                        },
                       );
                     },
                   ),

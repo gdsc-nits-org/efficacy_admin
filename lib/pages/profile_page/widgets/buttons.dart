@@ -13,7 +13,7 @@ class EditButton extends StatelessWidget {
     double fontSize = 30;
     double pad = 18.0;
     return Padding(
-      padding: EdgeInsets.all(pad),
+      padding: EdgeInsets.symmetric(horizontal:pad),
       child: IconButton(
           tooltip: "Edit Profile",
           style: const ButtonStyle(

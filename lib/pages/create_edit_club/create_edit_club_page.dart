@@ -3,10 +3,10 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
-import 'package:efficacy_admin/pages/create_club/utils/create_club_utils.dart';
-import 'package:efficacy_admin/pages/create_club/utils/get_lead_name.dart';
-import 'package:efficacy_admin/pages/create_club/widgets/club_form.dart';
-import 'package:efficacy_admin/pages/create_club/widgets/create_button.dart';
+import 'package:efficacy_admin/pages/create_edit_club/utils/create_edit_club_utils.dart';
+import 'package:efficacy_admin/pages/create_edit_club/utils/get_lead_name.dart';
+import 'package:efficacy_admin/pages/create_edit_club/widgets/club_form.dart';
+import 'package:efficacy_admin/pages/create_edit_club/widgets/create_edit_button.dart';
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -14,19 +14,23 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class CreateClub extends StatefulWidget {
+class CreateEditClub extends StatefulWidget {
   //route
-  static const String routeName = '/CreateClubPage';
-
-  const CreateClub({super.key});
+  static const String routeName = '/CreateEditClubPage';
+  final bool? createMode;
+  final ClubModel? club;
+  const CreateEditClub({super.key, this.createMode, this.club});
 
   @override
-  State<CreateClub> createState() => _CreateClubState();
+  State<CreateEditClub> createState() => _CreateEditClubState();
 }
 
-class _CreateClubState extends State<CreateClub> {
+class _CreateEditClubState extends State<CreateEditClub> {
   //form variables
   final _formKey = GlobalKey<FormState>();
+  late bool _createMode;
+  bool _editMode = false;
+  late ClubModel? club;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
@@ -43,6 +47,21 @@ class _CreateClubState extends State<CreateClub> {
     super.initState();
     emailController.text = UserController.currentUser?.email ?? "";
     phoneNumber = UserController.currentUser?.phoneNumber;
+    _createMode = widget.createMode ?? false;
+    club = widget.club;
+    if (_createMode == false) {
+      nameController.text = club?.name ?? "NIL";
+      descController.text = club?.description ?? "NIL";
+      githubUrlController.text = club?.socials[Social.github] ?? "";
+      fbUrlController.text = club?.socials[Social.facebook] ?? "";
+      instaController.text = club?.socials[Social.instagram] ?? "";
+      linkedinController.text = club?.socials[Social.linkedin] ?? "";
+      instituteName = club?.instituteName ?? "NIT, Silchar";
+      _clubImgPath = club?.clubLogoURL;
+      _bannerImgPath = club?.clubBannerURL;
+      emailController.text = club?.email ?? "NIL";
+      phoneNumber = club?.phoneNumber;
+    }
   }
 
   //form validate function
@@ -133,6 +152,8 @@ class _CreateClubState extends State<CreateClub> {
 //image variables
   Uint8List? _bannerImage;
   Uint8List? _clubImage;
+  String? _bannerImgPath;
+  String? _clubImgPath;
 
 //function to get banner image from gallery
   Future<void> _getBannerImage() async {
@@ -154,7 +175,31 @@ class _CreateClubState extends State<CreateClub> {
 
     return Stack(children: [
       Scaffold(
-        floatingActionButton: CreateButton(onPressed: _validateForm),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: _createMode
+            ? CreateEditButton(label: "Create", onPressed: _validateForm)
+            : Column(
+                children: [
+                  const Spacer(flex: 50),
+                  CreateEditButton(onPressed: () {}, label: "Invite"),
+                  const Spacer(flex: 1),
+                  _editMode
+                      ? CreateEditButton(
+                          onPressed: () {
+                            setState(() {
+                              _editMode = false;
+                            });
+                          },
+                          label: "Save")
+                      : CreateEditButton(
+                          onPressed: () {
+                            setState(() {
+                              _editMode = true;
+                            });
+                          },
+                          label: "Edit"),
+                ],
+              ),
         body: SafeArea(
           child: SlidingUpPanel(
               padding: const EdgeInsets.only(top: 30),
@@ -178,6 +223,7 @@ class _CreateClubState extends State<CreateClub> {
                 ],
               ),
               panelBuilder: (sc) => ClubForm(
+                    editMode: _editMode || _createMode,
                     formKey: _formKey,
                     scrollController: sc,
                     nameController: nameController,
@@ -201,17 +247,23 @@ class _CreateClubState extends State<CreateClub> {
                     height: height * 0.2,
                     child: GestureDetector(
                       onTap: _getBannerImage,
-                      child: _bannerImage == null
-                          ? Image.asset(
-                              "assets/images/media.png",
-                              width: width,
+                      child: _bannerImgPath != null
+                          ? Image(
+                              image: NetworkImage(_bannerImgPath!),
                               fit: BoxFit.cover,
+                              width: width,
                             )
-                          : Image.memory(
-                              _bannerImage!,
-                              width: width,
-                              fit: BoxFit.cover,
-                            ),
+                          : _bannerImage == null
+                              ? Image.asset(
+                                  "assets/images/media.png",
+                                  width: width,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.memory(
+                                  _bannerImage!,
+                                  width: width,
+                                  fit: BoxFit.cover,
+                                ),
                     ),
                   ),
                   Positioned(
@@ -225,14 +277,23 @@ class _CreateClubState extends State<CreateClub> {
                         ),
                         borderRadius: BorderRadius.circular(100),
                       ),
-                      child: ProfileImageViewer(
-                        height: profileSize,
-                        enabled: true,
-                        imageData: _clubImage,
-                        onImageChange: (Uint8List? newImage) {
-                          _clubImage = newImage;
-                        },
-                      ),
+                      child: _clubImgPath != null
+                          ? ProfileImageViewer(
+                              height: profileSize,
+                              enabled: true,
+                              imagePath: _clubImgPath,
+                              onImageChange: (Uint8List? newImage) {
+                                _clubImage = newImage;
+                              },
+                            )
+                          : ProfileImageViewer(
+                              height: profileSize,
+                              enabled: true,
+                              imageData: _clubImage,
+                              onImageChange: (Uint8List? newImage) {
+                                _clubImage = newImage;
+                              },
+                            ),
                     ),
                   ),
                 ],

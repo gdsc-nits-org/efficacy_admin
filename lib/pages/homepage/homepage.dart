@@ -33,7 +33,7 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: const CustomAppBar(title: "Home"),
       endDrawer: const CustomDrawer(),
       body: Column(
         children: [

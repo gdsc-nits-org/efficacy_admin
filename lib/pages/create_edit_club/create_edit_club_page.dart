@@ -1,8 +1,7 @@
 import 'dart:typed_data';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
-import 'package:efficacy_admin/models/club/club_model.dart';
-import 'package:efficacy_admin/models/club_position/club_position_model.dart';
+import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/create_edit_club/utils/create_edit_club_utils.dart';
 import 'package:efficacy_admin/pages/create_edit_club/utils/get_lead_name.dart';
@@ -13,7 +12,6 @@ import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/phone_number.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CreateEditClub extends StatefulWidget {
@@ -107,34 +105,42 @@ class _CreateEditClubState extends State<CreateEditClub> {
         instituteName: instituteName,
         members: {},
       );
-      club = await ClubController.create(club);
-      if (club != null) {
-        ClubPositionModel? clubPosition = await ClubPositionController.create(
-          ClubPositionModel(
-            clubID: club.id!,
-            position: leadName,
-            permissions: Permissions.values,
-          ),
-        );
-        if (clubPosition != null && clubPosition.id != null) {
-          club = club.copyWith(
-            members: {
-              clubPosition.id!: [UserController.currentUser!.id!],
-            },
-          );
-          await ClubController.update(club);
-          List<String> clubPositions = UserController.currentUser!.position;
-          clubPositions = [...clubPositions, clubPosition.id!];
-          UserController.currentUser = UserController.currentUser!.copyWith(
-            position: clubPositions,
-          );
-          await UserController.update();
-        }
-      }
-      if (mounted) {
-        showErrorSnackBar(context, "Club Created");
-        Navigator.pop(context);
-      }
+      showLoadingOverlay(
+        context: context,
+        asyncTask: () async {
+          club = await ClubController.create(club!);
+          if (club != null) {
+            ClubPositionModel? clubPosition =
+                await ClubPositionController.create(
+              ClubPositionModel(
+                clubID: club!.id!,
+                position: leadName,
+                permissions: Permissions.values,
+              ),
+            );
+            if (clubPosition != null && clubPosition.id != null) {
+              club = club!.copyWith(
+                members: {
+                  clubPosition.id!: [UserController.currentUser!.id!],
+                },
+              );
+              await ClubController.update(club!);
+              List<String> clubPositions = UserController.currentUser!.position;
+              clubPositions = [...clubPositions, clubPosition.id!];
+              UserController.currentUser = UserController.currentUser!.copyWith(
+                position: clubPositions,
+              );
+              await UserController.update();
+            }
+          }
+        },
+        onCompleted: () {
+          if (mounted) {
+            showErrorSnackBar(context, "Club Created");
+            Navigator.pop(context);
+          }
+        },
+      );
     } else {
       showErrorSnackBar(
         context,
@@ -143,13 +149,13 @@ class _CreateEditClubState extends State<CreateEditClub> {
     }
   }
 
-  //image variables
+//image variables
   Uint8List? _bannerImage;
   Uint8List? _clubImage;
   String? _bannerImgPath;
   String? _clubImgPath;
 
-  //function to get banner image from gallery
+//function to get banner image from gallery
   Future<void> _getBannerImage() async {
     Uint8List? temp = await ImageController.compressedImage(
       source: ImageSource.gallery,

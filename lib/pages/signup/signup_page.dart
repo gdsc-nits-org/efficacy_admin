@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/services/instituion/institution_controller.dart';
+import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/pages/signup/widgets/edit_form/edit_form.dart';
@@ -177,44 +178,51 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           },
                           onPressedNext: (int index) async {
                             if (_formKey.currentState!.validate()) {
-                              if (index == 2) {
-                                UploadInformation? info;
-                                if (_image != null) {
-                                  info = await ImageController.uploadImage(
-                                    img: _image!,
-                                    userName: nameController.text,
-                                    folder: ImageFolder.userImage,
-                                  );
-                                }
-                                UserModel? user = await UserController.create(
-                                  UserModel(
-                                    name: nameController.text,
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                    scholarID: scholarIDController.text,
-                                    userPhoto: info?.url,
-                                    userPhotoPublicID: info?.publicID,
-                                    phoneNumber: phoneNumber,
-                                    branch: Branch.values.firstWhere((branch) =>
-                                        branch.name == selectedBranch),
-                                    degree: Degree.values.firstWhere((degree) =>
-                                        degree.name == selectedDegree),
-                                  ),
-                                );
-                                if (user == null) {
-                                  throw Exception("Could not create user");
-                                } else if (mounted) {
-                                  Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    Homepage.routeName,
-                                    (route) => false,
-                                  );
-                                }
-                              } else {
-                                setState(() {
-                                  ++activeStep;
-                                });
-                              }
+                              showLoadingOverlay(
+                                context: context,
+                                asyncTask: () async {
+                                  if (index == 2) {
+                                    UploadInformation? info;
+                                    if (_image != null) {
+                                      info = await ImageController.uploadImage(
+                                        img: _image!,
+                                        userName: nameController.text,
+                                        folder: ImageFolder.userImage,
+                                      );
+                                    }
+                                    await UserController.create(
+                                      UserModel(
+                                        name: nameController.text,
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                        scholarID: scholarIDController.text,
+                                        userPhoto: info?.url,
+                                        userPhotoPublicID: info?.publicID,
+                                        phoneNumber: phoneNumber,
+                                        branch: Branch.values.firstWhere(
+                                            (branch) =>
+                                                branch.name == selectedBranch),
+                                        degree: Degree.values.firstWhere(
+                                            (degree) =>
+                                                degree.name == selectedDegree),
+                                      ),
+                                    );
+                                  }
+                                },
+                                onCompleted: () {
+                                  if (mounted) {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      Homepage.routeName,
+                                      (route) => false,
+                                    );
+                                  } else {
+                                    setState(() {
+                                      ++activeStep;
+                                    });
+                                  }
+                                },
+                              );
                             }
                           },
                         ),

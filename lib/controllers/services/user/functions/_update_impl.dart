@@ -15,6 +15,7 @@ Future<UserModel?> _updateImpl() async {
     throw Exception("Couldn't find user");
   } else {
     SelectorBuilder selectorBuilder = SelectorBuilder();
+    selectorBuilder.eq(UserFields.app.name, appName);
     selectorBuilder.eq(
         UserFields.email.name, UserController.currentUser!.email);
     await collection.updateOne(

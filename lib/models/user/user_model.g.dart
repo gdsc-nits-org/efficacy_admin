@@ -23,7 +23,12 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
             (k, e) => MapEntry($enumDecode(_$SocialEnumMap, k), e as String),
           ) ??
           const {},
+      app: json['app'] as String? ?? appName,
       position: (json['position'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      following: (json['following'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
@@ -46,7 +51,9 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'degree': _$DegreeEnumMap[instance.degree]!,
       'socials':
           instance.socials.map((k, e) => MapEntry(_$SocialEnumMap[k]!, e)),
+      'app': instance.app,
       'position': instance.position,
+      'following': instance.following,
       'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
     };
 

@@ -1,9 +1,17 @@
+import 'package:efficacy_admin/config/configurations/assets/assets.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+
+  final String? title;
+  final List<Widget> actions;
+  const CustomAppBar({
+    super.key,
+    this.title,
+    this.actions = const [],
+  });
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -13,7 +21,9 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
-  late bool pendingInvites=false;
+  late bool pendingInvites = false;
+  late String _displayedTitle;
+
 
   Future<void> init() async {
     pendingInvites = await InvitationController.anyPendingInvitation();
@@ -27,14 +37,35 @@ class _CustomAppBarState extends State<CustomAppBar> {
     // TODO: implement initState
     init();
     super.initState();
+    _displayedTitle = widget.title ?? 'Efficacy';
+    // _Button = widget.actionButton ?? const SizedBox.shrink();
+  }
+
+  void updateAppBar() {
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    //screen height and width
+    final Size size = MediaQuery.of(context).size;
+    final double width = size.width;
+    //size constants
+    final double avatarRadius = width * 0.25;
+    const double pad = 8.0;
+
     return AppBar(
-      title: const Text(
-        "Efficacy",
-        style: TextStyle(
+      leading: Padding(
+        padding: const EdgeInsets.all(pad),
+        child: CircleAvatar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          radius: avatarRadius,
+          child: Image.asset(Assets.efficacyAdminLogoImagePath),
+        ),
+      ),
+      title: Text(
+        _displayedTitle,
+        style: const TextStyle(
           color: Color(0xFF05354C),
           fontWeight: FontWeight.w700,
         ),
@@ -48,6 +79,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       //     style:
       //         ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.transparent),)),
       actions: [
+        ...widget.actions,
         Stack(
           children: [
             // App drawer button

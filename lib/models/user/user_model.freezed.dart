@@ -34,8 +34,15 @@ mixin _$UserModel {
   Degree get degree => throw _privateConstructorUsedError;
   Map<Social, String> get socials => throw _privateConstructorUsedError;
 
+  /// Which app does this user instance belong to
+  /// No need to touch this
+  String get app => throw _privateConstructorUsedError;
+
   /// List<ClubPositionID>
   List<String> get position => throw _privateConstructorUsedError;
+
+  /// List<ClubID>
+  List<String> get following => throw _privateConstructorUsedError;
   DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -61,7 +68,9 @@ abstract class $UserModelCopyWith<$Res> {
       Branch branch,
       Degree degree,
       Map<Social, String> socials,
+      String app,
       List<String> position,
+      List<String> following,
       DateTime? lastLocalUpdate});
 }
 
@@ -89,7 +98,9 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? branch = null,
     Object? degree = null,
     Object? socials = null,
+    Object? app = null,
     Object? position = null,
+    Object? following = null,
     Object? lastLocalUpdate = freezed,
   }) {
     return _then(_value.copyWith(
@@ -137,9 +148,17 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.socials
           : socials // ignore: cast_nullable_to_non_nullable
               as Map<Social, String>,
+      app: null == app
+          ? _value.app
+          : app // ignore: cast_nullable_to_non_nullable
+              as String,
       position: null == position
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      following: null == following
+          ? _value.following
+          : following // ignore: cast_nullable_to_non_nullable
               as List<String>,
       lastLocalUpdate: freezed == lastLocalUpdate
           ? _value.lastLocalUpdate
@@ -169,7 +188,9 @@ abstract class _$$UserModelImplCopyWith<$Res>
       Branch branch,
       Degree degree,
       Map<Social, String> socials,
+      String app,
       List<String> position,
+      List<String> following,
       DateTime? lastLocalUpdate});
 }
 
@@ -195,7 +216,9 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? branch = null,
     Object? degree = null,
     Object? socials = null,
+    Object? app = null,
     Object? position = null,
+    Object? following = null,
     Object? lastLocalUpdate = freezed,
   }) {
     return _then(_$UserModelImpl(
@@ -243,9 +266,17 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value._socials
           : socials // ignore: cast_nullable_to_non_nullable
               as Map<Social, String>,
+      app: null == app
+          ? _value.app
+          : app // ignore: cast_nullable_to_non_nullable
+              as String,
       position: null == position
           ? _value._position
           : position // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      following: null == following
+          ? _value._following
+          : following // ignore: cast_nullable_to_non_nullable
               as List<String>,
       lastLocalUpdate: freezed == lastLocalUpdate
           ? _value.lastLocalUpdate
@@ -270,10 +301,13 @@ class _$UserModelImpl implements _UserModel {
       required this.branch,
       required this.degree,
       final Map<Social, String> socials = const {},
+      this.app = appName,
       final List<String> position = const [],
+      final List<String> following = const [],
       this.lastLocalUpdate})
       : _socials = socials,
-        _position = position;
+        _position = position,
+        _following = following;
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
@@ -309,6 +343,12 @@ class _$UserModelImpl implements _UserModel {
     return EqualUnmodifiableMapView(_socials);
   }
 
+  /// Which app does this user instance belong to
+  /// No need to touch this
+  @override
+  @JsonKey()
+  final String app;
+
   /// List<ClubPositionID>
   final List<String> _position;
 
@@ -321,12 +361,24 @@ class _$UserModelImpl implements _UserModel {
     return EqualUnmodifiableListView(_position);
   }
 
+  /// List<ClubID>
+  final List<String> _following;
+
+  /// List<ClubID>
+  @override
+  @JsonKey()
+  List<String> get following {
+    if (_following is EqualUnmodifiableListView) return _following;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_following);
+  }
+
   @override
   final DateTime? lastLocalUpdate;
 
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, phoneNumber: $phoneNumber, password: $password, email: $email, scholarID: $scholarID, userPhoto: $userPhoto, userPhotoPublicID: $userPhotoPublicID, branch: $branch, degree: $degree, socials: $socials, position: $position, lastLocalUpdate: $lastLocalUpdate)';
+    return 'UserModel(id: $id, name: $name, phoneNumber: $phoneNumber, password: $password, email: $email, scholarID: $scholarID, userPhoto: $userPhoto, userPhotoPublicID: $userPhotoPublicID, branch: $branch, degree: $degree, socials: $socials, app: $app, position: $position, following: $following, lastLocalUpdate: $lastLocalUpdate)';
   }
 
   @override
@@ -350,7 +402,10 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.branch, branch) || other.branch == branch) &&
             (identical(other.degree, degree) || other.degree == degree) &&
             const DeepCollectionEquality().equals(other._socials, _socials) &&
+            (identical(other.app, app) || other.app == app) &&
             const DeepCollectionEquality().equals(other._position, _position) &&
+            const DeepCollectionEquality()
+                .equals(other._following, _following) &&
             (identical(other.lastLocalUpdate, lastLocalUpdate) ||
                 other.lastLocalUpdate == lastLocalUpdate));
   }
@@ -370,7 +425,9 @@ class _$UserModelImpl implements _UserModel {
       branch,
       degree,
       const DeepCollectionEquality().hash(_socials),
+      app,
       const DeepCollectionEquality().hash(_position),
+      const DeepCollectionEquality().hash(_following),
       lastLocalUpdate);
 
   @JsonKey(ignore: true)
@@ -400,7 +457,9 @@ abstract class _UserModel implements UserModel {
       required final Branch branch,
       required final Degree degree,
       final Map<Social, String> socials,
+      final String app,
       final List<String> position,
+      final List<String> following,
       final DateTime? lastLocalUpdate}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -432,8 +491,17 @@ abstract class _UserModel implements UserModel {
   Map<Social, String> get socials;
   @override
 
+  /// Which app does this user instance belong to
+  /// No need to touch this
+  String get app;
+  @override
+
   /// List<ClubPositionID>
   List<String> get position;
+  @override
+
+  /// List<ClubID>
+  List<String> get following;
   @override
   DateTime? get lastLocalUpdate;
   @override

@@ -68,4 +68,18 @@ class Validator {
     }
     return null;
   }
+
+  static String? isValidURL(String? url, {bool isMandatory = false}) {
+    if (isMandatory) {
+      String? msg = nullCheck(url, "URL");
+      if (msg != null) return msg;
+    }
+    Uri uri = Uri.parse(url!);
+    if (url.isNotEmpty) {
+      if (!(uri.isAbsolute && uri.hasScheme && uri.hasAuthority)) {
+        return "Invalid URL";
+      }
+    }
+    return null;
+  }
 }

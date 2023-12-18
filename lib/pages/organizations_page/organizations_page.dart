@@ -1,7 +1,7 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
-import 'package:efficacy_admin/pages/create_club/create_club_page.dart';
+import 'package:efficacy_admin/pages/create_edit_club/create_edit_club_page.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
@@ -30,11 +30,20 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
     double gap = height * 0.02;
 
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: const CustomAppBar(title: "Organizations"),
       endDrawer: const CustomDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, CreateClub.routeName);
+          // Navigator.pushNamed(context, CreateEditClub.routeName);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CreateEditClub(
+                createMode: true, // Example parameter value
+                club: null,
+              ),
+            ),
+          ).then((value) => setState(() {}));
         },
         heroTag: "Create club",
         tooltip: "Create a new club",

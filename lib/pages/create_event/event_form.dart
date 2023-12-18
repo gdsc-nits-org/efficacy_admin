@@ -3,6 +3,7 @@ import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/create_event/widgets/club_drop_down.dart';
 import 'package:efficacy_admin/pages/create_event/widgets/contacts_drop_down.dart';
+import 'package:efficacy_admin/utils/utils.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
 import 'utils/create_event_utils.dart';
 import 'widgets/custom_text_field.dart';
@@ -89,66 +90,6 @@ class _EventFormState extends State<EventForm> {
     return users;
   }
 
-  Future<void> prepareData() async {
-    /// User is created
-    // print(await UserController.create(
-    //   const UserModel(
-    //       name: "Rajdristant",
-    //       password: "123456",
-    //       email: "raj@gmail.com",
-    //       scholarID: "2112035",
-    //       branch: Branch.CSE,
-    //       degree: Degree.BTech),
-    // ));
-    /// Or User is logged in
-    // print(
-    //   await UserController.login(
-    //     email: "raj@gmail.com",
-    //     password: "123456",
-    //   ),
-    // );
-
-    /// In case user was previously logged in/ signed up
-    // print(await UserController.loginSilently().first);
-    //
-
-    /// User Creates a club
-    // ClubModel? club = await ClubController.create(
-    //   ClubModel(
-    //     name: "GDSC Test",
-    //     instituteName: "NIT Silchar",
-    //     description: "Google Developer Student Clubs, NIT Silchar Test",
-    //     email: UserController.currentUser!.email,
-    //     clubLogoURL:
-    //         "https://images.unsplash.com/photo-1682686580922-2e594f8bdaa7?auto=format&fit=crop&q=60&w=600&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHx8",
-    //     members: {},
-    //   ),
-    // );
-
-    /// User is asked for his position
-    /// User is by default taken as the lead and is asked to fill the name of the position of lead
-    /// With all the permissions
-    // ClubPositionModel? clubPosition = await ClubPositionController.create(
-    //   ClubPositionModel(
-    //     clubID: club!.id!,
-    //     position: "Lead",
-    //     permissions: Permissions.values,
-    //   ),
-    // );
-    //
-    /// A special invitation is then sent to the user with senderID as the same as itself only for this case
-    // InvitationModel? invitation = await InvitationController.create(
-    //   InvitationModel(
-    //     clubPositionID: clubPosition!.id!,
-    //     senderID: UserController.currentUser!.id!,
-    //     recipientID: UserController.currentUser!.id!,
-    //   ),
-    // );
-
-    /// And the invitation in accepted automatically
-    // await InvitationController.acceptInvitation(invitation!.id!);
-  }
-
   //function to get dates
   Future<void> _selectDate(BuildContext context, int pickerNumber) async {
     final DateTime? picked = await showDatePicker(
@@ -200,7 +141,6 @@ class _EventFormState extends State<EventForm> {
 
   @override
   Widget build(BuildContext context) {
-    // prepareData();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 25.0),
       child: Form(
@@ -314,34 +254,19 @@ class _EventFormState extends State<EventForm> {
               ),
               //google form
               UrlInput(
+                enabled: true,
                 controller: widget.googleUrlController,
                 icon: Icons.link_outlined,
                 hintText: 'Google Form URL',
-                validator: (value) {
-                  Uri uri = Uri.parse(value!);
-                  if (!(uri.isAbsolute && uri.hasScheme && uri.hasAuthority)) {
-                    return "Invalid URL";
-                  }
-                  return '';
-                },
+                validator: Validator.isValidURL,
               ),
               // //FB form URL
               UrlInput(
+                enabled: true,
                 controller: widget.fbUrlController,
                 icon: Icons.link_outlined,
                 hintText: 'FaceBook Link',
-                validator: (value) {
-                  Uri uri = Uri.parse(value!);
-                  if (value.isNotEmpty) {
-                    if (!(uri.isAbsolute &&
-                        uri.hasScheme &&
-                        uri.hasAuthority)) {
-                      return "Invalid URL";
-                    }
-                    return '';
-                  }
-                  return null;
-                },
+                validator: Validator.isValidURL,
               ),
               //Add Contacts
               Padding(

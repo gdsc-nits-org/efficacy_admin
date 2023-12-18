@@ -1,7 +1,7 @@
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
@@ -61,10 +61,12 @@ class _CreateEventState extends State<CreateEvent> {
         contacts: selectedModerator != null ? [selectedModerator!.email] : [],
         clubID: selectedClub!.id!,
       );
-      EventController.create(event);
+      showLoadingOverlay(context: context, asyncTask: () async{
+        await EventController.create(event);
+      },);
     } else {
       showErrorSnackBar(
-          context, "Upload failed. Please enter valid credentials");
+          context, "Upload failed. Please enter the required values.");
     }
   }
 

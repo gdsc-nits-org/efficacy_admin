@@ -6,6 +6,8 @@ import 'package:mongo_dart/mongo_dart.dart';
 part 'user_model.freezed.dart';
 part 'user_model.g.dart';
 
+const String appName = "Efficacy Admin";
+
 @Freezed(fromJson: true, toJson: true)
 class UserModel with _$UserModel {
   const factory UserModel({
@@ -21,8 +23,15 @@ class UserModel with _$UserModel {
     required Degree degree,
     @Default({}) Map<Social, String> socials,
 
+    /// Which app does this user instance belong to
+    /// No need to touch this
+    @Default(appName) String app,
+
     /// List<ClubPositionID>
     @Default([]) List<String> position,
+
+    /// List<ClubID>
+    @Default([]) List<String> following,
     DateTime? lastLocalUpdate,
   }) = _UserModel;
 
@@ -44,6 +53,7 @@ enum UserFields {
   branch,
   degree,
   socials,
+  app,
   positions,
   lastLocalUpdate
 }

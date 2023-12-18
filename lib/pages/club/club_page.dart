@@ -63,8 +63,50 @@ class _ClubPageState extends State<ClubPage> {
       _bannerImgPath = club?.clubBannerURL;
       emailController.text = club?.email ?? "NIL";
       phoneNumber = club?.phoneNumber;
-      
     }
+  }
+
+// Function to update club
+  void _updateClub() async {
+    UploadInformation logo = UploadInformation(
+      url: club!.clubLogoURL,
+      publicID: club!.clubLogoPublicId,
+    );
+    if (_clubImage != null) {
+      logo = await ImageController.uploadImage(
+        img: _clubImage!,
+        folder: ImageFolder.clubImage,
+        publicID: UserController.currentUser?.userPhotoPublicID,
+        userName: nameController.text,
+      );
+    }
+    UploadInformation banner = UploadInformation(
+      url: club!.clubBannerURL,
+      publicID: club!.clubBannerPublicId,
+    );
+    if (_bannerImage != null) {
+      logo = await ImageController.uploadImage(
+        img: _bannerImage!,
+        folder: ImageFolder.clubBanner,
+        publicID: UserController.currentUser?.userPhotoPublicID,
+        userName: "${nameController.text}_banner",
+      );
+    }
+    await ClubController.update(club!.copyWith(
+        name: nameController.text,
+        description: descController.text,
+        socials: {
+          Social.github: githubUrlController.text,
+          Social.facebook: fbUrlController.text,
+          Social.instagram: instaController.text,
+          Social.linkedin: linkedinController.text
+        },
+        email: emailController.text,
+        phoneNumber: phoneNumber,
+        clubLogoURL: logo.url!,
+        clubLogoPublicId: logo.publicID,
+        clubBannerURL: banner.url!,
+        clubBannerPublicId: banner.publicID));
   }
 
   //form validate function
@@ -203,7 +245,7 @@ class _ClubPageState extends State<ClubPage> {
           ? CreateButton(onPressed: _validateForm)
           : _editMode
               ? SaveButton(onPressed: () {
-                  _validateForm();
+                  _updateClub();
                   setState(() {
                     _editMode = false;
                   });

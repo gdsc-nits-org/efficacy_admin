@@ -3,10 +3,12 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
-import 'package:efficacy_admin/pages/create_edit_club/utils/create_edit_club_utils.dart';
-import 'package:efficacy_admin/pages/create_edit_club/utils/get_lead_name.dart';
-import 'package:efficacy_admin/pages/create_edit_club/widgets/club_form.dart';
-import 'package:efficacy_admin/pages/create_edit_club/widgets/create_edit_button.dart';
+import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
+import 'package:efficacy_admin/pages/club/utils/get_lead_name.dart';
+import 'package:efficacy_admin/pages/club/widgets/club_form.dart';
+import 'package:efficacy_admin/pages/club/widgets/buttons.dart';
+import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -14,18 +16,18 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class CreateEditClub extends StatefulWidget {
+class ClubPage extends StatefulWidget {
   //route
-  static const String routeName = '/CreateEditClubPage';
+  static const String routeName = '/ClubPage';
   final bool? createMode;
   final ClubModel? club;
-  const CreateEditClub({super.key, this.createMode, this.club});
+  const ClubPage({super.key, this.createMode, this.club});
 
   @override
-  State<CreateEditClub> createState() => _CreateEditClubState();
+  State<ClubPage> createState() => _ClubPageState();
 }
 
-class _CreateEditClubState extends State<CreateEditClub> {
+class _ClubPageState extends State<ClubPage> {
   //form variables
   final _formKey = GlobalKey<FormState>();
   late bool _createMode;
@@ -61,6 +63,7 @@ class _CreateEditClubState extends State<CreateEditClub> {
       _bannerImgPath = club?.clubBannerURL;
       emailController.text = club?.email ?? "NIL";
       phoneNumber = club?.phoneNumber;
+      
     }
   }
 
@@ -169,63 +172,127 @@ class _CreateEditClubState extends State<CreateEditClub> {
 
   @override
   Widget build(BuildContext context) {
+    //screen size
+    Size size = MediaQuery.of(context).size;
+    double width = size.width;
+    double height = size.height;
+    //size constants
+    double gap = height * 0.02;
+    double hMargin = width * 0.08;
+    double vMargin = width * 0.08;
     getSize(context);
     double profileSize = 100;
     double profileBorder = 7;
 
-    return Stack(children: [
-      Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: _createMode
-            ? CreateEditButton(label: "Create", onPressed: _validateForm)
-            : _editMode
-                ? CreateEditButton(
-                    onPressed: () {
-                      setState(() {
-                        _editMode = false;
-                      });
-                    },
-                    label: "Save")
-                : Column(
-                    children: [
-                      const Spacer(flex: 50),
-                      CreateEditButton(onPressed: () {}, label: "Invite"),
-                      const Spacer(flex: 1),
-                      CreateEditButton(
-                          onPressed: () {
-                            setState(() {
-                              _editMode = true;
-                            });
-                          },
-                          label: "Edit"),
-                    ],
-                  ),
-        body: SafeArea(
-          child: SlidingUpPanel(
-              padding: const EdgeInsets.only(top: 30),
-              maxHeight: height,
-              minHeight: height * .70,
-              borderRadius: BorderRadius.circular(30),
-              header: Row(
+    return Scaffold(
+      endDrawer: const CustomDrawer(),
+      appBar: CustomAppBar(
+          title: (_createMode) ? "New Club" : nameController.text,
+          actions: [
+            if (_editMode == false && _createMode == false)
+              EditButton(
+                onPressed: () {
+                  setState(() {
+                    _editMode = true;
+                  });
+                },
+              ),
+          ]),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: _createMode
+          ? CreateButton(onPressed: _validateForm)
+          : _editMode
+              ? SaveButton(onPressed: () {
+                  _validateForm();
+                  setState(() {
+                    _editMode = false;
+                  });
+                })
+              : null,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: vMargin),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(width: width * 0.33),
-                  Container(
-                    height: 3,
-                    width: width * 0.35,
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
+                  SizedBox(
+                    height: height * 0.25,
+                    // clipBehavior: Clip.none,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.topCenter,
+                      children: [
+                        SizedBox(
+                          height: height * 0.15,
+                          width: width,
+                          child: GestureDetector(
+                            onTap: (_editMode || _createMode)
+                                ? _getBannerImage
+                                : () {},
+                            child: _bannerImgPath != null
+                                ? Image(
+                                    image: NetworkImage(_bannerImgPath!),
+                                    fit: BoxFit.cover,
+                                    width: width,
+                                  )
+                                : _bannerImage == null
+                                    ? Image.asset(
+                                        "assets/images/media.png",
+                                        width: width,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.memory(
+                                        _bannerImage!,
+                                        width: width,
+                                        fit: BoxFit.cover,
+                                      ),
+                          ),
+                        ),
+                        Positioned(
+                          left: profileSize / 2 - profileBorder * 2,
+                          top: height * 0.1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                width: profileBorder,
+                              ),
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: _clubImgPath != null
+                                ? ProfileImageViewer(
+                                    height: profileSize,
+                                    enabled: _editMode || _createMode,
+                                    imagePath: _clubImgPath,
+                                    onImageChange: (Uint8List? newImage) {
+                                      _clubImage = newImage;
+                                    },
+                                  )
+                                : ProfileImageViewer(
+                                    height: profileSize,
+                                    enabled: _editMode || _createMode,
+                                    imageData: _clubImage,
+                                    onImageChange: (Uint8List? newImage) {
+                                      _clubImage = newImage;
+                                    },
+                                  ),
+                          ),
+                        ),
+                        (_editMode || _createMode)
+                            ? Container()
+                            : Positioned(
+                                left: width - profileSize - profileBorder * 2,
+                                top: height * 0.12,
+                                child: InviteButton(onPressed: () {}))
+                      ],
                     ),
                   ),
-                ],
-              ),
-              panelBuilder: (sc) => ClubForm(
+                  ClubForm(
                     editMode: _editMode || _createMode,
                     formKey: _formKey,
-                    scrollController: sc,
                     nameController: nameController,
                     descController: descController,
                     githubUrlController: githubUrlController,
@@ -240,87 +307,10 @@ class _CreateEditClubState extends State<CreateEditClub> {
                     linkedinController: linkedinController,
                     emailController: emailController,
                   ),
-              body: Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  SizedBox(
-                    height: height * 0.2,
-                    child: GestureDetector(
-                      onTap: (_editMode) ? _getBannerImage : () {},
-                      child: _bannerImgPath != null
-                          ? Image(
-                              image: NetworkImage(_bannerImgPath!),
-                              fit: BoxFit.cover,
-                              width: width,
-                            )
-                          : _bannerImage == null
-                              ? Image.asset(
-                                  "assets/images/media.png",
-                                  width: width,
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.memory(
-                                  _bannerImage!,
-                                  width: width,
-                                  fit: BoxFit.cover,
-                                ),
-                    ),
-                  ),
-                  Positioned(
-                    left: width / 2 - profileSize / 2 - profileBorder * 2,
-                    top: height * 0.1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          width: profileBorder,
-                        ),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: _clubImgPath != null
-                          ? ProfileImageViewer(
-                              height: profileSize,
-                              enabled: _editMode,
-                              imagePath: _clubImgPath,
-                              onImageChange: (Uint8List? newImage) {
-                                _clubImage = newImage;
-                              },
-                            )
-                          : ProfileImageViewer(
-                              height: profileSize,
-                              enabled: _editMode,
-                              imageData: _clubImage,
-                              onImageChange: (Uint8List? newImage) {
-                                _clubImage = newImage;
-                              },
-                            ),
-                    ),
-                  ),
-                ],
-              )),
-        ),
-      ),
-      Positioned(
-        left: 15,
-        top: 35,
-        child: GestureDetector(
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: CircleAvatar(
-              radius: 15,
-              backgroundColor: dark,
-              child: Icon(
-                Icons.close,
-                size: height * 0.035,
-                color: light,
-              ),
-            ),
+                ]),
           ),
         ),
       ),
-    ]);
+    );
   }
 }

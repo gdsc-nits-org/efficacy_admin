@@ -25,7 +25,7 @@ class EfficacyAdmin extends StatelessWidget {
         SplashScreen.routeName: (context) => const SplashScreen(),
         ProfilePage.routeName: (context) => const ProfilePage(),
         SignUpPage.routeName: (context) => const SignUpPage(),
-        CreateEditClub.routeName: (context) => const CreateEditClub(),
+        ClubPage.routeName: (context) => const ClubPage(),
         CreateEvent.routeName: (context) => const CreateEvent(),
         OrganizationsPage.routeName: (context) => const OrganizationsPage()
       },

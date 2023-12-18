@@ -4,6 +4,7 @@ import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/pages/homepage/homepage.dart';
 import 'package:efficacy_admin/pages/signup/signup_page.dart';
+import 'package:efficacy_admin/pages/splash_screen/splash_screen.dart';
 import 'package:efficacy_admin/utils/validator.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:flutter/material.dart';
@@ -92,10 +93,9 @@ class _LoginFormState extends State<LoginForm> {
                           },
                           onCompleted: () {
                             if (user != null && mounted) {
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
+                              Navigator.of(context).pushNamedAndRemoveUntil(
                                 Homepage.routeName,
-                                (route) => false,
+                                (_) => false,
                               );
                             }
                           },

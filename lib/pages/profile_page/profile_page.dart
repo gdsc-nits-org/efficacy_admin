@@ -53,21 +53,21 @@ class _ProfileState extends State<ProfilePage> {
   }
 
   void saveUpdates() async {
-    UploadInformation info = UploadInformation(
-      url: UserController.currentUser?.userPhoto,
-      publicID: UserController.currentUser?.userPhotoPublicID,
-    );
-    if (image != null) {
-      info = await ImageController.uploadImage(
-        img: image!,
-        folder: ImageFolder.userImage,
-        publicID: UserController.currentUser?.userPhotoPublicID,
-        userName: _nameController.text,
-      );
-    }
     showLoadingOverlay(
       context: context,
       asyncTask: () async {
+        UploadInformation info = UploadInformation(
+          url: UserController.currentUser?.userPhoto,
+          publicID: UserController.currentUser?.userPhotoPublicID,
+        );
+        if (image != null) {
+          info = await ImageController.uploadImage(
+            img: image!,
+            folder: ImageFolder.userImage,
+            publicID: UserController.currentUser?.userPhotoPublicID,
+            userName: _nameController.text,
+          );
+        }
         UserController.currentUser = UserController.currentUser?.copyWith(
           name: _nameController.text,
           scholarID: _scholarIDController.text,
@@ -87,10 +87,6 @@ class _ProfileState extends State<ProfilePage> {
         });
       },
     );
-    await UserController.update();
-    setState(() {
-      editMode = false;
-    });
   }
 
   @override

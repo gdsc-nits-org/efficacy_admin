@@ -6,9 +6,6 @@ Future<void> showLoadingOverlay(
     void Function()? onCompleted,
     Future Function()? asyncTask}) async {
   isVisible ??= ValueNotifier(true);
-  if (asyncTask != null) {
-    asyncTask().then((value) => isVisible!.value = false);
-  }
   Navigator.push(
     context,
     PageRouteBuilder(
@@ -36,4 +33,13 @@ Future<void> showLoadingOverlay(
       onCompleted();
     }
   });
+  if (asyncTask != null) {
+    try {
+      await asyncTask();
+    } catch (e) {
+      rethrow;
+    } finally {
+      isVisible.value = false;
+    }
+  }
 }

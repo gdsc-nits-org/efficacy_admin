@@ -2,7 +2,6 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'package:cloudinary/cloudinary.dart';
 import 'package:efficacy_admin/utils/database/constants.dart';
-import 'package:efficacy_admin/utils/formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -13,6 +12,7 @@ part 'functions/_upload_image_impl.dart';
 part 'functions/_compressed_image_impl.dart';
 part 'functions/_get_min_size_impl.dart';
 part 'functions/_user_compression_impl.dart';
+part 'functions/_delete_impl.dart';
 
 class UploadInformation {
   final String? url;
@@ -84,5 +84,9 @@ class ImageController {
       maxSize: maxSize,
       context: context,
     );
+  }
+
+  static Future<void> delete({required String publicID}) async {
+    return await _deleteImpl(publicID: publicID);
   }
 }

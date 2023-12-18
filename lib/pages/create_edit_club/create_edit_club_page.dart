@@ -95,40 +95,40 @@ class _CreateEditClubState extends State<CreateEditClub> {
       if (leadName == null) {
         throw Exception("Lead name must be provided");
       }
-      UploadInformation? bannerImageInfo, clubImageInfo;
-      if (_bannerImage != null) {
-        bannerImageInfo = await ImageController.uploadImage(
-          img: _bannerImage!,
-          userName: "${nameController.text}_banner",
-          folder: ImageFolder.clubBanner,
-        );
-      }
-      if (_clubImage != null) {
-        clubImageInfo = await ImageController.uploadImage(
-          img: _clubImage!,
-          userName: nameController.text,
-          folder: ImageFolder.clubImage,
-        );
-      }
-      if (clubImageInfo?.url == null) {
-        throw Exception("Could not upload image");
-      }
-      // validation logic
-      ClubModel? club = ClubModel(
-        name: nameController.text,
-        description: descController.text,
-        email: emailController.text,
-        phoneNumber: phoneNumber,
-        clubLogoURL: clubImageInfo!.url!,
-        clubLogoPublicId: clubImageInfo.publicID,
-        clubBannerURL: bannerImageInfo?.url,
-        clubBannerPublicId: bannerImageInfo?.publicID,
-        instituteName: instituteName,
-        members: {},
-      );
       showLoadingOverlay(
         context: context,
         asyncTask: () async {
+          UploadInformation? bannerImageInfo, clubImageInfo;
+          if (_bannerImage != null) {
+            bannerImageInfo = await ImageController.uploadImage(
+              img: _bannerImage!,
+              userName: "${nameController.text}_banner",
+              folder: ImageFolder.clubBanner,
+            );
+          }
+          if (_clubImage != null) {
+            clubImageInfo = await ImageController.uploadImage(
+              img: _clubImage!,
+              userName: nameController.text,
+              folder: ImageFolder.clubImage,
+            );
+          }
+          if (clubImageInfo?.url == null) {
+            throw Exception("Could not upload image");
+          }
+          // validation logic
+          ClubModel? club = ClubModel(
+            name: nameController.text,
+            description: descController.text,
+            email: emailController.text,
+            phoneNumber: phoneNumber,
+            clubLogoURL: clubImageInfo!.url!,
+            clubLogoPublicId: clubImageInfo.publicID,
+            clubBannerURL: bannerImageInfo?.url,
+            clubBannerPublicId: bannerImageInfo?.publicID,
+            instituteName: instituteName,
+            members: {},
+          );
           club = await ClubController.create(club!);
           if (club != null) {
             ClubPositionModel? clubPosition =

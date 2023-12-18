@@ -178,51 +178,54 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           },
                           onPressedNext: (int index) async {
                             if (_formKey.currentState!.validate()) {
-                              showLoadingOverlay(
-                                context: context,
-                                asyncTask: () async {
-                                  if (index == 2) {
-                                    UploadInformation? info;
-                                    if (_image != null) {
-                                      info = await ImageController.uploadImage(
-                                        img: _image!,
-                                        userName: nameController.text,
-                                        folder: ImageFolder.userImage,
+                              if (index == 2) {
+                                UserModel? user;
+                                showLoadingOverlay(
+                                    context: context,
+                                    asyncTask: () async {
+                                      UploadInformation? info;
+                                      if (_image != null) {
+                                        info =
+                                            await ImageController.uploadImage(
+                                          img: _image!,
+                                          userName: nameController.text,
+                                          folder: ImageFolder.userImage,
+                                        );
+                                      }
+                                      user = await UserController.create(
+                                        UserModel(
+                                          name: nameController.text,
+                                          email: emailController.text,
+                                          password: passwordController.text,
+                                          scholarID: scholarIDController.text,
+                                          userPhoto: info?.url,
+                                          userPhotoPublicID: info?.publicID,
+                                          phoneNumber: phoneNumber,
+                                          branch: Branch.values.firstWhere(
+                                              (branch) =>
+                                                  branch.name ==
+                                                  selectedBranch),
+                                          degree: Degree.values.firstWhere(
+                                              (degree) =>
+                                                  degree.name ==
+                                                  selectedDegree),
+                                        ),
                                       );
-                                    }
-                                    await UserController.create(
-                                      UserModel(
-                                        name: nameController.text,
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                        scholarID: scholarIDController.text,
-                                        userPhoto: info?.url,
-                                        userPhotoPublicID: info?.publicID,
-                                        phoneNumber: phoneNumber,
-                                        branch: Branch.values.firstWhere(
-                                            (branch) =>
-                                                branch.name == selectedBranch),
-                                        degree: Degree.values.firstWhere(
-                                            (degree) =>
-                                                degree.name == selectedDegree),
-                                      ),
-                                    );
-                                  }
-                                },
-                                onCompleted: () {
-                                  if (mounted) {
-                                    Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      Homepage.routeName,
-                                      (route) => false,
-                                    );
-                                  } else {
-                                    setState(() {
-                                      ++activeStep;
+                                    },
+                                    onCompleted: () {
+                                      if (user != null && mounted) {
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                          Homepage.routeName,
+                                          (_) => false,
+                                        );
+                                      }
                                     });
-                                  }
-                                },
-                              );
+                              } else {
+                                setState(() {
+                                  ++activeStep;
+                                });
+                              }
                             }
                           },
                         ),

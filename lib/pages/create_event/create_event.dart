@@ -66,7 +66,7 @@ class _CreateEventState extends State<CreateEvent> {
       },);
     } else {
       showErrorSnackBar(
-          context, "Upload failed. Please enter valid credentials");
+          context, "Upload failed. Please enter the required values.");
     }
   }
 

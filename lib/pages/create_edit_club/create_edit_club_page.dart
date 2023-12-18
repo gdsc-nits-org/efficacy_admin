@@ -178,28 +178,28 @@ class _CreateEditClubState extends State<CreateEditClub> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: _createMode
             ? CreateEditButton(label: "Create", onPressed: _validateForm)
-            : Column(
-                children: [
-                  const Spacer(flex: 50),
-                  CreateEditButton(onPressed: () {}, label: "Invite"),
-                  const Spacer(flex: 1),
-                  _editMode
-                      ? CreateEditButton(
-                          onPressed: () {
-                            setState(() {
-                              _editMode = false;
-                            });
-                          },
-                          label: "Save")
-                      : CreateEditButton(
+            : _editMode
+                ? CreateEditButton(
+                    onPressed: () {
+                      setState(() {
+                        _editMode = false;
+                      });
+                    },
+                    label: "Save")
+                : Column(
+                    children: [
+                      const Spacer(flex: 50),
+                      CreateEditButton(onPressed: () {}, label: "Invite"),
+                      const Spacer(flex: 1),
+                      CreateEditButton(
                           onPressed: () {
                             setState(() {
                               _editMode = true;
                             });
                           },
                           label: "Edit"),
-                ],
-              ),
+                    ],
+                  ),
         body: SafeArea(
           child: SlidingUpPanel(
               padding: const EdgeInsets.only(top: 30),
@@ -246,7 +246,7 @@ class _CreateEditClubState extends State<CreateEditClub> {
                   SizedBox(
                     height: height * 0.2,
                     child: GestureDetector(
-                      onTap: _getBannerImage,
+                      onTap: (_editMode) ? _getBannerImage : () {},
                       child: _bannerImgPath != null
                           ? Image(
                               image: NetworkImage(_bannerImgPath!),
@@ -280,7 +280,7 @@ class _CreateEditClubState extends State<CreateEditClub> {
                       child: _clubImgPath != null
                           ? ProfileImageViewer(
                               height: profileSize,
-                              enabled: true,
+                              enabled: _editMode,
                               imagePath: _clubImgPath,
                               onImageChange: (Uint8List? newImage) {
                                 _clubImage = newImage;
@@ -288,7 +288,7 @@ class _CreateEditClubState extends State<CreateEditClub> {
                             )
                           : ProfileImageViewer(
                               height: profileSize,
-                              enabled: true,
+                              enabled: _editMode,
                               imageData: _clubImage,
                               onImageChange: (Uint8List? newImage) {
                                 _clubImage = newImage;

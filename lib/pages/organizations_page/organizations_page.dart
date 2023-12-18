@@ -86,6 +86,14 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
                       ClubsStream(maxHeight: height / 3),
                     ],
                   ),
+                  // ElevatedButton(
+                  //     onPressed: () {
+                  //       InvitationController.create(InvitationModel(
+                  //           clubPositionID: "6575c5edfcd27f194e6ed6b4",
+                  //           senderID: "653e0b6c1bde28c6db2d4c5a",
+                  //           recipientID: UserController.currentUser!.id!));
+                  //     },
+                  //     child: Text("Jaldi"))
                 ].separate(gap),
               ),
             ),

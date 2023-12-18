@@ -107,6 +107,7 @@ class _ClubPageState extends State<ClubPage> {
         clubLogoPublicId: logo.publicID,
         clubBannerURL: banner.url!,
         clubBannerPublicId: banner.publicID));
+    await UserController.update();
   }
 
   //form validate function

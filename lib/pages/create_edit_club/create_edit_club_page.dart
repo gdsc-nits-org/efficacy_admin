@@ -14,11 +14,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
+import 'widgets/overlay_search.dart';
+
 class CreateEditClub extends StatefulWidget {
   //route
   static const String routeName = '/CreateEditClubPage';
   final bool? createMode;
   final ClubModel? club;
+
   const CreateEditClub({super.key, this.createMode, this.club});
 
   @override
@@ -62,6 +65,24 @@ class _CreateEditClubState extends State<CreateEditClub> {
       emailController.text = club?.email ?? "NIL";
       phoneNumber = club?.phoneNumber;
     }
+  }
+
+  //show invite overlay
+  void _showOverlay(BuildContext context) {
+    OverlayEntry overlayEntry;
+    overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: height * 0.2,
+        left: width * 0.1,
+        right: width * 0.1,
+        height: height * 0.6,
+        child: const Material(
+          child: OverlaySearch(),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(overlayEntry);
   }
 
   //form validate function
@@ -181,7 +202,11 @@ class _CreateEditClubState extends State<CreateEditClub> {
             : Column(
                 children: [
                   const Spacer(flex: 50),
-                  CreateEditButton(onPressed: () {}, label: "Invite"),
+                  CreateEditButton(
+                      onPressed: () {
+                        _showOverlay(context);
+                      },
+                      label: "Invite"),
                   const Spacer(flex: 1),
                   _editMode
                       ? CreateEditButton(

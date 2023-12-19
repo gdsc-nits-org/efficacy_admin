@@ -1,6 +1,6 @@
 import 'package:efficacy_admin/controllers/services/services.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
-import 'package:efficacy_admin/pages/create_edit_club/create_edit_club_page.dart';
+import 'package:efficacy_admin/pages/club/club_page.dart';
 import 'package:flutter/material.dart';
 
 class ClubsStream extends StatefulWidget {
@@ -22,10 +22,9 @@ class ClubsStream extends StatefulWidget {
 }
 
 class _ClubsStreamState extends State<ClubsStream> {
-  List<ClubModel> clubs = UserController.clubs;
-
   @override
   Widget build(BuildContext context) {
+    List<ClubModel> clubs = UserController.clubs;
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: widget.maxHeight),
       child: (clubs.isNotEmpty)
@@ -69,11 +68,20 @@ class _ClubsStreamState extends State<ClubsStream> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CreateEditClub(
+                            builder: (context) => ClubPage(
                               createMode: false,
                               club: club,
                             ),
                           ),
+                        ).then(
+                          (dynamic newClubDetails) {
+                            if (newClubDetails != null &&
+                                newClubDetails is ClubModel) {
+                              setState(() {
+                                UserController.clubs[index] = newClubDetails;
+                              });
+                            }
+                          },
                         );
                       },
                       leading: ClipOval(

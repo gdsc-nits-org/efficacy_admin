@@ -42,7 +42,7 @@ class _ProfileState extends State<ProfilePage> {
   final TextEditingController _scholarIDController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   String selectedDegree = Degree.BTech.name;
-  String selectedBranch = Degree.BTech.name;
+  String selectedBranch = Branch.CSE.name;
   Uint8List? image;
   PhoneNumber? phoneNumber;
 
@@ -161,12 +161,20 @@ class _ProfileState extends State<ProfilePage> {
                   items: Branch.values.map((branch) => branch.name).toList(),
                   enabled: editMode,
                   value: UserController.currentUser!.branch.name,
+                  onChanged: (String? newSelectedBranch) {
+                    selectedBranch = newSelectedBranch ??
+                        UserController.currentUser!.branch.name;
+                  },
                 ),
                 CustomDropDown(
                   title: "Degree",
                   items: Degree.values.map((degree) => degree.name).toList(),
                   enabled: editMode,
                   value: UserController.currentUser!.degree.name,
+                  onChanged: (String? newSelectedDegree) {
+                    selectedDegree = newSelectedDegree ??
+                        UserController.currentUser!.degree.name;
+                  },
                 ),
                 const DeleteProfileButton(),
               ].separate(gap),

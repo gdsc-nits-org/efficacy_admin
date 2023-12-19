@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'widgets/overlay_search.dart';
 
 class ClubPage extends StatefulWidget {
   //route
@@ -64,6 +65,24 @@ class _ClubPageState extends State<ClubPage> {
       emailController.text = club?.email ?? "NIL";
       phoneNumber = club?.phoneNumber;
     }
+  }
+
+//show invite overlay
+  void _showOverlay(BuildContext context) {
+    OverlayEntry overlayEntry;
+    overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: height * 0.2,
+        left: width * 0.1,
+        right: width * 0.1,
+        height: height * 0.6,
+        child: const Material(
+          child: OverlaySearch(),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(overlayEntry);
   }
 
 // Function to update club
@@ -340,7 +359,9 @@ class _ClubPageState extends State<ClubPage> {
                             : Positioned(
                                 left: width - profileSize - profileBorder * 2,
                                 top: height * 0.12,
-                                child: InviteButton(onPressed: () {}))
+                                child: InviteButton(onPressed: () {
+                                  _showOverlay(context);
+                                }))
                       ],
                     ),
                   ),

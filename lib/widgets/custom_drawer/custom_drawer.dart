@@ -76,7 +76,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         child: const Text("Profile"),
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                   ].separate(15),
                 ),
               ),

@@ -69,20 +69,27 @@ class _CreateEditClubState extends State<CreateEditClub> {
 
   //show invite overlay
   void _showOverlay(BuildContext context) {
-    OverlayEntry overlayEntry;
-    overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        top: height * 0.2,
-        left: width * 0.1,
-        right: width * 0.1,
-        height: height * 0.6,
-        child: const Material(
-          child: OverlaySearch(),
-        ),
-      ),
-    );
-
-    Overlay.of(context).insert(overlayEntry);
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(
+            child: OverlaySearch(),
+          );
+        });
+    // OverlayEntry overlayEntry;
+    // overlayEntry = OverlayEntry(
+    //   builder: (context) => Positioned(
+    //     top: height * 0.2,
+    //     left: width * 0.1,
+    //     right: width * 0.1,
+    //     height: height * 0.6,
+    //     child: const Material(
+    //       child: OverlaySearch(),
+    //     ),
+    //   ),
+    // );
+    //
+    // Overlay.of(context).insert(overlayEntry);
   }
 
   //form validate function
@@ -95,73 +102,77 @@ class _CreateEditClubState extends State<CreateEditClub> {
       if (leadName == null) {
         throw Exception("Lead name must be provided");
       }
-      showLoadingOverlay(
-        context: context,
-        asyncTask: () async {
-          UploadInformation? bannerImageInfo, clubImageInfo;
-          if (_bannerImage != null) {
-            bannerImageInfo = await ImageController.uploadImage(
-              img: _bannerImage!,
-              userName: "${nameController.text}_banner",
-              folder: ImageFolder.clubBanner,
-            );
-          }
-          if (_clubImage != null) {
-            clubImageInfo = await ImageController.uploadImage(
-              img: _clubImage!,
-              userName: nameController.text,
-              folder: ImageFolder.clubImage,
-            );
-          }
-          if (clubImageInfo?.url == null) {
-            throw Exception("Could not upload image");
-          }
-          // validation logic
-          ClubModel? club = ClubModel(
-            name: nameController.text,
-            description: descController.text,
-            email: emailController.text,
-            phoneNumber: phoneNumber,
-            clubLogoURL: clubImageInfo!.url!,
-            clubLogoPublicId: clubImageInfo.publicID,
-            clubBannerURL: bannerImageInfo?.url,
-            clubBannerPublicId: bannerImageInfo?.publicID,
-            instituteName: instituteName,
-            members: {},
-          );
-          club = await ClubController.create(club!);
-          if (club != null) {
-            ClubPositionModel? clubPosition =
-                await ClubPositionController.create(
-              ClubPositionModel(
-                clubID: club!.id!,
-                position: leadName,
-                permissions: Permissions.values,
-              ),
-            );
-            if (clubPosition != null && clubPosition.id != null) {
-              club = club!.copyWith(
-                members: {
-                  clubPosition.id!: [UserController.currentUser!.id!],
-                },
+      if (mounted) {
+        showLoadingOverlay(
+          context: context,
+          asyncTask: () async {
+            UploadInformation? bannerImageInfo, clubImageInfo;
+            if (_bannerImage != null) {
+              bannerImageInfo = await ImageController.uploadImage(
+                img: _bannerImage!,
+                userName: "${nameController.text}_banner",
+                folder: ImageFolder.clubBanner,
               );
-              await ClubController.update(club!);
-              List<String> clubPositions = UserController.currentUser!.position;
-              clubPositions = [...clubPositions, clubPosition.id!];
-              UserController.currentUser = UserController.currentUser!.copyWith(
-                position: clubPositions,
-              );
-              await UserController.update();
             }
-          }
-        },
-        onCompleted: () {
-          if (mounted) {
-            showErrorSnackBar(context, "Club Created");
-            Navigator.pop(context);
-          }
-        },
-      );
+            if (_clubImage != null) {
+              clubImageInfo = await ImageController.uploadImage(
+                img: _clubImage!,
+                userName: nameController.text,
+                folder: ImageFolder.clubImage,
+              );
+            }
+            if (clubImageInfo?.url == null) {
+              throw Exception("Could not upload image");
+            }
+            // validation logic
+            ClubModel? club = ClubModel(
+              name: nameController.text,
+              description: descController.text,
+              email: emailController.text,
+              phoneNumber: phoneNumber,
+              clubLogoURL: clubImageInfo!.url!,
+              clubLogoPublicId: clubImageInfo.publicID,
+              clubBannerURL: bannerImageInfo?.url,
+              clubBannerPublicId: bannerImageInfo?.publicID,
+              instituteName: instituteName,
+              members: {},
+            );
+            club = await ClubController.create(club!);
+            if (club != null) {
+              ClubPositionModel? clubPosition =
+                  await ClubPositionController.create(
+                ClubPositionModel(
+                  clubID: club!.id!,
+                  position: leadName,
+                  permissions: Permissions.values,
+                ),
+              );
+              if (clubPosition != null && clubPosition.id != null) {
+                club = club!.copyWith(
+                  members: {
+                    clubPosition.id!: [UserController.currentUser!.id!],
+                  },
+                );
+                await ClubController.update(club!);
+                List<String> clubPositions =
+                    UserController.currentUser!.position;
+                clubPositions = [...clubPositions, clubPosition.id!];
+                UserController.currentUser =
+                    UserController.currentUser!.copyWith(
+                  position: clubPositions,
+                );
+                await UserController.update();
+              }
+            }
+          },
+          onCompleted: () {
+            if (mounted) {
+              showErrorSnackBar(context, "Club Created");
+              Navigator.pop(context);
+            }
+          },
+        );
+      }
     } else {
       showErrorSnackBar(
         context,

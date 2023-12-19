@@ -64,6 +64,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           ListTile(
+            title: const Text('Profile'),
+            selected: routeName == "/ProfilePage",
+            selectedColor: light,
+            selectedTileColor: dark,
+            onTap: () {
+              // Close the drawer
+              Navigator.pop(context);
+              // Navigate to Profile page
+              Navigator.of(context).pushNamed(
+                ProfilePage.routeName,
+              );
+            },
+          ),
+          ListTile(
             title: const Text('Home'),
             selected: routeName == "/homePage",
             selectedColor: light,
@@ -89,20 +103,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
               // Navigate to Organizations page
               Navigator.of(context).pushNamed(
                 OrganizationsPage.routeName,
-              );
-            },
-          ),
-          ListTile(
-            title: const Text('Profile'),
-            selected: routeName == "/ProfilePage",
-            selectedColor: light,
-            selectedTileColor: dark,
-            onTap: () {
-              // Close the drawer
-              Navigator.pop(context);
-              // Navigate to Profile page
-              Navigator.of(context).pushNamed(
-                ProfilePage.routeName,
               );
             },
           ),

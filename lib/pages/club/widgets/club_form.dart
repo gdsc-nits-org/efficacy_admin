@@ -1,7 +1,7 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
-import 'package:efficacy_admin/pages/create_edit_club/utils/create_edit_club_utils.dart';
-import 'package:efficacy_admin/pages/create_edit_club/widgets/custom_field.dart';
+import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
+import 'package:efficacy_admin/pages/club/widgets/custom_field.dart';
 import 'package:efficacy_admin/pages/create_event/widgets/url_input.dart';
 import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,6 @@ import 'package:intl_phone_field/phone_number.dart';
 class ClubForm extends StatelessWidget {
   final bool editMode;
   final GlobalKey<FormState> formKey;
-  final ScrollController scrollController;
   final TextEditingController nameController;
   final TextEditingController descController;
   final TextEditingController githubUrlController;
@@ -26,7 +25,6 @@ class ClubForm extends StatelessWidget {
     super.key,
     required this.editMode,
     required this.formKey,
-    required this.scrollController,
     required this.nameController,
     required this.descController,
     required this.githubUrlController,
@@ -46,7 +44,6 @@ class ClubForm extends StatelessWidget {
       child: Form(
         key: formKey,
         child: SingleChildScrollView(
-          controller: scrollController,
           child: Column(
             children: [
               //Name

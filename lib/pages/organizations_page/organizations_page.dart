@@ -1,7 +1,7 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
-import 'package:efficacy_admin/pages/create_edit_club/create_edit_club_page.dart';
+import 'package:efficacy_admin/pages/club/club_page.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,7 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const CreateEditClub(
+              builder: (context) => const ClubPage(
                 createMode: true, // Example parameter value
                 club: null,
               ),

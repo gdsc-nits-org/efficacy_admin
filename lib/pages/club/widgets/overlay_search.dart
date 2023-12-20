@@ -121,20 +121,21 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                                 }
                                               });
                                             } else {
-                                              InvitationController.create(
-                                                  InvitationModel(
-                                                      clubPositionID:
-                                                          UserController
-                                                              .currentUser!
-                                                              .position
-                                                              .toString(),
-                                                      senderID: UserController
-                                                              .currentUser!
-                                                              .id ??
-                                                          "",
-                                                      recipientID:
-                                                          userList[index].id ??
-                                                              ""));
+                                              //invitation commented for now
+                                              // InvitationController.create(
+                                              //     InvitationModel(
+                                              //         clubPositionID:
+                                              //             UserController
+                                              //                 .currentUser!
+                                              //                 .position
+                                              //                 .toString(),
+                                              //         senderID: UserController
+                                              //                 .currentUser!
+                                              //                 .id ??
+                                              //             "",
+                                              //         recipientID:
+                                              //             userList[index].id ??
+                                              //                 ""));
                                             }
                                           },
                                         );

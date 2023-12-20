@@ -49,16 +49,35 @@ class _CustomDrawerState extends State<CustomDrawer> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, ProfilePage.routeName);
-            },
-            child: AbsorbPointer(
-              child: DrawerHeader(
-                decoration: const BoxDecoration(color: dark),
-                child: ProfileImageViewer(
-                  enabled: false,
-                  imagePath: UserController.currentUser?.userPhoto,
+          Container(
+            height: height * 0.33,
+            decoration: const BoxDecoration(color: dark),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, ProfilePage.routeName);
+              },
+              child: AbsorbPointer(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ProfileImageViewer(
+                      enabled: false,
+                      imagePath: UserController.currentUser?.userPhoto,
+                    ),
+                    SizedBox(
+                      width: 100,
+                      height: 40,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: light,
+                          foregroundColor: dark,
+                        ),
+                        child: const Text("Profile"),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                  ].separate(15),
                 ),
               ),
             ),
@@ -89,20 +108,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
               // Navigate to Organizations page
               Navigator.of(context).pushNamed(
                 OrganizationsPage.routeName,
-              );
-            },
-          ),
-          ListTile(
-            title: const Text('Profile'),
-            selected: routeName == "/ProfilePage",
-            selectedColor: light,
-            selectedTileColor: dark,
-            onTap: () {
-              // Close the drawer
-              Navigator.pop(context);
-              // Navigate to Profile page
-              Navigator.of(context).pushNamed(
-                ProfilePage.routeName,
               );
             },
           ),

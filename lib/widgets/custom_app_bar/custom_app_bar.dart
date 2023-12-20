@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-
   final String? title;
   final List<Widget> actions;
   const CustomAppBar({
@@ -23,7 +22,6 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _CustomAppBarState extends State<CustomAppBar> {
   late bool pendingInvites = false;
   late String _displayedTitle;
-
 
   Future<void> init() async {
     pendingInvites = await InvitationController.anyPendingInvitation();
@@ -93,7 +91,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
               ),
             ),
             // Notification bubble
-            // TODO : Integrate with backend
             pendingInvites
                 ? Positioned(
                     right: 5,

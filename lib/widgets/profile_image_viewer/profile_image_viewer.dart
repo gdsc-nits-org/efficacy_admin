@@ -18,6 +18,7 @@ class ProfileImageViewer extends StatefulWidget {
   final String? imagePath;
   final Uint8List? imageData;
   final bool enabled;
+  final bool showBorder;
   final void Function(Uint8List?)? onImageChange;
   const ProfileImageViewer({
     super.key,
@@ -25,6 +26,7 @@ class ProfileImageViewer extends StatefulWidget {
     this.imagePath,
     this.imageData,
     this.enabled = true,
+    this.showBorder = false,
     this.onImageChange,
   });
 
@@ -127,7 +129,9 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
       child: InkWell(
         onTap: () => (widget.enabled) ? _showPicker(context) : null,
         child: CircleAvatar(
-          backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
+          backgroundColor: widget.showBorder
+              ? const Color.fromRGBO(196, 196, 196, 1)
+              : Colors.transparent,
           radius: widget.height / 2,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(widget.height / 2),

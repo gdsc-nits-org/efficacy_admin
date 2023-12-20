@@ -56,6 +56,8 @@ class _OverlaySearchState extends State<OverlaySearch> {
                     stream: UserController.get(nameStartsWith: userName),
                     builder: (context, snapshot) {
                       List<UserModel> userList = [];
+                      List<UserModel> selectedUsers = [];
+                      bool isMultiSelect = false;
                       if (snapshot.hasData) {
                         userList = snapshot.data ?? [];
                         if (userList.length == 1 &&
@@ -88,20 +90,48 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                         return ListTile(
                                           title: Text(userList[index].name),
                                           subtitle: Text(userList[index].email),
+                                          tileColor: selectedUsers
+                                                  .contains(userList[index])
+                                              ? Colors.green
+                                              : null,
+                                          onLongPress: () {
+                                            setState(() {
+                                              isMultiSelect = true;
+                                              selectedUsers
+                                                  .add(userList[index]);
+                                            });
+                                          },
                                           onTap: () {
-                                            InvitationController.create(
-                                                InvitationModel(
-                                                    clubPositionID:
-                                                        UserController
-                                                            .currentUser!
-                                                            .position
-                                                            .toString(),
-                                                    senderID: UserController
-                                                            .currentUser!.id ??
-                                                        "",
-                                                    recipientID:
-                                                        userList[index].id ??
-                                                            ""));
+                                            if (isMultiSelect) {
+                                              setState(() {
+                                                if (selectedUsers.contains(
+                                                    userList[index])) {
+                                                  selectedUsers
+                                                      .remove(userList[index]);
+                                                  if (selectedUsers == []) {
+                                                    isMultiSelect = false;
+                                                  }
+                                                } else {
+                                                  selectedUsers
+                                                      .add(userList[index]);
+                                                }
+                                              });
+                                            } else {
+                                              InvitationController.create(
+                                                  InvitationModel(
+                                                      clubPositionID:
+                                                          UserController
+                                                              .currentUser!
+                                                              .position
+                                                              .toString(),
+                                                      senderID: UserController
+                                                              .currentUser!
+                                                              .id ??
+                                                          "",
+                                                      recipientID:
+                                                          userList[index].id ??
+                                                              ""));
+                                            }
                                           },
                                         );
                                       }

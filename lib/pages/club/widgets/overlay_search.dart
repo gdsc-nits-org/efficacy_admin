@@ -56,7 +56,7 @@ class _OverlaySearchState extends State<OverlaySearch> {
                   ),
                 ),
                 isMultiSelect
-                    ? Text("Selected: ${selectedUsers.length}/ ${userList.length}")
+                    ? Text("Selected: ${selectedUsers.length}")
                     : const Text(""),
                 StreamBuilder<List<UserModel>>(
                     stream: UserController.get(nameStartsWith: userName),

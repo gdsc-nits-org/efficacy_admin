@@ -17,6 +17,9 @@ class OverlaySearch extends StatefulWidget {
 class _OverlaySearchState extends State<OverlaySearch> {
   String? userName;
   Debouncer debouncer = Debouncer();
+  List<UserModel> userList = [];
+  List<UserModel> selectedUsers = [];
+  bool isMultiSelect = false;
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +55,12 @@ class _OverlaySearchState extends State<OverlaySearch> {
                     ),
                   ),
                 ),
+                isMultiSelect
+                    ? Text("Selected: ${selectedUsers.length}/ ${userList.length}")
+                    : const Text(""),
                 StreamBuilder<List<UserModel>>(
                     stream: UserController.get(nameStartsWith: userName),
                     builder: (context, snapshot) {
-                      List<UserModel> userList = [];
-                      List<UserModel> selectedUsers = [];
-                      bool isMultiSelect = false;
                       if (snapshot.hasData) {
                         userList = snapshot.data ?? [];
                         if (userList.length == 1 &&

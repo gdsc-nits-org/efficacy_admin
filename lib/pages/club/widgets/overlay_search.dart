@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/pages/club/widgets/buttons.dart';
 import 'package:efficacy_admin/utils/debouncer.dart';
 import 'package:flutter/material.dart';
 
@@ -143,6 +144,9 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                   ),
                       );
                     }),
+                InviteButton(
+                  onPressed: () {},
+                )
               ],
             ),
           ),

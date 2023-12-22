@@ -58,11 +58,9 @@ class _OverlaySearchState extends State<OverlaySearch> {
                       List<UserModel> userList = [];
                       if (snapshot.hasData) {
                         userList = snapshot.data ?? [];
-                        if (userList.length == 1 &&
-                            userList.first.id ==
-                                UserController.currentUser?.id) {
-                          userList = [];
-                        }
+                        // removes a user if 
+                        userList
+                            .removeWhere((element) => element.id == UserController.currentUser?.id);
                       }
                       return Expanded(
                         child: snapshot.connectionState ==
@@ -89,19 +87,19 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                           title: Text(userList[index].name),
                                           subtitle: Text(userList[index].email),
                                           onTap: () {
-                                            InvitationController.create(
-                                                InvitationModel(
-                                                    clubPositionID:
-                                                        UserController
-                                                            .currentUser!
-                                                            .position
-                                                            .toString(),
-                                                    senderID: UserController
-                                                            .currentUser!.id ??
-                                                        "",
-                                                    recipientID:
-                                                        userList[index].id ??
-                                                            ""));
+                                            // InvitationController.create(
+                                            //     InvitationModel(
+                                            //         clubPositionID:
+                                            //             UserController
+                                            //                 .currentUser!
+                                            //                 .position
+                                            //                 .toString(),
+                                            //         senderID: UserController
+                                            //                 .currentUser!.id ??
+                                            //             "",
+                                            //         recipientID:
+                                            //             userList[index].id ??
+                                            //                 ""));
                                           },
                                         );
                                       }

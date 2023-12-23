@@ -2,13 +2,16 @@ import 'dart:math';
 
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/pages/club/widgets/invite_overlay.dart';
 import 'package:efficacy_admin/utils/debouncer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:efficacy_admin/controllers/controllers.dart';
 
 class OverlaySearch extends StatefulWidget {
-  const OverlaySearch({super.key});
+  final ClubModel? club;
+
+  const OverlaySearch({super.key, required this.club});
 
   @override
   State<OverlaySearch> createState() => _OverlaySearchState();
@@ -58,9 +61,9 @@ class _OverlaySearchState extends State<OverlaySearch> {
                       List<UserModel> userList = [];
                       if (snapshot.hasData) {
                         userList = snapshot.data ?? [];
-                        // removes a user if 
-                        userList
-                            .removeWhere((element) => element.id == UserController.currentUser?.id);
+                        // removes a user if userid is same as current user
+                        userList.removeWhere((element) =>
+                            element.id == UserController.currentUser?.id);
                       }
                       return Expanded(
                         child: snapshot.connectionState ==
@@ -87,19 +90,18 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                           title: Text(userList[index].name),
                                           subtitle: Text(userList[index].email),
                                           onTap: () {
-                                            // InvitationController.create(
-                                            //     InvitationModel(
-                                            //         clubPositionID:
-                                            //             UserController
-                                            //                 .currentUser!
-                                            //                 .position
-                                            //                 .toString(),
-                                            //         senderID: UserController
-                                            //                 .currentUser!.id ??
-                                            //             "",
-                                            //         recipientID:
-                                            //             userList[index].id ??
-                                            //                 ""));
+                                            Navigator.pop(context);
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return Center(
+                                                    child: InviteOverlay(
+                                                      club: widget.club,
+                                                      users: [userList[index]],
+                                                    ),
+                                                  );
+                                                });
                                           },
                                         );
                                       }

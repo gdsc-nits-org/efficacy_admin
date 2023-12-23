@@ -72,8 +72,10 @@ class _ClubPageState extends State<ClubPage> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return const Center(
-            child: OverlaySearch(),
+          return Center(
+            child: OverlaySearch(
+              club: club,
+            ),
           );
         });
   }

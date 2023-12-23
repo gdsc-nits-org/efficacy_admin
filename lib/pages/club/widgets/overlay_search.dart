@@ -19,7 +19,7 @@ class _OverlaySearchState extends State<OverlaySearch> {
   String? userName;
   Debouncer debouncer = Debouncer();
   List<UserModel> userList = [];
-  List<UserModel> selectedUsers = [];
+  Set<String> selectedUsers = {};
   bool isMultiSelect = false;
 
   @override
@@ -95,29 +95,29 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                           title: Text(userList[index].name),
                                           subtitle: Text(userList[index].email),
                                           tileColor: selectedUsers
-                                                  .contains(userList[index])
+                                                  .contains(userList[index].id)
                                               ? Colors.green
                                               : null,
                                           onLongPress: () {
                                             setState(() {
                                               isMultiSelect = true;
                                               selectedUsers
-                                                  .add(userList[index]);
+                                                  .add(userList[index].id!);
                                             });
                                           },
                                           onTap: () {
                                             if (isMultiSelect) {
                                               setState(() {
                                                 if (selectedUsers.contains(
-                                                    userList[index])) {
-                                                  selectedUsers
-                                                      .remove(userList[index]);
-                                                  if (selectedUsers == []) {
+                                                    userList[index].id)) {
+                                                  selectedUsers.remove(
+                                                      userList[index].id);
+                                                  if (selectedUsers.isEmpty) {
                                                     isMultiSelect = false;
                                                   }
                                                 } else {
                                                   selectedUsers
-                                                      .add(userList[index]);
+                                                      .add(userList[index].id!);
                                                 }
                                               });
                                             } else {

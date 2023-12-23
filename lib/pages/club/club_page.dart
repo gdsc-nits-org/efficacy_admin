@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
@@ -14,7 +13,6 @@ import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/phone_number.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'widgets/overlay_search.dart';
 
 class ClubPage extends StatefulWidget {
@@ -82,6 +80,7 @@ class _ClubPageState extends State<ClubPage> {
 
 // Function to update club
   void _updateClub() async {
+    ClubModel? newClub;
     showLoadingOverlay(
       context: context,
       asyncTask: () async {
@@ -109,7 +108,7 @@ class _ClubPageState extends State<ClubPage> {
             userName: "${nameController.text}_banner",
           );
         }
-        club = await ClubController.update(club!.copyWith(
+        newClub = await ClubController.update(club!.copyWith(
             name: nameController.text,
             description: descController.text,
             socials: {
@@ -127,9 +126,9 @@ class _ClubPageState extends State<ClubPage> {
         await UserController.update();
       },
       onCompleted: () {
-        if (mounted) {
+        if (mounted && newClub != null) {
           showErrorSnackBar(context, "Club Updated");
-          Navigator.pop(context, club);
+          Navigator.pop(context, newClub);
         }
       },
     );
@@ -146,6 +145,7 @@ class _ClubPageState extends State<ClubPage> {
         throw Exception("Lead name must be provided");
       }
       if (mounted) {
+        ClubModel? newClub;
         showLoadingOverlay(
           context: context,
           asyncTask: () async {
@@ -168,7 +168,7 @@ class _ClubPageState extends State<ClubPage> {
               throw Exception("Could not upload image");
             }
             // validation logic
-            ClubModel? club = ClubModel(
+            newClub = ClubModel(
               name: nameController.text,
               description: descController.text,
               email: emailController.text,
@@ -180,23 +180,23 @@ class _ClubPageState extends State<ClubPage> {
               instituteName: instituteName,
               members: {},
             );
-            club = await ClubController.create(club);
-            if (club != null) {
+            newClub = await ClubController.create(newClub!);
+            if (newClub != null) {
               ClubPositionModel? clubPosition =
                   await ClubPositionController.create(
                 ClubPositionModel(
-                  clubID: club.id!,
+                  clubID: newClub!.id!,
                   position: leadName,
                   permissions: Permissions.values,
                 ),
               );
               if (clubPosition != null && clubPosition.id != null) {
-                club = club.copyWith(
+                newClub = newClub!.copyWith(
                   members: {
                     clubPosition.id!: [UserController.currentUser!.id!],
                   },
                 );
-                club = await ClubController.update(club);
+                newClub = await ClubController.update(newClub!);
                 List<String> clubPositions =
                     UserController.currentUser!.position;
                 clubPositions = [...clubPositions, clubPosition.id!];
@@ -209,9 +209,9 @@ class _ClubPageState extends State<ClubPage> {
             }
           },
           onCompleted: () {
-            if (mounted) {
+            if (mounted && newClub != null) {
               showErrorSnackBar(context, "Club Created");
-              Navigator.pop(context, club);
+              Navigator.pop(context, newClub);
             }
           },
         );

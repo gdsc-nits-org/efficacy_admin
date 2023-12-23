@@ -9,6 +9,8 @@ Future<ClubModel> _updateImpl(ClubModel club) async {
   SelectorBuilder selectorBuilder = SelectorBuilder();
   selectorBuilder.eq("_id", ObjectId.parse(club.id!));
 
+  await ClubController._checkDuplicate(club);
+
   List<ClubModel> oldData =
       await ClubController.get(id: club.id, forceGet: true).first;
 

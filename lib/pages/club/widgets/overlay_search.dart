@@ -122,21 +122,20 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                                 }
                                               });
                                             } else {
-                                              //invitation commented for now
-                                              // InvitationController.create(
-                                              //     InvitationModel(
-                                              //         clubPositionID:
-                                              //             UserController
-                                              //                 .currentUser!
-                                              //                 .position
-                                              //                 .toString(),
-                                              //         senderID: UserController
-                                              //                 .currentUser!
-                                              //                 .id ??
-                                              //             "",
-                                              //         recipientID:
-                                              //             userList[index].id ??
-                                              //                 ""));
+                                              Navigator.pop(context);
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Center(
+                                                      child: InviteOverlay(
+                                                        club: widget.club,
+                                                        users: [
+                                                          userList[index].id!
+                                                        ],
+                                                      ),
+                                                    );
+                                                  });
                                             }
                                           },
                                         );
@@ -146,21 +145,24 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                   ),
                       );
                     }),
-                InviteButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Center(
-                            child: InviteOverlay(
-                              club: widget.club,
-                              users: [userList[index]],
-                            ),
-                          );
-                        });
-                  },
-                )
+                isMultiSelect
+                    ? ElevatedButton(
+                        child: const Text("Continue"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Center(
+                                  child: InviteOverlay(
+                                    club: widget.club,
+                                    users: selectedUsers.toList(),
+                                  ),
+                                );
+                              });
+                        },
+                      )
+                    :const SizedBox(),
               ],
             ),
           ),

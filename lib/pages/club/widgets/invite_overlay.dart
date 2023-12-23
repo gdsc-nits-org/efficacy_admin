@@ -9,7 +9,7 @@ import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 
 class InviteOverlay extends StatefulWidget {
-  final List<UserModel> users;
+  final List<String> users;
   final ClubModel? club;
   const InviteOverlay({
     super.key,
@@ -119,11 +119,11 @@ class _InviteOverlayState extends State<InviteOverlay> {
                     }),
                 ElevatedButton(
                     onPressed: () {
-                      for (UserModel user in widget.users) {
+                      for (String user in widget.users) {
                         InvitationController.create(InvitationModel(
                             clubPositionID: clubPositionList[selected].clubID,
                             senderID: UserController.currentUser!.id ?? "",
-                            recipientID: user.id!));
+                            recipientID: user));
                       }
                       showErrorSnackBar(
                           context, "Invitation sent successfully!");

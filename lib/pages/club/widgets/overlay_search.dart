@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/pages/club/widgets/buttons.dart';
 import 'package:efficacy_admin/utils/debouncer.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,9 @@ class OverlaySearch extends StatefulWidget {
 class _OverlaySearchState extends State<OverlaySearch> {
   String? userName;
   Debouncer debouncer = Debouncer();
+  List<UserModel> userList = [];
+  List<UserModel> selectedUsers = [];
+  bool isMultiSelect = false;
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +56,12 @@ class _OverlaySearchState extends State<OverlaySearch> {
                     ),
                   ),
                 ),
+                isMultiSelect
+                    ? Text("Selected: ${selectedUsers.length}")
+                    : const Text(""),
                 StreamBuilder<List<UserModel>>(
                     stream: UserController.get(nameStartsWith: userName),
                     builder: (context, snapshot) {
-                      List<UserModel> userList = [];
                       if (snapshot.hasData) {
                         userList = snapshot.data ?? [];
                         if (userList.length == 1 &&
@@ -88,20 +94,49 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                         return ListTile(
                                           title: Text(userList[index].name),
                                           subtitle: Text(userList[index].email),
+                                          tileColor: selectedUsers
+                                                  .contains(userList[index])
+                                              ? Colors.green
+                                              : null,
+                                          onLongPress: () {
+                                            setState(() {
+                                              isMultiSelect = true;
+                                              selectedUsers
+                                                  .add(userList[index]);
+                                            });
+                                          },
                                           onTap: () {
-                                            InvitationController.create(
-                                                InvitationModel(
-                                                    clubPositionID:
-                                                        UserController
-                                                            .currentUser!
-                                                            .position
-                                                            .toString(),
-                                                    senderID: UserController
-                                                            .currentUser!.id ??
-                                                        "",
-                                                    recipientID:
-                                                        userList[index].id ??
-                                                            ""));
+                                            if (isMultiSelect) {
+                                              setState(() {
+                                                if (selectedUsers.contains(
+                                                    userList[index])) {
+                                                  selectedUsers
+                                                      .remove(userList[index]);
+                                                  if (selectedUsers == []) {
+                                                    isMultiSelect = false;
+                                                  }
+                                                } else {
+                                                  selectedUsers
+                                                      .add(userList[index]);
+                                                }
+                                              });
+                                            } else {
+                                              //invitation commented for now
+                                              // InvitationController.create(
+                                              //     InvitationModel(
+                                              //         clubPositionID:
+                                              //             UserController
+                                              //                 .currentUser!
+                                              //                 .position
+                                              //                 .toString(),
+                                              //         senderID: UserController
+                                              //                 .currentUser!
+                                              //                 .id ??
+                                              //             "",
+                                              //         recipientID:
+                                              //             userList[index].id ??
+                                              //                 ""));
+                                            }
                                           },
                                         );
                                       }
@@ -110,6 +145,9 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                   ),
                       );
                     }),
+                InviteButton(
+                  onPressed: () {},
+                )
               ],
             ),
           ),

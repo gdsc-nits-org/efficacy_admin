@@ -24,7 +24,26 @@ class InviteOverlay extends StatefulWidget {
 class _InviteOverlayState extends State<InviteOverlay> {
   final TextEditingController _newClub = TextEditingController();
   List<ClubPositionModel> clubPositionList = [];
+  String _newClubPositonName = '';
   int selected = -1;
+  @override
+  void initState() {
+    super.initState();
+    _newClub.addListener(_onTextChanged);
+  }
+
+  void _onTextChanged() {
+    setState(() {
+      _newClubPositonName = _newClub.text.trim();
+      // print(_newClubPositonName);
+    });
+  }
+
+  @override
+  void dispose() {
+    _newClub.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,29 +77,39 @@ class _InviteOverlayState extends State<InviteOverlay> {
                         flex: 4,
                         child: SizedBox(
                           height: 40,
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              ClubPositionModel? newClubPosition =
-                                  await ClubPositionController.create(
-                                ClubPositionModel(
-                                  clubID: widget.club!.id!,
-                                  position: _newClub.text.toString(),
-                                ),
-                              );
-                              if (newClubPosition != null) {
-                                setState(() {});
-                              }
+                          child: _newClubPositonName.isNotEmpty
+                              ? ElevatedButton(
+                                  onPressed: () async {
+                                    ClubPositionModel? newClubPosition =
+                                        await ClubPositionController.create(
+                                      ClubPositionModel(
+                                        clubID: widget.club!.id!,
+                                        position: _newClubPositonName,
+                                      ),
+                                    );
+                                    if (newClubPosition != null) {
+                                      setState(() {});
+                                    }
 
-                              if (mounted) {
-                                showErrorSnackBar(
-                                    context,
-                                    newClubPosition != null
-                                        ? "${_newClub.text.toString()} position added to club"
-                                        : "Couldn't add position");
-                              }
-                            },
-                            child: const Text("Add"),
-                          ),
+                                    if (mounted) {
+                                      showErrorSnackBar(
+                                          context,
+                                          newClubPosition != null
+                                              ? "$_newClubPositonName position added to club"
+                                              : "Couldn't add position");
+                                    }
+                                  },
+                                  child: const Text("Add"),
+                                )
+                              : ElevatedButton(
+                                  onPressed: () {
+                                    showErrorSnackBar(context,
+                                        "Club position can't be empty");
+                                  },
+                                  style: const ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStatePropertyAll(shadow)),
+                                  child: const Text("Add")),
                         ),
                       ),
                     ],

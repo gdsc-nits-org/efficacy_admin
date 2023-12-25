@@ -4,11 +4,8 @@ import 'package:efficacy_admin/pages/club/club_page.dart';
 import 'package:flutter/material.dart';
 
 class ClubsStream extends StatefulWidget {
-  final double maxHeight;
-
   const ClubsStream({
     super.key,
-    required this.maxHeight,
   }); // Size constants
   static const double bigFontSize = 18;
   static const double smallFontSize = 14;
@@ -22,86 +19,85 @@ class ClubsStream extends StatefulWidget {
 }
 
 class _ClubsStreamState extends State<ClubsStream> {
+  List<Widget> buildClubs(List<ClubModel> clubs) {
+    List<Widget> children = [];
+    for (int index = 0; index < clubs.length; index++) {
+      final club = clubs[index];
+      children.add(
+        Padding(
+          padding: const EdgeInsets.only(bottom: ClubsStream.smallPadding),
+          child: Card(
+            child: ListTile(
+              contentPadding: const EdgeInsets.only(
+                  left: ClubsStream.smallPadding,
+                  right: ClubsStream.largePadding,
+                  top: ClubsStream.largePadding,
+                  bottom: ClubsStream.largePadding),
+              title: Text(
+                club.name,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              trailing: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Institute: ${club.instituteName}',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  Text(
+                    'Email: ${club.email}',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                ],
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClubPage(
+                      createMode: false,
+                      club: club,
+                    ),
+                  ),
+                ).then(
+                  (dynamic newClubDetails) {
+                    if (newClubDetails != null && newClubDetails is ClubModel) {
+                      setState(() {
+                        UserController.clubs[index] = newClubDetails;
+                      });
+                    }
+                  },
+                );
+              },
+              leading: ClipOval(
+                child: Image(
+                  image: NetworkImage(club.clubLogoURL),
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.people),
+                  width: ClubsStream.imageWidth,
+                  // Adjust the width as needed
+                  height: ClubsStream.imageWidth,
+                  // Adjust the height as needed
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    return children;
+  }
+
   @override
   Widget build(BuildContext context) {
     List<ClubModel> clubs = UserController.clubs;
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: widget.maxHeight),
-      child: (clubs.isNotEmpty)
-          ? ListView.builder(
-              itemCount: clubs.length,
-              itemBuilder: (context, index) {
-                final club = clubs[index];
-                return Padding(
-                  padding: const EdgeInsets.only(
-                      top: ClubsStream.smallPadding,
-                      bottom: ClubsStream.smallPadding),
-                  child: Card(
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.only(
-                          left: ClubsStream.smallPadding,
-                          right: ClubsStream.largePadding,
-                          top: ClubsStream.largePadding,
-                          bottom: ClubsStream.largePadding),
-                      title: Text(
-                        club.name,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Institute: ${club.instituteName}',
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                          Text(
-                            'Email: ${club.email}',
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ClubPage(
-                              createMode: false,
-                              club: club,
-                            ),
-                          ),
-                        ).then(
-                          (dynamic newClubDetails) {
-                            if (newClubDetails != null &&
-                                newClubDetails is ClubModel) {
-                              setState(() {
-                                UserController.clubs[index] = newClubDetails;
-                              });
-                            }
-                          },
-                        );
-                      },
-                      leading: ClipOval(
-                        child: Image(
-                          image: NetworkImage(club.clubLogoURL),
-                          errorBuilder: (context, error, stackTrace) =>
-                              const Icon(Icons.people),
-                          width: ClubsStream.imageWidth,
-                          // Adjust the width as needed
-                          height: ClubsStream.imageWidth,
-                          // Adjust the height as needed
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            )
-          : const Text("You are in no club"),
-    );
+    return (clubs.isNotEmpty)
+        ? Column(children: buildClubs(clubs))
+        : const Text("You are in no club");
   }
 }

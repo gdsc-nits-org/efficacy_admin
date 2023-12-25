@@ -1,18 +1,23 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
+import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 
 class InvitationItem extends StatelessWidget {
   final String clubPositionID;
   final String senderID;
   final InvitationModel invitation;
+  final VoidCallback onCompleteAcceptOrReject;
   const InvitationItem({
     super.key,
     required this.clubPositionID,
     required this.senderID,
     required this.invitation,
+    required this.onCompleteAcceptOrReject,
   });
 
   @override
@@ -49,15 +54,36 @@ class InvitationItem extends StatelessWidget {
                         club = snapshot.data.first;
                       }
                       return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            club?.name ?? "Club",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          Row(
+                            children: [
+                              if (club?.clubLogoURL != null)
+                                ProfileImageViewer(
+                                  imagePath: club!.clubLogoURL,
+                                  enabled: false,
+                                  height: 20,
+                                ),
+                              Text(
+                                club?.name ?? "Club",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ].separate(6),
                           ),
-                          Text(
-                            clubPosition?.position ?? "Position",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Text(
+                                "Position: ",
+                                style: Theme.of(context).textTheme.labelMedium,
+                              ),
+                              Text(
+                                clubPosition?.position ?? "Position",
+                                style: Theme.of(context).textTheme.labelMedium,
+                              ),
+                            ],
+                          )
                         ],
                       );
                     },
@@ -74,9 +100,17 @@ class InvitationItem extends StatelessWidget {
                       snapshot.data!.isNotEmpty) {
                     senderName = snapshot.data!.first.name;
                   }
-                  return Text(
-                    senderName,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  return Row(
+                    children: [
+                      Text(
+                        "Sender: ",
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                      Text(
+                        senderName,
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                    ],
                   );
                 },
               ),
@@ -89,7 +123,16 @@ class InvitationItem extends StatelessWidget {
                 child: IconButton(
                   onPressed: () async {
                     // Handle accept invitation
-                    await InvitationController.acceptInvitation(invitation.id!);
+                    showLoadingOverlay(
+                      context: context,
+                      asyncTask: () async {
+                        await InvitationController.acceptInvitation(
+                          invitation.id!,
+                        );
+                        onCompleteAcceptOrReject();
+                        showErrorSnackBar(context, "Welcome to the club");
+                      },
+                    );
                   },
                   icon: const Icon(
                     Icons.check,

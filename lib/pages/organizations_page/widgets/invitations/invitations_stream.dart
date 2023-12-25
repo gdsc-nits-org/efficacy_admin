@@ -5,14 +5,24 @@ import 'package:efficacy_admin/pages/organizations_page/widgets/invitations/invi
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 
-class InvitationsStream extends StatelessWidget {
+class InvitationsStream extends StatefulWidget {
   final double maxHeight;
-  const InvitationsStream({super.key, required this.maxHeight});
+  final VoidCallback onCompleteAction;
+  const InvitationsStream({
+    super.key,
+    required this.maxHeight,
+    required this.onCompleteAction,
+  });
 
+  @override
+  State<InvitationsStream> createState() => _InvitationsStreamState();
+}
+
+class _InvitationsStreamState extends State<InvitationsStream> {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: maxHeight),
+      constraints: BoxConstraints(maxHeight: widget.maxHeight),
       child: StreamBuilder<List<InvitationModel>>(
         stream: InvitationController.get(
           recipientID: UserController.currentUser?.id,
@@ -30,6 +40,9 @@ class InvitationsStream extends StatelessWidget {
                         senderID: invitation.senderID,
                         clubPositionID: invitation.clubPositionID,
                         invitation: invitation,
+                        onCompleteAcceptOrReject: () {
+                          widget.onCompleteAction();
+                        },
                       );
                     }).toList(),
                   ),

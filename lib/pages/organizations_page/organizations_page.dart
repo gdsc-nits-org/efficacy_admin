@@ -1,11 +1,8 @@
 import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/controllers/controllers.dart';
-import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/pages/club/club_page.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 import 'widgets/clubs/clubs_stream.dart';
 import 'widgets/invitations/invitations_stream.dart';
@@ -34,7 +31,6 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
       endDrawer: const CustomDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigator.pushNamed(context, CreateEditClub.routeName);
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -55,38 +51,32 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
           child: SingleChildScrollView(
             child: SizedBox(
               width: width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text("Invitations",
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: dark)),
-                      const Divider(),
-                      InvitationsStream(maxHeight: height / 3),
-                    ],
-                  ),
-                  const Divider(color: dark),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text("Clubs",
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: dark)),
-                      const Divider(),
-                      ClubsStream(maxHeight: height / 3),
-                    ],
-                  ),
-                ].separate(gap),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Invitations",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: dark)),
+                    const Divider(),
+                    InvitationsStream(
+                        maxHeight: height / 3,
+                        onCompleteAction: () => setState(() {})),
+                    const Divider(color: dark),
+                    const Text(
+                      "Clubs",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: dark),
+                    ),
+                    const Divider(),
+                    const ClubsStream(),
+                  ].separate(gap),
+                ),
               ),
             ),
           ),

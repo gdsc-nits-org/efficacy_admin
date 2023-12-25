@@ -53,22 +53,31 @@ class _InviteOverlayState extends State<InviteOverlay> {
                           prefixIcon: Icons.assignment_ind_outlined,
                         ),
                       ),
-                      const Spacer(
-                        flex: 1,
-                      ),
+                      const Spacer(flex: 1),
                       Flexible(
                         flex: 4,
                         child: SizedBox(
                           height: 40,
                           child: ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                ClubPositionController.create(ClubPositionModel(
-                                    clubID: widget.club!.id!,
-                                    position: _newClub.text.toString()));
-                              });
-                              showErrorSnackBar(context,
-                                  "${_newClub.text.toString()} position added to club");
+                            onPressed: () async {
+                              ClubPositionModel? newClubPosition =
+                                  await ClubPositionController.create(
+                                ClubPositionModel(
+                                  clubID: widget.club!.id!,
+                                  position: _newClub.text.toString(),
+                                ),
+                              );
+                              if (newClubPosition != null) {
+                                setState(() {});
+                              }
+
+                              if (mounted) {
+                                showErrorSnackBar(
+                                    context,
+                                    newClubPosition != null
+                                        ? "${_newClub.text.toString()} position added to club"
+                                        : "Couldn't add position");
+                              }
                             },
                             child: const Text("Add"),
                           ),
@@ -109,7 +118,11 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                             clubPositionList[index].position),
                                         onTap: () {
                                           setState(() {
-                                            selected = index;
+                                            if (selected == index) {
+                                              selected = -1;
+                                            } else {
+                                              selected = index;
+                                            }
                                           });
                                         },
                                       );
@@ -118,16 +131,20 @@ class _InviteOverlayState extends State<InviteOverlay> {
                       );
                     }),
                 ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       for (String user in widget.users) {
-                        InvitationController.create(InvitationModel(
-                            clubPositionID: clubPositionList[selected].clubID,
-                            senderID: UserController.currentUser!.id ?? "",
-                            recipientID: user));
+                        await InvitationController.create(
+                          InvitationModel(
+                              clubPositionID: clubPositionList[selected].id!,
+                              senderID: UserController.currentUser!.id ?? "",
+                              recipientID: user),
+                        );
                       }
-                      showErrorSnackBar(
-                          context, "Invitation sent successfully!");
-                      Navigator.pop(context);
+                      if (mounted) {
+                        showErrorSnackBar(
+                            context, "Invitation sent successfully!");
+                        Navigator.pop(context);
+                      }
                     },
                     child: const Text("Send Invite"))
               ],

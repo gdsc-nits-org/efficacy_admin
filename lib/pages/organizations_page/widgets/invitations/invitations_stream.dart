@@ -45,47 +45,44 @@ class InvitationsStreamState extends State<InvitationsStream> {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: widget.maxHeight),
-      child: RefreshIndicator(
-        onRefresh: refreshInvites,
-        child: StreamBuilder<List<InvitationModel>>(
-          stream: _getInvitations(),
-          initialData: const [],
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                final invitations = snapshot.data;
-                if (invitations!.isNotEmpty) {
-                  return SingleChildScrollView(
-                    child: Column(
-                      children: invitations.map((invitation) {
-                        return InvitationItem(
-                          senderID: invitation.senderID,
-                          clubPositionID: invitation.clubPositionID,
-                          invitation: invitation,
-                          onCompleteAcceptOrReject: () {
-                            widget.onCompleteAction();
-                          },
-                        );
-                      }).toList(),
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  showErrorSnackBar(context, 'Error: ${snapshot.error}');
-                  throw Exception('Error: ${snapshot.error}');
-                } else {
-                  return const Text("No invitations");
-                }
+      child: StreamBuilder<List<InvitationModel>>(
+        stream: _getInvitations(),
+        initialData: const [],
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              final invitations = snapshot.data;
+              if (invitations!.isNotEmpty) {
+                return SingleChildScrollView(
+                  child: Column(
+                    children: invitations.map((invitation) {
+                      return InvitationItem(
+                        senderID: invitation.senderID,
+                        clubPositionID: invitation.clubPositionID,
+                        invitation: invitation,
+                        onCompleteAcceptOrReject: () {
+                          widget.onCompleteAction();
+                        },
+                      );
+                    }).toList(),
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                showErrorSnackBar(context, 'Error: ${snapshot.error}');
+                throw Exception('Error: ${snapshot.error}');
               } else {
-                // Found to run when no user is logged in
-                showErrorSnackBar(context, "Please login");
-                throw Exception("User not logged in");
+                return const Text("No invitations");
               }
             } else {
-              // Works for all connection state but the one encountered here is ConnectionState.waiting
-              return const Center(child: CircularProgressIndicator());
+              // Found to run when no user is logged in
+              showErrorSnackBar(context, "Please login");
+              throw Exception("User not logged in");
             }
-          },
-        ),
+          } else {
+            // Works for all connection state but the one encountered here is ConnectionState.waiting
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }

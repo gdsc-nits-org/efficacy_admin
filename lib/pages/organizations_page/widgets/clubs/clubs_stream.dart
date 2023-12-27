@@ -117,16 +117,13 @@ class ClubsStreamState extends State<ClubsStream> {
   @override
   Widget build(BuildContext context) {
     List<ClubModel> clubs = UserController.clubs;
-    return RefreshIndicator(
-      onRefresh: refreshClubs,
-      child: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : (clubs.isNotEmpty)
-          ? SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        child: Column(children: buildClubs(clubs)),
-      )
-          : Text("You are in no club"),
-    );
+    return _isLoading
+        ? Center(child: CircularProgressIndicator())
+        : (clubs.isNotEmpty)
+        ? SingleChildScrollView(
+      physics: AlwaysScrollableScrollPhysics(),
+      child: Column(children: buildClubs(clubs)),
+    )
+        : Text("You are in no club");
   }
 }

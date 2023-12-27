@@ -24,6 +24,7 @@ class _EventDetailsViewerState extends State<EventDetailsViewer> {
 
   Future<void> _refreshData() async {
     await Future.delayed(const Duration(seconds: 1));
+    EventController.get(forceGet: true);
   }
 
   @override

@@ -28,6 +28,8 @@ class ClubPage extends StatefulWidget {
 }
 
 class _ClubPageState extends State<ClubPage> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+  GlobalKey<RefreshIndicatorState>();
   //form variables
   final _formKey = GlobalKey<FormState>();
   late bool _createMode;
@@ -290,6 +292,7 @@ class _ClubPageState extends State<ClubPage> {
                 })
               : null,
       body: RefreshIndicator(
+        key: _refreshIndicatorKey,
         onRefresh: _refresh,
         child: Center(
           child: SingleChildScrollView(

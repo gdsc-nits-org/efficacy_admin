@@ -24,6 +24,9 @@ class CreateEvent extends StatefulWidget {
 }
 
 class _CreateEventState extends State<CreateEvent> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
   //form variables
   final _formKey = GlobalKey<FormState>();
 
@@ -61,9 +64,12 @@ class _CreateEventState extends State<CreateEvent> {
         contacts: selectedModerator != null ? [selectedModerator!.email] : [],
         clubID: selectedClub!.id!,
       );
-      showLoadingOverlay(context: context, asyncTask: () async{
-        await EventController.create(event);
-      },);
+      showLoadingOverlay(
+        context: context,
+        asyncTask: () async {
+          await EventController.create(event);
+        },
+      );
     } else {
       showErrorSnackBar(
           context, "Upload failed. Please enter the required values.");
@@ -85,114 +91,125 @@ class _CreateEventState extends State<CreateEvent> {
     });
   }
 
+  Future<void> _refresh() async {
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() {
+      EventController.get();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     getSize(context);
 
     return Stack(children: [
-      Scaffold(
-        floatingActionButton: UploadButton(onPressed: _validateForm),
-        body: SafeArea(
-          child: SlidingUpPanel(
-            padding: const EdgeInsets.only(top: 30),
-            maxHeight: height,
-            minHeight: height * .70,
-            borderRadius: BorderRadius.circular(30),
-            header: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(width: width * 0.33),
-                Container(
-                  height: 3,
-                  width: width * 0.35,
-                  decoration: const BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
+      RefreshIndicator(
+        onRefresh: _refresh,
+        key: _refreshIndicatorKey,
+        child: Scaffold(
+          floatingActionButton: UploadButton(onPressed: _validateForm),
+          body: SafeArea(
+            child: SlidingUpPanel(
+              padding: const EdgeInsets.only(top: 30),
+              maxHeight: height,
+              minHeight: height * .70,
+              borderRadius: BorderRadius.circular(30),
+              header: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(width: width * 0.33),
+                  Container(
+                    height: 3,
+                    width: width * 0.35,
+                    decoration: const BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            panelBuilder: (sc) => EventForm(
-              formKey: _formKey,
-              scrollController: sc,
-              titleController: titleController,
-              shortDescController: shortDescController,
-              longDescController: longDescController,
-              googleUrlController: googleUrlController,
-              fbUrlController: fbUrlController,
-              venueController: venueController,
-              selectedDate1: selectedDate1,
-              selectedClub: selectedClub,
-              onSelectedClubModelChanged: (ClubModel clubModel) {
-                setState(() {
-                  selectedClub = clubModel;
-                });
-              },
-              onSelectedDate1Changed: (DateTime newDate) {
-                setState(() {
-                  selectedDate1 = newDate;
-                });
-              },
-              selectedDate2: selectedDate2,
-              onSelectedDate2Changed: (DateTime newDate) {
-                setState(() {
-                  selectedDate2 = newDate;
-                });
-              },
-              selectedTime1: selectedTime1,
-              onSelectedTime1Changed: (TimeOfDay newTime) {
-                setState(() {
-                  selectedTime1 = newTime;
-                });
-              },
-              selectedTime2: selectedTime2,
-              onSelectedTime2Changed: (TimeOfDay newTime) {
-                setState(() {
-                  selectedTime2 = newTime;
-                });
-              },
-              selectedModerator: selectedModerator,
-              onSelectedModeratorChanged: (UserModel? newModerator) {
-                setState(() {
-                  selectedModerator = newModerator;
-                });
-              },
-            ),
-            body: _image == null
-                ? Stack(
-                    alignment: Alignment.topCenter,
-                    children: [
-                      Image.asset(
-                        "assets/images/media.png",
-                        width: width,
-                        fit: BoxFit.cover,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: width / 3),
-                        child: SizedBox(
-                          height: buttonHeight,
-                          width: buttonWidth,
-                          child: ElevatedButton(
-                            onPressed: () => _getImage(),
-                            child: const Text("Pick Image"),
+                ],
+              ),
+              panelBuilder: (sc) => EventForm(
+                formKey: _formKey,
+                scrollController: sc,
+                titleController: titleController,
+                shortDescController: shortDescController,
+                longDescController: longDescController,
+                googleUrlController: googleUrlController,
+                fbUrlController: fbUrlController,
+                venueController: venueController,
+                selectedDate1: selectedDate1,
+                selectedClub: selectedClub,
+                onSelectedClubModelChanged: (ClubModel clubModel) {
+                  setState(() {
+                    selectedClub = clubModel;
+                  });
+                },
+                onSelectedDate1Changed: (DateTime newDate) {
+                  setState(() {
+                    selectedDate1 = newDate;
+                  });
+                },
+                selectedDate2: selectedDate2,
+                onSelectedDate2Changed: (DateTime newDate) {
+                  setState(() {
+                    selectedDate2 = newDate;
+                  });
+                },
+                selectedTime1: selectedTime1,
+                onSelectedTime1Changed: (TimeOfDay newTime) {
+                  setState(() {
+                    selectedTime1 = newTime;
+                  });
+                },
+                selectedTime2: selectedTime2,
+                onSelectedTime2Changed: (TimeOfDay newTime) {
+                  setState(() {
+                    selectedTime2 = newTime;
+                  });
+                },
+                selectedModerator: selectedModerator,
+                onSelectedModeratorChanged: (UserModel? newModerator) {
+                  setState(() {
+                    selectedModerator = newModerator;
+                  });
+                },
+              ),
+              body: _image == null
+                  ? Stack(
+                      alignment: Alignment.topCenter,
+                      children: [
+                        Image.asset(
+                          "assets/images/media.png",
+                          width: width,
+                          fit: BoxFit.cover,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: width / 3),
+                          child: SizedBox(
+                            height: buttonHeight,
+                            width: buttonWidth,
+                            child: ElevatedButton(
+                              onPressed: () => _getImage(),
+                              child: const Text("Pick Image"),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                : Align(
-                    alignment: Alignment.topCenter,
-                    child: GestureDetector(
-                      onTap: () => _getImage(),
-                      child: Image.memory(
-                        _image!,
-                        width: width,
-                        fit: BoxFit.fitWidth,
+                      ],
+                    )
+                  : Align(
+                      alignment: Alignment.topCenter,
+                      child: GestureDetector(
+                        onTap: () => _getImage(),
+                        child: Image.memory(
+                          _image!,
+                          width: width,
+                          fit: BoxFit.fitWidth,
+                        ),
                       ),
                     ),
-                  ),
+            ),
           ),
         ),
       ),

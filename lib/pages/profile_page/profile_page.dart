@@ -24,6 +24,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfileState extends State<ProfilePage> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+  GlobalKey<RefreshIndicatorState>();
   @override
   void initState() {
     super.initState();
@@ -124,6 +126,7 @@ class _ProfileState extends State<ProfilePage> {
             })
           : null,
       body: RefreshIndicator(
+        key: _refreshIndicatorKey,
         onRefresh: _refresh,
         child: Center(
           child: SingleChildScrollView(

@@ -30,6 +30,7 @@ class InvitationsStreamState extends State<InvitationsStream> {
 
   Stream<List<InvitationModel>> _getInvitations() {
     return InvitationController.get(
+      forceGet: true,
       recipientID: UserController.currentUser?.id,
     );
   }

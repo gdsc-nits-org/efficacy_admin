@@ -81,7 +81,9 @@ class _ClubPageState extends State<ClubPage> {
 
   Future<void> _refresh() async {
     await Future.delayed(Duration(seconds: 1));
-    ClubController.get();
+    setState(() {
+      ClubController.get(forceGet: true);
+    });
   }
 
 // Function to update club
@@ -262,34 +264,34 @@ class _ClubPageState extends State<ClubPage> {
     double profileSize = 100;
     double profileBorder = 7;
 
-    return RefreshIndicator(
-      onRefresh: _refresh,
-      child: Scaffold(
-        endDrawer: const CustomDrawer(),
-        appBar: CustomAppBar(
-            title: (_createMode) ? "New Club" : nameController.text,
-            actions: [
-              if (_editMode == false && _createMode == false)
-                EditButton(
-                  onPressed: () {
-                    setState(() {
-                      _editMode = true;
-                    });
-                  },
-                ),
-            ]),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: _createMode
-            ? CreateButton(onPressed: _validateForm)
-            : _editMode
-                ? SaveButton(onPressed: () {
-                    _updateClub();
-                    setState(() {
-                      _editMode = false;
-                    });
-                  })
-                : null,
-        body: Center(
+    return Scaffold(
+      endDrawer: const CustomDrawer(),
+      appBar: CustomAppBar(
+          title: (_createMode) ? "New Club" : nameController.text,
+          actions: [
+            if (_editMode == false && _createMode == false)
+              EditButton(
+                onPressed: () {
+                  setState(() {
+                    _editMode = true;
+                  });
+                },
+              ),
+          ]),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: _createMode
+          ? CreateButton(onPressed: _validateForm)
+          : _editMode
+              ? SaveButton(onPressed: () {
+                  _updateClub();
+                  setState(() {
+                    _editMode = false;
+                  });
+                })
+              : null,
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        child: Center(
           child: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.only(bottom: vMargin),

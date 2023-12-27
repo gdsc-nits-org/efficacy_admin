@@ -4,6 +4,7 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/pages/club/widgets/position_permission_overlay.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class InviteOverlay extends StatefulWidget {
 class _InviteOverlayState extends State<InviteOverlay> {
   final TextEditingController _newClub = TextEditingController();
   List<ClubPositionModel> clubPositionList = [];
-  String _newClubPositonName = '';
+  String _newClubPositionName = '';
   int selected = -1;
   @override
   void initState() {
@@ -34,8 +35,8 @@ class _InviteOverlayState extends State<InviteOverlay> {
 
   void _onTextChanged() {
     setState(() {
-      _newClubPositonName = _newClub.text.trim();
-      // print(_newClubPositonName);
+      _newClubPositionName = _newClub.text.trim();
+      // print(_newClubPositionName);
     });
   }
 
@@ -77,14 +78,14 @@ class _InviteOverlayState extends State<InviteOverlay> {
                         flex: 4,
                         child: SizedBox(
                           height: 40,
-                          child: _newClubPositonName.isNotEmpty
+                          child: _newClubPositionName.isNotEmpty
                               ? ElevatedButton(
                                   onPressed: () async {
                                     ClubPositionModel? newClubPosition =
                                         await ClubPositionController.create(
                                       ClubPositionModel(
                                         clubID: widget.club!.id!,
-                                        position: _newClubPositonName,
+                                        position: _newClubPositionName,
                                       ),
                                     );
                                     if (newClubPosition != null) {
@@ -95,7 +96,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                       showErrorSnackBar(
                                           context,
                                           newClubPosition != null
-                                              ? "$_newClubPositonName position added to club"
+                                              ? "$_newClubPositionName position added to club"
                                               : "Couldn't add position");
                                     }
                                   },
@@ -154,6 +155,23 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                             }
                                           });
                                         },
+                                        trailing: IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Center(
+                                                      child:
+                                                          ClubPositionPermissionOverlay(
+                                                        clubPosition:
+                                                            clubPositionList[
+                                                                index],
+                                                      ),
+                                                    );
+                                                  });
+                                            },
+                                            icon: const Icon(Icons.edit)),
                                       );
                                     },
                                   ),

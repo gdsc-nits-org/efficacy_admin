@@ -38,6 +38,7 @@ class InvitationsStreamState extends State<InvitationsStream> {
     await Future.delayed(const Duration(seconds: 1));
 
     invitations = _getInvitations();
+    setState(() {});
   }
 
   @override

@@ -20,6 +20,7 @@ class ClubPage extends StatefulWidget {
   static const String routeName = '/ClubPage';
   final bool? createMode;
   final ClubModel? club;
+
   const ClubPage({super.key, this.createMode, this.club});
 
   @override
@@ -76,6 +77,11 @@ class _ClubPageState extends State<ClubPage> {
             ),
           );
         });
+  }
+
+  Future<void> _refresh() async {
+    await Future.delayed(Duration(seconds: 1));
+    ClubController.get();
   }
 
 // Function to update club
@@ -256,132 +262,135 @@ class _ClubPageState extends State<ClubPage> {
     double profileSize = 100;
     double profileBorder = 7;
 
-    return Scaffold(
-      endDrawer: const CustomDrawer(),
-      appBar: CustomAppBar(
-          title: (_createMode) ? "New Club" : nameController.text,
-          actions: [
-            if (_editMode == false && _createMode == false)
-              EditButton(
-                onPressed: () {
-                  setState(() {
-                    _editMode = true;
-                  });
-                },
-              ),
-          ]),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: _createMode
-          ? CreateButton(onPressed: _validateForm)
-          : _editMode
-              ? SaveButton(onPressed: () {
-                  _updateClub();
-                  setState(() {
-                    _editMode = false;
-                  });
-                })
-              : null,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: vMargin),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: height * 0.25,
-                    // clipBehavior: Clip.none,
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      alignment: Alignment.topCenter,
-                      children: [
-                        SizedBox(
-                          height: height * 0.15,
-                          width: width,
-                          child: GestureDetector(
-                            onTap: (_editMode || _createMode)
-                                ? _getBannerImage
-                                : () {},
-                            child: _bannerImgPath != null
-                                ? Image(
-                                    image: NetworkImage(_bannerImgPath!),
-                                    fit: BoxFit.cover,
-                                    width: width,
-                                  )
-                                : _bannerImage == null
-                                    ? Image.asset(
-                                        "assets/images/media.png",
-                                        width: width,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Image.memory(
-                                        _bannerImage!,
-                                        width: width,
-                                        fit: BoxFit.cover,
-                                      ),
-                          ),
-                        ),
-                        Positioned(
-                          left: profileSize / 2 - profileBorder * 2,
-                          top: height * 0.1,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor,
-                                width: profileBorder,
-                              ),
-                              borderRadius: BorderRadius.circular(100),
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: Scaffold(
+        endDrawer: const CustomDrawer(),
+        appBar: CustomAppBar(
+            title: (_createMode) ? "New Club" : nameController.text,
+            actions: [
+              if (_editMode == false && _createMode == false)
+                EditButton(
+                  onPressed: () {
+                    setState(() {
+                      _editMode = true;
+                    });
+                  },
+                ),
+            ]),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: _createMode
+            ? CreateButton(onPressed: _validateForm)
+            : _editMode
+                ? SaveButton(onPressed: () {
+                    _updateClub();
+                    setState(() {
+                      _editMode = false;
+                    });
+                  })
+                : null,
+        body: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: vMargin),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: height * 0.25,
+                      // clipBehavior: Clip.none,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        alignment: Alignment.topCenter,
+                        children: [
+                          SizedBox(
+                            height: height * 0.15,
+                            width: width,
+                            child: GestureDetector(
+                              onTap: (_editMode || _createMode)
+                                  ? _getBannerImage
+                                  : () {},
+                              child: _bannerImgPath != null
+                                  ? Image(
+                                      image: NetworkImage(_bannerImgPath!),
+                                      fit: BoxFit.cover,
+                                      width: width,
+                                    )
+                                  : _bannerImage == null
+                                      ? Image.asset(
+                                          "assets/images/media.png",
+                                          width: width,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.memory(
+                                          _bannerImage!,
+                                          width: width,
+                                          fit: BoxFit.cover,
+                                        ),
                             ),
-                            child: _clubImgPath != null
-                                ? ProfileImageViewer(
-                                    height: profileSize,
-                                    enabled: _editMode || _createMode,
-                                    imagePath: _clubImgPath,
-                                    onImageChange: (Uint8List? newImage) {
-                                      _clubImage = newImage;
-                                    },
-                                  )
-                                : ProfileImageViewer(
-                                    height: profileSize,
-                                    enabled: _editMode || _createMode,
-                                    imageData: _clubImage,
-                                    onImageChange: (Uint8List? newImage) {
-                                      _clubImage = newImage;
-                                    },
-                                  ),
                           ),
-                        ),
-                        (_editMode || _createMode)
-                            ? Container()
-                            : Positioned(
-                                left: width - profileSize - profileBorder * 2,
-                                top: height * 0.12,
-                                child: InviteButton(onPressed: () {
-                                  _showOverlay(context);
-                                }))
-                      ],
+                          Positioned(
+                            left: profileSize / 2 - profileBorder * 2,
+                            top: height * 0.1,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                  width: profileBorder,
+                                ),
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: _clubImgPath != null
+                                  ? ProfileImageViewer(
+                                      height: profileSize,
+                                      enabled: _editMode || _createMode,
+                                      imagePath: _clubImgPath,
+                                      onImageChange: (Uint8List? newImage) {
+                                        _clubImage = newImage;
+                                      },
+                                    )
+                                  : ProfileImageViewer(
+                                      height: profileSize,
+                                      enabled: _editMode || _createMode,
+                                      imageData: _clubImage,
+                                      onImageChange: (Uint8List? newImage) {
+                                        _clubImage = newImage;
+                                      },
+                                    ),
+                            ),
+                          ),
+                          (_editMode || _createMode)
+                              ? Container()
+                              : Positioned(
+                                  left: width - profileSize - profileBorder * 2,
+                                  top: height * 0.12,
+                                  child: InviteButton(onPressed: () {
+                                    _showOverlay(context);
+                                  }))
+                        ],
+                      ),
                     ),
-                  ),
-                  ClubForm(
-                    editMode: _editMode || _createMode,
-                    formKey: _formKey,
-                    nameController: nameController,
-                    descController: descController,
-                    githubUrlController: githubUrlController,
-                    phoneNumber: phoneNumber,
-                    onPhoneChanged: (PhoneNumber? phone) {
-                      setState(() {
-                        phoneNumber = phone;
-                      });
-                    },
-                    fbUrlController: fbUrlController,
-                    instaController: instaController,
-                    linkedinController: linkedinController,
-                    emailController: emailController,
-                  ),
-                ]),
+                    ClubForm(
+                      editMode: _editMode || _createMode,
+                      formKey: _formKey,
+                      nameController: nameController,
+                      descController: descController,
+                      githubUrlController: githubUrlController,
+                      phoneNumber: phoneNumber,
+                      onPhoneChanged: (PhoneNumber? phone) {
+                        setState(() {
+                          phoneNumber = phone;
+                        });
+                      },
+                      fbUrlController: fbUrlController,
+                      instaController: instaController,
+                      linkedinController: linkedinController,
+                      emailController: emailController,
+                    ),
+                  ]),
+            ),
           ),
         ),
       ),

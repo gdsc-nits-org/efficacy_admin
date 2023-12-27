@@ -25,6 +25,7 @@ class ClubsStreamState extends State<ClubsStream> {
     await Future.delayed(Duration(seconds: 2));
 
     clubs = UserController.clubs;
+    setState(() {});
   }
 
   List<Widget> buildClubs(List<ClubModel> clubs) {

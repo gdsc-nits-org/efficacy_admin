@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 class InvitationsStream extends StatefulWidget {
   final double maxHeight;
   final VoidCallback onCompleteAction;
+
   const InvitationsStream({
     super.key,
     required this.maxHeight,
@@ -15,54 +16,76 @@ class InvitationsStream extends StatefulWidget {
   });
 
   @override
-  State<InvitationsStream> createState() => _InvitationsStreamState();
+  State<InvitationsStream> createState() => InvitationsStreamState();
 }
 
-class _InvitationsStreamState extends State<InvitationsStream> {
+class InvitationsStreamState extends State<InvitationsStream> {
+  late Stream<List<InvitationModel>> invitations;
+
+  @override
+  void initState() {
+    super.initState();
+    invitations = _getInvitations();
+  }
+
+  Stream<List<InvitationModel>> _getInvitations() {
+    return InvitationController.get(
+      recipientID: UserController.currentUser?.id,
+    );
+  }
+
+  Future<void> refreshInvites() async {
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() {
+      invitations = _getInvitations();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: widget.maxHeight),
-      child: StreamBuilder<List<InvitationModel>>(
-        stream: InvitationController.get(
-          recipientID: UserController.currentUser?.id,
-        ),
-        initialData: const [],
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasData) {
-              final invitations = snapshot.data;
-              if (invitations!.isNotEmpty) {
-                return SingleChildScrollView(
-                  child: Column(
-                    children: invitations.map((invitation) {
-                      return InvitationItem(
-                        senderID: invitation.senderID,
-                        clubPositionID: invitation.clubPositionID,
-                        invitation: invitation,
-                        onCompleteAcceptOrReject: () {
-                          widget.onCompleteAction();
-                        },
-                      );
-                    }).toList(),
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                showErrorSnackBar(context, 'Error: ${snapshot.error}');
-                throw Exception('Error: ${snapshot.error}');
+      child: RefreshIndicator(
+        onRefresh: refreshInvites,
+        child: StreamBuilder<List<InvitationModel>>(
+          stream: _getInvitations(),
+          initialData: const [],
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                final invitations = snapshot.data;
+                if (invitations!.isNotEmpty) {
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: invitations.map((invitation) {
+                        return InvitationItem(
+                          senderID: invitation.senderID,
+                          clubPositionID: invitation.clubPositionID,
+                          invitation: invitation,
+                          onCompleteAcceptOrReject: () {
+                            widget.onCompleteAction();
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  showErrorSnackBar(context, 'Error: ${snapshot.error}');
+                  throw Exception('Error: ${snapshot.error}');
+                } else {
+                  return const Text("No invitations");
+                }
               } else {
-                return const Text("No invitations");
+                // Found to run when no user is logged in
+                showErrorSnackBar(context, "Please login");
+                throw Exception("User not logged in");
               }
             } else {
-              // Found to run when no user is logged in
-              showErrorSnackBar(context, "Please login");
-              throw Exception("User not logged in");
+              // Works for all connection state but the one encountered here is ConnectionState.waiting
+              return const Center(child: CircularProgressIndicator());
             }
-          } else {
-            // Works for all connection state but the one encountered here is ConnectionState.waiting
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
+          },
+        ),
       ),
     );
   }

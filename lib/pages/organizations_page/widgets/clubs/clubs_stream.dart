@@ -15,10 +15,31 @@ class ClubsStream extends StatefulWidget {
   static const double imageWidth = 40;
 
   @override
-  State<ClubsStream> createState() => _ClubsStreamState();
+  State<ClubsStream> createState() => ClubsStreamState();
 }
 
-class _ClubsStreamState extends State<ClubsStream> {
+class ClubsStreamState extends State<ClubsStream> {
+  late List<ClubModel> clubs;
+  bool _isLoading = false;
+
+  Future<void> refreshClubs() async {
+    // Set _isLoading to true to show the loading indicator
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Perform your refresh logic here (fetch updated data, etc.)
+    // For example:
+    await Future.delayed(Duration(seconds: 2)); // Simulating a network request
+
+    // Update your club data
+    clubs = UserController.clubs; // You might have your own method to refresh clubs
+
+    // Set _isLoading to false to hide the loading indicator
+    setState(() {
+      _isLoading = false;
+    });
+  }
   List<Widget> buildClubs(List<ClubModel> clubs) {
     List<Widget> children = [];
     for (int index = 0; index < clubs.length; index++) {
@@ -96,8 +117,16 @@ class _ClubsStreamState extends State<ClubsStream> {
   @override
   Widget build(BuildContext context) {
     List<ClubModel> clubs = UserController.clubs;
-    return (clubs.isNotEmpty)
-        ? Column(children: buildClubs(clubs))
-        : const Text("You are in no club");
+    return RefreshIndicator(
+      onRefresh: refreshClubs,
+      child: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : (clubs.isNotEmpty)
+          ? SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Column(children: buildClubs(clubs)),
+      )
+          : Text("You are in no club"),
+    );
   }
 }

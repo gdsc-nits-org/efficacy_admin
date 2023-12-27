@@ -20,26 +20,13 @@ class ClubsStream extends StatefulWidget {
 
 class ClubsStreamState extends State<ClubsStream> {
   late List<ClubModel> clubs;
-  bool _isLoading = false;
 
   Future<void> refreshClubs() async {
-    // Set _isLoading to true to show the loading indicator
-    setState(() {
-      _isLoading = true;
-    });
+    await Future.delayed(Duration(seconds: 2));
 
-    // Perform your refresh logic here (fetch updated data, etc.)
-    // For example:
-    await Future.delayed(Duration(seconds: 2)); // Simulating a network request
-
-    // Update your club data
-    clubs = UserController.clubs; // You might have your own method to refresh clubs
-
-    // Set _isLoading to false to hide the loading indicator
-    setState(() {
-      _isLoading = false;
-    });
+    clubs = UserController.clubs;
   }
+
   List<Widget> buildClubs(List<ClubModel> clubs) {
     List<Widget> children = [];
     for (int index = 0; index < clubs.length; index++) {
@@ -117,13 +104,11 @@ class ClubsStreamState extends State<ClubsStream> {
   @override
   Widget build(BuildContext context) {
     List<ClubModel> clubs = UserController.clubs;
-    return _isLoading
-        ? Center(child: CircularProgressIndicator())
-        : (clubs.isNotEmpty)
+    return (clubs.isNotEmpty)
         ? SingleChildScrollView(
-      physics: AlwaysScrollableScrollPhysics(),
-      child: Column(children: buildClubs(clubs)),
-    )
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(children: buildClubs(clubs)),
+          )
         : Text("You are in no club");
   }
 }

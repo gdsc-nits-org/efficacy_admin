@@ -36,9 +36,8 @@ class InvitationsStreamState extends State<InvitationsStream> {
 
   Future<void> refreshInvites() async {
     await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      invitations = _getInvitations();
-    });
+
+    invitations = _getInvitations();
   }
 
   @override
@@ -46,7 +45,7 @@ class InvitationsStreamState extends State<InvitationsStream> {
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: widget.maxHeight),
       child: StreamBuilder<List<InvitationModel>>(
-        stream: _getInvitations(),
+        stream: invitations,
         initialData: const [],
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {

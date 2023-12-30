@@ -9,6 +9,7 @@ import 'widgets/invitations/invitations_stream.dart';
 
 class OrganizationsPage extends StatefulWidget {
   const OrganizationsPage({super.key});
+
   static const String routeName = "/OrganizationsPage";
 
   @override
@@ -16,6 +17,16 @@ class OrganizationsPage extends StatefulWidget {
 }
 
 class _OrganizationsPageState extends State<OrganizationsPage> {
+  ClubsStreamState clubsStreamState = ClubsStreamState();
+  InvitationsStreamState invitationsStreamState = InvitationsStreamState();
+
+  Future<void> _refresh() async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    clubsStreamState.refreshClubs();
+    invitationsStreamState.refreshInvites();
+  }
+
   @override
   Widget build(BuildContext context) {
     //screen height and width
@@ -48,35 +59,33 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(pad),
-          child: SingleChildScrollView(
-            child: SizedBox(
-              width: width,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("Invitations",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: dark)),
-                    const Divider(),
-                    InvitationsStream(
-                        maxHeight: height / 3,
-                        onCompleteAction: () => setState(() {})),
-                    const Divider(color: dark),
-                    const Text(
-                      "Clubs",
+          child: RefreshIndicator(
+            onRefresh: _refresh,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Invitations",
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: dark),
-                    ),
-                    const Divider(),
-                    const ClubsStream(),
-                  ].separate(gap),
-                ),
+                          color: dark)),
+                  const Divider(),
+                  InvitationsStream(
+                    maxHeight: height / 3,
+                    onCompleteAction: () => setState(() {}),
+                  ),
+                  const Divider(color: dark),
+                  const Text(
+                    "Clubs",
+                    style: TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold, color: dark),
+                  ),
+                  const Divider(),
+                  const ClubsStream(),
+                ].separate(gap),
               ),
             ),
           ),

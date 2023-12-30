@@ -6,9 +6,10 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class EventViewer extends StatelessWidget {
+class EventViewer extends StatefulWidget {
   final List<EventModel> events;
   final int typeIndex;
+
   const EventViewer({
     super.key,
     required this.typeIndex,
@@ -16,91 +17,118 @@ class EventViewer extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    List<EventModel> specificList = events
-        .where((element) => Status.values.indexOf(element.type) == typeIndex)
-        .toList();
+  State<EventViewer> createState() => _EventViewerState();
+}
 
+class _EventViewerState extends State<EventViewer> {
+  late List<EventModel> specificList;
+
+  @override
+  void initState() {
+    super.initState();
+    specificList = _getSpecificList();
+  }
+
+  List<EventModel> _getSpecificList() {
+    return widget.events
+        .where((element) =>
+            Status.values.indexOf(element.type) == widget.typeIndex)
+        .toList();
+  }
+
+  Future<void> _refresh() async {
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() {
+      specificList = _getSpecificList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.builder(
-        itemCount: specificList.length,
-        itemBuilder: (context, index) {
-          final item = specificList[index];
-          return GestureDetector(
-            onTap: () {}, // to card_pressed_screen
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: CustomNetworkImage(
-                        posterUrl: item.posterURL,
-                        defaultUrl: "",
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        item.title,
-                        style: const TextStyle(
-                          color: Color(0xFF05354C),
-                          fontSize: 19,
-                          fontWeight: FontWeight.w600,
+      child: RefreshIndicator(
+        onRefresh: _refresh,
+        child: ListView.builder(
+          itemCount: specificList.length,
+          itemBuilder: (context, index) {
+            final item = specificList[index];
+            return GestureDetector(
+              onTap: () {}, // to card_pressed_screen
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: CustomNetworkImage(
+                          posterUrl: item.posterURL,
+                          defaultUrl: "",
                         ),
                       ),
-                    ),
-                    ExpandableNotifier(
-                      child: Column(
-                        children: [
-                          Expandable(
-                            collapsed: Text(
-                              item.shortDescription,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            expanded: Text(item.shortDescription),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          item.title,
+                          style: const TextStyle(
+                            color: Color(0xFF05354C),
+                            fontSize: 19,
+                            fontWeight: FontWeight.w600,
                           ),
-                          Builder(
-                            builder: (context) {
-                              var controller = ExpandableController.of(context);
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      controller.toggle();
-                                    },
-                                    child: Text(
-                                      controller!.expanded
-                                          ? "Show less"
-                                          : "Read more",
-                                      style: const TextStyle(
-                                        color: Color(0xFF05354C),
+                        ),
+                      ),
+                      ExpandableNotifier(
+                        child: Column(
+                          children: [
+                            Expandable(
+                              collapsed: Text(
+                                item.shortDescription,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              expanded: Text(item.shortDescription),
+                            ),
+                            Builder(
+                              builder: (context) {
+                                var controller =
+                                    ExpandableController.of(context);
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        controller.toggle();
+                                      },
+                                      child: Text(
+                                        controller!.expanded
+                                            ? "Show less"
+                                            : "Read more",
+                                        style: const TextStyle(
+                                          color: Color(0xFF05354C),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            },
-                          )
-                        ],
+                                  ],
+                                );
+                              },
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    AppBar(
-                      leading: const Icon(CupertinoIcons.calendar),
-                      title: Text(
-                        "${Formatter.dateTime(item.startDate)} - ${Formatter.dateTime(item.endDate)}",
-                        style: const TextStyle(fontSize: 13),
-                      ),
-                    )
-                  ].separate(5),
+                      AppBar(
+                        leading: const Icon(CupertinoIcons.calendar),
+                        title: Text(
+                          "${Formatter.dateTime(item.startDate)} - ${Formatter.dateTime(item.endDate)}",
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                      )
+                    ].separate(5),
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

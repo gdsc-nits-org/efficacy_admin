@@ -15,10 +15,19 @@ class ClubsStream extends StatefulWidget {
   static const double imageWidth = 40;
 
   @override
-  State<ClubsStream> createState() => _ClubsStreamState();
+  State<ClubsStream> createState() => ClubsStreamState();
 }
 
-class _ClubsStreamState extends State<ClubsStream> {
+class ClubsStreamState extends State<ClubsStream> {
+  late List<ClubModel> clubs;
+
+  Future<void> refreshClubs() async {
+    await Future.delayed(Duration(seconds: 2));
+
+    clubs = UserController.clubs;
+    setState(() {});
+  }
+
   List<Widget> buildClubs(List<ClubModel> clubs) {
     List<Widget> children = [];
     for (int index = 0; index < clubs.length; index++) {
@@ -97,7 +106,10 @@ class _ClubsStreamState extends State<ClubsStream> {
   Widget build(BuildContext context) {
     List<ClubModel> clubs = UserController.clubs;
     return (clubs.isNotEmpty)
-        ? Column(children: buildClubs(clubs))
-        : const Text("You are in no club");
+        ? SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(children: buildClubs(clubs)),
+          )
+        : Text("You are in no club");
   }
 }

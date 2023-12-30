@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 class InvitationsStream extends StatefulWidget {
   final double maxHeight;
   final VoidCallback onCompleteAction;
+
   const InvitationsStream({
     super.key,
     required this.maxHeight,
@@ -15,18 +16,38 @@ class InvitationsStream extends StatefulWidget {
   });
 
   @override
-  State<InvitationsStream> createState() => _InvitationsStreamState();
+  State<InvitationsStream> createState() => InvitationsStreamState();
 }
 
-class _InvitationsStreamState extends State<InvitationsStream> {
+class InvitationsStreamState extends State<InvitationsStream> {
+  late Stream<List<InvitationModel>> invitations;
+
+  @override
+  void initState() {
+    super.initState();
+    invitations = _getInvitations();
+  }
+
+  Stream<List<InvitationModel>> _getInvitations() {
+    return InvitationController.get(
+      forceGet: true,
+      recipientID: UserController.currentUser?.id,
+    );
+  }
+
+  Future<void> refreshInvites() async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    invitations = _getInvitations();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: widget.maxHeight),
       child: StreamBuilder<List<InvitationModel>>(
-        stream: InvitationController.get(
-          recipientID: UserController.currentUser?.id,
-        ),
+        stream: invitations,
         initialData: const [],
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {

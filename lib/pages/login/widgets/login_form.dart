@@ -14,15 +14,24 @@ class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State<LoginForm> createState() => LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class LoginFormState extends State<LoginForm> {
+
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
   bool hidePassword = true;
   IconData passVisibility = Icons.visibility;
+
+  Future<void> refresh() async {
+    Future.delayed(const Duration(seconds: 1));
+    setState(() {
+      _emailController.dispose();
+      _passController.dispose();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

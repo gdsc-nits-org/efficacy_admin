@@ -4,8 +4,10 @@ import 'package:efficacy_admin/pages/club/club_page.dart';
 import 'package:flutter/material.dart';
 
 class ClubsStream extends StatefulWidget {
+  final List<ClubModel> clubs;
   const ClubsStream({
     super.key,
+    required this.clubs,
   }); // Size constants
   static const double bigFontSize = 18;
   static const double smallFontSize = 14;
@@ -19,15 +21,6 @@ class ClubsStream extends StatefulWidget {
 }
 
 class ClubsStreamState extends State<ClubsStream> {
-  late List<ClubModel> clubs;
-
-  Future<void> refreshClubs() async {
-    await Future.delayed(Duration(seconds: 2));
-
-    clubs = UserController.clubs;
-    setState(() {});
-  }
-
   List<Widget> buildClubs(List<ClubModel> clubs) {
     List<Widget> children = [];
     for (int index = 0; index < clubs.length; index++) {
@@ -104,12 +97,11 @@ class ClubsStreamState extends State<ClubsStream> {
 
   @override
   Widget build(BuildContext context) {
-    List<ClubModel> clubs = UserController.clubs;
-    return (clubs.isNotEmpty)
+    return (widget.clubs.isNotEmpty)
         ? SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Column(children: buildClubs(clubs)),
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(children: buildClubs(widget.clubs)),
           )
-        : Text("You are in no club");
+        : const Text("You are in no club");
   }
 }

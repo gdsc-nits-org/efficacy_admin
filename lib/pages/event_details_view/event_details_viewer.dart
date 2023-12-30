@@ -19,12 +19,26 @@ class EventDetailsViewer extends StatefulWidget {
 }
 
 class _EventDetailsViewerState extends State<EventDetailsViewer> {
+  late EventModel event;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
   Future<void> _refreshData() async {
-    await Future.delayed(const Duration(seconds: 1));
-    EventController.get(forceGet: true);
+    List<EventModel> updatedEvent = await EventController.get(
+      eventID: widget.currentEvent.id,
+      forceGet: true,
+    ).first;
+    if (updatedEvent.isNotEmpty) {
+      setState(() {
+        event = updatedEvent.first;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    event = widget.currentEvent;
   }
 
   @override
@@ -43,14 +57,14 @@ class _EventDetailsViewerState extends State<EventDetailsViewer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.currentEvent.title,
+                    event.title,
                     style: TextStyle(
                       color: dark,
                       fontWeight: FontWeight.w800,
                       fontSize: screenWidth * 0.094,
                     ),
                   ),
-                  Text(widget.currentEvent.shortDescription),
+                  Text(event.shortDescription),
                 ].separate(15),
               ),
               SingleChildScrollView(
@@ -82,9 +96,7 @@ class _EventDetailsViewerState extends State<EventDetailsViewer> {
                   fontSize: 20,
                 ),
               ),
-              EventStats(
-                currentEventDate: widget.currentEvent.startDate,
-              ),
+              EventStats(currentEventDate: event.startDate),
               const Contributors(role: "Added By"),
               const Contributors(role: "Moderators"),
             ].separate(20),

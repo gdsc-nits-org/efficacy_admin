@@ -36,99 +36,88 @@ class _EventViewerState extends State<EventViewer> {
         .toList();
   }
 
-  Future<void> _refresh() async {
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      specificList = _getSpecificList();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: RefreshIndicator(
-        onRefresh: _refresh,
-        child: ListView.builder(
-          itemCount: specificList.length,
-          itemBuilder: (context, index) {
-            final item = specificList[index];
-            return GestureDetector(
-              onTap: () {}, // to card_pressed_screen
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: CustomNetworkImage(
-                          posterUrl: item.posterURL,
-                          defaultUrl: "",
+      child: ListView.builder(
+        itemCount: specificList.length,
+        itemBuilder: (context, index) {
+          final item = specificList[index];
+          return GestureDetector(
+            onTap: () {}, // to card_pressed_screen
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: CustomNetworkImage(
+                        posterUrl: item.posterURL,
+                        defaultUrl: "",
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        item.title,
+                        style: const TextStyle(
+                          color: Color(0xFF05354C),
+                          fontSize: 19,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          item.title,
-                          style: const TextStyle(
-                            color: Color(0xFF05354C),
-                            fontSize: 19,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      ExpandableNotifier(
-                        child: Column(
-                          children: [
-                            Expandable(
-                              collapsed: Text(
-                                item.shortDescription,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              expanded: Text(item.shortDescription),
+                    ),
+                    ExpandableNotifier(
+                      child: Column(
+                        children: [
+                          Expandable(
+                            collapsed: Text(
+                              item.shortDescription,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            Builder(
-                              builder: (context) {
-                                var controller =
-                                    ExpandableController.of(context);
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {
-                                        controller.toggle();
-                                      },
-                                      child: Text(
-                                        controller!.expanded
-                                            ? "Show less"
-                                            : "Read more",
-                                        style: const TextStyle(
-                                          color: Color(0xFF05354C),
-                                        ),
+                            expanded: Text(item.shortDescription),
+                          ),
+                          Builder(
+                            builder: (context) {
+                              var controller = ExpandableController.of(context);
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      controller.toggle();
+                                    },
+                                    child: Text(
+                                      controller!.expanded
+                                          ? "Show less"
+                                          : "Read more",
+                                      style: const TextStyle(
+                                        color: Color(0xFF05354C),
                                       ),
                                     ),
-                                  ],
-                                );
-                              },
-                            )
-                          ],
-                        ),
+                                  ),
+                                ],
+                              );
+                            },
+                          )
+                        ],
                       ),
-                      AppBar(
-                        leading: const Icon(CupertinoIcons.calendar),
-                        title: Text(
-                          "${Formatter.dateTime(item.startDate)} - ${Formatter.dateTime(item.endDate)}",
-                          style: const TextStyle(fontSize: 13),
-                        ),
-                      )
-                    ].separate(5),
-                  ),
+                    ),
+                    AppBar(
+                      leading: const Icon(CupertinoIcons.calendar),
+                      title: Text(
+                        "${Formatter.dateTime(item.startDate)} - ${Formatter.dateTime(item.endDate)}",
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                    )
+                  ].separate(5),
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

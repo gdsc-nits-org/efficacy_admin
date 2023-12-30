@@ -34,8 +34,12 @@ class UserController {
     return await _saveImpl(user: user);
   }
 
-  static Future<void> _gatherData() async {
-    return await _gatherDataImpl();
+  static Future<void> _gatherData({bool forceGet = false}) async {
+    return await _gatherDataImpl(forceGet: forceGet);
+  }
+
+  static Future<void> updateUserData() async {
+    await _gatherData(forceGet: true);
   }
 
   static UserModel _removePassword(UserModel user) {
@@ -85,8 +89,8 @@ class UserController {
   ///   * If returns null means the user data was not stored
   ///   * Returns the UserModel if exists
   ///   * Stores the user data in currentUser
-  static Stream<UserModel?> loginSilently() {
-    return _loginSilentlyImpl();
+  static Stream<UserModel?> loginSilently({bool forceGet = false}) {
+    return _loginSilentlyImpl(forceGet: forceGet);
   }
 
   /// Fetches a  user from the provided email

@@ -11,7 +11,6 @@ import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart'
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:efficacy_admin/config/config.dart';
-import 'package:gap/gap.dart';
 import 'package:intl_phone_field/phone_number.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -25,10 +24,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfileState extends State<ProfilePage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-  GlobalKey<RefreshIndicatorState>();
+      GlobalKey<RefreshIndicatorState>();
   @override
   void initState() {
     super.initState();
+    init();
+  }
+
+  void init() async {
     _nameController.text = UserController.currentUser!.name;
     _scholarIDController.text = UserController.currentUser!.scholarID;
     _emailController.text = UserController.currentUser!.email;
@@ -92,10 +95,8 @@ class _ProfileState extends State<ProfilePage> {
   }
 
   Future<void> _refresh() async {
-    await Future.delayed(Duration(seconds: 1));
-    setState(() {
-      UserController.get(forceGet: true);
-    });
+    await UserController.loginSilently(forceGet: true).first;
+    init();
   }
 
   @override

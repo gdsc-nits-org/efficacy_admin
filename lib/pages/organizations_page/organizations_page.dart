@@ -1,4 +1,7 @@
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
+import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/club/club_page.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
@@ -17,14 +20,24 @@ class OrganizationsPage extends StatefulWidget {
 }
 
 class _OrganizationsPageState extends State<OrganizationsPage> {
-  ClubsStreamState clubsStreamState = ClubsStreamState();
-  InvitationsStreamState invitationsStreamState = InvitationsStreamState();
-
+  late Stream<List<InvitationModel>> invitationsStream;
   Future<void> _refresh() async {
-    await Future.delayed(const Duration(seconds: 1));
+    await UserController.updateUserData();
+    setState(() {
+      invitationsStream = InvitationController.get(
+        forceGet: true,
+        recipientID: UserController.currentUser?.id,
+      );
+    });
+  }
 
-    clubsStreamState.refreshClubs();
-    invitationsStreamState.refreshInvites();
+  @override
+  void initState() {
+    super.initState();
+    invitationsStream = InvitationController.get(
+      forceGet: true,
+      recipientID: UserController.currentUser?.id,
+    );
   }
 
   @override
@@ -76,6 +89,7 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
                   InvitationsStream(
                     maxHeight: height / 3,
                     onCompleteAction: () => setState(() {}),
+                    invitationStream: invitationsStream,
                   ),
                   const Divider(color: dark),
                   const Text(
@@ -84,7 +98,7 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
                         fontSize: 20, fontWeight: FontWeight.bold, color: dark),
                   ),
                   const Divider(),
-                  const ClubsStream(),
+                  ClubsStream(clubs: UserController.clubs),
                 ].separate(gap),
               ),
             ),

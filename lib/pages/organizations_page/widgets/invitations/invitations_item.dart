@@ -145,10 +145,7 @@ class InvitationItem extends StatelessWidget {
                 child: IconButton(
                   onPressed: () async {
                     // Handle reject invitation
-                    await InvitationController.rejectInvitation(InvitationModel(
-                        clubPositionID: clubPositionID,
-                        senderID: senderID,
-                        recipientID: UserController.currentUser!.id!));
+                    await InvitationController.rejectInvitation(invitation);
                   },
                   icon: const Icon(
                     Icons.close,

@@ -5,12 +5,8 @@ enum Branch { CE, CSE, ECE, EIE, EE, ME }
 enum Degree { BTech, MTech, Phd }
 
 enum Permissions {
-  /// Only read permission
-  /// Given to all the users
-  read("Read"),
-
   /// Can create or edit events
-  modifyEvents("Create or edit Events"),
+  modifyEvents("Create or Edit events"),
 
   /// Can add or remove members.
   /// The target here are adding or removing members without touching the club positions

@@ -69,9 +69,7 @@ class _ClubPositionPermissionOverlayState
                         );
                       }).toList(),
                     ),
-                    const Spacer(
-                      flex: 1,
-                    ),
+                    const Spacer(flex: 1),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [

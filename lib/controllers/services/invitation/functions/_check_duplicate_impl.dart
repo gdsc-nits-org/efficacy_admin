@@ -14,7 +14,13 @@ Future<void> _checkDuplicateImpl(InvitationModel invitation) async {
     invitation.recipientID,
   );
 
-  if (await collection.findOne(selectorBuilder) != null) {
+  Map? res = await collection.findOne(selectorBuilder);
+  InvitationModel? temp;
+  if (res != null) {
+    temp =
+        InvitationModel.fromJson(Formatter.convertMapToMapStringDynamic(res)!);
+  }
+  if (res != null && temp?.id != invitation.id) {
     throw Exception("Recipient is already invited for the provided position");
   }
 }

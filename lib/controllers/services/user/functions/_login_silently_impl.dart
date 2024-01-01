@@ -1,6 +1,6 @@
 part of '../user_controller.dart';
 
-Stream<UserModel?> _loginSilentlyImpl() async* {
+Stream<UserModel?> _loginSilentlyImpl({required bool forceGet}) async* {
   List<String> userData = LocalDatabase.get(LocalDocuments.currentUser.name);
   if (userData.isEmpty) {
     yield null;
@@ -8,7 +8,16 @@ Stream<UserModel?> _loginSilentlyImpl() async* {
     UserController.currentUser = UserModel.fromJson(
       Formatter.convertMapToMapStringDynamic(jsonDecode(userData[0]))!,
     );
-    await UserController._gatherData();
+
+    if (forceGet) {
+      List<UserModel> user = await UserController.get(
+              id: UserController.currentUser!.id, forceGet: forceGet)
+          .first;
+      if (user.isNotEmpty) {
+        UserController.currentUser = user.first;
+      }
+    }
+    await UserController._gatherData(forceGet: forceGet);
     yield UserController.currentUser;
 
     DbCollection collection =

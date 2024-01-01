@@ -7,7 +7,13 @@ Future<void> _checkDuplicateImpl(InstitutionModel institution) async {
   SelectorBuilder selectorBuilder = SelectorBuilder();
   selectorBuilder.eq(InstitutionFields.name.name, institution.name);
 
-  if (await collection.findOne(selectorBuilder) != null) {
+  Map? res = await collection.findOne(selectorBuilder);
+  InstitutionModel? temp;
+  if (res != null) {
+    temp =
+        InstitutionModel.fromJson(Formatter.convertMapToMapStringDynamic(res)!);
+  }
+  if (res != null && temp?.id != institution.id) {
     throw Exception("${institution.name} already exists");
   }
 }

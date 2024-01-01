@@ -8,7 +8,13 @@ Future<void> _checkDuplicateImpl(ClubPositionModel clubPosition) async {
   selectorBuilder.eq(ClubPositionFields.clubID.name, clubPosition.clubID);
   selectorBuilder.eq(ClubPositionFields.position.name, clubPosition.position);
 
-  if (await collection.findOne(selectorBuilder) != null) {
+  Map? res = await collection.findOne(selectorBuilder);
+  ClubPositionModel? temp;
+  if (res != null) {
+    temp = ClubPositionModel.fromJson(
+        Formatter.convertMapToMapStringDynamic(res)!);
+  }
+  if (res != null && temp?.id != clubPosition.id) {
     throw Exception("Club already has a position with the same name");
   }
 }

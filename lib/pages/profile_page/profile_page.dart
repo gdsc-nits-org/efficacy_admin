@@ -11,7 +11,6 @@ import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart'
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:efficacy_admin/config/config.dart';
-import 'package:gap/gap.dart';
 import 'package:intl_phone_field/phone_number.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -24,9 +23,15 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfileState extends State<ProfilePage> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
   @override
   void initState() {
     super.initState();
+    init();
+  }
+
+  void init() async {
     _nameController.text = UserController.currentUser!.name;
     _scholarIDController.text = UserController.currentUser!.scholarID;
     _emailController.text = UserController.currentUser!.email;
@@ -89,6 +94,11 @@ class _ProfileState extends State<ProfilePage> {
     );
   }
 
+  Future<void> _refresh() async {
+    await UserController.loginSilently(forceGet: true).first;
+    init();
+  }
+
   @override
   Widget build(BuildContext context) {
     //screen size
@@ -116,68 +126,72 @@ class _ProfileState extends State<ProfilePage> {
               saveUpdates();
             })
           : null,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding:
-                EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ProfileImageViewer(
-                  enabled: editMode,
-                  imagePath: UserController.currentUser?.userPhoto,
-                  imageData: image,
-                  onImageChange: (Uint8List? newImage) {
-                    image = newImage;
-                  },
-                ),
-                CustomTextField(
-                  controller: _nameController,
-                  title: "Name",
-                  enabled: editMode,
-                ),
-                CustomTextField(
-                  controller: _emailController,
-                  title: "Email",
-                  enabled: false,
-                ),
-                CustomPhoneField(
-                  title: "Phone",
-                  initialValue: phoneNumber,
-                  onPhoneChanged: (PhoneNumber newPhoneNumber) {
-                    phoneNumber = newPhoneNumber;
-                  },
-                  enabled: editMode,
-                ),
-                CustomTextField(
-                  controller: _scholarIDController,
-                  title: "ScholarID",
-                  enabled: editMode,
-                ),
-                CustomDropDown(
-                  title: "Branch",
-                  items: Branch.values.map((branch) => branch.name).toList(),
-                  enabled: editMode,
-                  value: UserController.currentUser!.branch.name,
-                  onChanged: (String? newSelectedBranch) {
-                    selectedBranch = newSelectedBranch ??
-                        UserController.currentUser!.branch.name;
-                  },
-                ),
-                CustomDropDown(
-                  title: "Degree",
-                  items: Degree.values.map((degree) => degree.name).toList(),
-                  enabled: editMode,
-                  value: UserController.currentUser!.degree.name,
-                  onChanged: (String? newSelectedDegree) {
-                    selectedDegree = newSelectedDegree ??
-                        UserController.currentUser!.degree.name;
-                  },
-                ),
-                const DeleteProfileButton(),
-              ].separate(gap),
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: _refresh,
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding:
+                  EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ProfileImageViewer(
+                    enabled: editMode,
+                    imagePath: UserController.currentUser?.userPhoto,
+                    imageData: image,
+                    onImageChange: (Uint8List? newImage) {
+                      image = newImage;
+                    },
+                  ),
+                  CustomTextField(
+                    controller: _nameController,
+                    title: "Name",
+                    enabled: editMode,
+                  ),
+                  CustomTextField(
+                    controller: _emailController,
+                    title: "Email",
+                    enabled: false,
+                  ),
+                  CustomPhoneField(
+                    title: "Phone",
+                    initialValue: phoneNumber,
+                    onPhoneChanged: (PhoneNumber newPhoneNumber) {
+                      phoneNumber = newPhoneNumber;
+                    },
+                    enabled: editMode,
+                  ),
+                  CustomTextField(
+                    controller: _scholarIDController,
+                    title: "ScholarID",
+                    enabled: editMode,
+                  ),
+                  CustomDropDown(
+                    title: "Branch",
+                    items: Branch.values.map((branch) => branch.name).toList(),
+                    enabled: editMode,
+                    value: UserController.currentUser!.branch.name,
+                    onChanged: (String? newSelectedBranch) {
+                      selectedBranch = newSelectedBranch ??
+                          UserController.currentUser!.branch.name;
+                    },
+                  ),
+                  CustomDropDown(
+                    title: "Degree",
+                    items: Degree.values.map((degree) => degree.name).toList(),
+                    enabled: editMode,
+                    value: UserController.currentUser!.degree.name,
+                    onChanged: (String? newSelectedDegree) {
+                      selectedDegree = newSelectedDegree ??
+                          UserController.currentUser!.degree.name;
+                    },
+                  ),
+                  const DeleteProfileButton(),
+                ].separate(gap),
+              ),
             ),
           ),
         ),

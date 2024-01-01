@@ -45,7 +45,7 @@ Future<void> _acceptInvitationImpl(String invitationID) async {
 
   // Updating the data in the backend
   await Future.wait([
-    ClubController.update(club),
+    ClubController.update(club, internalUpdate: true),
     UserController.update(),
     InvitationController.delete(invitations.first),
   ]);

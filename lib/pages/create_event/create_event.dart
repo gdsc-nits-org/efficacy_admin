@@ -16,9 +16,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class CreateEvent extends StatefulWidget {
   //route
   static const String routeName = '/CreateEventPage';
-
   const CreateEvent({super.key});
-
   @override
   State<CreateEvent> createState() => _CreateEventState();
 }
@@ -61,9 +59,12 @@ class _CreateEventState extends State<CreateEvent> {
         contacts: selectedModerator != null ? [selectedModerator!.email] : [],
         clubID: selectedClub!.id!,
       );
-      showLoadingOverlay(context: context, asyncTask: () async{
-        await EventController.create(event);
-      },);
+      showLoadingOverlay(
+        context: context,
+        asyncTask: () async {
+          await EventController.create(event);
+        },
+      );
     } else {
       showErrorSnackBar(
           context, "Upload failed. Please enter the required values.");
@@ -88,7 +89,6 @@ class _CreateEventState extends State<CreateEvent> {
   @override
   Widget build(BuildContext context) {
     getSize(context);
-
     return Stack(children: [
       Scaffold(
         floatingActionButton: UploadButton(onPressed: _validateForm),

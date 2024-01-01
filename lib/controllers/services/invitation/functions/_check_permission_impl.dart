@@ -1,9 +1,11 @@
 part of '../invitation_controller.dart';
 
 Future<void> _checkPermissionImpl(String clubPositionID) async {
-  ClubPositionModel clubPosition =
-      (await ClubPositionController.get(clubPositionID: clubPositionID).first)
-          .first;
+  ClubPositionModel clubPosition = (await ClubPositionController.get(
+    clubPositionID: clubPositionID,
+    forceGet: true,
+  ).first)
+      .first;
   List<ClubModel> club =
       await ClubController.get(id: clubPosition.clubID, forceGet: true).first;
   if (club.isEmpty) {

@@ -2,13 +2,17 @@ import 'dart:math';
 
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/pages/club/widgets/buttons.dart';
+import 'package:efficacy_admin/pages/club/widgets/invite_overlay.dart';
 import 'package:efficacy_admin/utils/debouncer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:efficacy_admin/controllers/controllers.dart';
 
 class OverlaySearch extends StatefulWidget {
-  const OverlaySearch({super.key});
+  final ClubModel? club;
+
+  const OverlaySearch({super.key, required this.club});
 
   @override
   State<OverlaySearch> createState() => _OverlaySearchState();
@@ -17,6 +21,9 @@ class OverlaySearch extends StatefulWidget {
 class _OverlaySearchState extends State<OverlaySearch> {
   String? userName;
   Debouncer debouncer = Debouncer();
+  List<UserModel> userList = [];
+  Set<String> selectedUsers = {};
+  bool isMultiSelect = false;
 
   @override
   Widget build(BuildContext context) {
@@ -52,17 +59,17 @@ class _OverlaySearchState extends State<OverlaySearch> {
                     ),
                   ),
                 ),
+                isMultiSelect
+                    ? Text("Selected: ${selectedUsers.length}")
+                    : const Text(""),
                 StreamBuilder<List<UserModel>>(
                     stream: UserController.get(nameStartsWith: userName),
                     builder: (context, snapshot) {
-                      List<UserModel> userList = [];
                       if (snapshot.hasData) {
                         userList = snapshot.data ?? [];
-                        if (userList.length == 1 &&
-                            userList.first.id ==
-                                UserController.currentUser?.id) {
-                          userList = [];
-                        }
+                        // removes a user if userid is same as current user
+                        userList.removeWhere((element) =>
+                            element.id == UserController.currentUser?.id);
                       }
                       return Expanded(
                         child: snapshot.connectionState ==
@@ -88,20 +95,48 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                         return ListTile(
                                           title: Text(userList[index].name),
                                           subtitle: Text(userList[index].email),
+                                          tileColor: selectedUsers
+                                                  .contains(userList[index].id)
+                                              ? Colors.green
+                                              : null,
+                                          onLongPress: () {
+                                            setState(() {
+                                              isMultiSelect = true;
+                                              selectedUsers
+                                                  .add(userList[index].id!);
+                                            });
+                                          },
                                           onTap: () {
-                                            InvitationController.create(
-                                                InvitationModel(
-                                                    clubPositionID:
-                                                        UserController
-                                                            .currentUser!
-                                                            .position
-                                                            .toString(),
-                                                    senderID: UserController
-                                                            .currentUser!.id ??
-                                                        "",
-                                                    recipientID:
-                                                        userList[index].id ??
-                                                            ""));
+                                            if (isMultiSelect) {
+                                              setState(() {
+                                                if (selectedUsers.contains(
+                                                    userList[index].id)) {
+                                                  selectedUsers.remove(
+                                                      userList[index].id);
+                                                  if (selectedUsers.isEmpty) {
+                                                    isMultiSelect = false;
+                                                  }
+                                                } else {
+                                                  selectedUsers
+                                                      .add(userList[index].id!);
+                                                }
+                                              });
+                                            } else {
+                                              Navigator.pop(context);
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Center(
+                                                      child: InviteOverlay(
+                                                        club: widget.club,
+                                                        users: [
+                                                          userList[index].id!
+                                                        ],
+                                                      ),
+                                                    );
+                                                  });
+                                            }
                                           },
                                         );
                                       }
@@ -110,6 +145,24 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                   ),
                       );
                     }),
+                isMultiSelect
+                    ? ElevatedButton(
+                        child: const Text("Continue"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Center(
+                                  child: InviteOverlay(
+                                    club: widget.club,
+                                    users: selectedUsers.toList(),
+                                  ),
+                                );
+                              });
+                        },
+                      )
+                    :const SizedBox(),
               ],
             ),
           ),

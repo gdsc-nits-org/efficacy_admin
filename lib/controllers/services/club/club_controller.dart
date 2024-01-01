@@ -50,11 +50,14 @@ class ClubController {
     return await _createImpl(club);
   }
 
-  static Future<ClubModel> update(ClubModel club) async {
-    await _checkPermission(
-      clubID: club.id!,
-      forView: false,
-    );
+  static Future<ClubModel> update(ClubModel club,
+      {bool internalUpdate = false}) async {
+    if (!internalUpdate) {
+      await _checkPermission(
+        clubID: club.id!,
+        forView: false,
+      );
+    }
     return await _updateImpl(club);
   }
 

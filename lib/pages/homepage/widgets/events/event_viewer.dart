@@ -6,9 +6,10 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class EventViewer extends StatelessWidget {
+class EventViewer extends StatefulWidget {
   final List<EventModel> events;
   final int typeIndex;
+
   const EventViewer({
     super.key,
     required this.typeIndex,
@@ -16,11 +17,27 @@ class EventViewer extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    List<EventModel> specificList = events
-        .where((element) => Status.values.indexOf(element.type) == typeIndex)
-        .toList();
+  State<EventViewer> createState() => _EventViewerState();
+}
 
+class _EventViewerState extends State<EventViewer> {
+  late List<EventModel> specificList;
+
+  @override
+  void initState() {
+    super.initState();
+    specificList = _getSpecificList();
+  }
+
+  List<EventModel> _getSpecificList() {
+    return widget.events
+        .where((element) =>
+            Status.values.indexOf(element.type) == widget.typeIndex)
+        .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
         itemCount: specificList.length,

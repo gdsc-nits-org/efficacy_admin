@@ -3,6 +3,7 @@ import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/profile_page/widgets/buttons.dart';
+import 'package:efficacy_admin/utils/utils.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
@@ -25,6 +26,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfileState extends State<ProfilePage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
+  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -58,40 +60,42 @@ class _ProfileState extends State<ProfilePage> {
   }
 
   void saveUpdates() async {
-    showLoadingOverlay(
-      context: context,
-      asyncTask: () async {
-        UploadInformation info = UploadInformation(
-          url: UserController.currentUser?.userPhoto,
-          publicID: UserController.currentUser?.userPhotoPublicID,
-        );
-        if (image != null) {
-          info = await ImageController.uploadImage(
-            img: image!,
-            folder: ImageFolder.userImage,
+    if(_formKey.currentState!.validate()){
+      showLoadingOverlay(
+        context: context,
+        asyncTask: () async {
+          UploadInformation info = UploadInformation(
+            url: UserController.currentUser?.userPhoto,
             publicID: UserController.currentUser?.userPhotoPublicID,
-            userName: _nameController.text,
           );
-        }
-        UserController.currentUser = UserController.currentUser?.copyWith(
-          name: _nameController.text,
-          scholarID: _scholarIDController.text,
-          userPhoto: info.url,
-          userPhotoPublicID: info.publicID,
-          phoneNumber: phoneNumber,
-          branch: Branch.values
-              .firstWhere((branch) => branch.name == selectedBranch),
-          degree: Degree.values
-              .firstWhere((degree) => degree.name == selectedDegree),
-        );
-        await UserController.update();
-      },
-      onCompleted: () {
-        setState(() {
-          editMode = false;
-        });
-      },
-    );
+          if (image != null) {
+            info = await ImageController.uploadImage(
+              img: image!,
+              folder: ImageFolder.userImage,
+              publicID: UserController.currentUser?.userPhotoPublicID,
+              userName: _nameController.text,
+            );
+          }
+          UserController.currentUser = UserController.currentUser?.copyWith(
+            name: _nameController.text,
+            scholarID: _scholarIDController.text,
+            userPhoto: info.url,
+            userPhotoPublicID: info.publicID,
+            phoneNumber: phoneNumber,
+            branch: Branch.values
+                .firstWhere((branch) => branch.name == selectedBranch),
+            degree: Degree.values
+                .firstWhere((degree) => degree.name == selectedDegree),
+          );
+          await UserController.update();
+        },
+        onCompleted: () {
+          setState(() {
+            editMode = false;
+          });
+        },
+      );
+    }
   }
 
   Future<void> _refresh() async {
@@ -150,11 +154,13 @@ class _ProfileState extends State<ProfilePage> {
                     controller: _nameController,
                     title: "Name",
                     enabled: editMode,
+                    validator: Validator.isNameValid,
                   ),
                   CustomTextField(
                     controller: _emailController,
                     title: "Email",
                     enabled: false,
+                    validator: Validator.isEmailValid,
                   ),
                   CustomPhoneField(
                     title: "Phone",
@@ -168,6 +174,7 @@ class _ProfileState extends State<ProfilePage> {
                     controller: _scholarIDController,
                     title: "ScholarID",
                     enabled: editMode,
+                    validator: Validator.isScholarIDValid,
                   ),
                   CustomDropDown(
                     title: "Branch",

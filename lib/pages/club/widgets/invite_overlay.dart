@@ -156,20 +156,35 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                           });
                                         },
                                         trailing: IconButton(
-                                            onPressed: () {
-                                              showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return Center(
-                                                      child:
-                                                          ClubPositionPermissionOverlay(
-                                                        clubPosition:
-                                                            clubPositionList[
-                                                                index],
-                                                      ),
-                                                    );
-                                                  });
+                                            onPressed: () async {
+                                              var updatedPosition =
+                                                  await showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return Center(
+                                                          child:
+                                                              ClubPositionPermissionOverlay(
+                                                            clubPosition:
+                                                                clubPositionList[
+                                                                    index],
+                                                          ),
+                                                        );
+                                                      });
+                                              if (updatedPosition != null &&
+                                                  updatedPosition
+                                                      is ClubPositionModel) {
+                                                setState(() {
+                                                  clubPositionList[index] =
+                                                      updatedPosition;
+                                                });
+                                              }
+                                              if (updatedPosition == null) {
+                                                setState(() {
+                                                  clubPositionList
+                                                      .removeAt(index);
+                                                });
+                                              }
                                             },
                                             icon: const Icon(Icons.edit)),
                                       );

@@ -129,6 +129,7 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                                       (BuildContext context) {
                                                     return Center(
                                                       child: InviteOverlay(
+                                                        inviteMode: true,
                                                         club: widget.club,
                                                         users: [
                                                           userList[index].id!
@@ -155,6 +156,7 @@ class _OverlaySearchState extends State<OverlaySearch> {
                               builder: (BuildContext context) {
                                 return Center(
                                   child: InviteOverlay(
+                                    inviteMode: true,
                                     club: widget.club,
                                     users: selectedUsers.toList(),
                                   ),

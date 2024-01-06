@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
@@ -6,6 +7,7 @@ import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
 import 'package:efficacy_admin/pages/club/utils/get_lead_name.dart';
 import 'package:efficacy_admin/pages/club/widgets/club_form.dart';
 import 'package:efficacy_admin/pages/club/widgets/buttons.dart';
+import 'package:efficacy_admin/pages/club/widgets/invite_overlay.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
@@ -344,13 +346,43 @@ class _ClubPageState extends State<ClubPage> {
                         ),
                       ),
                       (_editMode || _createMode)
-                          ? Container()
-                          : Positioned(
+                          ? Positioned(
                               left: width - profileSize - profileBorder * 2,
                               top: height * 0.12,
-                              child: InviteButton(onPressed: () {
-                                _showOverlay(context);
+                              child: EditPositionButton(onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Center(
+                                        child: InviteOverlay(
+                                          inviteMode: false,
+                                          club: widget.club,
+                                        ),
+                                      );
+                                    });
                               }))
+                          : Positioned(
+                              left: width - profileSize * 2 - profileBorder * 2,
+                              top: height * 0.12,
+                              child: Row(
+                                children: [
+                                  EditPositionButton(onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return Center(
+                                            child: InviteOverlay(
+                                              inviteMode: false,
+                                              club: widget.club,
+                                            ),
+                                          );
+                                        });
+                                  }),
+                                  InviteButton(onPressed: () {
+                                    _showOverlay(context);
+                                  }),
+                                ].separate(profileBorder),
+                              ))
                     ],
                   ),
                 ),

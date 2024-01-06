@@ -86,7 +86,7 @@ class _ClubPositionPermissionOverlayState
                             onPressed: () {
                               ClubPositionController.delete(
                                   widget.clubPosition.id!);
-                              Navigator.pop(context);
+                              Navigator.pop(context,null);
                             },
                             child: const Text('Delete'),
                           ),
@@ -99,13 +99,14 @@ class _ClubPositionPermissionOverlayState
                           fit: FlexFit.loose,
                           child: ElevatedButton(
                             onPressed: () {
-                              ClubPositionController.update(widget.clubPosition
-                                  .copyWith(
+                              ClubPositionModel updatedPosition =
+                                  widget.clubPosition.copyWith(
                                       position: _nameController.text
                                           .trim()
                                           .toString(),
-                                      permissions: _selectedPermissions));
-                              Navigator.pop(context);
+                                      permissions: _selectedPermissions);
+                              ClubPositionController.update(updatedPosition);
+                              Navigator.pop(context,updatedPosition);
                             },
                             child: const Text('Update'),
                           ),

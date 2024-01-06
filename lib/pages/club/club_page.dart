@@ -211,7 +211,7 @@ class _ClubPageState extends State<ClubPage> {
               if (clubPosition != null && clubPosition.id != null) {
                 newClub = newClub!.copyWith(
                   members: {
-                    clubPosition.id!: [UserController.currentUser!.id!],
+                    clubPosition.id!: [UserController.currentUser!.email],
                   },
                 );
                 newClub = await ClubController.update(newClub!);
@@ -284,7 +284,6 @@ class _ClubPageState extends State<ClubPage> {
               children: [
                 SizedBox(
                   height: height * 0.25,
-                  // clipBehavior: Clip.none,
                   child: Stack(
                     clipBehavior: Clip.none,
                     alignment: Alignment.topCenter,
@@ -347,7 +346,7 @@ class _ClubPageState extends State<ClubPage> {
                       ),
                       (_editMode || _createMode)
                           ? Positioned(
-                              left: width - profileSize - profileBorder * 2,
+                              right: profileBorder,
                               top: height * 0.12,
                               child: EditPositionButton(onPressed: () {
                                 showDialog(
@@ -362,7 +361,7 @@ class _ClubPageState extends State<ClubPage> {
                                     });
                               }))
                           : Positioned(
-                              left: width - profileSize * 2 - profileBorder * 2,
+                              right: profileBorder * 2,
                               top: height * 0.12,
                               child: Row(
                                 children: [

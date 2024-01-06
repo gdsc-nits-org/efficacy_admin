@@ -99,11 +99,10 @@ class InviteButton extends StatelessWidget {
     double width = size.width;
     double height = size.height;
     //size constants
-    double buttonWidth = width * 0.18;
     double buttonHeight = height * 0.06;
     double fontSize = 18;
     return SizedBox(
-      width: buttonWidth,
+      width: buttonHeight,
       height: buttonHeight,
       child: IconButton(
         tooltip: "Invite",
@@ -130,11 +129,10 @@ class EditPositionButton extends StatelessWidget {
     double width = size.width;
     double height = size.height;
     //size constants
-    double buttonWidth = width * 0.18;
     double buttonHeight = height * 0.06;
     double fontSize = 18;
     return SizedBox(
-      width: buttonWidth,
+      width: buttonHeight,
       height: buttonHeight,
       child: IconButton(
         tooltip: "Edit Club Positions",

@@ -118,10 +118,12 @@ class UserController {
   /// Updates the user data if exists in the database
   /// and stores it in the local database
   ///
-  /// It updates the data of the currentUser
-  static Future<UserModel?> update() async {
-    UserModel? user = await _updateImpl();
-    await _gatherData();
+  /// It updates the data of the currentUser if [user] is null
+  static Future<UserModel?> update({UserModel? updatedUser}) async {
+    UserModel? user = await _updateImpl(user: updatedUser);
+    if (user == null) {
+      await _gatherData();
+    }
     return user;
   }
 

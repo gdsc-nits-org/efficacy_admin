@@ -5,6 +5,7 @@ import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/controllers/utils/comparator.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/models/club_position/club_position_model.dart';
+import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/models/utils/constants.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
 import 'package:efficacy_admin/utils/formatter.dart';
@@ -17,13 +18,17 @@ part 'functions/_check_permission_impl.dart';
 part 'functions/_create_impl.dart';
 part 'functions/_get_impl.dart';
 part 'functions/_update_impl.dart';
+part 'functions/_delete_impl.dart';
 
 class ClubPositionController {
   static const String _collectionName = "clubPosition";
   const ClubPositionController._();
 
-  static Future<ClubPositionModel> _save(ClubPositionModel position) async {
-    return await _saveImpl(position);
+  static Future<ClubPositionModel> _save(
+    ClubPositionModel position, {
+    bool delete = false,
+  }) async {
+    return await _saveImpl(position, delete: delete);
   }
 
   static Future<void> _checkDuplicate(ClubPositionModel clubPosition) async {
@@ -75,7 +80,15 @@ class ClubPositionController {
 
   /// Not implemented as the delete would required cascade event of deleting the members also
   /// Or warning the user
-  static Future<void> delete(String clubPositionID) async {
-    throw UnimplementedError();
+  static Future<void> delete(ClubPositionModel clubPositionModel) async {
+    await _checkPermissionImpl(
+      clubID: clubPositionModel.clubID,
+      forView: false,
+    );
+    await _deleteImpl(clubPositionModel);
+    await _save(
+      clubPositionModel,
+      delete: true,
+    );
   }
 }

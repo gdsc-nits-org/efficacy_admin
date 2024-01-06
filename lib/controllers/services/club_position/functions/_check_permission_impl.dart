@@ -19,15 +19,13 @@ Future<void> _checkPermissionImpl({
   List<ClubPositionModel> positions = UserController.clubPositions
       .where((clubPosition) => clubPosition.clubID == clubID)
       .toList();
+
   for (ClubPositionModel position in positions) {
-    if (position.clubID == clubID) {
-      if (forView == true) {
-        return;
-      } else if (forView == false &&
-          position.permissions.contains(Permissions.modifyClub)) {
-        return;
-      }
+    if (forView == true) {
+      return;
+    } else if (forView == false &&
+        !position.permissions.contains(Permissions.modifyClub)) {
+      throw Exception("User does not have permission to modify club");
     }
   }
-  throw Exception("User does not have permission to create events");
 }

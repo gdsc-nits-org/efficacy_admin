@@ -98,10 +98,7 @@ class ClubsStreamState extends State<ClubsStream> {
   @override
   Widget build(BuildContext context) {
     return (widget.clubs.isNotEmpty)
-        ? SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Column(children: buildClubs(widget.clubs)),
-          )
+        ? Column(children: buildClubs(widget.clubs))
         : const Text("You are in no club");
   }
 }

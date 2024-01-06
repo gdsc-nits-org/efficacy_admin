@@ -78,7 +78,6 @@ class LoginFormState extends State<LoginForm> {
                         )),
                     prefixIcon: Icons.lock,
                   ),
-                  Gap(fieldGap),
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {

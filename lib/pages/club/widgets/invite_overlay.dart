@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/club/widgets/members_overlay.dart';
@@ -37,10 +38,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
   }
 
   void _onTextChanged() {
-    setState(() {
-      _newClubPositionName = _newClubPosition.text.trim();
-      // print(_newClubPositionName);
-    });
+    _newClubPositionName = _newClubPosition.text.trim();
   }
 
   @override
@@ -190,7 +188,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                                   },
                                                 );
                                               },
-                                              icon: Icon(Icons.group),
+                                              icon: const Icon(Icons.group),
                                             ),
                                             IconButton(
                                                 onPressed: () async {
@@ -233,22 +231,27 @@ class _InviteOverlayState extends State<InviteOverlay> {
                     }),
                 (widget.inviteMode)
                     ? ElevatedButton(
-                        onPressed: () async {
-                          for (String user in widget.users) {
-                            await InvitationController.create(
-                              InvitationModel(
-                                  clubPositionID:
-                                      clubPositionList[selected].id!,
-                                  senderID:
-                                      UserController.currentUser!.id ?? "",
-                                  recipientID: user),
-                            );
-                          }
-                          if (mounted) {
-                            showErrorSnackBar(
-                                context, "Invitation sent successfully!");
-                            Navigator.pop(context);
-                          }
+                        onPressed: () {
+                          showLoadingOverlay(
+                            context: context,
+                            asyncTask: () async {
+                              for (String user in widget.users) {
+                                await InvitationController.create(
+                                  InvitationModel(
+                                      clubPositionID:
+                                          clubPositionList[selected].id!,
+                                      senderID:
+                                          UserController.currentUser!.id ?? "",
+                                      recipientID: user),
+                                );
+                              }
+                              if (mounted) {
+                                showErrorSnackBar(
+                                    context, "Invitation sent successfully!");
+                                Navigator.pop(context);
+                              }
+                            },
+                          );
                         },
                         child: const Text("Send Invite"))
                     : const SizedBox()

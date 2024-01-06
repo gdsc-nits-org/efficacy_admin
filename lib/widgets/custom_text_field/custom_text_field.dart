@@ -39,7 +39,7 @@ class CustomTextField extends StatelessWidget {
             style: Theme.of(context).textTheme.labelLarge,
           ),
         SizedBox(
-          height: height,
+          height: height * 1.5,
           child: TextFormField(
             onTapOutside: (PointerDownEvent event) {
               FocusManager.instance.primaryFocus?.unfocus();

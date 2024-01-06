@@ -60,7 +60,7 @@ class _ProfileState extends State<ProfilePage> {
   }
 
   void saveUpdates() async {
-    if(_formKey.currentState!.validate()){
+    if (_formKey.currentState!.validate()) {
       showLoadingOverlay(
         context: context,
         asyncTask: () async {
@@ -133,71 +133,76 @@ class _ProfileState extends State<ProfilePage> {
       body: RefreshIndicator(
         key: _refreshIndicatorKey,
         onRefresh: _refresh,
-        child: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ProfileImageViewer(
-                    enabled: editMode,
-                    imagePath: UserController.currentUser?.userPhoto,
-                    imageData: image,
-                    onImageChange: (Uint8List? newImage) {
-                      image = newImage;
-                    },
-                  ),
-                  CustomTextField(
-                    controller: _nameController,
-                    title: "Name",
-                    enabled: editMode,
-                    validator: Validator.isNameValid,
-                  ),
-                  CustomTextField(
-                    controller: _emailController,
-                    title: "Email",
-                    enabled: false,
-                    validator: Validator.isEmailValid,
-                  ),
-                  CustomPhoneField(
-                    title: "Phone",
-                    initialValue: phoneNumber,
-                    onPhoneChanged: (PhoneNumber newPhoneNumber) {
-                      phoneNumber = newPhoneNumber;
-                    },
-                    enabled: editMode,
-                  ),
-                  CustomTextField(
-                    controller: _scholarIDController,
-                    title: "ScholarID",
-                    enabled: editMode,
-                    validator: Validator.isScholarIDValid,
-                  ),
-                  CustomDropDown(
-                    title: "Branch",
-                    items: Branch.values.map((branch) => branch.name).toList(),
-                    enabled: editMode,
-                    value: UserController.currentUser!.branch.name,
-                    onChanged: (String? newSelectedBranch) {
-                      selectedBranch = newSelectedBranch ??
-                          UserController.currentUser!.branch.name;
-                    },
-                  ),
-                  CustomDropDown(
-                    title: "Degree",
-                    items: Degree.values.map((degree) => degree.name).toList(),
-                    enabled: editMode,
-                    value: UserController.currentUser!.degree.name,
-                    onChanged: (String? newSelectedDegree) {
-                      selectedDegree = newSelectedDegree ??
-                          UserController.currentUser!.degree.name;
-                    },
-                  ),
-                  const DeleteProfileButton(),
-                ].separate(gap),
+        child: Form(
+          key: _formKey,
+          child: Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: vMargin, horizontal: hMargin),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ProfileImageViewer(
+                      enabled: editMode,
+                      imagePath: UserController.currentUser?.userPhoto,
+                      imageData: image,
+                      onImageChange: (Uint8List? newImage) {
+                        image = newImage;
+                      },
+                    ),
+                    CustomTextField(
+                      controller: _nameController,
+                      title: "Name",
+                      enabled: editMode,
+                      validator: Validator.isNameValid,
+                    ),
+                    CustomTextField(
+                      controller: _emailController,
+                      title: "Email",
+                      enabled: false,
+                      validator: Validator.isEmailValid,
+                    ),
+                    CustomPhoneField(
+                      title: "Phone",
+                      initialValue: phoneNumber,
+                      onPhoneChanged: (PhoneNumber newPhoneNumber) {
+                        phoneNumber = newPhoneNumber;
+                      },
+                      enabled: editMode,
+                    ),
+                    CustomTextField(
+                      controller: _scholarIDController,
+                      title: "ScholarID",
+                      enabled: editMode,
+                      validator: Validator.isScholarIDValid,
+                    ),
+                    CustomDropDown(
+                      title: "Branch",
+                      items:
+                          Branch.values.map((branch) => branch.name).toList(),
+                      enabled: editMode,
+                      value: UserController.currentUser!.branch.name,
+                      onChanged: (String? newSelectedBranch) {
+                        selectedBranch = newSelectedBranch ??
+                            UserController.currentUser!.branch.name;
+                      },
+                    ),
+                    CustomDropDown(
+                      title: "Degree",
+                      items:
+                          Degree.values.map((degree) => degree.name).toList(),
+                      enabled: editMode,
+                      value: UserController.currentUser!.degree.name,
+                      onChanged: (String? newSelectedDegree) {
+                        selectedDegree = newSelectedDegree ??
+                            UserController.currentUser!.degree.name;
+                      },
+                    ),
+                    const DeleteProfileButton(),
+                  ].separate(gap),
+                ),
               ),
             ),
           ),

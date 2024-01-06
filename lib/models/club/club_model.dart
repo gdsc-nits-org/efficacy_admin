@@ -1,4 +1,3 @@
-import 'package:efficacy_admin/models/utils/objectid_serializer.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:efficacy_admin/models/utils/utils.dart';

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/club_position/club_position_model.dart';
 import 'package:efficacy_admin/models/utils/constants.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
@@ -83,10 +84,15 @@ class _ClubPositionPermissionOverlayState
                             style: const ButtonStyle(
                                 backgroundColor:
                                     MaterialStatePropertyAll(Colors.red)),
-                            onPressed: () {
-                              ClubPositionController.delete(
-                                  widget.clubPosition.id!);
-                              Navigator.pop(context);
+                            onPressed: () async {
+                              showLoadingOverlay(
+                                  context: context,
+                                  asyncTask: () async {
+                                    await ClubPositionController.delete(
+                                      widget.clubPosition,
+                                    );
+                                    Navigator.pop(context, null);
+                                  });
                             },
                             child: const Text('Delete'),
                           ),
@@ -99,13 +105,14 @@ class _ClubPositionPermissionOverlayState
                           fit: FlexFit.loose,
                           child: ElevatedButton(
                             onPressed: () {
-                              ClubPositionController.update(widget.clubPosition
-                                  .copyWith(
+                              ClubPositionModel updatedPosition =
+                                  widget.clubPosition.copyWith(
                                       position: _nameController.text
                                           .trim()
                                           .toString(),
-                                      permissions: _selectedPermissions));
-                              Navigator.pop(context);
+                                      permissions: _selectedPermissions);
+                              ClubPositionController.update(updatedPosition);
+                              Navigator.pop(context, updatedPosition);
                             },
                             child: const Text('Update'),
                           ),

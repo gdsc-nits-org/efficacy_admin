@@ -39,7 +39,7 @@ class CustomTextField extends StatelessWidget {
             style: Theme.of(context).textTheme.labelLarge,
           ),
         SizedBox(
-          height: height,
+          height: height * 1.5,
           child: TextFormField(
             onTapOutside: (PointerDownEvent event) {
               FocusManager.instance.primaryFocus?.unfocus();
@@ -55,9 +55,11 @@ class CustomTextField extends StatelessWidget {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
-              prefixIcon: Icon(prefixIcon,
-                  color: const Color.fromARGB(
-                      255, 67, 67, 67)), //const Color(0xFF05354C),),
+              prefixIcon: prefixIcon == null
+                  ? null
+                  : Icon(prefixIcon,
+                      color: const Color.fromARGB(
+                          255, 67, 67, 67)), //const Color(0xFF05354C),),
               suffixIcon: suffixIcon,
             ),
             validator: (value) => validator!(value),

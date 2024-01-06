@@ -99,11 +99,10 @@ class InviteButton extends StatelessWidget {
     double width = size.width;
     double height = size.height;
     //size constants
-    double buttonWidth = width * 0.18;
     double buttonHeight = height * 0.06;
     double fontSize = 18;
     return SizedBox(
-      width: buttonWidth,
+      width: buttonHeight,
       height: buttonHeight,
       child: IconButton(
         tooltip: "Invite",
@@ -111,6 +110,35 @@ class InviteButton extends StatelessWidget {
         icon: Icon(
           // Icons.group_add
           Icons.person_add_alt_1,
+          size: fontSize,
+        ),
+      ),
+    );
+  }
+}
+
+class EditPositionButton extends StatelessWidget {
+  final void Function() onPressed;
+
+  const EditPositionButton({super.key, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    //screen size
+    Size size = MediaQuery.of(context).size;
+    double width = size.width;
+    double height = size.height;
+    //size constants
+    double buttonHeight = height * 0.06;
+    double fontSize = 18;
+    return SizedBox(
+      width: buttonHeight,
+      height: buttonHeight,
+      child: IconButton(
+        tooltip: "Edit Club Positions",
+        onPressed: onPressed,
+        icon: Icon(
+          Icons.edit_note_outlined,
           size: fontSize,
         ),
       ),

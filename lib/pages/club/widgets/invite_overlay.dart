@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/pages/club/widgets/members_overlay.dart';
 import 'package:efficacy_admin/pages/club/widgets/position_permission_overlay.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
@@ -12,8 +14,10 @@ import 'package:flutter/material.dart';
 class InviteOverlay extends StatefulWidget {
   final List<String> users;
   final ClubModel? club;
+  final bool inviteMode;
   const InviteOverlay({
     super.key,
+    required this.inviteMode,
     required this.club,
     this.users = const [],
   });
@@ -23,26 +27,23 @@ class InviteOverlay extends StatefulWidget {
 }
 
 class _InviteOverlayState extends State<InviteOverlay> {
-  final TextEditingController _newClub = TextEditingController();
+  final TextEditingController _newClubPosition = TextEditingController();
   List<ClubPositionModel> clubPositionList = [];
   String _newClubPositionName = '';
   int selected = -1;
   @override
   void initState() {
     super.initState();
-    _newClub.addListener(_onTextChanged);
+    _newClubPosition.addListener(_onTextChanged);
   }
 
   void _onTextChanged() {
-    setState(() {
-      _newClubPositionName = _newClub.text.trim();
-      // print(_newClubPositionName);
-    });
+    _newClubPositionName = _newClubPosition.text.trim();
   }
 
   @override
   void dispose() {
-    _newClub.dispose();
+    _newClubPosition.dispose();
     super.dispose();
   }
 
@@ -68,7 +69,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                       Flexible(
                         flex: 8,
                         child: CustomTextField(
-                          controller: _newClub,
+                          controller: _newClubPosition,
                           label: "New club position",
                           prefixIcon: Icons.assignment_ind_outlined,
                         ),
@@ -148,52 +149,112 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                             clubPositionList[index].position),
                                         onTap: () {
                                           setState(() {
-                                            if (selected == index) {
-                                              selected = -1;
+                                            if (widget.inviteMode) {
+                                              if (selected == index) {
+                                                selected = -1;
+                                              } else {
+                                                selected = index;
+                                              }
                                             } else {
-                                              selected = index;
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return Center(
+                                                      child: MembersOverlay(
+                                                    club: widget.club,
+                                                    clubPosition:
+                                                        clubPositionList[index],
+                                                  ));
+                                                },
+                                              );
                                             }
                                           });
                                         },
-                                        trailing: IconButton(
-                                            onPressed: () {
-                                              showDialog(
+                                        trailing: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {
+                                                showDialog(
                                                   context: context,
-                                                  builder:
-                                                      (BuildContext context) {
+                                                  builder: (context) {
                                                     return Center(
-                                                      child:
-                                                          ClubPositionPermissionOverlay(
-                                                        clubPosition:
-                                                            clubPositionList[
-                                                                index],
-                                                      ),
-                                                    );
-                                                  });
-                                            },
-                                            icon: const Icon(Icons.edit)),
+                                                        child: MembersOverlay(
+                                                      club: widget.club,
+                                                      clubPosition:
+                                                          clubPositionList[
+                                                              index],
+                                                    ));
+                                                  },
+                                                );
+                                              },
+                                              icon: const Icon(Icons.group),
+                                            ),
+                                            IconButton(
+                                                onPressed: () async {
+                                                  var updatedPosition =
+                                                      await showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return Center(
+                                                              child:
+                                                                  ClubPositionPermissionOverlay(
+                                                                clubPosition:
+                                                                    clubPositionList[
+                                                                        index],
+                                                              ),
+                                                            );
+                                                          });
+                                                  if (updatedPosition != null &&
+                                                      updatedPosition
+                                                          is ClubPositionModel) {
+                                                    setState(() {
+                                                      clubPositionList[index] =
+                                                          updatedPosition;
+                                                    });
+                                                  }
+                                                  if (updatedPosition == null) {
+                                                    setState(() {
+                                                      clubPositionList
+                                                          .removeAt(index);
+                                                    });
+                                                  }
+                                                },
+                                                icon: const Icon(Icons.edit)),
+                                          ],
+                                        ),
                                       );
                                     },
                                   ),
                       );
                     }),
-                ElevatedButton(
-                    onPressed: () async {
-                      for (String user in widget.users) {
-                        await InvitationController.create(
-                          InvitationModel(
-                              clubPositionID: clubPositionList[selected].id!,
-                              senderID: UserController.currentUser!.id ?? "",
-                              recipientID: user),
-                        );
-                      }
-                      if (mounted) {
-                        showErrorSnackBar(
-                            context, "Invitation sent successfully!");
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: const Text("Send Invite"))
+                (widget.inviteMode)
+                    ? ElevatedButton(
+                        onPressed: () {
+                          showLoadingOverlay(
+                            context: context,
+                            asyncTask: () async {
+                              for (String user in widget.users) {
+                                await InvitationController.create(
+                                  InvitationModel(
+                                      clubPositionID:
+                                          clubPositionList[selected].id!,
+                                      senderID:
+                                          UserController.currentUser!.id ?? "",
+                                      recipientID: user),
+                                );
+                              }
+                              if (mounted) {
+                                showErrorSnackBar(
+                                    context, "Invitation sent successfully!");
+                                Navigator.pop(context);
+                              }
+                            },
+                          );
+                        },
+                        child: const Text("Send Invite"))
+                    : const SizedBox()
               ],
             ),
           ),

@@ -1,14 +1,21 @@
 part of '../user_controller.dart';
 
-Future<UserModel?> _updateImpl() async {
-  if (UserController.currentUser == null) {
+Future<UserModel?> _updateImpl({UserModel? user}) async {
+  if (UserController.currentUser == null && user == null) {
     throw Exception("Please Login");
   }
   DbCollection collection =
       Database.instance.collection(UserController._collectionName);
 
+  String? oldUserEmail;
+  UserModel newUser = user ?? UserController.currentUser!;
+  if (user == null) {
+    oldUserEmail = UserController.currentUser!.email;
+  } else {
+    oldUserEmail = user.email;
+  }
   List<UserModel> oldData = await UserController.get(
-    email: UserController.currentUser!.email,
+    email: oldUserEmail,
     forceGet: true,
   ).first;
   if (oldData.isEmpty) {
@@ -16,18 +23,19 @@ Future<UserModel?> _updateImpl() async {
   } else {
     SelectorBuilder selectorBuilder = SelectorBuilder();
     selectorBuilder.eq(UserFields.app.name, appName);
-    selectorBuilder.eq(
-        UserFields.email.name, UserController.currentUser!.email);
+    selectorBuilder.eq(UserFields.email.name, oldUserEmail);
     await collection.updateOne(
       selectorBuilder,
       compare(
         oldData.first.toJson(),
-        UserController.currentUser!.toJson(),
+        newUser.toJson(),
         ignore: [UserFields.password.name, UserFields.email.name],
       ).map,
     );
-    UserController.currentUser =
-        (await UserController._save(user: UserController.currentUser))!;
-    return UserController.currentUser;
+    newUser = (await UserController._save(user: newUser))!;
+    if (user == null) {
+      UserController.currentUser = newUser;
+    }
+    return newUser;
   }
 }

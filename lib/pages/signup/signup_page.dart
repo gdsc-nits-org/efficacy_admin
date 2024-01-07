@@ -94,7 +94,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
         return quitCondition ?? false;
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         body: Container(
           margin: EdgeInsets.only(top: vMargin),
           child: SizedBox(
@@ -128,12 +128,10 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                       ),
                       SizedBox(
                         width: formWidth,
-                        // height: height * 0.45,
                         child: EditForm(
                           step: activeStep,
                           emailController: emailController,
                           passwordController: passwordController,
-                          imageData: _image,
                           confirmPasswordController: confirmPasswordController,
                           nameController: nameController,
                           scholarIDController: scholarIDController,

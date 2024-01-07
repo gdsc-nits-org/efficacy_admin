@@ -69,6 +69,7 @@ class _CredentialsStepState extends State<CredentialsStep> {
       ),
       CustomTextField(
         hiddenText: hideConfPassword,
+        controller: widget.confirmPasswordController,
         height: MediaQuery.of(context).size.height * 0.09,
         label: "Confirm Password",
         prefixIcon: Icons.lock,
@@ -90,7 +91,6 @@ class _CredentialsStepState extends State<CredentialsStep> {
               confirmPasswordVisibility,
               color: const Color.fromARGB(255, 67, 67, 67),
             )),
-            controller: widget.confirmPasswordController,
         validator: (value) => Validator.isConfirmPassword(
           widget.passwordController.text.toString(),
           value.toString(),

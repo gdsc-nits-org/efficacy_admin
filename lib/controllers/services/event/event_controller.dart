@@ -16,6 +16,7 @@ part 'functions/_is_any_update_impl.dart';
 part 'functions/_get_impl.dart';
 part 'functions/_update_impl.dart';
 part 'functions/_delete_impl.dart';
+part 'functions/_get_all_events_impl.dart';
 
 class EventController {
   static const String _collectionName = "events";
@@ -87,4 +88,32 @@ class EventController {
       clubID: clubID,
     );
   }
+  /// Returns all the events.
+  /// Can be used for pagination
+  ///
+  /// Pass [prevPassed] as page number and
+  /// [count] as max number of events to be returned
+  ///
+  /// The [prevPassed] is used in terms of the updatedAt parameter
+  ///
+  /// If [clubIDs] is not provided it returns for all the clubs.
+  static Stream<EventPaginationResponse> getAllEvents({
+    int skip = 0,
+    List<String?> clubIDs = const [],
+    bool forceGet = false,
+    int count = 10,
+  }) {
+    return _getAllEventsImpl(
+      skip: skip,
+      clubIDs: clubIDs,
+      forceGet: forceGet,
+      count: count,
+    );
+  }
+}
+
+class EventPaginationResponse {
+  final int skip;
+  final List<EventModel> events;
+  const EventPaginationResponse(this.skip, this.events);
 }

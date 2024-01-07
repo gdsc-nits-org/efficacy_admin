@@ -94,7 +94,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
         return quitCondition ?? false;
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         body: Container(
           margin: EdgeInsets.only(top: vMargin),
           child: SizedBox(

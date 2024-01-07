@@ -53,6 +53,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     const double pad = 8.0;
 
     return AppBar(
+      surfaceTintColor: Colors.white,
       leading: Padding(
         padding: const EdgeInsets.all(pad),
         child: CircleAvatar(

@@ -77,7 +77,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                     ),
                     const SizedBox(height: 15),
-                  ].separate(15),
+                  ].separate(10),
                 ),
               ),
             ),

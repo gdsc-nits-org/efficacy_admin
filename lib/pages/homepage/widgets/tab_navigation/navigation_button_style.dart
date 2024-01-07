@@ -9,7 +9,7 @@ class NavButton extends StatelessWidget {
     required this.currentTabIndex,
   });
 
-  final Status message;
+  final EventStatus message;
   final void Function() onTap;
   final int currentTabIndex;
 
@@ -22,7 +22,7 @@ class NavButton extends StatelessWidget {
         height: 38,
         child: OutlinedButton(
           onPressed: onTap,
-          style: currentTabIndex == Status.values.indexOf(message)
+          style: currentTabIndex == EventStatus.values.indexOf(message)
               ? OutlinedButton.styleFrom(
                   backgroundColor: const Color(0xFF05354C),
                   foregroundColor: const Color(0xFFEDF9FF),

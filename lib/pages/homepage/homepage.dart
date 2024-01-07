@@ -23,9 +23,9 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   int currentTabIndex = 0;
 
-  void navigator(Status buttonMessage) {
+  void navigator(EventStatus buttonMessage) {
     setState(() {
-      currentTabIndex = Status.values.indexOf(buttonMessage);
+      currentTabIndex = EventStatus.values.indexOf(buttonMessage);
     });
   }
 
@@ -42,7 +42,11 @@ class _HomepageState extends State<Homepage> {
           ),
           Expanded(
             child: EventsShowcasePage(
-                currentTabIndex: currentTabIndex,
+              eventStatus: currentTabIndex == 0
+                  ? EventStatus.Upcoming
+                  : currentTabIndex == 1
+                      ? EventStatus.Ongoing
+                      : EventStatus.Completed,
             ),
           ),
           // Visibility(
@@ -64,11 +68,11 @@ class _HomepageState extends State<Homepage> {
           // )
         ].separate(26),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: ()
-        async {
-            Navigator.pushNamed(context, CreateEvent.routeName);
-          },
-          child: const Icon(Icons.add),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          Navigator.pushNamed(context, CreateEvent.routeName);
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

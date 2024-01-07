@@ -42,19 +42,24 @@ class ClubsStreamState extends State<ClubsStream> {
                     .titleMedium
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
-              trailing: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Institute: ${club.instituteName}',
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  Text(
-                    'Email: ${club.email}',
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                ],
+              trailing: SizedBox(
+                width: MediaQuery.of(context).size.width * .4,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Institute: ${club.instituteName}',
+                      style: Theme.of(context).textTheme.labelMedium,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      'Email: ${club.email}',
+                      style: Theme.of(context).textTheme.labelMedium,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
               onTap: () {
                 Navigator.push(

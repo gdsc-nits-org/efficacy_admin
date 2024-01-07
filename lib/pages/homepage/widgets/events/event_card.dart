@@ -29,7 +29,15 @@ class EventCard extends StatelessWidget {
                       Assets.mediaImgPath,
                       fit: BoxFit.cover,
                     )
-                  : CustomNetworkImage(url: item!.posterURL),
+                  : CustomNetworkImage(
+                      url: item!.posterURL,
+                      errorWidget: (BuildContext context, _, __) {
+                        return Image.asset(
+                          Assets.mediaImgPath,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    ),
             ),
             Padding(
               padding: const EdgeInsets.only(

@@ -12,14 +12,14 @@ class TabView extends StatelessWidget {
   });
 
   final int currentTabIndex;
-  final Function(Status) navigator;
+  final Function(EventStatus) navigator;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: Status.values
+        children: EventStatus.values
             .map((status) => NavButton(
                   message: status,
                   onTap: () => navigator(status),

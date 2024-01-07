@@ -70,7 +70,6 @@ Future<List<ClubPositionModel>> _fetchFromBackend({
       Database.instance.collection(ClubPositionController._collectionName);
 
   List<Map<String, dynamic>> res = await collection.find(selector).toList();
-  print(res);
   filteredClubPositions =
       res.map((model) => ClubPositionModel.fromJson(model)).toList();
   for (int i = 0; i < filteredClubPositions.length; i++) {

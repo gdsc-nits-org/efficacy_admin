@@ -32,7 +32,7 @@ class _EventViewerState extends State<EventViewer> {
   List<EventModel> _getSpecificList() {
     return widget.events
         .where((element) =>
-            Status.values.indexOf(element.type) == widget.typeIndex)
+            EventStatus.values.indexOf(element.type) == widget.typeIndex)
         .toList();
   }
 

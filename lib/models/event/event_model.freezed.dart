@@ -382,59 +382,6 @@ class _$EventModelImpl extends _EventModel {
     return 'EventModel(id: $id, posterURL: $posterURL, title: $title, shortDescription: $shortDescription, longDescription: $longDescription, startDate: $startDate, endDate: $endDate, registrationLink: $registrationLink, facebookPostURL: $facebookPostURL, venue: $venue, contacts: $contacts, liked: $liked, clubID: $clubID, lastLocalUpdate: $lastLocalUpdate, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$EventModelImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.posterURL, posterURL) ||
-                other.posterURL == posterURL) &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.shortDescription, shortDescription) ||
-                other.shortDescription == shortDescription) &&
-            (identical(other.longDescription, longDescription) ||
-                other.longDescription == longDescription) &&
-            (identical(other.startDate, startDate) ||
-                other.startDate == startDate) &&
-            (identical(other.endDate, endDate) || other.endDate == endDate) &&
-            (identical(other.registrationLink, registrationLink) ||
-                other.registrationLink == registrationLink) &&
-            (identical(other.facebookPostURL, facebookPostURL) ||
-                other.facebookPostURL == facebookPostURL) &&
-            (identical(other.venue, venue) || other.venue == venue) &&
-            const DeepCollectionEquality().equals(other._contacts, _contacts) &&
-            const DeepCollectionEquality().equals(other._liked, _liked) &&
-            (identical(other.clubID, clubID) || other.clubID == clubID) &&
-            (identical(other.lastLocalUpdate, lastLocalUpdate) ||
-                other.lastLocalUpdate == lastLocalUpdate) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      posterURL,
-      title,
-      shortDescription,
-      longDescription,
-      startDate,
-      endDate,
-      registrationLink,
-      facebookPostURL,
-      venue,
-      const DeepCollectionEquality().hash(_contacts),
-      const DeepCollectionEquality().hash(_liked),
-      clubID,
-      lastLocalUpdate,
-      createdAt,
-      updatedAt);
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

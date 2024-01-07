@@ -88,6 +88,7 @@ class EventController {
       clubID: clubID,
     );
   }
+
   /// Returns all the events.
   /// Can be used for pagination
   ///
@@ -116,4 +117,9 @@ class EventPaginationResponse {
   final int skip;
   final List<EventModel> events;
   const EventPaginationResponse(this.skip, this.events);
+
+  @override
+  String toString() {
+    return 'EventPaginationResponse(skip: $skip, events: $events)';
+  }
 }

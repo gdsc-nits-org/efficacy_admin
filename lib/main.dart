@@ -1,4 +1,3 @@
-import 'package:efficacy_admin/pages/event_details_view/event_details_viewer.dart';
 import 'package:flutter/material.dart';
 import 'utils/utils.dart';
 import 'config/config.dart';
@@ -17,8 +16,7 @@ class EfficacyAdmin extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Efficacy Admin',
       routes: {
-        EventFullScreen.routeName: (context) =>
-            const EventFullScreen(), //issue here
+        //issue here
         Homepage.routeName: (context) => const Homepage(),
         ExperimentPage.routeName: (BuildContext context) =>
             const ExperimentPage(),

@@ -1,32 +1,26 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
-import 'package:efficacy_admin/pages/event_details_view/event_details_viewer.dart';
+import 'event_details.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class EventFullScreen extends StatefulWidget {
+class EventsViewer extends StatefulWidget {
   static const String routeName = "/eventFullScreen";
-  const EventFullScreen({super.key});
+  final EventModel currentEvent;
+  const EventsViewer({
+    super.key,
+    required this.currentEvent,
+  });
 
   @override
-  State<EventFullScreen> createState() => _EventFullScreenState();
+  State<EventsViewer> createState() => _EventsViewerState();
 }
 
-class _EventFullScreenState extends State<EventFullScreen> {
+class _EventsViewerState extends State<EventsViewer> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    final EventModel currentEvent = EventModel(
-        posterURL: "posterURL",
-        title: "title",
-        shortDescription: "shortDescription",
-        startDate: DateTime.now(),
-        endDate: DateTime.now(),
-        registrationLink: "registrationLink",
-        venue: "venue",
-        contacts: [],
-        clubID: "");
     return Stack(
       children: [
         Scaffold(
@@ -52,13 +46,11 @@ class _EventFullScreenState extends State<EventFullScreen> {
             padding: const EdgeInsets.only(top: 30),
             maxHeight: screenHeight,
             minHeight: screenHeight * 0.63,
-            panel: EventDetailsViewer(
-              currentEvent: currentEvent,
-            ),
+            panel: EventDetails(currentEvent: widget.currentEvent),
             body: Column(
               children: [
                 Image.network(
-                  currentEvent.posterURL,
+                  widget.currentEvent.posterURL,
                   fit: BoxFit.cover,
                   height: screenHeight * 0.4,
                 ),

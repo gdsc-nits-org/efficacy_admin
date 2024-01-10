@@ -146,21 +146,6 @@ class _$InstitutionModelImpl extends _InstitutionModel {
     return 'InstitutionModel(id: $id, name: $name, lastLocalUpdate: $lastLocalUpdate)';
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InstitutionModelImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.lastLocalUpdate, lastLocalUpdate) ||
-                other.lastLocalUpdate == lastLocalUpdate));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, id, name, lastLocalUpdate);
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

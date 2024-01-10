@@ -365,55 +365,6 @@ class _$ClubModelImpl extends _ClubModel {
     return 'ClubModel(id: $id, name: $name, instituteName: $instituteName, description: $description, socials: $socials, email: $email, phoneNumber: $phoneNumber, clubLogoURL: $clubLogoURL, clubLogoPublicId: $clubLogoPublicId, clubBannerURL: $clubBannerURL, clubBannerPublicId: $clubBannerPublicId, members: $members, followers: $followers, lastLocalUpdate: $lastLocalUpdate)';
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ClubModelImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.instituteName, instituteName) ||
-                other.instituteName == instituteName) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            const DeepCollectionEquality().equals(other._socials, _socials) &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.phoneNumber, phoneNumber) ||
-                other.phoneNumber == phoneNumber) &&
-            (identical(other.clubLogoURL, clubLogoURL) ||
-                other.clubLogoURL == clubLogoURL) &&
-            (identical(other.clubLogoPublicId, clubLogoPublicId) ||
-                other.clubLogoPublicId == clubLogoPublicId) &&
-            (identical(other.clubBannerURL, clubBannerURL) ||
-                other.clubBannerURL == clubBannerURL) &&
-            (identical(other.clubBannerPublicId, clubBannerPublicId) ||
-                other.clubBannerPublicId == clubBannerPublicId) &&
-            const DeepCollectionEquality().equals(other._members, _members) &&
-            const DeepCollectionEquality()
-                .equals(other._followers, _followers) &&
-            (identical(other.lastLocalUpdate, lastLocalUpdate) ||
-                other.lastLocalUpdate == lastLocalUpdate));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      name,
-      instituteName,
-      description,
-      const DeepCollectionEquality().hash(_socials),
-      email,
-      phoneNumber,
-      clubLogoURL,
-      clubLogoPublicId,
-      clubBannerURL,
-      clubBannerPublicId,
-      const DeepCollectionEquality().hash(_members),
-      const DeepCollectionEquality().hash(_followers),
-      lastLocalUpdate);
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

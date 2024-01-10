@@ -22,6 +22,30 @@ class ClubPositionModel with _$ClubPositionModel {
     }
     return _$ClubPositionModelFromJson(json);
   }
+
+  @override
+  bool operator ==(dynamic other) {
+    return id != null && other.id != null
+        ? (id == other.id)
+        : identical(this, other) ||
+            (other.runtimeType == runtimeType &&
+                other is _$ClubPositionModelImpl &&
+                (identical(other.id, id) || other.id == id) &&
+                (identical(other.clubID, clubID) || other.clubID == clubID) &&
+                (identical(other.position, position) ||
+                    other.position == position) &&
+                (identical(other.lastLocalUpdate, lastLocalUpdate) ||
+                    other.lastLocalUpdate == lastLocalUpdate) &&
+                const DeepCollectionEquality()
+                    .equals(other._permissions, permissions));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => id != null
+      ? Object.hash(runtimeType, id)
+      : Object.hash(runtimeType, id, clubID, position, lastLocalUpdate,
+          const DeepCollectionEquality().hash(permissions));
 }
 
 enum ClubPositionFields {

@@ -19,6 +19,26 @@ class InstitutionModel with _$InstitutionModel {
     }
     return _$InstitutionModelFromJson(json);
   }
+
+  @override
+  bool operator ==(dynamic other) {
+    return id != null && other.id != null
+        ? (id == other.id)
+        : identical(this, other) ||
+            (other.runtimeType == runtimeType &&
+                other is _$InstitutionModelImpl &&
+                (identical(other.id, id) || other.id == id) &&
+                (identical(other.name, name) || other.name == name) &&
+                (identical(other.lastLocalUpdate, lastLocalUpdate) ||
+                    other.lastLocalUpdate == lastLocalUpdate));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => id != null
+      ? Object.hash(runtimeType, id)
+      : Object.hash(runtimeType, id, name, lastLocalUpdate);
+      
 }
 
 enum InstitutionFields {

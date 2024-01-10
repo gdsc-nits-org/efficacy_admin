@@ -16,7 +16,7 @@ class EventsShowcasePage extends StatefulWidget {
 }
 
 class _EventsShowcasePageState extends State<EventsShowcasePage> {
-  Stream<EventPaginationResponse> event = EventController.getAllEvents(
+  Stream<EventPaginationResponse> eventStream = EventController.getAllEvents(
     clubIDs: getClubIDs(UserController.clubs),
   );
   int skip = 0;
@@ -35,7 +35,7 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
     _controller.addListener(() {
       if (_controller.position.pixels == _controller.position.maxScrollExtent) {
         setState(() {
-          event = EventController.getAllEvents(
+          eventStream = EventController.getAllEvents(
             clubIDs: getClubIDs(UserController.clubs),
             skip: skip,
           );
@@ -67,60 +67,75 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
     }
   }
 
+  Future<void> refresh() async {
+    skip = 0;
+    allEvents.clear();
+    EventPaginationResponse response = await EventController.getAllEvents(
+      clubIDs: getClubIDs(UserController.clubs),
+      skip: skip,
+      forceGet: true,
+    ).first;
+    categoriseNewEvents(response.events);
+    skip = response.skip;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: StreamBuilder(
-            stream: event,
-            builder:
-                (context, AsyncSnapshot<EventPaginationResponse> snapshot) {
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text("Some Error occurred. Please restart the app."),
-                );
-              } else if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                if (snapshot.data != null) {
-                  skip = snapshot.data!.skip;
-                  categoriseNewEvents(snapshot.data!.events);
+    return RefreshIndicator(
+      onRefresh: refresh,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: StreamBuilder(
+              stream: eventStream,
+              builder:
+                  (context, AsyncSnapshot<EventPaginationResponse> snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text("Some Error occurred. Please restart the app."),
+                  );
+                } else if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  if (snapshot.data != null) {
+                    skip = snapshot.data!.skip;
+                    categoriseNewEvents(snapshot.data!.events);
+                  }
+                  List<EventModel> events;
+                  switch (widget.eventStatus) {
+                    case EventStatus.Upcoming:
+                      events = upcomingEvents.toList();
+                      break;
+                    case EventStatus.Ongoing:
+                      events = ongoingEvents.toList();
+                      break;
+                    case EventStatus.Completed:
+                      events = completedEvents.toList();
+                      break;
+                  }
+                  itemCount = events.length;
+                  return ListView.builder(
+                    controller: _controller,
+                    itemCount: itemCount,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 10,
+                        ),
+                        child: EventCard(
+                          item: events[index],
+                        ),
+                      );
+                    },
+                  );
                 }
-                List<EventModel> events;
-                switch (widget.eventStatus) {
-                  case EventStatus.Upcoming:
-                    events = upcomingEvents.toList();
-                    break;
-                  case EventStatus.Ongoing:
-                    events = ongoingEvents.toList();
-                    break;
-                  case EventStatus.Completed:
-                    events = completedEvents.toList();
-                    break;
-                }
-                itemCount = events.length;
-                return ListView.builder(
-                  controller: _controller,
-                  itemCount: itemCount,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 10,
-                      ),
-                      child: EventCard(
-                        item: snapshot.data != null ? events[index] : null,
-                      ),
-                    );
-                  },
-                );
-              }
-            },
-          ),
-        )
-      ],
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 }

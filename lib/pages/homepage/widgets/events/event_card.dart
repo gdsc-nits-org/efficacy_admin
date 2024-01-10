@@ -1,5 +1,6 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
+import 'package:efficacy_admin/pages/event_details_view/event_details_viewer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -12,12 +13,20 @@ class EventCard extends StatelessWidget {
     super.key,
     required this.item,
   });
-  final EventModel? item;
+  final EventModel item;
   @override
   Widget build(BuildContext context) {
     final DateFormat _dateFormatter = DateFormat('dd MMM yyyy');
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) =>
+                EventDetailsViewer(currentEvent: item),
+          ),
+        );
+      },
       child: Card(
         child: Column(
           children: [

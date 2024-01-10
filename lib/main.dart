@@ -1,3 +1,4 @@
+import 'package:efficacy_admin/pages/event_details_view/event_details_viewer.dart';
 import 'package:flutter/material.dart';
 import 'utils/utils.dart';
 import 'config/config.dart';
@@ -27,7 +28,7 @@ class EfficacyAdmin extends StatelessWidget {
         SignUpPage.routeName: (context) => const SignUpPage(),
         ClubPage.routeName: (context) => const ClubPage(),
         CreateEvent.routeName: (context) => const CreateEvent(),
-        OrganizationsPage.routeName: (context) => const OrganizationsPage()
+        OrganizationsPage.routeName: (context) => const OrganizationsPage(),
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,

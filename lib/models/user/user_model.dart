@@ -10,6 +10,7 @@ const String appName = "Efficacy Admin";
 
 @Freezed(fromJson: true, toJson: true)
 class UserModel with _$UserModel {
+  const UserModel._();
   const factory UserModel({
     @JsonKey(name: '_id') String? id,
     required String name,
@@ -64,8 +65,7 @@ class UserModel with _$UserModel {
                     other.userPhotoPublicID == userPhotoPublicID) &&
                 (identical(other.branch, branch) || other.branch == branch) &&
                 (identical(other.degree, degree) || other.degree == degree) &&
-                const DeepCollectionEquality()
-                    .equals(other.socials, socials) &&
+                const DeepCollectionEquality().equals(other.socials, socials) &&
                 (identical(other.app, app) || other.app == app) &&
                 const DeepCollectionEquality()
                     .equals(other.position, position) &&
@@ -75,7 +75,6 @@ class UserModel with _$UserModel {
                     other.lastLocalUpdate == lastLocalUpdate));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => id != null
       ? Object.hash(runtimeType, id)

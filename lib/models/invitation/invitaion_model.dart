@@ -42,7 +42,6 @@ class InvitationModel with _$InvitationModel {
                     other.lastLocalUpdate == lastLocalUpdate));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => id != null
       ? Object.hash(runtimeType, id)

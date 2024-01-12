@@ -288,7 +288,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$UserModelImpl implements _UserModel {
+class _$UserModelImpl extends _UserModel {
   const _$UserModelImpl(
       {@JsonKey(name: '_id') this.id,
       required this.name,
@@ -307,7 +307,8 @@ class _$UserModelImpl implements _UserModel {
       this.lastLocalUpdate})
       : _socials = socials,
         _position = position,
-        _following = following;
+        _following = following,
+        super._();
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
@@ -381,55 +382,6 @@ class _$UserModelImpl implements _UserModel {
     return 'UserModel(id: $id, name: $name, phoneNumber: $phoneNumber, password: $password, email: $email, scholarID: $scholarID, userPhoto: $userPhoto, userPhotoPublicID: $userPhotoPublicID, branch: $branch, degree: $degree, socials: $socials, app: $app, position: $position, following: $following, lastLocalUpdate: $lastLocalUpdate)';
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$UserModelImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.phoneNumber, phoneNumber) ||
-                other.phoneNumber == phoneNumber) &&
-            (identical(other.password, password) ||
-                other.password == password) &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.scholarID, scholarID) ||
-                other.scholarID == scholarID) &&
-            (identical(other.userPhoto, userPhoto) ||
-                other.userPhoto == userPhoto) &&
-            (identical(other.userPhotoPublicID, userPhotoPublicID) ||
-                other.userPhotoPublicID == userPhotoPublicID) &&
-            (identical(other.branch, branch) || other.branch == branch) &&
-            (identical(other.degree, degree) || other.degree == degree) &&
-            const DeepCollectionEquality().equals(other._socials, _socials) &&
-            (identical(other.app, app) || other.app == app) &&
-            const DeepCollectionEquality().equals(other._position, _position) &&
-            const DeepCollectionEquality()
-                .equals(other._following, _following) &&
-            (identical(other.lastLocalUpdate, lastLocalUpdate) ||
-                other.lastLocalUpdate == lastLocalUpdate));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      name,
-      phoneNumber,
-      password,
-      email,
-      scholarID,
-      userPhoto,
-      userPhotoPublicID,
-      branch,
-      degree,
-      const DeepCollectionEquality().hash(_socials),
-      app,
-      const DeepCollectionEquality().hash(_position),
-      const DeepCollectionEquality().hash(_following),
-      lastLocalUpdate);
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
@@ -444,7 +396,7 @@ class _$UserModelImpl implements _UserModel {
   }
 }
 
-abstract class _UserModel implements UserModel {
+abstract class _UserModel extends UserModel {
   const factory _UserModel(
       {@JsonKey(name: '_id') final String? id,
       required final String name,
@@ -461,6 +413,7 @@ abstract class _UserModel implements UserModel {
       final List<String> position,
       final List<String> following,
       final DateTime? lastLocalUpdate}) = _$UserModelImpl;
+  const _UserModel._() : super._();
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;

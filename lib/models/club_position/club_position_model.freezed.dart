@@ -151,14 +151,15 @@ class __$$ClubPositionModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ClubPositionModelImpl implements _ClubPositionModel {
+class _$ClubPositionModelImpl extends _ClubPositionModel {
   const _$ClubPositionModelImpl(
       {@JsonKey(name: '_id') this.id,
       required this.clubID,
       required this.position,
       this.lastLocalUpdate,
       final List<Permissions> permissions = const []})
-      : _permissions = permissions;
+      : _permissions = permissions,
+        super._();
 
   factory _$ClubPositionModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClubPositionModelImplFromJson(json);
@@ -186,26 +187,6 @@ class _$ClubPositionModelImpl implements _ClubPositionModel {
     return 'ClubPositionModel(id: $id, clubID: $clubID, position: $position, lastLocalUpdate: $lastLocalUpdate, permissions: $permissions)';
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ClubPositionModelImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.clubID, clubID) || other.clubID == clubID) &&
-            (identical(other.position, position) ||
-                other.position == position) &&
-            (identical(other.lastLocalUpdate, lastLocalUpdate) ||
-                other.lastLocalUpdate == lastLocalUpdate) &&
-            const DeepCollectionEquality()
-                .equals(other._permissions, _permissions));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, id, clubID, position,
-      lastLocalUpdate, const DeepCollectionEquality().hash(_permissions));
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
@@ -221,13 +202,14 @@ class _$ClubPositionModelImpl implements _ClubPositionModel {
   }
 }
 
-abstract class _ClubPositionModel implements ClubPositionModel {
+abstract class _ClubPositionModel extends ClubPositionModel {
   const factory _ClubPositionModel(
       {@JsonKey(name: '_id') final String? id,
       required final String clubID,
       required final String position,
       final DateTime? lastLocalUpdate,
       final List<Permissions> permissions}) = _$ClubPositionModelImpl;
+  const _ClubPositionModel._() : super._();
 
   factory _ClubPositionModel.fromJson(Map<String, dynamic> json) =
       _$ClubPositionModelImpl.fromJson;

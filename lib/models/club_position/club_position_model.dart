@@ -8,6 +8,7 @@ part 'club_position_model.g.dart';
 
 @Freezed(fromJson: true, toJson: true)
 class ClubPositionModel with _$ClubPositionModel {
+  const ClubPositionModel._();
   const factory ClubPositionModel({
     @JsonKey(name: '_id') String? id,
     required String clubID,
@@ -40,7 +41,6 @@ class ClubPositionModel with _$ClubPositionModel {
                     .equals(other._permissions, permissions));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => id != null
       ? Object.hash(runtimeType, id)

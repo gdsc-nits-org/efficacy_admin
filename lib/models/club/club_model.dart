@@ -95,7 +95,6 @@ class ClubModel with _$ClubModel {
                     other.lastLocalUpdate == lastLocalUpdate));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => id != null
       ? Object.hash(runtimeType, id)

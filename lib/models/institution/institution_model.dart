@@ -33,12 +33,10 @@ class InstitutionModel with _$InstitutionModel {
                     other.lastLocalUpdate == lastLocalUpdate));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => id != null
       ? Object.hash(runtimeType, id)
       : Object.hash(runtimeType, id, name, lastLocalUpdate);
-      
 }
 
 enum InstitutionFields {

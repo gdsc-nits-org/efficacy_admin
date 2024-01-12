@@ -196,28 +196,6 @@ class _$InvitationModelImpl extends _InvitationModel {
     return 'InvitationModel(id: $id, clubPositionID: $clubPositionID, senderID: $senderID, recipientID: $recipientID, expiry: $expiry, lastLocalUpdate: $lastLocalUpdate)';
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InvitationModelImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.clubPositionID, clubPositionID) ||
-                other.clubPositionID == clubPositionID) &&
-            (identical(other.senderID, senderID) ||
-                other.senderID == senderID) &&
-            (identical(other.recipientID, recipientID) ||
-                other.recipientID == recipientID) &&
-            (identical(other.expiry, expiry) || other.expiry == expiry) &&
-            (identical(other.lastLocalUpdate, lastLocalUpdate) ||
-                other.lastLocalUpdate == lastLocalUpdate));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, id, clubPositionID, senderID,
-      recipientID, expiry, lastLocalUpdate);
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

@@ -41,6 +41,61 @@ class UserModel with _$UserModel {
     }
     return _$UserModelFromJson(json);
   }
+
+  @override
+  bool operator ==(dynamic other) {
+    return id != null && other.id != null
+        ? (id == other.id)
+        : identical(this, other) ||
+            (other.runtimeType == runtimeType &&
+                other is _$UserModelImpl &&
+                (identical(other.id, id) || other.id == id) &&
+                (identical(other.name, name) || other.name == name) &&
+                (identical(other.phoneNumber, phoneNumber) ||
+                    other.phoneNumber == phoneNumber) &&
+                (identical(other.password, password) ||
+                    other.password == password) &&
+                (identical(other.email, email) || other.email == email) &&
+                (identical(other.scholarID, scholarID) ||
+                    other.scholarID == scholarID) &&
+                (identical(other.userPhoto, userPhoto) ||
+                    other.userPhoto == userPhoto) &&
+                (identical(other.userPhotoPublicID, userPhotoPublicID) ||
+                    other.userPhotoPublicID == userPhotoPublicID) &&
+                (identical(other.branch, branch) || other.branch == branch) &&
+                (identical(other.degree, degree) || other.degree == degree) &&
+                const DeepCollectionEquality()
+                    .equals(other.socials, socials) &&
+                (identical(other.app, app) || other.app == app) &&
+                const DeepCollectionEquality()
+                    .equals(other.position, position) &&
+                const DeepCollectionEquality()
+                    .equals(other.following, following) &&
+                (identical(other.lastLocalUpdate, lastLocalUpdate) ||
+                    other.lastLocalUpdate == lastLocalUpdate));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => id != null
+      ? Object.hash(runtimeType, id)
+      : Object.hash(
+          runtimeType,
+          id,
+          name,
+          phoneNumber,
+          password,
+          email,
+          scholarID,
+          userPhoto,
+          userPhotoPublicID,
+          branch,
+          degree,
+          const DeepCollectionEquality().hash(socials),
+          app,
+          const DeepCollectionEquality().hash(position),
+          const DeepCollectionEquality().hash(following),
+          lastLocalUpdate);
 }
 
 enum UserFields {

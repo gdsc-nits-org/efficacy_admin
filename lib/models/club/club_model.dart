@@ -60,6 +60,61 @@ class ClubModel with _$ClubModel {
       followers: [],
     );
   }
+
+  @override
+  bool operator ==(dynamic other) {
+    return id != null && other.id != null
+        ? (id == other.id)
+        : identical(this, other) ||
+            (other.runtimeType == runtimeType &&
+                other is _$ClubModelImpl &&
+                (identical(other.id, id) || other.id == id) &&
+                (identical(other.name, name) || other.name == name) &&
+                (identical(other.instituteName, instituteName) ||
+                    other.instituteName == instituteName) &&
+                (identical(other.description, description) ||
+                    other.description == description) &&
+                const DeepCollectionEquality()
+                    .equals(other._socials, socials) &&
+                (identical(other.email, email) || other.email == email) &&
+                (identical(other.phoneNumber, phoneNumber) ||
+                    other.phoneNumber == phoneNumber) &&
+                (identical(other.clubLogoURL, clubLogoURL) ||
+                    other.clubLogoURL == clubLogoURL) &&
+                (identical(other.clubLogoPublicId, clubLogoPublicId) ||
+                    other.clubLogoPublicId == clubLogoPublicId) &&
+                (identical(other.clubBannerURL, clubBannerURL) ||
+                    other.clubBannerURL == clubBannerURL) &&
+                (identical(other.clubBannerPublicId, clubBannerPublicId) ||
+                    other.clubBannerPublicId == clubBannerPublicId) &&
+                const DeepCollectionEquality()
+                    .equals(other._members, members) &&
+                const DeepCollectionEquality()
+                    .equals(other._followers, followers) &&
+                (identical(other.lastLocalUpdate, lastLocalUpdate) ||
+                    other.lastLocalUpdate == lastLocalUpdate));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => id != null
+      ? Object.hash(runtimeType, id)
+      : Object.hash(
+          runtimeType,
+          id,
+          name,
+          instituteName,
+          description,
+          const DeepCollectionEquality().hash(socials),
+          email,
+          phoneNumber,
+          clubLogoURL,
+          clubLogoPublicId,
+          clubBannerURL,
+          clubBannerPublicId,
+          const DeepCollectionEquality().hash(members),
+          const DeepCollectionEquality().hash(followers),
+          lastLocalUpdate);
 }
 
 enum ClubFields {

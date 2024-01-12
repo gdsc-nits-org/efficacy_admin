@@ -22,6 +22,32 @@ class InvitationModel with _$InvitationModel {
     }
     return _$InvitationModelFromJson(json);
   }
+
+  @override
+  bool operator ==(dynamic other) {
+    return id != null && other.id != null
+        ? (id == other.id)
+        : identical(this, other) ||
+            (other.runtimeType == runtimeType &&
+                other is _$InvitationModelImpl &&
+                (identical(other.id, id) || other.id == id) &&
+                (identical(other.clubPositionID, clubPositionID) ||
+                    other.clubPositionID == clubPositionID) &&
+                (identical(other.senderID, senderID) ||
+                    other.senderID == senderID) &&
+                (identical(other.recipientID, recipientID) ||
+                    other.recipientID == recipientID) &&
+                (identical(other.expiry, expiry) || other.expiry == expiry) &&
+                (identical(other.lastLocalUpdate, lastLocalUpdate) ||
+                    other.lastLocalUpdate == lastLocalUpdate));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => id != null
+      ? Object.hash(runtimeType, id)
+      : Object.hash(runtimeType, id, clubPositionID, senderID, recipientID,
+          expiry, lastLocalUpdate);
 }
 
 enum InvitationFields {

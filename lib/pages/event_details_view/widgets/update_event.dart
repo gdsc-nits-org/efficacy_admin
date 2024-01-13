@@ -5,25 +5,47 @@ import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
-import 'event_form.dart';
-import 'utils/create_event_utils.dart';
-import 'widgets/upload_button.dart';
+import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
+import 'package:efficacy_admin/pages/create_event/event_form.dart';
+import 'package:efficacy_admin/pages/create_event/widgets/upload_button.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class CreateEvent extends StatefulWidget {
-  //route
-  static const String routeName = '/CreateEventPage';
-  const CreateEvent({super.key
-
+class UpdateEvent extends StatefulWidget {
+  final String title;
+  final String shortDescription;
+  final String? longDescription;
+  final String googleUrl;
+  final String? fbUrl;
+  final String venue;
+  final UserModel? selectedModerators;
+  final ClubModel? selectedClub;
+  final DateTime startDate;
+  final DateTime endDate;
+  final TimeOfDay startTime;
+  final TimeOfDay endTime;
+  const UpdateEvent({super.key,
+    required this.title,
+    required this.shortDescription,
+    this.longDescription,
+    required this.googleUrl,
+    this.fbUrl,
+    required this.venue,
+    this.selectedModerators,
+    this.selectedClub,
+    required this.startDate,
+    required this.endDate,
+    required this.startTime,
+    required this.endTime,
   });
+  
   @override
-  State<CreateEvent> createState() => _CreateEventState();
+  State<UpdateEvent> createState() => _UpdateEventState();
 }
 
-class _CreateEventState extends State<CreateEvent> {
+class _UpdateEventState extends State<UpdateEvent> {
   //form variables
   final _formKey = GlobalKey<FormState>();
 
@@ -64,7 +86,7 @@ class _CreateEventState extends State<CreateEvent> {
       showLoadingOverlay(
         context: context,
         asyncTask: () async {
-          await EventController.create(event);
+          await EventController.update(event);
         },
       );
     } else {
@@ -87,9 +109,22 @@ class _CreateEventState extends State<CreateEvent> {
       _image = temp;
     });
   }
-
+  String? googleUrl;
   @override
   Widget build(BuildContext context) {
+    googleUrl = widget.googleUrl;
+    titleController.text = widget.title;
+    shortDescController.text = widget.shortDescription;
+    longDescController.text = widget.longDescription ?? "";
+    venueController.text = widget.venue;
+    googleUrlController.text = widget.googleUrl;
+    fbUrlController.text = widget.fbUrl?? "";
+    selectedDate1 = widget.startDate;
+    selectedDate2 = widget.endDate;
+    selectedTime1 = widget.startTime;
+    selectedTime2 = widget.endTime;
+    selectedClub = widget.selectedClub;
+    selectedModerator = widget.selectedModerators;
     getSize(context);
     return Stack(children: [
       Scaffold(

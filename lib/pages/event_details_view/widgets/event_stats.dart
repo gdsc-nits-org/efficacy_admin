@@ -36,14 +36,18 @@ class _EventStatsState extends State<EventStats> {
         Column(
           children: [
             IconButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white
+              ),
               onPressed: toggleLike,
               icon: isLiked
                   ? const Icon(
                       Icons.thumb_up,
-                      color: light,
+                      color: dark,
                     )
                   : const Icon(
                       Icons.thumb_up_outlined,
+                      color: dark,
                     ),
             ),
             StatsInfo(
@@ -53,10 +57,15 @@ class _EventStatsState extends State<EventStats> {
         ),
         Column(
           children: [
-            const Icon(
-              CupertinoIcons.calendar,
-              color: dark,
-              size: 40,
+            IconButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+              ),
+              onPressed: null,
+              icon: const Icon(
+                Icons.calendar_month,
+                color: dark,
+              ) 
             ),
             StatsInfo(
               message: DateFormat("d MMM").format(widget.currentEventDate),
@@ -66,8 +75,14 @@ class _EventStatsState extends State<EventStats> {
         Column(
           children: [
             IconButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white
+              ),
               onPressed: () {},
-              icon: const Icon(Icons.share),
+              icon: const Icon(
+                Icons.share, 
+                color: dark,
+              ),
             ),
             const StatsInfo(message: "Share")
           ],

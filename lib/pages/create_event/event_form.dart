@@ -22,10 +22,10 @@ class EventForm extends StatefulWidget {
   final TextEditingController venueController;
 
   final UserModel? selectedModerator;
-  final DateTime selectedDate1;
-  final DateTime selectedDate2;
-  final TimeOfDay selectedTime1;
-  final TimeOfDay selectedTime2;
+  DateTime selectedDate1;
+  DateTime selectedDate2;
+  TimeOfDay selectedTime1;
+  TimeOfDay selectedTime2;
   final ClubModel? selectedClub;
 
   final void Function(UserModel?) onSelectedModeratorChanged;
@@ -35,7 +35,7 @@ class EventForm extends StatefulWidget {
   final void Function(TimeOfDay) onSelectedTime2Changed;
   final void Function(ClubModel) onSelectedClubModelChanged;
 
-  const EventForm({
+  EventForm({
     super.key,
     required this.formKey,
     required this.scrollController,
@@ -67,10 +67,10 @@ class _EventFormState extends State<EventForm> {
   //moderator declaration
   List<UserModel> moderators = [];
   ClubModel? selectedClub;
-  late DateTime selectedDate1;
-  late DateTime selectedDate2;
-  late TimeOfDay selectedTime1;
-  late TimeOfDay selectedTime2;
+  late DateTime selectedDate1 = widget.selectedDate1;
+  late DateTime selectedDate2 = widget.selectedDate2;
+  late TimeOfDay selectedTime1 = widget.selectedTime1;
+  late TimeOfDay selectedTime2 = widget.selectedTime2;
   late UserModel? selectedModerator;
 
   Future<List<UserModel>> getContacts() async {
@@ -103,8 +103,14 @@ class _EventFormState extends State<EventForm> {
       setState(() {
         if (pickerNumber == 1) {
           widget.onSelectedDate1Changed(picked);
+          setState(() {
+            selectedDate1 = picked;
+          });
         } else {
           widget.onSelectedDate2Changed(picked);
+          setState(() {
+            selectedDate2 = picked;
+          });
         }
       });
     }
@@ -121,8 +127,14 @@ class _EventFormState extends State<EventForm> {
       setState(() {
         if (pickerNumber == 1) {
           widget.onSelectedTime1Changed(picked);
+          setState(() {
+            selectedTime1 = picked;
+          });
         } else {
           widget.onSelectedTime2Changed(picked);
+          setState(() {
+            selectedTime2 = picked;
+          });
         }
       });
     }

@@ -39,12 +39,16 @@ class _EventDetailsState extends State<EventDetails> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  event.title,
-                  style: TextStyle(
-                    color: dark,
-                    fontWeight: FontWeight.w800,
-                    fontSize: screenWidth * 0.094,
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    event.title,
+                    style: TextStyle(
+                      color: dark,
+                      fontWeight: FontWeight.w800,
+                      fontSize: screenWidth * 0.07,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
                 ),
                 Text(event.shortDescription),
@@ -80,8 +84,8 @@ class _EventDetailsState extends State<EventDetails> {
               ),
             ),
             EventStats(currentEventDate: event.startDate),
-            const Contributors(role: "Added By"),
-            const Contributors(role: "Moderators"),
+            Contributors(role: "Added By", contacts: [],),
+            Contributors(role: "Moderators", contacts: event.contacts,),
           ].separate(20),
         ),
       ),

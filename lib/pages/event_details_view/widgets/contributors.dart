@@ -3,8 +3,10 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:flutter/cupertino.dart';
 
 class Contributors extends StatelessWidget {
-  const Contributors({super.key, required this.role});
-
+  Contributors({super.key, 
+  required this.contacts,
+  required this.role});
+  List<String> contacts;
   final String role;
 
   @override
@@ -18,11 +20,9 @@ class Contributors extends StatelessWidget {
             fontSize: 25,
           ),
         ),
-        Text("person 1"),
-        Text("person 2"),
-        Text("person 3"),
-        Text("person 4"),
-        Text("person 5"),
+        Column(
+          children: contacts.map((e) => Text(e)).toList()
+        )
       ],
     );
   }

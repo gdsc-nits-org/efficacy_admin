@@ -1,5 +1,7 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
+import 'package:efficacy_admin/pages/event_details_view/widgets/update_event.dart';
+import 'package:efficacy_admin/utils/custom_network_image.dart';
 import 'event_details.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -49,11 +51,28 @@ class _EventsViewerState extends State<EventsViewer> {
             panel: EventDetails(currentEvent: widget.currentEvent),
             body: Column(
               children: [
-                Image.network(
-                  widget.currentEvent.posterURL,
+                widget.currentEvent.posterURL == null || widget.currentEvent.posterURL.isEmpty ?
+                Image.asset(
+                  Assets.mediaImgPath,
                   fit: BoxFit.cover,
                   height: screenHeight * 0.4,
+                ): 
+                CustomNetworkImage(
+                  url: widget.currentEvent.posterURL,
+                  height: screenHeight * 0.4,
+                  errorWidget: (BuildContext context, _, __) {
+                    return Image.asset(
+                      Assets.mediaImgPath,
+                      fit: BoxFit.cover,
+                      height: screenHeight * 0.4,
+                    );
+                  },
                 ),
+                // Image.network(
+                //   widget.currentEvent.posterURL,
+                //   fit: BoxFit.cover,
+                //   height: screenHeight * 0.4,
+                // ),
               ],
             ),
             borderRadius: const BorderRadius.only(
@@ -62,7 +81,24 @@ class _EventsViewerState extends State<EventsViewer> {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context, 
+                MaterialPageRoute(
+                  builder: (context)=>
+                  UpdateEvent(
+                    title: widget.currentEvent.title,
+                    shortDescription: widget.currentEvent.shortDescription,
+                    longDescription: widget.currentEvent.longDescription,
+                    venue: widget.currentEvent.venue,
+                    googleUrl: widget.currentEvent.registrationLink,
+                    fbUrl: widget.currentEvent.facebookPostURL,
+                    startDate: widget.currentEvent.startDate,
+                    endDate: widget.currentEvent.endDate,
+                    startTime: TimeOfDay.fromDateTime(widget.currentEvent.startDate),
+                    endTime: TimeOfDay.fromDateTime(widget.currentEvent.endDate),
+                  )));
+            },
             child: const Icon(
               Icons.edit_outlined,
             ),
@@ -79,11 +115,11 @@ class _EventsViewerState extends State<EventsViewer> {
               alignment: Alignment.topLeft,
               child: CircleAvatar(
                 radius: 15,
-                backgroundColor: dark,
+                backgroundColor: Colors.grey,
                 child: Icon(
                   Icons.close,
                   size: screenHeight * 0.035,
-                  color: light,
+                  color: dark,
                 ),
               ),
             ),

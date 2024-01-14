@@ -5,8 +5,9 @@ import 'package:flutter/cupertino.dart';
 
 class CustomNetworkImage extends StatefulWidget {
   final String url;
+  final double? height;
   final Widget Function(BuildContext, String, Object)? errorWidget;
-  const CustomNetworkImage({super.key, required this.url, this.errorWidget,});
+  const CustomNetworkImage({super.key, required this.url, this.errorWidget, this.height});
 
   @override
   State<CustomNetworkImage> createState() => _CustomNetworkImageState();
@@ -17,6 +18,7 @@ class _CustomNetworkImageState extends State<CustomNetworkImage> {
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: widget.url,
+      height: widget.height,
       cacheManager: CacheManager(
         Config(
           widget.url,

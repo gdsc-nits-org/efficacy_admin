@@ -17,13 +17,16 @@ class EventRegistrationButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 35,
-      width: (message.length * 17.0).toDouble(),
+      width: 160,
+      // width: (message.length * 17.0).toDouble(),
       child: ElevatedButton.icon(
         onPressed: () {},
         icon: icon,
         label: Text(
+
           message,
           style: const TextStyle(
+            fontSize: 12,
             color: dark,
           ),
         ),

@@ -8,6 +8,7 @@ class DateTimePicker extends StatelessWidget {
   final Function() onTapTime;
 
   const DateTimePicker({
+    super.key,
     required this.label,
     required this.selectedDate,
     required this.selectedTime,

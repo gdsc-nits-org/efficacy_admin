@@ -1,10 +1,9 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/models.dart';
-import 'package:efficacy_admin/pages/create_event/widgets/club_drop_down.dart';
-import 'package:efficacy_admin/pages/create_event/widgets/contacts_drop_down.dart';
+import 'widgets/club_drop_down.dart';
+import 'widgets/contacts_drop_down.dart';
 import 'package:efficacy_admin/utils/utils.dart';
-import 'package:efficacy_admin/widgets/custom_drop_down/custom_drop_down.dart';
 import 'utils/create_event_utils.dart';
 import 'widgets/custom_text_field.dart';
 import 'widgets/date_time_picker.dart';
@@ -22,17 +21,17 @@ class EventForm extends StatefulWidget {
   final TextEditingController venueController;
 
   final UserModel? selectedModerator;
-  DateTime selectedDate1;
-  DateTime selectedDate2;
-  TimeOfDay selectedTime1;
-  TimeOfDay selectedTime2;
+  DateTime selectedStartDate;
+  DateTime selectedEndDate;
+  TimeOfDay selectedStartTime;
+  TimeOfDay selectedEndTime;
   final ClubModel? selectedClub;
 
   final void Function(UserModel?) onSelectedModeratorChanged;
-  final void Function(DateTime) onSelectedDate1Changed;
-  final void Function(DateTime) onSelectedDate2Changed;
-  final void Function(TimeOfDay) onSelectedTime1Changed;
-  final void Function(TimeOfDay) onSelectedTime2Changed;
+  final void Function(DateTime) onSelectedStartDateChanged;
+  final void Function(DateTime) onSelectedEndDateChanged;
+  final void Function(TimeOfDay) onSelectedStartTimeChanged;
+  final void Function(TimeOfDay) onSelectedEndTimeChanged;
   final void Function(ClubModel) onSelectedClubModelChanged;
 
   EventForm({
@@ -46,14 +45,14 @@ class EventForm extends StatefulWidget {
     required this.googleUrlController,
     required this.fbUrlController,
     required this.venueController,
-    required this.onSelectedDate1Changed,
-    required this.onSelectedDate2Changed,
-    required this.onSelectedTime1Changed,
-    required this.onSelectedTime2Changed,
-    required this.selectedDate1,
-    required this.selectedDate2,
-    required this.selectedTime1,
-    required this.selectedTime2,
+    required this.onSelectedStartDateChanged,
+    required this.onSelectedEndDateChanged,
+    required this.onSelectedStartTimeChanged,
+    required this.onSelectedEndTimeChanged,
+    required this.selectedStartDate,
+    required this.selectedEndDate,
+    required this.selectedStartTime,
+    required this.selectedEndTime,
     required this.onSelectedModeratorChanged,
     this.selectedClub,
     required this.onSelectedClubModelChanged,
@@ -65,17 +64,36 @@ class EventForm extends StatefulWidget {
 
 class _EventFormState extends State<EventForm> {
   //moderator declaration
-  List<UserModel> moderators = [];
   ClubModel? selectedClub;
-  late DateTime selectedDate1 = widget.selectedDate1;
-  late DateTime selectedDate2 = widget.selectedDate2;
-  late TimeOfDay selectedTime1 = widget.selectedTime1;
-  late TimeOfDay selectedTime2 = widget.selectedTime2;
+  late DateTime selectedStartDate = widget.selectedStartDate;
+  late DateTime selectedEndDate = widget.selectedEndDate;
+  late TimeOfDay selectedStartTime = widget.selectedStartTime;
+  late TimeOfDay selectedEndTime = widget.selectedEndTime;
   late UserModel? selectedModerator;
+
+  Future<List<UserModel>> getModerators(ClubModel? club) async {
+    if (club == null) return [];
+    List<UserModel> moderators = [];
+    Set<String> clubMembers = club.members.values.fold(
+      <String>{},
+      (allMembers, List<String> members) {
+        allMembers.addAll(members);
+        return allMembers;
+      },
+    );
+    for (String userEmail in clubMembers) {
+      List<UserModel> user = await UserController.get(email: userEmail).first;
+      if (user.isNotEmpty) {
+        moderators.add(user.first);
+      }
+    }
+    return moderators;
+  }
 
   Future<List<UserModel>> getContacts() async {
     List<UserModel> users = [];
     if (selectedClub != null) {
+      selectedModerator = null;
       for (MapEntry<String, List<String>> position
           in selectedClub!.members.entries) {
         for (String userMail in position.value) {
@@ -93,23 +111,35 @@ class _EventFormState extends State<EventForm> {
   //function to get dates
   Future<void> _selectDate(BuildContext context, int pickerNumber) async {
     final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: pickerNumber == 1 ? selectedDate1 : selectedDate2,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
+        context: context,
+        initialDate: pickerNumber == 1 ? selectedStartDate : selectedEndDate,
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2101),
+        builder: (BuildContext context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              iconButtonTheme: IconButtonThemeData(
+                style: ElevatedButton.styleFrom(
+                  elevation: 2,
+                  foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+                ),
+              ),
+            ),
+            child: child!,
+          );
+        });
 
     if (picked != null) {
       setState(() {
         if (pickerNumber == 1) {
-          widget.onSelectedDate1Changed(picked);
+          widget.onSelectedStartDateChanged(picked);
           setState(() {
-            selectedDate1 = picked;
+            selectedStartDate = picked;
           });
         } else {
-          widget.onSelectedDate2Changed(picked);
+          widget.onSelectedEndDateChanged(picked);
           setState(() {
-            selectedDate2 = picked;
+            selectedEndDate = picked;
           });
         }
       });
@@ -119,21 +149,33 @@ class _EventFormState extends State<EventForm> {
   //function to get times
   Future<void> _selectTime(BuildContext context, int pickerNumber) async {
     final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: pickerNumber == 1 ? selectedTime1 : selectedTime2,
-    );
+        context: context,
+        initialTime: pickerNumber == 1 ? selectedStartTime : selectedEndTime,
+        builder: (BuildContext context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              iconButtonTheme: IconButtonThemeData(
+                style: ElevatedButton.styleFrom(
+                  elevation: 2,
+                  foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+                ),
+              ),
+            ),
+            child: child!,
+          );
+        });
 
     if (picked != null) {
       setState(() {
         if (pickerNumber == 1) {
-          widget.onSelectedTime1Changed(picked);
+          widget.onSelectedStartTimeChanged(picked);
           setState(() {
-            selectedTime1 = picked;
+            selectedStartTime = picked;
           });
         } else {
-          widget.onSelectedTime2Changed(picked);
+          widget.onSelectedEndTimeChanged(picked);
           setState(() {
-            selectedTime2 = picked;
+            selectedEndTime = picked;
           });
         }
       });
@@ -143,10 +185,10 @@ class _EventFormState extends State<EventForm> {
   @override
   void initState() {
     super.initState();
-    selectedDate1 = widget.selectedDate1;
-    selectedDate2 = widget.selectedDate2;
-    selectedTime1 = widget.selectedTime1;
-    selectedTime2 = widget.selectedTime2;
+    selectedStartDate = widget.selectedStartDate;
+    selectedEndDate = widget.selectedEndDate;
+    selectedStartTime = widget.selectedStartTime;
+    selectedEndTime = widget.selectedEndTime;
     selectedModerator = widget.selectedModerator;
     selectedClub = widget.selectedClub;
   }
@@ -160,15 +202,19 @@ class _EventFormState extends State<EventForm> {
         child: SingleChildScrollView(
           controller: widget.scrollController,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: padding),
                     child: Text(
                       "Club ",
-                      style: Theme.of(context).textTheme.labelLarge,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(fontSize: 20),
                     ),
                   ),
                   ClubDropDown(
@@ -176,34 +222,29 @@ class _EventFormState extends State<EventForm> {
                     value: selectedClub,
                     onChanged: (ClubModel? newClub) {
                       if (newClub != null) {
+                        setState(() {
+                          selectedClub = newClub;
+                        });
                         widget.onSelectedClubModelChanged(newClub);
                       }
                     },
                   ),
-                ].separate(5),
+                ].separate(10),
               ),
               //title
               CustomField(
                 controller: widget.titleController,
                 hintText: 'Event Title',
                 icon: Icons.title,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Title cannot be empty';
-                  }
-                  return null;
-                },
+                validator: (value) =>
+                    Validator.nullAndEmptyCheck(value, "Title"),
               ),
               //short description
               CustomField(
                 controller: widget.shortDescController,
                 icon: Icons.format_align_right_rounded,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Description cannot be empty';
-                  }
-                  return null;
-                },
+                validator: (value) =>
+                    Validator.nullAndEmptyCheck(value, "Description"),
                 hintText: 'Short Description',
               ),
               //long description
@@ -228,8 +269,8 @@ class _EventFormState extends State<EventForm> {
               //Date and time picker
               DateTimePicker(
                 label: 'Start Date & Time',
-                selectedDate: selectedDate1,
-                selectedTime: selectedTime1,
+                selectedDate: selectedStartDate,
+                selectedTime: selectedStartTime,
                 onTapDate: () => _selectDate(context, 1),
                 onTapTime: () => _selectTime(context, 1),
               ),
@@ -247,8 +288,8 @@ class _EventFormState extends State<EventForm> {
               //date and time picker
               DateTimePicker(
                 label: 'End Date & Time',
-                selectedDate: selectedDate2,
-                selectedTime: selectedTime2,
+                selectedDate: selectedEndDate,
+                selectedTime: selectedEndTime,
                 onTapDate: () => _selectDate(context, 2),
                 onTapTime: () => _selectTime(context, 2),
               ),
@@ -301,18 +342,35 @@ class _EventFormState extends State<EventForm> {
                       color: const Color.fromARGB(137, 93, 77, 77),
                       size: iconSize,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: padding),
-                      child: ContactsDropDown(
-                        items: moderators,
-                        value: selectedModerator,
-                        onChanged: (UserModel? newModerator) {
-                          setState(() {
-                            widget.onSelectedModeratorChanged(newModerator);
-                          });
-                        },
-                      ),
-                    ),
+                    FutureBuilder(
+                        future: getModerators(selectedClub),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            );
+                          }
+                          const SizedBox(width: 10);
+                          List<UserModel> moderators = snapshot.data ?? [];
+                          return Padding(
+                            padding: EdgeInsets.only(left: padding),
+                            child: ContactsDropDown(
+                              items: moderators,
+                              value: selectedModerator,
+                              onChanged: (UserModel? newModerator) {
+                                setState(() {
+                                  selectedModerator = newModerator;
+                                });
+                                widget.onSelectedModeratorChanged(newModerator);
+                              },
+                            ),
+                          );
+                        }),
                   ],
                 ),
               ),

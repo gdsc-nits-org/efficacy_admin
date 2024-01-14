@@ -10,6 +10,7 @@ _$EventModelImpl _$$EventModelImplFromJson(Map<String, dynamic> json) =>
     _$EventModelImpl(
       id: json['_id'] as String?,
       posterURL: json['posterURL'] as String,
+      posterPublicID: json['posterPublicID'] as String,
       title: json['title'] as String,
       shortDescription: json['shortDescription'] as String,
       longDescription: json['longDescription'] as String?,
@@ -39,6 +40,7 @@ Map<String, dynamic> _$$EventModelImplToJson(_$EventModelImpl instance) =>
     <String, dynamic>{
       '_id': instance.id,
       'posterURL': instance.posterURL,
+      'posterPublicID': instance.posterPublicID,
       'title': instance.title,
       'shortDescription': instance.shortDescription,
       'longDescription': instance.longDescription,

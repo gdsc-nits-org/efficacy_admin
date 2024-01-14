@@ -1,6 +1,12 @@
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/controllers/services/club/club_controller.dart';
+import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
+import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
+import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
-import 'package:efficacy_admin/pages/event_details_view/widgets/update_event.dart';
+import 'package:efficacy_admin/models/user/user_model.dart';
+import 'package:efficacy_admin/pages/create_update_event/create_update_event.dart';
+import 'package:efficacy_admin/pages/create_update_event/create_update_event.dart';
 import 'package:efficacy_admin/utils/custom_network_image.dart';
 import 'event_details.dart';
 import 'package:flutter/material.dart';
@@ -51,23 +57,23 @@ class _EventsViewerState extends State<EventsViewer> {
             panel: EventDetails(currentEvent: widget.currentEvent),
             body: Column(
               children: [
-                widget.currentEvent.posterURL == null || widget.currentEvent.posterURL.isEmpty ?
-                Image.asset(
-                  Assets.mediaImgPath,
-                  fit: BoxFit.cover,
-                  height: screenHeight * 0.4,
-                ): 
-                CustomNetworkImage(
-                  url: widget.currentEvent.posterURL,
-                  height: screenHeight * 0.4,
-                  errorWidget: (BuildContext context, _, __) {
-                    return Image.asset(
-                      Assets.mediaImgPath,
-                      fit: BoxFit.cover,
-                      height: screenHeight * 0.4,
-                    );
-                  },
-                ),
+                widget.currentEvent.posterURL.isEmpty
+                    ? Image.asset(
+                        Assets.mediaImgPath,
+                        fit: BoxFit.cover,
+                        height: screenHeight * 0.4,
+                      )
+                    : CustomNetworkImage(
+                        url: widget.currentEvent.posterURL,
+                        height: screenHeight * 0.4,
+                        errorWidget: (BuildContext context, _, __) {
+                          return Image.asset(
+                            Assets.mediaImgPath,
+                            fit: BoxFit.cover,
+                            height: screenHeight * 0.4,
+                          );
+                        },
+                      ),
                 // Image.network(
                 //   widget.currentEvent.posterURL,
                 //   fit: BoxFit.cover,
@@ -81,23 +87,41 @@ class _EventsViewerState extends State<EventsViewer> {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                context, 
-                MaterialPageRoute(
-                  builder: (context)=>
-                  UpdateEvent(
-                    title: widget.currentEvent.title,
-                    shortDescription: widget.currentEvent.shortDescription,
-                    longDescription: widget.currentEvent.longDescription,
-                    venue: widget.currentEvent.venue,
-                    googleUrl: widget.currentEvent.registrationLink,
-                    fbUrl: widget.currentEvent.facebookPostURL,
-                    startDate: widget.currentEvent.startDate,
-                    endDate: widget.currentEvent.endDate,
-                    startTime: TimeOfDay.fromDateTime(widget.currentEvent.startDate),
-                    endTime: TimeOfDay.fromDateTime(widget.currentEvent.endDate),
-                  )));
+            onPressed: () async {
+              UserModel? moderator;
+              ClubModel? club;
+              showLoadingOverlay(
+                  context: context,
+                  asyncTask: () async {
+                    if (widget.currentEvent.contacts.isNotEmpty) {
+                      List<UserModel> moderators = await UserController.get(
+                              email: widget.currentEvent.contacts.first)
+                          .first;
+                      if (moderators.isNotEmpty) {
+                        moderator = moderators.first;
+                      }
+                    }
+                    List<ClubModel> clubs =
+                        await ClubController.get(id: widget.currentEvent.clubID)
+                            .first;
+                    if (clubs.isNotEmpty) {
+                      club = clubs.first;
+                    }
+                  },
+                  onCompleted: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => CreateUpdateEvent(
+                          event: widget.currentEvent,
+                          club: club,
+                          moderator: moderator,
+                        ),
+                      ),
+                    ).then(
+                      (eventUpdated) => Navigator.pop(context, eventUpdated),
+                    );
+                  });
             },
             child: const Icon(
               Icons.edit_outlined,

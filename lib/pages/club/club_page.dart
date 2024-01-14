@@ -111,7 +111,7 @@ class _ClubPageState extends State<ClubPage> {
             img: _clubImage!,
             folder: ImageFolder.clubImage,
             publicID: UserController.currentUser?.userPhotoPublicID,
-            userName: nameController.text,
+            name: nameController.text,
           );
         }
         UploadInformation banner = UploadInformation(
@@ -123,7 +123,7 @@ class _ClubPageState extends State<ClubPage> {
             img: _bannerImage!,
             folder: ImageFolder.clubBanner,
             publicID: UserController.currentUser?.userPhotoPublicID,
-            userName: "${nameController.text}_banner",
+            name: "${nameController.text}_banner",
           );
         }
         newClub = await ClubController.update(club!.copyWith(
@@ -153,7 +153,7 @@ class _ClubPageState extends State<ClubPage> {
   }
 
   //form validate function
-  void _validateForm() async {
+  void _validateAndCreateClub() async {
     if (_clubImage == null) {
       throw Exception("Club must have an image");
     }
@@ -171,14 +171,14 @@ class _ClubPageState extends State<ClubPage> {
             if (_bannerImage != null) {
               bannerImageInfo = await ImageController.uploadImage(
                 img: _bannerImage!,
-                userName: "${nameController.text}_banner",
+                name: "${nameController.text}_banner",
                 folder: ImageFolder.clubBanner,
               );
             }
             if (_clubImage != null) {
               clubImageInfo = await ImageController.uploadImage(
                 img: _clubImage!,
-                userName: nameController.text,
+                name: nameController.text,
                 folder: ImageFolder.clubImage,
               );
             }
@@ -423,7 +423,7 @@ class _ClubPageState extends State<ClubPage> {
           ]),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: _createMode
-          ? CreateButton(onPressed: _validateForm)
+          ? CreateButton(onPressed: _validateAndCreateClub)
           : _editMode
               ? SaveButton(onPressed: () {
                   _updateClub();

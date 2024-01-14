@@ -1,5 +1,9 @@
+import 'dart:collection';
+
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
+import 'package:efficacy_admin/pages/create_update_event/create_update_event.dart';
+import 'package:efficacy_admin/pages/event_details_view/event_viewer.dart';
 import 'package:efficacy_admin/pages/homepage/widgets/events/_get_club_id.dart';
 import 'package:efficacy_admin/pages/homepage/widgets/events/event_card.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +26,22 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
   int skip = 0;
 
   final ScrollController _controller = ScrollController();
-  Set<EventModel> allEvents = {};
-  Set<EventModel> upcomingEvents = {};
-  Set<EventModel> ongoingEvents = {};
-  Set<EventModel> completedEvents = {};
+  SplayTreeSet<EventModel> allEvents =
+      SplayTreeSet<EventModel>(sortCompareEvents);
+  SplayTreeSet<EventModel> upcomingEvents =
+      SplayTreeSet<EventModel>(sortCompareEvents);
+  SplayTreeSet<EventModel> ongoingEvents =
+      SplayTreeSet<EventModel>(sortCompareEvents);
+  SplayTreeSet<EventModel> completedEvents =
+      SplayTreeSet<EventModel>(sortCompareEvents);
 
   int itemCount = 0;
+
+  static int sortCompareEvents(EventModel a, EventModel b) {
+    return a.startDate == b.startDate
+        ? a.endDate.compareTo(b.endDate)
+        : a.startDate.compareTo(b.startDate);
+  }
 
   @override
   void initState() {
@@ -42,6 +56,49 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
         });
       }
     });
+  }
+
+  void addNewEvent(EventModel newEvent) {
+    allEvents.add(newEvent);
+    switch (newEvent.type) {
+      case EventStatus.Upcoming:
+        upcomingEvents.add(newEvent);
+        break;
+      case EventStatus.Ongoing:
+        ongoingEvents.add(newEvent);
+        break;
+      case EventStatus.Completed:
+        completedEvents.add(newEvent);
+        break;
+    }
+  }
+
+  void updateEvent(EventModel oldEvent, EventModel newEvent) {
+    allEvents.remove(oldEvent);
+    allEvents.add(newEvent);
+
+    switch (oldEvent.type) {
+      case EventStatus.Upcoming:
+        upcomingEvents.remove(oldEvent);
+        break;
+      case EventStatus.Ongoing:
+        ongoingEvents.remove(oldEvent);
+        break;
+      case EventStatus.Completed:
+        completedEvents.remove(oldEvent);
+        break;
+    }
+    switch (newEvent.type) {
+      case EventStatus.Upcoming:
+        upcomingEvents.add(newEvent);
+        break;
+      case EventStatus.Ongoing:
+        ongoingEvents.add(newEvent);
+        break;
+      case EventStatus.Completed:
+        completedEvents.add(newEvent);
+        break;
+    }
   }
 
   @override
@@ -81,60 +138,88 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: refresh,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: StreamBuilder(
-              stream: eventStream,
-              builder:
-                  (context, AsyncSnapshot<EventPaginationResponse> snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(
-                    child: Text("Some Error occurred. Please restart the app."),
-                  );
-                } else if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  if (snapshot.data != null) {
-                    skip = snapshot.data!.skip;
-                    categoriseNewEvents(snapshot.data!.events);
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final eventUpdated =
+              await Navigator.pushNamed(context, CreateUpdateEvent.routeName);
+          if (eventUpdated != null && eventUpdated is EventModel) {
+            addNewEvent(eventUpdated);
+          }
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: RefreshIndicator(
+        onRefresh: refresh,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: StreamBuilder(
+                stream: eventStream,
+                builder:
+                    (context, AsyncSnapshot<EventPaginationResponse> snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child:
+                          Text("Some Error occurred. Please restart the app."),
+                    );
+                  } else if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else {
+                    if (snapshot.data != null) {
+                      skip = snapshot.data!.skip;
+                      categoriseNewEvents(snapshot.data!.events);
+                    }
+                    List<EventModel> events;
+                    switch (widget.eventStatus) {
+                      case EventStatus.Upcoming:
+                        events = upcomingEvents.toList();
+                        break;
+                      case EventStatus.Ongoing:
+                        events = ongoingEvents.toList();
+                        break;
+                      case EventStatus.Completed:
+                        events = completedEvents.toList();
+                        break;
+                    }
+                    itemCount = events.length;
+                    return ListView.builder(
+                      controller: _controller,
+                      itemCount: itemCount,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 10,
+                          ),
+                          child: InkWell(
+                            onTap: () async {
+                              final eventUpdated = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      EventsViewer(currentEvent: events[index]),
+                                ),
+                              );
+                              if (eventUpdated != null &&
+                                  eventUpdated is EventModel) {
+                                updateEvent(events[index], eventUpdated);
+                              }
+                            },
+                            child: EventCard(
+                              item: events[index],
+                            ),
+                          ),
+                        );
+                      },
+                    );
                   }
-                  List<EventModel> events;
-                  switch (widget.eventStatus) {
-                    case EventStatus.Upcoming:
-                      events = upcomingEvents.toList();
-                      break;
-                    case EventStatus.Ongoing:
-                      events = ongoingEvents.toList();
-                      break;
-                    case EventStatus.Completed:
-                      events = completedEvents.toList();
-                      break;
-                  }
-                  itemCount = events.length;
-                  return ListView.builder(
-                    controller: _controller,
-                    itemCount: itemCount,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 10,
-                        ),
-                        child: EventCard(
-                          item: events[index],
-                        ),
-                      );
-                    },
-                  );
-                }
-              },
-            ),
-          )
-        ],
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -1,8 +1,7 @@
 import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
 import 'package:efficacy_admin/pages/club/widgets/custom_field.dart';
-import 'package:efficacy_admin/pages/create_event/widgets/url_input.dart';
+import 'package:efficacy_admin/pages/create_update_event/widgets/url_input.dart';
 import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

@@ -84,7 +84,7 @@ class ErrorHandler {
 
   static Widget handle(BuildContext context, Widget? child) {
     // Currently commented due to infinite build error
-    // TODO: If required fixed it
+    // TODO: If required fix it
     // _errorBuilder();
     _flutterErrorBuilder(context);
     _platformErrorBuilder(context);

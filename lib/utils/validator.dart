@@ -1,7 +1,7 @@
 class Validator {
   /// Verifies if the provided email is valid
   static String? isEmailValid(String? email) {
-    String? res = nullCheck(email, "Email");
+    String? res = nullAndEmptyCheck(email, "Email");
     if (res != null) {
       return res;
     }
@@ -13,7 +13,7 @@ class Validator {
 
   /// Verifies if the provided name is valid
   static String? isNameValid(String? name) {
-    String? res = nullCheck(name, "Name");
+    String? res = nullAndEmptyCheck(name, "Name");
     if (res != null) {
       return res;
     }
@@ -26,7 +26,7 @@ class Validator {
 
   /// Verifies if the provided scholar ID is valid
   static String? isScholarIDValid(String? scholarID) {
-    String? res = nullCheck(scholarID, "Scholar ID");
+    String? res = nullAndEmptyCheck(scholarID, "Scholar ID");
     if (res != null) {
       return res;
     }
@@ -39,7 +39,7 @@ class Validator {
   }
 
   //checks if field is null or empty
-  static String? nullCheck(String? value, String? fieldName) {
+  static String? nullAndEmptyCheck(String? value, String? fieldName) {
     if (value == null || value.isEmpty) {
       return "${fieldName ?? "field"} cannot be empty";
     }
@@ -47,7 +47,7 @@ class Validator {
   }
 
   static String? isPasswordValid(String? password) {
-    String? res = nullCheck(password, "Password");
+    String? res = nullAndEmptyCheck(password, "Password");
     if (res != null) {
       return res;
     }
@@ -58,7 +58,7 @@ class Validator {
   }
 
   static String? isConfirmPassword(String? password, String? confirmPassword) {
-    String? res = nullCheck(confirmPassword, "Confirm Password");
+    String? res = nullAndEmptyCheck(confirmPassword, "Confirm Password");
     if (res != null) {
       return res;
     }
@@ -71,7 +71,7 @@ class Validator {
 
   static String? isValidURL(String? url, {bool isMandatory = false}) {
     if (isMandatory) {
-      String? msg = nullCheck(url, "URL");
+      String? msg = nullAndEmptyCheck(url, "URL");
       if (msg != null) return msg;
     }
     Uri uri = Uri.parse(url!);

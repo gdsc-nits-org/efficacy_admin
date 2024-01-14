@@ -44,13 +44,22 @@ class _ContactsDropDownState extends State<ContactsDropDown> {
             style: Theme.of(context).textTheme.labelLarge,
           ),
         DropdownButton<UserModel>(
-          dropdownColor: paleBlue,
+          dropdownColor: Theme.of(context).scaffoldBackgroundColor,
           isExpanded: false,
           value: currentlySelected,
           items: widget.items.map((UserModel moderator) {
             return DropdownMenuItem<UserModel>(
               value: moderator,
-              child: Text(moderator.name),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(moderator.name),
+                  Text(
+                    moderator.email,
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                ],
+              ),
             );
           }).toList(),
           onChanged: (UserModel? newValue) {

@@ -186,7 +186,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                                         info =
                                             await ImageController.uploadImage(
                                           img: _image!,
-                                          userName: nameController.text,
+                                          name: nameController.text,
                                           folder: ImageFolder.userImage,
                                         );
                                       }

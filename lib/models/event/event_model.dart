@@ -1,4 +1,5 @@
 import 'package:efficacy_admin/models/utils/objectid_serializer.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
@@ -13,6 +14,7 @@ class EventModel with _$EventModel {
   const factory EventModel({
     @JsonKey(name: "_id") String? id,
     required String posterURL,
+    required String posterPublicID,
     required String title,
     required String shortDescription,
     String? longDescription,
@@ -36,6 +38,10 @@ class EventModel with _$EventModel {
   factory EventModel.fromJson(Map<String, Object?> json) {
     if (json["_id"] != null && json["_id"] is ObjectId) {
       json["_id"] = (json["_id"] as ObjectId).toHexString();
+    }
+    if (kDebugMode) {
+      json["posterURL"] ??= "test";
+      json["posterPublicID"] ??= "test";
     }
     return _$EventModelFromJson(json);
   }

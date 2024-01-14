@@ -54,11 +54,17 @@ class ImageController {
 
   /// Uploads image to the server and
   /// returns the url if the image was uploaded successfully
+  ///
+  /// For [ImageFolder.eventThumbnail]
+  /// required: [clubName] and [eventName]
+  ///
+  /// For [ImageFolder.userImage], [ImageFolder.clubBanner] and [ImageFolder.clubImage]
+  /// required: [name]
   static Future<UploadInformation> uploadImage({
     required Uint8List img,
     String? clubName,
     String? eventName,
-    String? userName,
+    String? name,
     String? publicID,
     required ImageFolder folder,
     void Function(int count, int total)? progressCallback,
@@ -67,7 +73,7 @@ class ImageController {
       img: img,
       clubName: clubName,
       eventName: eventName,
-      userName: userName,
+      name: name,
       folder: folder,
       publicID: publicID,
       progressCallback: progressCallback,

@@ -1,11 +1,6 @@
 import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/controllers/controllers.dart';
-import 'package:efficacy_admin/controllers/services/image/image_controller.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
 import 'package:efficacy_admin/models/models.dart';
-import 'package:efficacy_admin/pages/create_event/create_event.dart';
-import 'package:efficacy_admin/pages/homepage/widgets/events/event_list.dart';
-import 'package:efficacy_admin/pages/homepage/widgets/events/event_viewer.dart';
 import 'package:efficacy_admin/pages/homepage/widgets/events/events_showcase.dart';
 import 'package:efficacy_admin/pages/homepage/widgets/tab_navigation/tab_view.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
@@ -67,12 +62,6 @@ class _HomepageState extends State<Homepage> {
           //   ),
           // )
         ].separate(26),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          Navigator.pushNamed(context, CreateEvent.routeName);
-        },
-        child: const Icon(Icons.add),
       ),
     );
   }

@@ -73,7 +73,7 @@ class _ProfileState extends State<ProfilePage> {
               img: image!,
               folder: ImageFolder.userImage,
               publicID: UserController.currentUser?.userPhotoPublicID,
-              userName: _nameController.text,
+              name: _nameController.text,
             );
           }
           UserController.currentUser = UserController.currentUser?.copyWith(

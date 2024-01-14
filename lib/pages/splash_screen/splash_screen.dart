@@ -24,8 +24,8 @@ class _SplashScreenState extends State<SplashScreen> {
     await dotenv.load();
     await Database.init();
     await LocalDatabase.init();
-    await ForegroundService.init();
-    await ForegroundService.startDataSync();
+    // await ForegroundService.init();
+    // await ForegroundService.startDataSync();
     await UserController.loginSilently().last;
     stopwatch.stop();
     return stopwatch.elapsed.inMilliseconds;

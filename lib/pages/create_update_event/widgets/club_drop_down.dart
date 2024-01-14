@@ -33,6 +33,7 @@ class _ClubDropDownState extends State<ClubDropDown> {
 
   @override
   Widget build(BuildContext context) {
+    print(currentlySelected);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -42,7 +43,7 @@ class _ClubDropDownState extends State<ClubDropDown> {
             style: Theme.of(context).textTheme.labelLarge,
           ),
         DropdownButton<ClubModel>(
-          dropdownColor: paleBlue,
+          dropdownColor: Theme.of(context).scaffoldBackgroundColor,
           isExpanded: false,
           value: currentlySelected,
           items: widget.items.map((ClubModel club) {

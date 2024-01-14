@@ -23,6 +23,7 @@ mixin _$EventModel {
   @JsonKey(name: "_id")
   String? get id => throw _privateConstructorUsedError;
   String get posterURL => throw _privateConstructorUsedError;
+  String get posterPublicID => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get shortDescription => throw _privateConstructorUsedError;
   String? get longDescription => throw _privateConstructorUsedError;
@@ -57,6 +58,7 @@ abstract class $EventModelCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: "_id") String? id,
       String posterURL,
+      String posterPublicID,
       String title,
       String shortDescription,
       String? longDescription,
@@ -88,6 +90,7 @@ class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
   $Res call({
     Object? id = freezed,
     Object? posterURL = null,
+    Object? posterPublicID = null,
     Object? title = null,
     Object? shortDescription = null,
     Object? longDescription = freezed,
@@ -111,6 +114,10 @@ class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
       posterURL: null == posterURL
           ? _value.posterURL
           : posterURL // ignore: cast_nullable_to_non_nullable
+              as String,
+      posterPublicID: null == posterPublicID
+          ? _value.posterPublicID
+          : posterPublicID // ignore: cast_nullable_to_non_nullable
               as String,
       title: null == title
           ? _value.title
@@ -183,6 +190,7 @@ abstract class _$$EventModelImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: "_id") String? id,
       String posterURL,
+      String posterPublicID,
       String title,
       String shortDescription,
       String? longDescription,
@@ -212,6 +220,7 @@ class __$$EventModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? posterURL = null,
+    Object? posterPublicID = null,
     Object? title = null,
     Object? shortDescription = null,
     Object? longDescription = freezed,
@@ -235,6 +244,10 @@ class __$$EventModelImplCopyWithImpl<$Res>
       posterURL: null == posterURL
           ? _value.posterURL
           : posterURL // ignore: cast_nullable_to_non_nullable
+              as String,
+      posterPublicID: null == posterPublicID
+          ? _value.posterPublicID
+          : posterPublicID // ignore: cast_nullable_to_non_nullable
               as String,
       title: null == title
           ? _value.title
@@ -302,6 +315,7 @@ class _$EventModelImpl extends _EventModel {
   const _$EventModelImpl(
       {@JsonKey(name: "_id") this.id,
       required this.posterURL,
+      required this.posterPublicID,
       required this.title,
       required this.shortDescription,
       this.longDescription,
@@ -328,6 +342,8 @@ class _$EventModelImpl extends _EventModel {
   final String? id;
   @override
   final String posterURL;
+  @override
+  final String posterPublicID;
   @override
   final String title;
   @override
@@ -379,7 +395,7 @@ class _$EventModelImpl extends _EventModel {
 
   @override
   String toString() {
-    return 'EventModel(id: $id, posterURL: $posterURL, title: $title, shortDescription: $shortDescription, longDescription: $longDescription, startDate: $startDate, endDate: $endDate, registrationLink: $registrationLink, facebookPostURL: $facebookPostURL, venue: $venue, contacts: $contacts, liked: $liked, clubID: $clubID, lastLocalUpdate: $lastLocalUpdate, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'EventModel(id: $id, posterURL: $posterURL, posterPublicID: $posterPublicID, title: $title, shortDescription: $shortDescription, longDescription: $longDescription, startDate: $startDate, endDate: $endDate, registrationLink: $registrationLink, facebookPostURL: $facebookPostURL, venue: $venue, contacts: $contacts, liked: $liked, clubID: $clubID, lastLocalUpdate: $lastLocalUpdate, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @JsonKey(ignore: true)
@@ -400,6 +416,7 @@ abstract class _EventModel extends EventModel {
   const factory _EventModel(
       {@JsonKey(name: "_id") final String? id,
       required final String posterURL,
+      required final String posterPublicID,
       required final String title,
       required final String shortDescription,
       final String? longDescription,
@@ -424,6 +441,8 @@ abstract class _EventModel extends EventModel {
   String? get id;
   @override
   String get posterURL;
+  @override
+  String get posterPublicID;
   @override
   String get title;
   @override

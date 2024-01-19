@@ -7,8 +7,11 @@ class EventRegistrationButton extends StatelessWidget {
     required this.onTap,
     required this.icon,
     required this.message,
+    this.width = 160,
+    this.height = 35,
   });
-
+  final double width;
+  final double height;
   final Function onTap;
   final Widget icon;
   final String message;
@@ -16,8 +19,8 @@ class EventRegistrationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 35,
-      width: 160,
+      height: height,
+      width: width,
       // width: (message.length * 17.0).toDouble(),
       child: ElevatedButton.icon(
         onPressed: () {},

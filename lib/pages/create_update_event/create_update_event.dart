@@ -195,7 +195,7 @@ class _CreateUpdateEventState extends State<CreateUpdateEvent> {
             SlidingUpPanel(
               padding: const EdgeInsets.only(top: 30),
               maxHeight: height,
-              minHeight: height * .70,
+              minHeight: height * .60,
               borderRadius: BorderRadius.circular(30),
               header: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -268,8 +268,9 @@ class _CreateUpdateEventState extends State<CreateUpdateEvent> {
                             onTap: () => _getImage(),
                             child: Image.network(
                               posterURL!,
+                              height: height*0.4,
                               width: width,
-                              fit: BoxFit.fitWidth,
+                              fit: BoxFit.fitHeight,
                               errorBuilder: (BuildContext context, _, __) {
                                 return DefaultImagePicker(onPressed: _getImage);
                               },
@@ -282,8 +283,9 @@ class _CreateUpdateEventState extends State<CreateUpdateEvent> {
                         onTap: () => _getImage(),
                         child: Image.memory(
                           _image!,
+                          height: height*0.4,
                           width: width,
-                          fit: BoxFit.fitWidth,
+                          fit: BoxFit.fitHeight,
                         ),
                       ),
                     ),
@@ -331,11 +333,12 @@ class DefaultImagePicker extends StatelessWidget {
       children: [
         Image.asset(
           Assets.mediaImgPath,
+          height: height*0.4,
           width: width,
-          fit: BoxFit.cover,
+          fit: BoxFit.fitHeight,
         ),
         Padding(
-          padding: EdgeInsets.only(top: width / 3),
+          padding: EdgeInsets.only(top: width / 2),
           child: SizedBox(
             height: buttonHeight,
             width: buttonWidth,

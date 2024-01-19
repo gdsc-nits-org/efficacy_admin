@@ -1,13 +1,13 @@
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/models/event/event_model.dart';
 import 'stats_info.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 
 class EventStats extends StatefulWidget {
-  const EventStats({super.key, required this.currentEventDate});
+  const EventStats({super.key, required this.currentEvent});
 
-  final DateTime currentEventDate;
+  final EventModel currentEvent;
 
   @override
   State<EventStats> createState() => _EventStatsState();
@@ -17,6 +17,11 @@ class _EventStatsState extends State<EventStats> {
   int likeCount = 0;
   bool isLiked = false;
 
+@override
+  void initState() {
+    super.initState();
+    likeCount = widget.currentEvent.liked.length;
+  }
   void toggleLike() {
     setState(() {
       isLiked = !isLiked;
@@ -28,66 +33,69 @@ class _EventStatsState extends State<EventStats> {
     });
   }
 
+  Widget likeCountWidget() {
+    return Text(likeCount.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Column(
-          children: [
-            IconButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white
-              ),
-              onPressed: toggleLike,
-              icon: isLiked
-                  ? const Icon(
-                      Icons.thumb_up,
-                      color: dark,
-                    )
-                  : const Icon(
-                      Icons.thumb_up_outlined,
-                      color: dark,
-                    ),
+        InkWell(
+          onTap: () => toggleLike(),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: dark, width: 2),
+              borderRadius: BorderRadius.circular(20)  
             ),
-            StatsInfo(
-              message: "$likeCount",
+            height: 50,
+            width: 150,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                  isLiked
+                      ? const Icon(
+                          Icons.thumb_up,
+                          color: dark,
+                          size: 30,
+                        )
+                      : const Icon(
+                          Icons.thumb_up_outlined,
+                          color: dark,
+                          size: 30,
+                        ),
+
+                const StatsInfo(
+                  message: "Like",//"$likeCount",
+                ),
+              ].separate(10),
             ),
-          ],
+          ),
         ),
-        Column(
-          children: [
-            IconButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-              ),
-              onPressed: null,
-              icon: const Icon(
-                Icons.calendar_month,
-                color: dark,
-              ) 
+        InkWell(
+          child: Container(
+            height: 50,
+            width: 150,
+            decoration: BoxDecoration(
+              border: Border.all(color: dark, width: 2),
+              borderRadius: BorderRadius.circular(20)  
             ),
-            StatsInfo(
-              message: DateFormat("d MMM").format(widget.currentEventDate),
-            )
-          ],
-        ),
-        Column(
-          children: [
-            IconButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white
-              ),
-              onPressed: () {},
-              icon: const Icon(
-                Icons.share, 
-                color: dark,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                  const Icon(
+                    Icons.share, 
+                    color: dark,
+                    size: 30,
+                  ),
+        
+                const StatsInfo(message: "Share")
+              ].separate(10),
             ),
-            const StatsInfo(message: "Share")
-          ],
+          ),
         )
-      ].separate(35),
+      ].separate(40),
     );
   }
 }

@@ -17,7 +17,8 @@ class Contributors extends StatelessWidget {
           role,
           style: const TextStyle(
             color: dark,
-            fontSize: 25,
+            fontSize: 20,
+            fontWeight: FontWeight.bold
           ),
         ),
         Column(

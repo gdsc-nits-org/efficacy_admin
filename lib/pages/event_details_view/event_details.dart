@@ -6,20 +6,20 @@ import 'widgets/event_stats.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class EventDetails extends StatefulWidget {
+class EventDetails2 extends StatefulWidget {
   static const String routeName = "/eventDetails";
   final EventModel currentEvent;
 
-  const EventDetails({
+  const EventDetails2({
     Key? key,
     required this.currentEvent,
   }) : super(key: key);
 
   @override
-  State<EventDetails> createState() => _EventDetailsState();
+  State<EventDetails2> createState() => _EventDetails2State();
 }
 
-class _EventDetailsState extends State<EventDetails> {
+class _EventDetails2State extends State<EventDetails2> {
   late EventModel event;
 
   @override
@@ -83,8 +83,7 @@ class _EventDetailsState extends State<EventDetails> {
                 fontSize: 20,
               ),
             ),
-            EventStats(currentEventDate: event.startDate),
-            Contributors(role: "Added By", contacts: [],),
+            EventStats(currentEvent: event),
             Contributors(role: "Moderators", contacts: event.contacts,),
           ].separate(20),
         ),

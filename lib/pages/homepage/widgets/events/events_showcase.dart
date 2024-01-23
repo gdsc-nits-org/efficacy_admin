@@ -125,15 +125,23 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
   }
 
   Future<void> refresh() async {
-    skip = 0;
-    allEvents.clear();
     EventPaginationResponse response = await EventController.getAllEvents(
       clubIDs: getClubIDs(UserController.clubs),
       skip: skip,
       forceGet: true,
     ).first;
-    categoriseNewEvents(response.events);
-    skip = response.skip;
+    setState(() {
+      skip = 0;
+      allEvents.clear();
+      upcomingEvents.clear();
+      ongoingEvents.clear();
+      completedEvents.clear();
+      eventStream = EventController.getAllEvents(
+        clubIDs: getClubIDs(UserController.clubs),
+        skip: skip,
+      );
+      skip = response.skip;
+    });
   }
 
   @override

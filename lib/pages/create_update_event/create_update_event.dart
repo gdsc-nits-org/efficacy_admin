@@ -17,12 +17,13 @@ class CreateUpdateEvent extends StatefulWidget {
   //route
   static const String routeName = '/CreateEventPage';
 
-  /// If [event] is passed it is assumed to be for edit
-  ///
-  /// [moderator] and [club] are expected to be passed if event is passed
   final EventModel? event;
   final UserModel? moderator;
   final ClubModel? club;
+
+  /// If [event] is passed it is assumed to be for edit
+  ///
+  /// [moderator] and [club] are expected to be passed if event is passed
   const CreateUpdateEvent({super.key, this.event, this.moderator, this.club});
   @override
   State<CreateUpdateEvent> createState() => _CreateUpdateEventState();
@@ -268,7 +269,7 @@ class _CreateUpdateEventState extends State<CreateUpdateEvent> {
                             onTap: () => _getImage(),
                             child: Image.network(
                               posterURL!,
-                              height: height*0.4,
+                              height: height * 0.4,
                               width: width,
                               fit: BoxFit.fitHeight,
                               errorBuilder: (BuildContext context, _, __) {
@@ -283,7 +284,7 @@ class _CreateUpdateEventState extends State<CreateUpdateEvent> {
                         onTap: () => _getImage(),
                         child: Image.memory(
                           _image!,
-                          height: height*0.4,
+                          height: height * 0.4,
                           width: width,
                           fit: BoxFit.fitHeight,
                         ),
@@ -333,7 +334,7 @@ class DefaultImagePicker extends StatelessWidget {
       children: [
         Image.asset(
           Assets.mediaImgPath,
-          height: height*0.4,
+          height: height * 0.4,
           width: width,
           fit: BoxFit.fitHeight,
         ),

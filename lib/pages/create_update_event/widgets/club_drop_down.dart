@@ -33,7 +33,6 @@ class _ClubDropDownState extends State<ClubDropDown> {
 
   @override
   Widget build(BuildContext context) {
-    print(currentlySelected);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

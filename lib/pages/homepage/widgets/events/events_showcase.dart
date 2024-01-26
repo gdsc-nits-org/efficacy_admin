@@ -10,8 +10,10 @@ import 'package:flutter/material.dart';
 
 class EventsShowcasePage extends StatefulWidget {
   final EventStatus eventStatus;
+  final GlobalKey? createEventKey;
   const EventsShowcasePage({
     super.key,
+    this.createEventKey,
     required this.eventStatus,
   });
 
@@ -148,6 +150,7 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        key: widget.createEventKey,
         onPressed: () async {
           final eventUpdated =
               await Navigator.pushNamed(context, CreateUpdateEvent.routeName);

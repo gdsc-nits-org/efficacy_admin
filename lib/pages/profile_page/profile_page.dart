@@ -13,6 +13,9 @@ import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer
 import 'package:flutter/material.dart';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:intl_phone_field/phone_number.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+
+import '../../widgets/coach_mark_desc/coach_mark_desc.dart';
 
 class ProfilePage extends StatefulWidget {
   static const String routeName = '/ProfilePage';
@@ -27,10 +30,23 @@ class _ProfileState extends State<ProfilePage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   final _formKey = GlobalKey<FormState>();
+
+  // Global keys for guide
+  GlobalKey editProfileKey = GlobalKey();
+  GlobalKey delProfileKey = GlobalKey();
+
+  TutorialCoachMark? tutorialCoachMark;
+  List<TargetFocus> targets = [];
+
   @override
   void initState() {
     super.initState();
     init();
+    if (LocalDatabase.getGuideStatus(LocalGuideCheck.profile)) {
+      Future.delayed(const Duration(seconds: 1), () {
+        _showTutorial();
+      });
+    }
   }
 
   void init() async {
@@ -40,6 +56,63 @@ class _ProfileState extends State<ProfilePage> {
     selectedDegree = UserController.currentUser!.degree.name;
     selectedBranch = UserController.currentUser!.branch.name;
     phoneNumber = UserController.currentUser!.phoneNumber;
+  }
+
+  void _showTutorial() {
+    _initTarget();
+    // print(targets);
+    tutorialCoachMark = TutorialCoachMark(
+      hideSkip: true,
+      useSafeArea: true,
+      targets: targets, // List<TargetFocus>
+    )..show(context: context);
+  }
+
+  void _initTarget() {
+    targets = [
+      TargetFocus(
+        identify: "Edit Profile",
+        keyTarget: editProfileKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return CoachmarkDesc(
+                heading: "Edit Profile",
+                text: "Click here to edit your profile details.",
+                onNext: () {
+                  controller.next();
+                },
+                onSkip: () {
+                  controller.skip();
+                },
+              );
+            },
+          )
+        ],
+      ),
+      TargetFocus(
+        identify: "Delete Profile",
+        keyTarget: delProfileKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return CoachmarkDesc(
+                heading: "Delete Profile",
+                text: "Click here to delete your profile.",
+                onNext: () {
+                  controller.next();
+                },
+                onSkip: () {
+                  controller.skip();
+                },
+              );
+            },
+          )
+        ],
+      ),
+    ];
   }
 
   bool editMode = false;
@@ -119,6 +192,7 @@ class _ProfileState extends State<ProfilePage> {
       appBar: CustomAppBar(title: "Profile", actions: [
         if (editMode == false)
           EditButton(
+            key: editProfileKey,
             onPressed: () {
               enableEdit();
             },
@@ -200,7 +274,9 @@ class _ProfileState extends State<ProfilePage> {
                             UserController.currentUser!.degree.name;
                       },
                     ),
-                    const DeleteProfileButton(),
+                    DeleteProfileButton(
+                      key: delProfileKey,
+                    ),
                   ].separate(gap),
                 ),
               ),

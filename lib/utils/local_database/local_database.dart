@@ -80,4 +80,24 @@ class LocalDatabase {
       await _removeStaleDataFromBox(doc);
     }
   }
+
+  //=====================Local database functions for guide============================
+
+  static bool getGuideStatus(LocalGuideCheck checkpoint) {
+    bool? check = sharedPreferences.getBool(checkpoint.toString());
+    if (check == null) {
+      sharedPreferences.setBool(checkpoint.toString(), false);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<void> resetGuideCheckpoin() async {
+    for (LocalGuideCheck check in LocalGuideCheck.values) {
+      if (sharedPreferences.containsKey(check.toString())) {
+        sharedPreferences.remove(check.toString());
+      }
+    }
+  }
 }

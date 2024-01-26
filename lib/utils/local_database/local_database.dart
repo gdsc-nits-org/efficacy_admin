@@ -93,7 +93,7 @@ class LocalDatabase {
     }
   }
 
-  static Future<void> resetGuideCheckpoin() async {
+  static Future<void> resetGuideCheckpoint() async {
     for (LocalGuideCheck check in LocalGuideCheck.values) {
       if (sharedPreferences.containsKey(check.toString())) {
         sharedPreferences.remove(check.toString());

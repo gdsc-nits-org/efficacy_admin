@@ -344,34 +344,32 @@ class _ClubPageState extends State<ClubPage> {
                                 ),
                         ),
                       ),
-                      if (_editMode)
-                        Positioned(
-                            right: profileBorder * 2,
-                            top: height * 0.12,
-                            child: Row(
-                              children: [
-                                if (UserController.clubWithModifyClubPermission
-                                    .contains(widget.club))
-                                  EditPositionButton(onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return Center(
-                                            child: InviteOverlay(
-                                              inviteMode: false,
-                                              club: widget.club,
-                                            ),
-                                          );
-                                        });
-                                  }),
-                                if (UserController
-                                    .clubWithModifyMemberPermission
-                                    .contains(widget.club))
-                                  InviteButton(onPressed: () {
-                                    _showOverlay(context);
-                                  }),
-                              ].separate(profileBorder),
-                            ))
+                      Positioned(
+                          right: profileBorder * 2,
+                          top: height * 0.12,
+                          child: Row(
+                            children: [
+                              if (UserController.clubWithModifyClubPermission
+                                  .contains(widget.club))
+                                EditPositionButton(onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Center(
+                                          child: InviteOverlay(
+                                            inviteMode: false,
+                                            club: widget.club,
+                                          ),
+                                        );
+                                      });
+                                }),
+                              if (UserController.clubWithModifyMemberPermission
+                                  .contains(widget.club))
+                                InviteButton(onPressed: () {
+                                  _showOverlay(context);
+                                }),
+                            ].separate(profileBorder),
+                          ))
                     ],
                   ),
                 ),
@@ -402,7 +400,9 @@ class _ClubPageState extends State<ClubPage> {
       appBar: CustomAppBar(
           title: (_createMode) ? "New Club" : nameController.text,
           actions: [
-            if (_editMode == false && _createMode == false)
+            if (_editMode == false &&
+                _createMode == false &&
+                UserController.clubWithModifyClubPermission.contains(club))
               EditButton(
                 onPressed: () {
                   setState(() {

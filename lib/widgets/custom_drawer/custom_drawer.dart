@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/pages/pages.dart';
+import 'package:efficacy_admin/utils/local_database/local_database.dart';
+import 'package:efficacy_admin/widgets/coach_mark_desc/coach_mark_desc.dart';
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:flutter/material.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
@@ -16,6 +19,15 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   late bool pendingInvites = false;
 
+  // Global keys for guide
+  GlobalKey profileKey = GlobalKey();
+  GlobalKey homeKey = GlobalKey();
+  GlobalKey orgKey = GlobalKey();
+  GlobalKey logoutKey = GlobalKey();
+
+  TutorialCoachMark? tutorialCoachMark;
+  List<TargetFocus> targets = [];
+
   Future<void> init() async {
     pendingInvites = await InvitationController.anyPendingInvitation();
     if (pendingInvites) {
@@ -26,7 +38,111 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
     init();
+    if (LocalDatabase.getGuideStatus(LocalGuideCheck.drawer)) {
+      Future.delayed(const Duration(seconds: 0), () {
+        _showTutorial();
+      });
+    }
     super.initState();
+  }
+
+  void _showTutorial() {
+    _initTarget();
+    // print(targets);
+    tutorialCoachMark = TutorialCoachMark(
+      hideSkip: true,
+      useSafeArea: true,
+      targets: targets, // List<TargetFocus>
+    )..show(context: context);
+  }
+
+  void _initTarget() {
+    targets = [
+      TargetFocus(
+        identify: "Profile",
+        keyTarget: profileKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return CoachmarkDesc(
+                heading: "Profile",
+                text: "Click here to view your profile.",
+                onNext: () {
+                  controller.next();
+                },
+                onSkip: () {
+                  controller.skip();
+                },
+              );
+            },
+          )
+        ],
+      ),
+      TargetFocus(
+        identify: "Home",
+        keyTarget: homeKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return CoachmarkDesc(
+                heading: "Home page",
+                text: "Click here to navigate to home page.",
+                onNext: () {
+                  controller.next();
+                },
+                onSkip: () {
+                  controller.skip();
+                },
+              );
+            },
+          )
+        ],
+      ),
+      TargetFocus(
+        identify: "Organization",
+        keyTarget: orgKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return CoachmarkDesc(
+                heading: "Organization page",
+                text: "Click here to navigate to organization page.",
+                onNext: () {
+                  controller.next();
+                },
+                onSkip: () {
+                  controller.skip();
+                },
+              );
+            },
+          )
+        ],
+      ),
+      TargetFocus(
+        identify: "Logout",
+        keyTarget: logoutKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return CoachmarkDesc(
+                heading: "Log out",
+                text: "Click here to log out from your account.",
+                onNext: () {
+                  controller.next();
+                },
+                onSkip: () {
+                  controller.skip();
+                },
+              );
+            },
+          )
+        ],
+      ),
+    ];
   }
 
   @override
@@ -50,6 +166,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
         padding: EdgeInsets.zero,
         children: [
           Container(
+            key: profileKey,
             height: height * 0.33,
             decoration: const BoxDecoration(color: dark),
             child: GestureDetector(
@@ -83,6 +200,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           ListTile(
+            key: homeKey,
             title: const Text('Home'),
             selected: routeName == "/homePage",
             selectedColor: light,
@@ -97,6 +215,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
           ),
           ListTile(
+            key: orgKey,
             title: const Text('Organizations'),
             trailing: pendingInvites ? const Text("NEW") : null,
             selected: routeName == "/OrganizationsPage",
@@ -112,6 +231,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
           ),
           ListTile(
+            key: logoutKey,
             title: const Text('Log out'),
             onTap: () async {
               await UserController.logOut();

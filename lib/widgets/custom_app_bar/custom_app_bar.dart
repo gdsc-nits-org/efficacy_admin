@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String? title;
   final List<Widget> actions;
+  final GlobalKey? drawerKey;
   const CustomAppBar({
     super.key,
     this.title,
     this.actions = const [],
+    this.drawerKey,
   });
 
   @override
@@ -80,6 +82,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       actions: [
         ...widget.actions,
         Stack(
+          key: widget.drawerKey,
           children: [
             // App drawer button
             IconButton(

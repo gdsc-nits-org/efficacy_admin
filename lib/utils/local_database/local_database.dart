@@ -83,6 +83,7 @@ class LocalDatabase {
 
   //=====================Local database functions for guide============================
 
+  /// Returns true if the [checkpoint] was not shown before
   static bool getGuideStatus(LocalGuideCheck checkpoint) {
     bool? check = sharedPreferences.getBool(checkpoint.toString());
     if (check == null) {

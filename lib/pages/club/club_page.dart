@@ -344,44 +344,29 @@ class _ClubPageState extends State<ClubPage> {
                                 ),
                         ),
                       ),
-                      (_editMode || _createMode)
-                          ? Positioned(
-                              right: profileBorder,
-                              top: height * 0.12,
-                              child: EditPositionButton(onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Center(
-                                        child: InviteOverlay(
-                                          inviteMode: false,
-                                          club: widget.club,
-                                        ),
-                                      );
-                                    });
-                              }))
-                          : Positioned(
-                              right: profileBorder * 2,
-                              top: height * 0.12,
-                              child: Row(
-                                children: [
-                                  EditPositionButton(onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return Center(
-                                            child: InviteOverlay(
-                                              inviteMode: false,
-                                              club: widget.club,
-                                            ),
-                                          );
-                                        });
-                                  }),
-                                  InviteButton(onPressed: () {
-                                    _showOverlay(context);
-                                  }),
-                                ].separate(profileBorder),
-                              ))
+                      if (_editMode)
+                        Positioned(
+                            right: profileBorder * 2,
+                            top: height * 0.12,
+                            child: Row(
+                              children: [
+                                EditPositionButton(onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Center(
+                                          child: InviteOverlay(
+                                            inviteMode: false,
+                                            club: widget.club,
+                                          ),
+                                        );
+                                      });
+                                }),
+                                InviteButton(onPressed: () {
+                                  _showOverlay(context);
+                                }),
+                              ].separate(profileBorder),
+                            ))
                     ],
                   ),
                 ),

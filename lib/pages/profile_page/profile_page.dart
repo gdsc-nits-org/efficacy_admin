@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/pages/profile_page/utils/tutorial.dart';
 import 'package:efficacy_admin/pages/profile_page/widgets/buttons.dart';
 import 'package:efficacy_admin/utils/utils.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
@@ -37,6 +38,7 @@ class _ProfileState extends State<ProfilePage> {
 
   TutorialCoachMark? tutorialCoachMark;
   List<TargetFocus> targets = [];
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -44,7 +46,12 @@ class _ProfileState extends State<ProfilePage> {
     init();
     if (LocalDatabase.getGuideStatus(LocalGuideCheck.profile)) {
       Future.delayed(const Duration(seconds: 1), () {
-        _showTutorial();
+        showProfilePageTutorial(
+          context,
+          editProfileKey,
+          delProfileKey,
+          scrollController,
+        );
       });
     }
   }
@@ -56,63 +63,6 @@ class _ProfileState extends State<ProfilePage> {
     selectedDegree = UserController.currentUser!.degree.name;
     selectedBranch = UserController.currentUser!.branch.name;
     phoneNumber = UserController.currentUser!.phoneNumber;
-  }
-
-  void _showTutorial() {
-    _initTarget();
-    // print(targets);
-    tutorialCoachMark = TutorialCoachMark(
-      hideSkip: true,
-      useSafeArea: true,
-      targets: targets, // List<TargetFocus>
-    )..show(context: context);
-  }
-
-  void _initTarget() {
-    targets = [
-      TargetFocus(
-        identify: "Edit Profile",
-        keyTarget: editProfileKey,
-        contents: [
-          TargetContent(
-            align: ContentAlign.bottom,
-            builder: (context, controller) {
-              return CoachmarkDesc(
-                heading: "Edit Profile",
-                text: "Click here to edit your profile details.",
-                onNext: () {
-                  controller.next();
-                },
-                onSkip: () {
-                  controller.skip();
-                },
-              );
-            },
-          )
-        ],
-      ),
-      TargetFocus(
-        identify: "Delete Profile",
-        keyTarget: delProfileKey,
-        contents: [
-          TargetContent(
-            align: ContentAlign.top,
-            builder: (context, controller) {
-              return CoachmarkDesc(
-                heading: "Delete Profile",
-                text: "Click here to delete your profile.",
-                onNext: () {
-                  controller.next();
-                },
-                onSkip: () {
-                  controller.skip();
-                },
-              );
-            },
-          )
-        ],
-      ),
-    ];
   }
 
   bool editMode = false;
@@ -211,6 +161,7 @@ class _ProfileState extends State<ProfilePage> {
           key: _formKey,
           child: Center(
             child: SingleChildScrollView(
+              controller: scrollController,
               child: Padding(
                 padding: EdgeInsets.symmetric(
                     vertical: vMargin, horizontal: hMargin),

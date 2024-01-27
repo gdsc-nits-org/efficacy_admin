@@ -6,6 +6,7 @@
 /// Same for others
 
 class Assets {
+  const Assets._();
   static const String _basePath = "assets";
   static const String _imageBasePath = "images";
 

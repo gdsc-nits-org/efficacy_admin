@@ -49,6 +49,11 @@ class ClubsStreamState extends State<ClubsStream> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
+                      "Position: ${UserController.clubPositions.where((position) => position.clubID == club.id).map((position) => position.position).join(",")}",
+                      style: Theme.of(context).textTheme.labelMedium,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
                       'Institute: ${club.instituteName}',
                       style: Theme.of(context).textTheme.labelMedium,
                       overflow: TextOverflow.ellipsis,

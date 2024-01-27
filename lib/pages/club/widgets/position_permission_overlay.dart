@@ -53,20 +53,23 @@ class _ClubPositionPermissionOverlayState
                     const Text('Position Permissions:'),
                     Column(
                       children: Permissions.values.map((permission) {
-                        return CheckboxListTile(
-                          title: Text(permission.name),
-                          value: _selectedPermissions.contains(permission),
-                          onChanged: (bool? value) {
-                            setState(() {
-                              if (value != null) {
-                                if (value) {
-                                  _selectedPermissions.add(permission);
-                                } else {
-                                  _selectedPermissions.remove(permission);
+                        return Tooltip(
+                          message: permission.description,
+                          child: CheckboxListTile(
+                            title: Text(permission.name),
+                            value: _selectedPermissions.contains(permission),
+                            onChanged: (bool? value) {
+                              setState(() {
+                                if (value != null) {
+                                  if (value) {
+                                    _selectedPermissions.add(permission);
+                                  } else {
+                                    _selectedPermissions.remove(permission);
+                                  }
                                 }
-                              }
-                            });
-                          },
+                              });
+                            },
+                          ),
                         );
                       }).toList(),
                     ),
@@ -105,14 +108,20 @@ class _ClubPositionPermissionOverlayState
                           fit: FlexFit.loose,
                           child: ElevatedButton(
                             onPressed: () {
-                              ClubPositionModel updatedPosition =
-                                  widget.clubPosition.copyWith(
-                                      position: _nameController.text
-                                          .trim()
-                                          .toString(),
-                                      permissions: _selectedPermissions);
-                              ClubPositionController.update(updatedPosition);
-                              Navigator.pop(context, updatedPosition);
+                              showLoadingOverlay(
+                                  context: context,
+                                  asyncTask: () async {
+                                    ClubPositionModel updatedPosition =
+                                        widget.clubPosition.copyWith(
+                                            position: _nameController.text
+                                                .trim()
+                                                .toString(),
+                                            permissions: _selectedPermissions);
+                                    await ClubPositionController.update(
+                                        updatedPosition);
+                                    await UserController.updateUserData();
+                                    Navigator.pop(context, updatedPosition);
+                                  });
                             },
                             child: const Text('Update'),
                           ),

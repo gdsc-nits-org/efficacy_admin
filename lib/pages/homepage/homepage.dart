@@ -31,7 +31,7 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
     // To view guide everytime uncomment the next line
-    LocalDatabase.resetGuideCheckpoint();
+    // LocalDatabase.resetGuideCheckpoint();
     if (LocalDatabase.getGuideStatus(LocalGuideCheck.home)) {
       Future.delayed(const Duration(seconds: 1), () {
         showHomePageTutorial(

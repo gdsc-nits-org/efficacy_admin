@@ -109,47 +109,51 @@ class _EventsViewerState extends State<EventsViewer> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          UserModel? moderator;
-          ClubModel? club;
-          showLoadingOverlay(
-              context: context,
-              asyncTask: () async {
-                if (widget.currentEvent.contacts.isNotEmpty) {
-                  List<UserModel> moderators = await UserController.get(
-                          email: widget.currentEvent.contacts.first)
-                      .first;
-                  if (moderators.isNotEmpty) {
-                    moderator = moderators.first;
-                  }
-                }
-                List<ClubModel> clubs =
-                    await ClubController.get(id: widget.currentEvent.clubID)
-                        .first;
-                if (clubs.isNotEmpty) {
-                  club = clubs.first;
-                }
+      floatingActionButton: UserController.clubWithModifyEventPermission
+                  .indexWhere((club) => club.id == event.clubID) !=
+              -1
+          ? FloatingActionButton(
+              onPressed: () async {
+                UserModel? moderator;
+                ClubModel? club;
+                showLoadingOverlay(
+                    context: context,
+                    asyncTask: () async {
+                      if (widget.currentEvent.contacts.isNotEmpty) {
+                        List<UserModel> moderators = await UserController.get(
+                                email: widget.currentEvent.contacts.first)
+                            .first;
+                        if (moderators.isNotEmpty) {
+                          moderator = moderators.first;
+                        }
+                      }
+                      List<ClubModel> clubs = await ClubController.get(
+                              id: widget.currentEvent.clubID)
+                          .first;
+                      if (clubs.isNotEmpty) {
+                        club = clubs.first;
+                      }
+                    },
+                    onCompleted: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => CreateUpdateEvent(
+                            event: widget.currentEvent,
+                            club: club,
+                            moderator: moderator,
+                          ),
+                        ),
+                      ).then(
+                        (eventUpdated) => Navigator.pop(context, eventUpdated),
+                      );
+                    });
               },
-              onCompleted: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => CreateUpdateEvent(
-                      event: widget.currentEvent,
-                      club: club,
-                      moderator: moderator,
-                    ),
-                  ),
-                ).then(
-                  (eventUpdated) => Navigator.pop(context, eventUpdated),
-                );
-              });
-        },
-        child: const Icon(
-          Icons.edit_outlined,
-        ),
-      ),
+              child: const Icon(
+                Icons.edit_outlined,
+              ),
+            )
+          : null,
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -158,7 +162,8 @@ class _EventsViewerState extends State<EventsViewer> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  widget.currentEvent.posterURL.isEmpty
+                  widget.currentEvent.posterURL.isEmpty ||
+                          widget.currentEvent.posterURL == "null"
                       ? Container(
                           decoration: const BoxDecoration(
                               borderRadius: BorderRadius.only(
@@ -358,6 +363,29 @@ class _EventsViewerState extends State<EventsViewer> {
                             ),
                             maxLines: null,
                           ),
+                        ),
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: screenWidth * .6,
+                          ),
+                          child: StreamBuilder(
+                              stream: ClubController.get(
+                                  id: widget.currentEvent.clubID),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                List<ClubModel> club = [];
+                                if (snapshot.hasData) {
+                                  club = snapshot.data ?? [];
+                                }
+                                if (club.isNotEmpty) {
+                                  return Text(
+                                    club.first.name,
+                                    style: const TextStyle(color: dark),
+                                    maxLines: null,
+                                  );
+                                }
+                                return const SizedBox.shrink();
+                              }),
                         ),
                         Container(
                             padding: const EdgeInsets.only(left: 5),

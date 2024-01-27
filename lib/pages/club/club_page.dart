@@ -187,7 +187,7 @@ class _ClubPageState extends State<ClubPage> {
             }
             // validation logic
             newClub = ClubModel(
-              name: nameController.text,
+              name: nameController.text.trim(),
               description: descController.text,
               email: emailController.text,
               phoneNumber: phoneNumber,
@@ -195,7 +195,7 @@ class _ClubPageState extends State<ClubPage> {
               clubLogoPublicId: clubImageInfo.publicID,
               clubBannerURL: bannerImageInfo?.url,
               clubBannerPublicId: bannerImageInfo?.publicID,
-              instituteName: instituteName,
+              instituteName: instituteName.trim(),
               members: {},
             );
             newClub = await ClubController.create(newClub!);
@@ -350,21 +350,26 @@ class _ClubPageState extends State<ClubPage> {
                             top: height * 0.12,
                             child: Row(
                               children: [
-                                EditPositionButton(onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Center(
-                                          child: InviteOverlay(
-                                            inviteMode: false,
-                                            club: widget.club,
-                                          ),
-                                        );
-                                      });
-                                }),
-                                InviteButton(onPressed: () {
-                                  _showOverlay(context);
-                                }),
+                                if (UserController.clubWithModifyClubPermission
+                                    .contains(widget.club))
+                                  EditPositionButton(onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return Center(
+                                            child: InviteOverlay(
+                                              inviteMode: false,
+                                              club: widget.club,
+                                            ),
+                                          );
+                                        });
+                                  }),
+                                if (UserController
+                                    .clubWithModifyMemberPermission
+                                    .contains(widget.club))
+                                  InviteButton(onPressed: () {
+                                    _showOverlay(context);
+                                  }),
                               ].separate(profileBorder),
                             ))
                     ],

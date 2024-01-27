@@ -1,4 +1,5 @@
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/services/club/club_controller.dart';
 import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
@@ -10,6 +11,7 @@ import 'package:efficacy_admin/pages/event_details_view/widgets/contributors.dar
 import 'package:efficacy_admin/pages/event_details_view/widgets/event_registration_button.dart';
 import 'package:efficacy_admin/pages/event_details_view/widgets/stats_info.dart';
 import 'package:efficacy_admin/utils/custom_network_image.dart';
+import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
@@ -28,17 +30,36 @@ class EventsViewer extends StatefulWidget {
 }
 
 class _EventsViewerState extends State<EventsViewer> {
-  int likeCount = 0;
-  bool isLiked = false;
   void toggleLike() {
-    setState(() {
-      isLiked = !isLiked;
-      if (isLiked) {
-        likeCount++;
-      } else {
-        likeCount--;
+    List<String> liked = List.from(event.liked);
+
+    if (UserController.currentUser != null) {
+      // For faster response as soon as the user presses the like button
+      // it is reflected on the frontend side.
+      //
+      // Once the backend completes its work it then updates the state
+      // confirming the final state
+      String email = UserController.currentUser!.email;
+      bool couldRemove = liked.remove(email);
+      if (!couldRemove) {
+        liked.add(email);
       }
-    });
+      EventController.toggleLike(userEmail: email, event: event)
+          .then((updatedEvent) async {
+        // The delay ensures that both the event update (local and with backend)
+        // never happen simultaneously else it would cause 2 time screen update
+        // which might crash the widget
+        await Future.delayed(const Duration(seconds: 1));
+        setState(() {
+          event = updatedEvent;
+        });
+      });
+      setState(() {
+        event = event.copyWith(liked: liked);
+      });
+    } else {
+      showErrorSnackBar(context, "Please log in again");
+    }
   }
 
   Widget? registrationButtons() {
@@ -101,7 +122,6 @@ class _EventsViewerState extends State<EventsViewer> {
   void initState() {
     super.initState();
     event = widget.currentEvent;
-    likeCount = widget.currentEvent.liked.length;
   }
 
   @override
@@ -245,7 +265,8 @@ class _EventsViewerState extends State<EventsViewer> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      isLiked
+                                      event.liked.contains(
+                                              UserController.currentUser!.email)
                                           ? const Icon(
                                               Icons.thumb_up,
                                               color: dark,
@@ -397,7 +418,7 @@ class _EventsViewerState extends State<EventsViewer> {
                                   size: 16,
                                 ),
                                 Text(
-                                  "$likeCount Likes",
+                                  "${event.liked.length} Likes",
                                   style: const TextStyle(fontSize: 13),
                                 ),
                               ].separate(5),

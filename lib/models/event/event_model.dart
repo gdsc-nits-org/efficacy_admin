@@ -28,6 +28,7 @@ class EventModel with _$EventModel {
     required List<String> contacts,
 
     /// Users who liked the event
+    /// Emails are stored
     @Default([]) List<String> liked,
     required String clubID,
     DateTime? lastLocalUpdate,

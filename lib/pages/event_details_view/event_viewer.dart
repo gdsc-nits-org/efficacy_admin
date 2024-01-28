@@ -1,16 +1,17 @@
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/services/club/club_controller.dart';
 import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
-
 import 'package:efficacy_admin/pages/create_update_event/create_update_event.dart';
 import 'package:efficacy_admin/pages/event_details_view/widgets/contributors.dart';
 import 'package:efficacy_admin/pages/event_details_view/widgets/event_registration_button.dart';
 import 'package:efficacy_admin/pages/event_details_view/widgets/stats_info.dart';
 import 'package:efficacy_admin/utils/custom_network_image.dart';
+import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
@@ -35,17 +36,36 @@ class EventsViewer extends StatefulWidget {
 }
 
 class _EventsViewerState extends State<EventsViewer> {
-  int likeCount = 0;
-  bool isLiked = false;
   void toggleLike() {
-    setState(() {
-      isLiked = !isLiked;
-      if (isLiked) {
-        likeCount++;
-      } else {
-        likeCount--;
+    List<String> liked = List.from(event.liked);
+
+    if (UserController.currentUser != null) {
+      // For faster response as soon as the user presses the like button
+      // it is reflected on the frontend side.
+      //
+      // Once the backend completes its work it then updates the state
+      // confirming the final state
+      String email = UserController.currentUser!.email;
+      bool couldRemove = liked.remove(email);
+      if (!couldRemove) {
+        liked.add(email);
       }
-    });
+      EventController.toggleLike(userEmail: email, event: event)
+          .then((updatedEvent) async {
+        // The delay ensures that both the event update (local and with backend)
+        // never happen simultaneously else it would cause 2 time screen update
+        // which might crash the widget
+        await Future.delayed(const Duration(seconds: 1));
+        setState(() {
+          event = updatedEvent;
+        });
+      });
+      setState(() {
+        event = event.copyWith(liked: liked);
+      });
+    } else {
+      showErrorSnackBar(context, "Please log in again");
+    }
   }
 
 
@@ -125,7 +145,6 @@ class _EventsViewerState extends State<EventsViewer> {
   void initState() {
     super.initState();
     event = widget.currentEvent;
-    likeCount = widget.currentEvent.liked.length;
   }
 
   @override
@@ -133,47 +152,51 @@ class _EventsViewerState extends State<EventsViewer> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          UserModel? moderator;
-          ClubModel? club;
-          showLoadingOverlay(
-              context: context,
-              asyncTask: () async {
-                if (widget.currentEvent.contacts.isNotEmpty) {
-                  List<UserModel> moderators = await UserController.get(
-                          email: widget.currentEvent.contacts.first)
-                      .first;
-                  if (moderators.isNotEmpty) {
-                    moderator = moderators.first;
-                  }
-                }
-                List<ClubModel> clubs =
-                    await ClubController.get(id: widget.currentEvent.clubID)
-                        .first;
-                if (clubs.isNotEmpty) {
-                  club = clubs.first;
-                }
+      floatingActionButton: UserController.clubWithModifyEventPermission
+                  .indexWhere((club) => club.id == event.clubID) !=
+              -1
+          ? FloatingActionButton(
+              onPressed: () async {
+                UserModel? moderator;
+                ClubModel? club;
+                showLoadingOverlay(
+                    context: context,
+                    asyncTask: () async {
+                      if (widget.currentEvent.contacts.isNotEmpty) {
+                        List<UserModel> moderators = await UserController.get(
+                                email: widget.currentEvent.contacts.first)
+                            .first;
+                        if (moderators.isNotEmpty) {
+                          moderator = moderators.first;
+                        }
+                      }
+                      List<ClubModel> clubs = await ClubController.get(
+                              id: widget.currentEvent.clubID)
+                          .first;
+                      if (clubs.isNotEmpty) {
+                        club = clubs.first;
+                      }
+                    },
+                    onCompleted: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => CreateUpdateEvent(
+                            event: widget.currentEvent,
+                            club: club,
+                            moderator: moderator,
+                          ),
+                        ),
+                      ).then(
+                        (eventUpdated) => Navigator.pop(context, eventUpdated),
+                      );
+                    });
               },
-              onCompleted: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => CreateUpdateEvent(
-                      event: widget.currentEvent,
-                      club: club,
-                      moderator: moderator,
-                    ),
-                  ),
-                ).then(
-                  (eventUpdated) => Navigator.pop(context, eventUpdated),
-                );
-              });
-        },
-        child: const Icon(
-          Icons.edit_outlined,
-        ),
-      ),
+              child: const Icon(
+                Icons.edit_outlined,
+              ),
+            )
+          : null,
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -182,7 +205,8 @@ class _EventsViewerState extends State<EventsViewer> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  widget.currentEvent.posterURL.isEmpty
+                  widget.currentEvent.posterURL.isEmpty ||
+                          widget.currentEvent.posterURL == "null"
                       ? Container(
                           decoration: const BoxDecoration(
                               borderRadius: BorderRadius.only(
@@ -264,7 +288,8 @@ class _EventsViewerState extends State<EventsViewer> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      isLiked
+                                      event.liked.contains(
+                                              UserController.currentUser!.email)
                                           ? const Icon(
                                               Icons.thumb_up,
                                               color: dark,
@@ -410,6 +435,29 @@ class _EventsViewerState extends State<EventsViewer> {
                             maxLines: null,
                           ),
                         ),
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: screenWidth * .6,
+                          ),
+                          child: StreamBuilder(
+                              stream: ClubController.get(
+                                  id: widget.currentEvent.clubID),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                List<ClubModel> club = [];
+                                if (snapshot.hasData) {
+                                  club = snapshot.data ?? [];
+                                }
+                                if (club.isNotEmpty) {
+                                  return Text(
+                                    club.first.name,
+                                    style: const TextStyle(color: dark),
+                                    maxLines: null,
+                                  );
+                                }
+                                return const SizedBox.shrink();
+                              }),
+                        ),
                         Container(
                             padding: const EdgeInsets.only(left: 5),
                             child: Row(
@@ -420,7 +468,7 @@ class _EventsViewerState extends State<EventsViewer> {
                                   size: 16,
                                 ),
                                 Text(
-                                  "$likeCount Likes",
+                                  "${event.liked.length} Likes",
                                   style: const TextStyle(fontSize: 13),
                                 ),
                               ].separate(5),

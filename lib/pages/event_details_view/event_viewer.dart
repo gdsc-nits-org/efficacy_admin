@@ -326,6 +326,13 @@ class _EventsViewerState extends State<EventsViewer> {
                                       images,
                                       text: '$title\nFrom: $startDate To: $endDate\nVenue: $venue\nCheck out our facebook page: \n$fbURL'
                                     );}
+                                  else if(widget.currentEvent.posterURL.isNotEmpty){
+                                    images.clear();
+                                    images.add(savedImage!);
+                                    await Share.shareXFiles(
+                                      images,
+                                      text: '$title\nFrom: $startDate To: $endDate\nVenue: $venue'
+                                    );}
                                   else if(widget.currentEvent.facebookPostURL != null){
                                     await Share.share(
                                       '$title\nFrom: $startDate To: $endDate\nVenue: $venue\nCheck out our facebook page: \n$fbURL'

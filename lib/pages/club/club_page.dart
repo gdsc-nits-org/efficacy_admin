@@ -3,11 +3,14 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/pages/club/utils/club_tutorial.dart';
+import 'package:efficacy_admin/pages/club/utils/create_club_tutorial.dart';
 import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
 import 'package:efficacy_admin/pages/club/utils/get_lead_name.dart';
 import 'package:efficacy_admin/pages/club/widgets/club_form.dart';
 import 'package:efficacy_admin/pages/club/widgets/buttons.dart';
 import 'package:efficacy_admin/pages/club/widgets/invite_overlay.dart';
+import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
@@ -48,10 +51,38 @@ class _ClubPageState extends State<ClubPage> {
   String instituteName = "NIT, Silchar";
   PhoneNumber? phoneNumber;
 
+// Global keys for guide
+  GlobalKey editClubKey = GlobalKey();
+  GlobalKey editClubPositionKey = GlobalKey();
+  GlobalKey inviteKey = GlobalKey();
+  GlobalKey editImageKey = GlobalKey();
+  GlobalKey editBannerKey = GlobalKey();
+  GlobalKey createKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
     initData(widget.club);
+    if (LocalDatabase.getGuideStatus(LocalGuideCheck.club) && !(_createMode)) {
+      Future.delayed(const Duration(seconds: 1), () {
+        showClubPageTutorial(
+          context,
+          editClubKey,
+          editClubPositionKey,
+          inviteKey,
+        );
+      });
+    }
+    if (LocalDatabase.getGuideStatus(LocalGuideCheck.createClub) && (_createMode)) {
+      Future.delayed(const Duration(seconds: 1), () {
+        showCreateClubTutorial(
+          context,
+          editImageKey,
+          editBannerKey,
+          createKey,
+        );
+      });
+    }
   }
 
   void initData(ClubModel? clubDetail) {
@@ -292,6 +323,7 @@ class _ClubPageState extends State<ClubPage> {
                         height: height * 0.15,
                         width: width,
                         child: GestureDetector(
+                          key: editBannerKey,
                           onTap: (_editMode || _createMode)
                               ? _getBannerImage
                               : () {},
@@ -315,6 +347,7 @@ class _ClubPageState extends State<ClubPage> {
                         ),
                       ),
                       Positioned(
+                        key: editImageKey,
                         left: profileSize / 2 - profileBorder * 2,
                         top: height * 0.1,
                         child: Container(
@@ -351,23 +384,27 @@ class _ClubPageState extends State<ClubPage> {
                             children: [
                               if (UserController.clubWithModifyClubPermission
                                   .contains(widget.club))
-                                EditPositionButton(onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Center(
-                                          child: InviteOverlay(
-                                            inviteMode: false,
-                                            club: widget.club,
-                                          ),
-                                        );
-                                      });
-                                }),
+                                EditPositionButton(
+                                    key: editClubPositionKey,
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Center(
+                                              child: InviteOverlay(
+                                                inviteMode: false,
+                                                club: widget.club,
+                                              ),
+                                            );
+                                          });
+                                    }),
                               if (UserController.clubWithModifyMemberPermission
                                   .contains(widget.club))
-                                InviteButton(onPressed: () {
-                                  _showOverlay(context);
-                                }),
+                                InviteButton(
+                                    key: inviteKey,
+                                    onPressed: () {
+                                      _showOverlay(context);
+                                    }),
                             ].separate(profileBorder),
                           ))
                     ],
@@ -404,6 +441,7 @@ class _ClubPageState extends State<ClubPage> {
                 _createMode == false &&
                 UserController.clubWithModifyClubPermission.contains(club))
               EditButton(
+                key: editClubKey,
                 onPressed: () {
                   setState(() {
                     _editMode = true;
@@ -413,7 +451,7 @@ class _ClubPageState extends State<ClubPage> {
           ]),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: _createMode
-          ? CreateButton(onPressed: _validateAndCreateClub)
+          ? CreateButton(key: createKey, onPressed: _validateAndCreateClub)
           : _editMode
               ? SaveButton(onPressed: () {
                   _updateClub();

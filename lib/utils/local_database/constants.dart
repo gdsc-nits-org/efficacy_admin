@@ -8,3 +8,10 @@ enum LocalDocuments {
   invitations,
   institutions,
 }
+
+enum LocalGuideCheck {
+  home,
+  profile,
+  organizations,
+  drawer,
+}

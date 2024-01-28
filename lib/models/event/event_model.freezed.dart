@@ -37,6 +37,7 @@ mixin _$EventModel {
   List<String> get contacts => throw _privateConstructorUsedError;
 
   /// Users who liked the event
+  /// Emails are stored
   List<String> get liked => throw _privateConstructorUsedError;
   String get clubID => throw _privateConstructorUsedError;
   DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
@@ -311,7 +312,7 @@ class __$$EventModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$EventModelImpl extends _EventModel {
+class _$EventModelImpl extends _EventModel with DiagnosticableTreeMixin {
   const _$EventModelImpl(
       {@JsonKey(name: "_id") this.id,
       required this.posterURL,
@@ -373,9 +374,11 @@ class _$EventModelImpl extends _EventModel {
   }
 
   /// Users who liked the event
+  /// Emails are stored
   final List<String> _liked;
 
   /// Users who liked the event
+  /// Emails are stored
   @override
   @JsonKey()
   List<String> get liked {
@@ -394,8 +397,32 @@ class _$EventModelImpl extends _EventModel {
   final DateTime? updatedAt;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'EventModel(id: $id, posterURL: $posterURL, posterPublicID: $posterPublicID, title: $title, shortDescription: $shortDescription, longDescription: $longDescription, startDate: $startDate, endDate: $endDate, registrationLink: $registrationLink, facebookPostURL: $facebookPostURL, venue: $venue, contacts: $contacts, liked: $liked, clubID: $clubID, lastLocalUpdate: $lastLocalUpdate, createdAt: $createdAt, updatedAt: $updatedAt)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'EventModel'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('posterURL', posterURL))
+      ..add(DiagnosticsProperty('posterPublicID', posterPublicID))
+      ..add(DiagnosticsProperty('title', title))
+      ..add(DiagnosticsProperty('shortDescription', shortDescription))
+      ..add(DiagnosticsProperty('longDescription', longDescription))
+      ..add(DiagnosticsProperty('startDate', startDate))
+      ..add(DiagnosticsProperty('endDate', endDate))
+      ..add(DiagnosticsProperty('registrationLink', registrationLink))
+      ..add(DiagnosticsProperty('facebookPostURL', facebookPostURL))
+      ..add(DiagnosticsProperty('venue', venue))
+      ..add(DiagnosticsProperty('contacts', contacts))
+      ..add(DiagnosticsProperty('liked', liked))
+      ..add(DiagnosticsProperty('clubID', clubID))
+      ..add(DiagnosticsProperty('lastLocalUpdate', lastLocalUpdate))
+      ..add(DiagnosticsProperty('createdAt', createdAt))
+      ..add(DiagnosticsProperty('updatedAt', updatedAt));
   }
 
   @JsonKey(ignore: true)
@@ -466,6 +493,7 @@ abstract class _EventModel extends EventModel {
   @override
 
   /// Users who liked the event
+  /// Emails are stored
   List<String> get liked;
   @override
   String get clubID;

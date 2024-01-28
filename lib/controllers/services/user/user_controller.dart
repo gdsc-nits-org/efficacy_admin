@@ -2,9 +2,7 @@ import 'dart:convert';
 
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/utils/comparator.dart';
-import 'package:efficacy_admin/models/club/club_model.dart';
-import 'package:efficacy_admin/models/club_position/club_position_model.dart';
-import 'package:efficacy_admin/models/user/user_model.dart';
+import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/utils/database/constants.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
 import 'package:efficacy_admin/utils/encrypter.dart';
@@ -26,6 +24,9 @@ class UserController {
   static const String _collectionName = "users";
   static UserModel? currentUser;
   static List<ClubModel> clubs = [];
+  static List<ClubModel> clubWithModifyEventPermission = [];
+  static List<ClubModel> clubWithModifyMemberPermission = [];
+  static List<ClubModel> clubWithModifyClubPermission = [];
   static List<ClubPositionModel> clubPositions = [];
   const UserController._();
 

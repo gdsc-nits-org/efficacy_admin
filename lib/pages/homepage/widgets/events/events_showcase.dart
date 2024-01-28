@@ -10,8 +10,10 @@ import 'package:flutter/material.dart';
 
 class EventsShowcasePage extends StatefulWidget {
   final EventStatus eventStatus;
+  final GlobalKey? createEventKey;
   const EventsShowcasePage({
     super.key,
+    this.createEventKey,
     required this.eventStatus,
   });
 
@@ -147,16 +149,20 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final eventUpdated =
-              await Navigator.pushNamed(context, CreateUpdateEvent.routeName);
-          if (eventUpdated != null && eventUpdated is EventModel) {
-            addNewEvent(eventUpdated);
-          }
-        },
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: UserController.clubWithModifyEventPermission
+              .isNotEmpty // If there is no club where the user can edit/create event don't show the option
+          ? FloatingActionButton(
+              key: widget.createEventKey,
+              onPressed: () async {
+                final eventUpdated = await Navigator.pushNamed(
+                    context, CreateUpdateEvent.routeName);
+                if (eventUpdated != null && eventUpdated is EventModel) {
+                  addNewEvent(eventUpdated);
+                }
+              },
+              child: const Icon(Icons.add),
+            )
+          : null,
       body: RefreshIndicator(
         onRefresh: refresh,
         child: Column(
@@ -215,9 +221,7 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
                                 updateEvent(events[index], eventUpdated);
                               }
                             },
-                            child: EventCard(
-                              item: events[index],
-                            ),
+                            child: EventCard(event: events[index]),
                           ),
                         );
                       },

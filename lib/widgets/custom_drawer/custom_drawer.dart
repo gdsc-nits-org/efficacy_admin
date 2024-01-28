@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/pages/pages.dart';
+import 'package:efficacy_admin/utils/local_database/local_database.dart';
+import 'package:efficacy_admin/widgets/coach_mark_desc/coach_mark_desc.dart';
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:flutter/material.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
@@ -25,8 +28,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   void initState() {
-    init();
     super.initState();
+    init();
   }
 
   @override
@@ -46,6 +49,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
     }
     return Drawer(
       backgroundColor: light,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [

@@ -17,6 +17,7 @@ part 'functions/_get_impl.dart';
 part 'functions/_update_impl.dart';
 part 'functions/_delete_impl.dart';
 part 'functions/_get_all_events_impl.dart';
+part 'functions/_like_impl.dart';
 
 class EventController {
   static const String _collectionName = "events";
@@ -110,6 +111,11 @@ class EventController {
       forceGet: forceGet,
       count: count,
     );
+  }
+
+  static Future<EventModel> toggleLike(
+      {required String userEmail, required EventModel event}) async {
+    return _toggleLikeImpl(userEmail: userEmail, event: event);
   }
 }
 

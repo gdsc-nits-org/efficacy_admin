@@ -218,7 +218,7 @@ class _EventFormState extends State<EventForm> {
                     ),
                   ),
                   ClubDropDown(
-                    items: UserController.clubs,
+                    items: UserController.clubWithModifyEventPermission,
                     value: selectedClub,
                     onChanged: (ClubModel? newClub) {
                       if (newClub != null) {
@@ -375,9 +375,7 @@ class _EventFormState extends State<EventForm> {
                 ),
               ),
               //gap at the end
-              SizedBox(
-                height: endGap,
-              )
+              SizedBox(height: endGap)
             ].separate(padding),
           ),
         ),

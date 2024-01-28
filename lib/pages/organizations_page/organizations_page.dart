@@ -1,12 +1,14 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
-import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/club/club_page.dart';
+import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
+import 'utils/tutorial.dart';
 import 'widgets/clubs/clubs_stream.dart';
 import 'widgets/invitations/invitations_stream.dart';
 
@@ -31,6 +33,13 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
     });
   }
 
+  // Global keys for guide
+  GlobalKey invitationsKey = GlobalKey();
+  GlobalKey clubsKey = GlobalKey();
+  GlobalKey createClubKey = GlobalKey();
+
+  List<TargetFocus> targets = [];
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +47,16 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
       forceGet: true,
       recipientID: UserController.currentUser?.id,
     );
+    if (LocalDatabase.getGuideStatus(LocalGuideCheck.organizations)) {
+      Future.delayed(const Duration(seconds: 1), () {
+        showOrganizationPageTutorial(
+          context,
+          invitationsKey,
+          clubsKey,
+          createClubKey,
+        );
+      });
+    }
   }
 
   @override
@@ -54,6 +73,7 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
       appBar: const CustomAppBar(title: "Organizations"),
       endDrawer: const CustomDrawer(),
       floatingActionButton: FloatingActionButton(
+        key: createClubKey,
         onPressed: () {
           Navigator.push(
             context,
@@ -87,6 +107,7 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
                           color: dark)),
                   const Divider(),
                   InvitationsStream(
+                    key: invitationsKey,
                     maxHeight: height / 3,
                     onCompleteAction: () => setState(() {}),
                     invitationStream: invitationsStream,
@@ -98,7 +119,7 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
                         fontSize: 20, fontWeight: FontWeight.bold, color: dark),
                   ),
                   const Divider(),
-                  ClubsStream(clubs: UserController.clubs),
+                  ClubsStream(key: clubsKey, clubs: UserController.clubs),
                 ].separate(gap),
               ),
             ),

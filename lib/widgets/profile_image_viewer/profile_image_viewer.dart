@@ -129,31 +129,41 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
         child: CircleAvatar(
           backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
           radius: widget.height / 2,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(widget.height / 2),
-            // clipBehavior: Clip.hardEdge,
-            child: _image != null
-                ? Image.memory(
-                    _image!,
-                    fit: BoxFit.cover,
-                    height: widget.height,
-                  )
-                : widget.imagePath != null
-                    ? CachedNetworkImage(
-                        imageUrl: widget.imagePath!,
+          child: Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(widget.height / 2),
+                child: _image != null
+                    ? Image.memory(
+                        _image!,
                         fit: BoxFit.cover,
                         height: widget.height,
-                        errorWidget: (BuildContext context, _, __) {
-                          return Icon(
-                            CupertinoIcons.person_alt_circle,
-                            size: widget.height,
-                          );
-                        },
                       )
-                    : Icon(
-                        CupertinoIcons.person_alt_circle,
-                        size: widget.height,
-                      ),
+                    : widget.imagePath != null
+                        ? CachedNetworkImage(
+                            imageUrl: widget.imagePath!,
+                            fit: BoxFit.cover,
+                            height: widget.height,
+                            errorWidget: (BuildContext context, _, __) {
+                              return Icon(
+                                Icons.account_circle,
+                                size: widget.height,
+                              );
+                            },
+                          )
+                        : Icon(
+                            Icons.account_circle,
+                            size: widget.height,
+                          ),
+              ),
+              if (widget.enabled)
+                const Icon(
+                  Icons.edit,
+                  size: 30,
+                  color: dark,
+                ),
+            ],
           ),
         ),
       ),

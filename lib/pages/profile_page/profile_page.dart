@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/pages/profile_page/utils/tutorial.dart';
 import 'package:efficacy_admin/pages/profile_page/widgets/buttons.dart';
 import 'package:efficacy_admin/utils/utils.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
@@ -13,6 +14,9 @@ import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer
 import 'package:flutter/material.dart';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:intl_phone_field/phone_number.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+
+import '../../widgets/coach_mark_desc/coach_mark_desc.dart';
 
 class ProfilePage extends StatefulWidget {
   static const String routeName = '/ProfilePage';
@@ -27,10 +31,29 @@ class _ProfileState extends State<ProfilePage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   final _formKey = GlobalKey<FormState>();
+
+  // Global keys for guide
+  GlobalKey editProfileKey = GlobalKey();
+  GlobalKey delProfileKey = GlobalKey();
+
+  TutorialCoachMark? tutorialCoachMark;
+  List<TargetFocus> targets = [];
+  final ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
     init();
+    if (LocalDatabase.getGuideStatus(LocalGuideCheck.profile)) {
+      Future.delayed(const Duration(seconds: 1), () {
+        showProfilePageTutorial(
+          context,
+          editProfileKey,
+          delProfileKey,
+          scrollController,
+        );
+      });
+    }
   }
 
   void init() async {
@@ -119,6 +142,7 @@ class _ProfileState extends State<ProfilePage> {
       appBar: CustomAppBar(title: "Profile", actions: [
         if (editMode == false)
           EditButton(
+            key: editProfileKey,
             onPressed: () {
               enableEdit();
             },
@@ -137,6 +161,7 @@ class _ProfileState extends State<ProfilePage> {
           key: _formKey,
           child: Center(
             child: SingleChildScrollView(
+              controller: scrollController,
               child: Padding(
                 padding: EdgeInsets.symmetric(
                     vertical: vMargin, horizontal: hMargin),
@@ -200,7 +225,9 @@ class _ProfileState extends State<ProfilePage> {
                             UserController.currentUser!.degree.name;
                       },
                     ),
-                    const DeleteProfileButton(),
+                    DeleteProfileButton(
+                      key: delProfileKey,
+                    ),
                   ].separate(gap),
                 ),
               ),

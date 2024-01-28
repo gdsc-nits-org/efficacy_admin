@@ -15,5 +15,7 @@ enum LocalGuideCheck {
   organizations,
   drawer,
   club,
-  createClub
+  createClub,
+  inviteSearch,
+  inviteUser,
 }

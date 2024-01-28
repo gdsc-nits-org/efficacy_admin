@@ -51,7 +51,7 @@ class _ClubPageState extends State<ClubPage> {
   String instituteName = "NIT, Silchar";
   PhoneNumber? phoneNumber;
 
-// Global keys for guide
+  // Global keys for guide
   GlobalKey editClubKey = GlobalKey();
   GlobalKey editClubPositionKey = GlobalKey();
   GlobalKey inviteKey = GlobalKey();

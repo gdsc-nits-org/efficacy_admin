@@ -23,7 +23,6 @@ class _CustomNetworkImageState extends State<CustomNetworkImage> {
         Config(
           widget.url,
           stalePeriod: LocalDatabase.stalePeriod,
-
         ),
       ),
       errorWidget: widget.errorWidget,

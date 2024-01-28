@@ -30,7 +30,7 @@ class PersonalInfoStep extends StatelessWidget {
           controller: nameController,
           prefixIcon: Icons.person,
           label: "Name",
-          height: MediaQuery.of(context).size.height * 0.09,
+          height: MediaQuery.of(context).size.height * 0.075,
           validator: Validator.isNameValid,
           keyboardType: TextInputType.name,
         ),
@@ -38,15 +38,16 @@ class PersonalInfoStep extends StatelessWidget {
           controller: scholarIDController,
           prefixIcon: Icons.numbers,
           label: "Scholar ID",
-          height: MediaQuery.of(context).size.height * 0.09,
+          height: MediaQuery.of(context).size.height * 0.075,
           validator: Validator.isScholarIDValid,
           keyboardType: TextInputType.number,
         ),
         CustomPhoneField(
           onPhoneChanged: onPhoneChanged,
           label: "Phone No.",
+          height: MediaQuery.of(context).size.height * 0.075,
         ),
-      ].separate(MediaQuery.of(context).size.height * 0.02),
+      ].separate(MediaQuery.of(context).size.height * 0.01),
     );
   }
 }

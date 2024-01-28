@@ -85,3 +85,44 @@ List<TargetFocus> getUserTarget(
     ),
   ];
 }
+
+void showInviteButtonTutorial(
+  BuildContext context,
+  GlobalKey inviteKey,
+) {
+  List<TargetFocus> targets = getInviteButtonTarget(inviteKey);
+
+  TutorialCoachMark(
+    hideSkip: true,
+    useSafeArea: true,
+    targets: targets, // List<TargetFocus>
+  ).show(context: context);
+}
+
+List<TargetFocus> getInviteButtonTarget(
+  GlobalKey inviteKey,
+) {
+  return [
+    TargetFocus(
+      identify: "Invite Button",
+      keyTarget: inviteKey,
+      contents: [
+        TargetContent(
+          align: ContentAlign.top,
+          builder: (context, controller) {
+            return CoachmarkDesc(
+              heading: "Invite Button",
+              text: "Click here to send invite.",
+              onNext: () {
+                controller.next();
+              },
+              onSkip: () {
+                controller.skip();
+              },
+            );
+          },
+        ),
+      ],
+    ),
+  ];
+}

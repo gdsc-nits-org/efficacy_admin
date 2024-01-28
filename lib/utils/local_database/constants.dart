@@ -18,4 +18,6 @@ enum LocalGuideCheck {
   createClub,
   inviteSearch,
   inviteUser,
+  inviteButton,
+  editClubPosition
 }

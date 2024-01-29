@@ -13,7 +13,6 @@ enum LocalGuideCheck {
   home,
   profile,
   organizations,
-  drawer,
   club,
   createClub,
   inviteSearch,

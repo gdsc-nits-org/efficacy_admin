@@ -43,6 +43,12 @@ class _ClubPositionPermissionOverlayState
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.close),
+                    ),
                     const Spacer(flex: 1),
                     CustomTextField(
                       controller: _nameController,

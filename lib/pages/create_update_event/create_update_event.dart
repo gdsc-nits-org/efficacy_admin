@@ -98,7 +98,8 @@ class _CreateUpdateEventState extends State<CreateUpdateEvent> {
           longDescController.text.isNotEmpty ? longDescController.text : null,
       startDate: start,
       endDate: end,
-      registrationLink: googleUrlController.text,
+      registrationLink:
+          googleUrlController.text.isNotEmpty ? googleUrlController.text : null,
       facebookPostURL:
           fbUrlController.text.isNotEmpty ? fbUrlController.text : null,
       venue: venueController.text,

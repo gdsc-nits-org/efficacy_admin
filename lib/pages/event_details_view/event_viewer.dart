@@ -11,7 +11,9 @@ import 'package:efficacy_admin/pages/event_details_view/widgets/contributors.dar
 import 'package:efficacy_admin/pages/event_details_view/widgets/event_registration_button.dart';
 import 'package:efficacy_admin/pages/event_details_view/widgets/stats_info.dart';
 import 'package:efficacy_admin/utils/custom_network_image.dart';
+import 'package:efficacy_admin/utils/share_handler.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +23,6 @@ import 'package:share_plus/share_plus.dart';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
-
 
 class EventsViewer extends StatefulWidget {
   static const String routeName = "/eventFullScreen";
@@ -66,78 +67,6 @@ class _EventsViewerState extends State<EventsViewer> {
     } else {
       showErrorSnackBar(context, "Please log in again");
     }
-  }
-
-
-  Future<XFile?> downloadAndSaveImage(String imageUrl) async {
-  try {
-    Dio dio = Dio();
-    Directory tempDir = await getTemporaryDirectory();
-    String tempPath = tempDir.path;
-    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    await dio.download(imageUrl, '$tempPath/$fileName.png');
-    return XFile('$tempPath/$fileName.png');
-  } catch (e) {
-    debugPrint("Error downloading and saving image: $e");
-    return null;
-  }
-}
-
-  Widget? registrationButtons() {
-    if (widget.currentEvent.facebookPostURL != null &&
-        widget.currentEvent.registrationLink.isNotEmpty &&
-        widget.currentEvent.facebookPostURL!.isNotEmpty) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          EventRegistrationButton(
-              onTap: () => launchUrlString(widget.currentEvent.registrationLink),
-              icon: Image.asset(
-                Assets.googleLogoImagePath,
-              ),
-              message: "Google Form"),
-          EventRegistrationButton(
-            onTap: () {
-              launchUrlString(widget.currentEvent.facebookPostURL!);
-            },
-            icon: const Icon(
-              FontAwesomeIcons.facebook,
-              color: dark,
-            ),
-            message: "Facebook",
-          ),
-        ].separate(8),
-      );
-    } else if (widget.currentEvent.facebookPostURL != null &&
-        widget.currentEvent.facebookPostURL!.isNotEmpty) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          EventRegistrationButton(
-            onTap: () {},
-            icon: const Icon(
-              FontAwesomeIcons.facebook,
-              color: dark,
-            ),
-            message: "Facebook",
-          ),
-        ].separate(8),
-      );
-    } else if (widget.currentEvent.registrationLink.isNotEmpty &&
-        widget.currentEvent.registrationLink != null) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          EventRegistrationButton(
-              onTap: () {},
-              icon: Image.asset(
-                Assets.googleLogoImagePath,
-              ),
-              message: "Google Form"),
-        ].separate(8),
-      );
-    }
-    return Container();
   }
 
   late EventModel event;
@@ -310,39 +239,13 @@ class _EventsViewerState extends State<EventsViewer> {
                             ),
                             Expanded(
                               child: InkWell(
-                                onTap: () async{
-                                  String title = widget.currentEvent.title;
-                                  String startDate = DateFormat('d MMM yyyy').format(widget.currentEvent.startDate);
-                                  String endDate = DateFormat('d MMM yyyy').format(widget.currentEvent.endDate);
-                                  String venue = widget.currentEvent.venue;
-                                  String? fbURL = widget.currentEvent.facebookPostURL;
-                                  String imageUrl = widget.currentEvent.posterURL;
-                                  XFile? savedImage = await downloadAndSaveImage(imageUrl);
-                                  List<XFile> images = [];
-                                  if(widget.currentEvent.facebookPostURL != null && widget.currentEvent.posterURL.isNotEmpty){
-                                    images.clear();
-                                    images.add(savedImage!);
-                                    await Share.shareXFiles(
-                                      images,
-                                      text: '$title\nFrom: $startDate To: $endDate\nVenue: $venue\nCheck out our facebook page: \n$fbURL'
-                                    );}
-                                  else if(widget.currentEvent.posterURL.isNotEmpty){
-                                    images.clear();
-                                    images.add(savedImage!);
-                                    await Share.shareXFiles(
-                                      images,
-                                      text: '$title\nFrom: $startDate To: $endDate\nVenue: $venue'
-                                    );}
-                                  else if(widget.currentEvent.facebookPostURL != null){
-                                    await Share.share(
-                                      '$title\nFrom: $startDate To: $endDate\nVenue: $venue\nCheck out our facebook page: \n$fbURL'
-                                    );
-                                  }
-                                  else{
-                                    await Share.share(
-                                      '$title\nFrom: $startDate To: $endDate\nVenue: $venue'
-                                    );
-                                  }
+                                onTap: () async {
+                                  await showLoadingOverlay(
+                                      context: context,
+                                      asyncTask: () async {
+                                        await ShareHandler.shareEvent(
+                                            widget.currentEvent);
+                                      });
                                 },
                                 child: Container(
                                   height: 50,
@@ -388,7 +291,51 @@ class _EventsViewerState extends State<EventsViewer> {
                         Container(
                           width: screenWidth,
                           alignment: Alignment.center,
-                          child: registrationButtons(),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (widget.currentEvent.registrationLink !=
+                                      null &&
+                                  widget.currentEvent.registrationLink!
+                                      .isNotEmpty)
+                                Expanded(
+                                  child: EventRegistrationButton(
+                                      onTap: () {
+                                        showLoadingOverlay(
+                                            context: context,
+                                            asyncTask: () async {
+                                              await launchUrlString(widget
+                                                  .currentEvent
+                                                  .registrationLink!);
+                                            });
+                                      },
+                                      icon: Image.asset(
+                                        Assets.googleLogoImagePath,
+                                      ),
+                                      message: "Google Form"),
+                                ),
+                              if (widget.currentEvent.facebookPostURL != null &&
+                                  widget
+                                      .currentEvent.facebookPostURL!.isNotEmpty)
+                                Expanded(
+                                  child: EventRegistrationButton(
+                                    onTap: () async {
+                                      await showLoadingOverlay(
+                                          context: context,
+                                          asyncTask: () async {
+                                            launchUrlString(widget
+                                                .currentEvent.facebookPostURL!);
+                                          });
+                                    },
+                                    icon: const Icon(
+                                      Icons.facebook,
+                                      color: dark,
+                                    ),
+                                    message: "Facebook",
+                                  ),
+                                ),
+                            ].separate(8),
+                          ),
                         ),
                         const Divider(
                           height: 10,
@@ -399,7 +346,8 @@ class _EventsViewerState extends State<EventsViewer> {
                         if (widget.currentEvent.contacts.isNotEmpty)
                           Contributors(
                               contacts: widget.currentEvent.contacts,
-                              role: "Moderators")
+                              role: "Moderators"),
+                        const SizedBox(height: 40),
                       ].separate(10),
                     ),
                   ),
@@ -466,20 +414,21 @@ class _EventsViewerState extends State<EventsViewer> {
                               }),
                         ),
                         Container(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.thumb_up_alt_outlined,
-                                  color: Colors.grey,
-                                  size: 16,
-                                ),
-                                Text(
-                                  "${event.liked.length} Likes",
-                                  style: const TextStyle(fontSize: 13),
-                                ),
-                              ].separate(5),
-                            ))
+                          padding: const EdgeInsets.only(left: 5),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.thumb_up_alt_outlined,
+                                color: Colors.grey,
+                                size: 16,
+                              ),
+                              Text(
+                                "${event.liked.length} Likes",
+                                style: const TextStyle(fontSize: 13),
+                              ),
+                            ].separate(5),
+                          ),
+                        )
                       ].separate(5),
                     ),
                     Container(
@@ -489,24 +438,25 @@ class _EventsViewerState extends State<EventsViewer> {
                         color: dark,
                       ),
                       child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              DateFormat('MMM')
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            DateFormat('MMM')
+                                .format(widget.currentEvent.startDate),
+                            style: const TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                              DateFormat('d')
                                   .format(widget.currentEvent.startDate),
-                              style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                                DateFormat('d')
-                                    .format(widget.currentEvent.startDate),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelMedium
-                                    ?.copyWith(color: Colors.white)),
-                          ]),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium
+                                  ?.copyWith(color: Colors.white)),
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -516,9 +466,10 @@ class _EventsViewerState extends State<EventsViewer> {
               top: 30,
               left: 20,
               child: IconButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: const Icon(Icons.close, color: dark)),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                onPressed: () => Navigator.of(context).pop(),
+                icon: const Icon(Icons.close, color: dark),
+              ),
             ),
           ],
         ),

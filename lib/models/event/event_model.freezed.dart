@@ -29,7 +29,7 @@ mixin _$EventModel {
   String? get longDescription => throw _privateConstructorUsedError;
   DateTime get startDate => throw _privateConstructorUsedError;
   DateTime get endDate => throw _privateConstructorUsedError;
-  String get registrationLink => throw _privateConstructorUsedError;
+  String? get registrationLink => throw _privateConstructorUsedError;
   String? get facebookPostURL => throw _privateConstructorUsedError;
   String get venue => throw _privateConstructorUsedError;
 
@@ -65,7 +65,7 @@ abstract class $EventModelCopyWith<$Res> {
       String? longDescription,
       DateTime startDate,
       DateTime endDate,
-      String registrationLink,
+      String? registrationLink,
       String? facebookPostURL,
       String venue,
       List<String> contacts,
@@ -97,7 +97,7 @@ class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
     Object? longDescription = freezed,
     Object? startDate = null,
     Object? endDate = null,
-    Object? registrationLink = null,
+    Object? registrationLink = freezed,
     Object? facebookPostURL = freezed,
     Object? venue = null,
     Object? contacts = null,
@@ -140,10 +140,10 @@ class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      registrationLink: null == registrationLink
+      registrationLink: freezed == registrationLink
           ? _value.registrationLink
           : registrationLink // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       facebookPostURL: freezed == facebookPostURL
           ? _value.facebookPostURL
           : facebookPostURL // ignore: cast_nullable_to_non_nullable
@@ -197,7 +197,7 @@ abstract class _$$EventModelImplCopyWith<$Res>
       String? longDescription,
       DateTime startDate,
       DateTime endDate,
-      String registrationLink,
+      String? registrationLink,
       String? facebookPostURL,
       String venue,
       List<String> contacts,
@@ -227,7 +227,7 @@ class __$$EventModelImplCopyWithImpl<$Res>
     Object? longDescription = freezed,
     Object? startDate = null,
     Object? endDate = null,
-    Object? registrationLink = null,
+    Object? registrationLink = freezed,
     Object? facebookPostURL = freezed,
     Object? venue = null,
     Object? contacts = null,
@@ -270,10 +270,10 @@ class __$$EventModelImplCopyWithImpl<$Res>
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      registrationLink: null == registrationLink
+      registrationLink: freezed == registrationLink
           ? _value.registrationLink
           : registrationLink // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       facebookPostURL: freezed == facebookPostURL
           ? _value.facebookPostURL
           : facebookPostURL // ignore: cast_nullable_to_non_nullable
@@ -322,7 +322,7 @@ class _$EventModelImpl extends _EventModel with DiagnosticableTreeMixin {
       this.longDescription,
       required this.startDate,
       required this.endDate,
-      required this.registrationLink,
+      this.registrationLink,
       this.facebookPostURL,
       required this.venue,
       required final List<String> contacts,
@@ -356,7 +356,7 @@ class _$EventModelImpl extends _EventModel with DiagnosticableTreeMixin {
   @override
   final DateTime endDate;
   @override
-  final String registrationLink;
+  final String? registrationLink;
   @override
   final String? facebookPostURL;
   @override
@@ -449,7 +449,7 @@ abstract class _EventModel extends EventModel {
       final String? longDescription,
       required final DateTime startDate,
       required final DateTime endDate,
-      required final String registrationLink,
+      final String? registrationLink,
       final String? facebookPostURL,
       required final String venue,
       required final List<String> contacts,
@@ -481,7 +481,7 @@ abstract class _EventModel extends EventModel {
   @override
   DateTime get endDate;
   @override
-  String get registrationLink;
+  String? get registrationLink;
   @override
   String? get facebookPostURL;
   @override

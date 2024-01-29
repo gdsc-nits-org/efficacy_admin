@@ -16,7 +16,7 @@ _$EventModelImpl _$$EventModelImplFromJson(Map<String, dynamic> json) =>
       longDescription: json['longDescription'] as String?,
       startDate: DateTime.parse(json['startDate'] as String),
       endDate: DateTime.parse(json['endDate'] as String),
-      registrationLink: json['registrationLink'] as String,
+      registrationLink: json['registrationLink'] as String?,
       facebookPostURL: json['facebookPostURL'] as String?,
       venue: json['venue'] as String,
       contacts:

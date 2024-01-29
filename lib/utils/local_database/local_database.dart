@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:efficacy_admin/models/models.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';
@@ -22,6 +24,8 @@ class LocalDatabase {
   static Future<void> init() async {
     if (didInit) return;
     sharedPreferences = await SharedPreferences.getInstance();
+    Directory dir = await getTemporaryDirectory();
+    await dir.delete(recursive: true);
     await _removeStaleData();
     didInit = true;
   }

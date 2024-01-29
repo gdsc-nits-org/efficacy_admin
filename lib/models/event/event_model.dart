@@ -20,7 +20,7 @@ class EventModel with _$EventModel {
     String? longDescription,
     required DateTime startDate,
     required DateTime endDate,
-    required String registrationLink,
+    String? registrationLink,
     String? facebookPostURL,
     required String venue,
 

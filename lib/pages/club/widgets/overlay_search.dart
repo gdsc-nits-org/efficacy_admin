@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
-import 'package:efficacy_admin/pages/club/widgets/buttons.dart';
+import 'package:efficacy_admin/pages/club/utils/invite_members_tutorial.dart';
 import 'package:efficacy_admin/pages/club/widgets/invite_overlay.dart';
 import 'package:efficacy_admin/utils/debouncer.dart';
+import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:flutter/material.dart';
 
 import 'package:efficacy_admin/controllers/controllers.dart';
@@ -24,6 +24,28 @@ class _OverlaySearchState extends State<OverlaySearch> {
   List<UserModel> userList = [];
   Set<String> selectedUsers = {};
   bool isMultiSelect = false;
+  bool memTutorialShown = false;
+
+  // Global keys for guide
+  GlobalKey searchUserKey = GlobalKey();
+  GlobalKey memKey = GlobalKey();
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (LocalDatabase.getGuideStatus(LocalGuideCheck.inviteSearch)) {
+      showSearchBarTutorial(context, searchUserKey);
+    }
+    if (LocalDatabase.getGuideStatus(LocalGuideCheck.inviteUser)) {
+      _searchController.addListener(() {
+        if (!memTutorialShown && userList.isNotEmpty) {
+          showSelectUserTutorial(context, memKey);
+          memTutorialShown = true;
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +63,10 @@ class _OverlaySearchState extends State<OverlaySearch> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
+                  key: searchUserKey,
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
+                    controller: _searchController,
                     onChanged: (String? name) {
                       debouncer.run(() {
                         setState(() {
@@ -93,6 +117,7 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                       if (userList[index].id !=
                                           UserController.currentUser?.id) {
                                         return ListTile(
+                                          key: (index == 0) ? memKey : null,
                                           title: Text(userList[index].name),
                                           subtitle: Text(userList[index].email),
                                           tileColor: selectedUsers
@@ -164,7 +189,7 @@ class _OverlaySearchState extends State<OverlaySearch> {
                               });
                         },
                       )
-                    :const SizedBox(),
+                    : const SizedBox(),
               ],
             ),
           ),

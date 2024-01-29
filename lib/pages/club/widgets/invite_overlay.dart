@@ -5,8 +5,11 @@ import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/pages/club/utils/edit_club_position_tutorial.dart';
+import 'package:efficacy_admin/pages/club/utils/invite_members_tutorial.dart';
 import 'package:efficacy_admin/pages/club/widgets/members_overlay.dart';
 import 'package:efficacy_admin/pages/club/widgets/position_permission_overlay.dart';
+import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -31,10 +34,46 @@ class _InviteOverlayState extends State<InviteOverlay> {
   List<ClubPositionModel> clubPositionList = [];
   String _newClubPositionName = '';
   int selected = -1;
+
+  // Global keys for guide
+  GlobalKey newPosNameKey = GlobalKey();
+  GlobalKey addKey = GlobalKey();
+  GlobalKey posNameKey = GlobalKey();
+  GlobalKey membersKey = GlobalKey();
+  GlobalKey editPosKey = GlobalKey();
+  GlobalKey inviteKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
     _newClubPosition.addListener(_onTextChanged);
+    if (widget.inviteMode) {
+      // TODO: BUG fix: Both tutorials start at the same time
+      if (LocalDatabase.getGuideStatus(LocalGuideCheck.editClubPosition)) {
+        showEditClubPosTutorial(
+          context,
+          newPosNameKey,
+          addKey,
+          posNameKey,
+          membersKey,
+          editPosKey,
+        );
+      }
+      if (LocalDatabase.getGuideStatus(LocalGuideCheck.inviteButton)) {
+        showInviteButtonTutorial(context, inviteKey);
+      }
+    } else {
+      if (LocalDatabase.getGuideStatus(LocalGuideCheck.editClubPosition)) {
+        showEditClubPosTutorial(
+          context,
+          newPosNameKey,
+          addKey,
+          posNameKey,
+          membersKey,
+          editPosKey,
+        );
+      }
+    }
   }
 
   void _onTextChanged() {
@@ -71,6 +110,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                         Flexible(
                           flex: 8,
                           child: CustomTextField(
+                            key: newPosNameKey,
                             controller: _newClubPosition,
                             label: "New club position",
                             prefixIcon: Icons.assignment_ind_outlined,
@@ -78,6 +118,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                         ),
                         const Spacer(flex: 1),
                         Flexible(
+                          key: addKey,
                           flex: 4,
                           child: SizedBox(
                             height: 40,
@@ -154,6 +195,9 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                         selected: index == selected,
                                         selectedTileColor: paleBlue,
                                         title: Text(
+                                            key: (index == 0)
+                                                ? posNameKey
+                                                : null,
                                             clubPositionList[index].position),
                                         onTap: () {
                                           setState(() {
@@ -182,6 +226,9 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             IconButton(
+                                              key: (index == 0)
+                                                  ? membersKey
+                                                  : null,
                                               onPressed: () {
                                                 showDialog(
                                                   context: context,
@@ -202,6 +249,9 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                                 .clubWithModifyClubPermission
                                                 .contains(widget.club))
                                               IconButton(
+                                                  key: (index == 0)
+                                                      ? editPosKey
+                                                      : null,
                                                   onPressed: () async {
                                                     var updatedPosition =
                                                         await showDialog(
@@ -246,6 +296,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                     }),
                 (widget.inviteMode)
                     ? ElevatedButton(
+                        key: inviteKey,
                         onPressed: () {
                           showLoadingOverlay(
                             context: context,

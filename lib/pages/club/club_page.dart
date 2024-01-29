@@ -63,7 +63,8 @@ class _ClubPageState extends State<ClubPage> {
   void initState() {
     super.initState();
     initData(widget.club);
-    if (LocalDatabase.getGuideStatus(LocalGuideCheck.club) && !(_createMode)) {
+    if (!_createMode &&
+        LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.club)) {
       Future.delayed(const Duration(seconds: 1), () {
         showClubPageTutorial(
           context,
@@ -73,7 +74,8 @@ class _ClubPageState extends State<ClubPage> {
         );
       });
     }
-    if (LocalDatabase.getGuideStatus(LocalGuideCheck.createClub) && (_createMode)) {
+    if (_createMode &&
+        LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.createClub)) {
       Future.delayed(const Duration(seconds: 1), () {
         showCreateClubTutorial(
           context,

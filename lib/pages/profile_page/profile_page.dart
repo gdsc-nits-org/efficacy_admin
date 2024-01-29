@@ -44,7 +44,7 @@ class _ProfileState extends State<ProfilePage> {
   void initState() {
     super.initState();
     init();
-    if (LocalDatabase.getGuideStatus(LocalGuideCheck.profile)) {
+    if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.profile)) {
       Future.delayed(const Duration(seconds: 1), () {
         showProfilePageTutorial(
           context,

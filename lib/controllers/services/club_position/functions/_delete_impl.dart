@@ -1,6 +1,7 @@
 part of '../club_position_controller.dart';
 
 Future<void> _deleteImpl(ClubPositionModel clubPosition) async {
+  print(clubPosition.id);
   DbCollection collection =
       Database.instance.collection(ClubPositionController._collectionName);
   SelectorBuilder selectorBuilder = SelectorBuilder();
@@ -13,11 +14,8 @@ Future<void> _deleteImpl(ClubPositionModel clubPosition) async {
   }
   Map<String, List<String>> members =
       Map<String, List<String>>.from(club[0].members);
-  if (!members.containsKey(clubPosition.id)) {
-    throw Exception("Club Position not found in ${club[0].name}");
-  }
 
-  List<String> users = members[clubPosition.id]!;
+  List<String> users = members[clubPosition.id] ?? [];
   for (String userEmail in users) {
     List<UserModel> user =
         await UserController.get(email: userEmail, forceGet: true).first;

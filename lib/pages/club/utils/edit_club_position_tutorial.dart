@@ -9,6 +9,7 @@ void showEditClubPosTutorial(
   GlobalKey posNameKey,
   GlobalKey membersKey,
   GlobalKey editPosKey,
+  void Function() onFinish,
 ) {
   List<TargetFocus> targets =
       getTargets(newPosNameKey, addKey, posNameKey, membersKey, editPosKey);
@@ -17,6 +18,7 @@ void showEditClubPosTutorial(
     hideSkip: true,
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
+    onFinish: onFinish,
   ).show(context: context);
 }
 

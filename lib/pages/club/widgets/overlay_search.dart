@@ -29,21 +29,12 @@ class _OverlaySearchState extends State<OverlaySearch> {
   // Global keys for guide
   GlobalKey searchUserKey = GlobalKey();
   GlobalKey memKey = GlobalKey();
-  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    if (LocalDatabase.getGuideStatus(LocalGuideCheck.inviteSearch)) {
+    if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.inviteSearch)) {
       showSearchBarTutorial(context, searchUserKey);
-    }
-    if (LocalDatabase.getGuideStatus(LocalGuideCheck.inviteUser)) {
-      _searchController.addListener(() {
-        if (!memTutorialShown && userList.isNotEmpty) {
-          showSelectUserTutorial(context, memKey);
-          memTutorialShown = true;
-        }
-      });
     }
   }
 
@@ -66,7 +57,6 @@ class _OverlaySearchState extends State<OverlaySearch> {
                   key: searchUserKey,
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
-                    controller: _searchController,
                     onChanged: (String? name) {
                       debouncer.run(() {
                         setState(() {
@@ -91,6 +81,12 @@ class _OverlaySearchState extends State<OverlaySearch> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         userList = snapshot.data ?? [];
+
+                        if (userList.isNotEmpty &&
+                            LocalDatabase.getAndSetGuideStatus(
+                                LocalGuideCheck.inviteUser)) {
+                          showSelectUserTutorial(context, memKey);
+                        }
                         // removes a user if userid is same as current user
                         userList.removeWhere((element) =>
                             element.id == UserController.currentUser?.id);

@@ -47,32 +47,25 @@ class _InviteOverlayState extends State<InviteOverlay> {
   void initState() {
     super.initState();
     _newClubPosition.addListener(_onTextChanged);
-    if (widget.inviteMode) {
-      // TODO: BUG fix: Both tutorials start at the same time
-      if (LocalDatabase.getGuideStatus(LocalGuideCheck.editClubPosition)) {
-        showEditClubPosTutorial(
-          context,
-          newPosNameKey,
-          addKey,
-          posNameKey,
-          membersKey,
-          editPosKey,
-        );
-      }
-      if (LocalDatabase.getGuideStatus(LocalGuideCheck.inviteButton)) {
-        showInviteButtonTutorial(context, inviteKey);
-      }
-    } else {
-      if (LocalDatabase.getGuideStatus(LocalGuideCheck.editClubPosition)) {
-        showEditClubPosTutorial(
-          context,
-          newPosNameKey,
-          addKey,
-          posNameKey,
-          membersKey,
-          editPosKey,
-        );
-      }
+    if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.editClubPosition)) {
+      showEditClubPosTutorial(
+        context,
+        newPosNameKey,
+        addKey,
+        posNameKey,
+        membersKey,
+        editPosKey,
+        () {
+          if (widget.inviteMode &&
+              LocalDatabase.getAndSetGuideStatus(
+                  LocalGuideCheck.inviteButton)) {
+            showInviteButtonTutorial(context, inviteKey);
+          }
+        },
+      );
+    } else if (widget.inviteMode &&
+        LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.inviteButton)) {
+      showInviteButtonTutorial(context, inviteKey);
     }
   }
 

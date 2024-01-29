@@ -16,6 +16,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:share_plus/share_plus.dart';
+import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+
 
 class EventsViewer extends StatefulWidget {
   static const String routeName = "/eventFullScreen";
@@ -62,6 +68,21 @@ class _EventsViewerState extends State<EventsViewer> {
     }
   }
 
+
+  Future<XFile?> downloadAndSaveImage(String imageUrl) async {
+  try {
+    Dio dio = Dio();
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    await dio.download(imageUrl, '$tempPath/$fileName.png');
+    return XFile('$tempPath/$fileName.png');
+  } catch (e) {
+    debugPrint("Error downloading and saving image: $e");
+    return null;
+  }
+}
+
   Widget? registrationButtons() {
     if (widget.currentEvent.facebookPostURL != null &&
         widget.currentEvent.registrationLink.isNotEmpty &&
@@ -70,13 +91,15 @@ class _EventsViewerState extends State<EventsViewer> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           EventRegistrationButton(
-              onTap: () {},
+              onTap: () => launchUrlString(widget.currentEvent.registrationLink),
               icon: Image.asset(
                 Assets.googleLogoImagePath,
               ),
               message: "Google Form"),
           EventRegistrationButton(
-            onTap: () {},
+            onTap: () {
+              launchUrlString(widget.currentEvent.facebookPostURL!);
+            },
             icon: const Icon(
               FontAwesomeIcons.facebook,
               color: dark,
@@ -287,6 +310,40 @@ class _EventsViewerState extends State<EventsViewer> {
                             ),
                             Expanded(
                               child: InkWell(
+                                onTap: () async{
+                                  String title = widget.currentEvent.title;
+                                  String startDate = DateFormat('d MMM yyyy').format(widget.currentEvent.startDate);
+                                  String endDate = DateFormat('d MMM yyyy').format(widget.currentEvent.endDate);
+                                  String venue = widget.currentEvent.venue;
+                                  String? fbURL = widget.currentEvent.facebookPostURL;
+                                  String imageUrl = widget.currentEvent.posterURL;
+                                  XFile? savedImage = await downloadAndSaveImage(imageUrl);
+                                  List<XFile> images = [];
+                                  if(widget.currentEvent.facebookPostURL != null && widget.currentEvent.posterURL.isNotEmpty){
+                                    images.clear();
+                                    images.add(savedImage!);
+                                    await Share.shareXFiles(
+                                      images,
+                                      text: '$title\nFrom: $startDate To: $endDate\nVenue: $venue\nCheck out our facebook page: \n$fbURL'
+                                    );}
+                                  else if(widget.currentEvent.posterURL.isNotEmpty){
+                                    images.clear();
+                                    images.add(savedImage!);
+                                    await Share.shareXFiles(
+                                      images,
+                                      text: '$title\nFrom: $startDate To: $endDate\nVenue: $venue'
+                                    );}
+                                  else if(widget.currentEvent.facebookPostURL != null){
+                                    await Share.share(
+                                      '$title\nFrom: $startDate To: $endDate\nVenue: $venue\nCheck out our facebook page: \n$fbURL'
+                                    );
+                                  }
+                                  else{
+                                    await Share.share(
+                                      '$title\nFrom: $startDate To: $endDate\nVenue: $venue'
+                                    );
+                                  }
+                                },
                                 child: Container(
                                   height: 50,
                                   decoration: BoxDecoration(

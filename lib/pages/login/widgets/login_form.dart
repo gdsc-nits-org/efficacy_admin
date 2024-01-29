@@ -4,11 +4,9 @@ import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/pages/homepage/homepage.dart';
 import 'package:efficacy_admin/pages/signup/signup_page.dart';
-import 'package:efficacy_admin/pages/splash_screen/splash_screen.dart';
 import 'package:efficacy_admin/utils/validator.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -34,7 +32,7 @@ class LoginFormState extends State<LoginForm> {
     double fieldGap = height * 0.005;
     double smallGap = height * 0.01;
     double formWidth = width * 0.8;
-    double fieldHeight = height * 0.09;
+    double fieldHeight = height * 0.075;
 
     return Column(
       children: [

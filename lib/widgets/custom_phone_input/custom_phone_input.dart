@@ -10,6 +10,7 @@ class CustomPhoneField extends StatelessWidget {
   final EdgeInsets? contentPadding;
   final IconData? prefixIcon;
   final Widget? suffixIcon;
+  final double height;
   final void Function(PhoneNumber) onPhoneChanged;
   const CustomPhoneField({
     super.key,
@@ -20,6 +21,7 @@ class CustomPhoneField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.label,
+    this.height = 40,
     required this.onPhoneChanged,
   });
 
@@ -33,26 +35,29 @@ class CustomPhoneField extends StatelessWidget {
             title!,
             style: Theme.of(context).textTheme.labelLarge,
           ),
-        IntlPhoneField(
-          decoration: InputDecoration(
-            labelText: label,
-            counter: const Offstage(),
-            focusColor: const Color(0xFF05354C),
-            contentPadding:
-                contentPadding ?? const EdgeInsets.symmetric(horizontal: 10),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
+        SizedBox(
+          height: height * 1.5,
+          child: IntlPhoneField(
+            decoration: InputDecoration(
+              labelText: label,
+              counter: const Offstage(),
+              focusColor: const Color(0xFF05354C),
+              contentPadding:
+                  contentPadding ?? const EdgeInsets.symmetric(horizontal: 10),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+        
+              prefixIcon: Icon(prefixIcon,
+                  color: const Color.fromARGB(
+                      255, 67, 67, 67)), //const Color(0xFF05354C),),
+              suffixIcon: suffixIcon,
             ),
-
-            prefixIcon: Icon(prefixIcon,
-                color: const Color.fromARGB(
-                    255, 67, 67, 67)), //const Color(0xFF05354C),),
-            suffixIcon: suffixIcon,
+            onChanged: onPhoneChanged,
+            enabled: enabled,
+            initialCountryCode: initialValue?.countryISOCode ?? "IN",
+            initialValue: initialValue?.number,
           ),
-          onChanged: onPhoneChanged,
-          enabled: enabled,
-          initialCountryCode: initialValue?.countryISOCode ?? "IN",
-          initialValue: initialValue?.number,
         ),
       ],
     );

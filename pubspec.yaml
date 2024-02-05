@@ -57,3 +57,17 @@ flutter:
   assets:
     - .env
     - assets/images/
+
+  fonts:
+    - family: Comfortaa
+      fonts:
+        - asset: assets/fonts/comfortaa/Comfortaa-Light.ttf
+          weight: 300
+        - asset: assets/fonts/comfortaa/Comfortaa-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/comfortaa/Comfortaa-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/comfortaa/Comfortaa-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/comfortaa/Comfortaa-Bold.ttf
+          weight: 700

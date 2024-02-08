@@ -49,19 +49,20 @@ class ErrorHandler {
       if (obj is Exception) {
         errorMessage = obj.toString().substring("Exception: ".length);
       } else {
-        if (Platform.isAndroid) {
-          errorMessage = 'This feature is not available on Android.';
-        } else if (Platform.isIOS) {
-          errorMessage = 'This feature is not available on iOS.';
-        } else if (Platform.isMacOS) {
-          errorMessage = 'This feature is not available on macOS.';
-        } else if (Platform.isWindows) {
-          errorMessage = 'This feature is not available on Windows.';
-        } else if (Platform.isLinux) {
-          errorMessage = 'This feature is not available on Linux.';
-        } else {
-          errorMessage = 'This feature is not supported on your platform.';
-        }
+        errorMessage = "Some error occurred. Please retry or restart the app.";
+        // if (Platform.isAndroid) {
+        //   errorMessage = 'This feature is not available on Android.';
+        // } else if (Platform.isIOS) {
+        //   errorMessage = 'This feature is not available on iOS.';
+        // } else if (Platform.isMacOS) {
+        //   errorMessage = 'This feature is not available on macOS.';
+        // } else if (Platform.isWindows) {
+        //   errorMessage = 'This feature is not available on Windows.';
+        // } else if (Platform.isLinux) {
+        //   errorMessage = 'This feature is not available on Linux.';
+        // } else {
+        //   errorMessage = 'This feature is not supported on your platform.';
+        // }
       }
       if (obj.toString().isNotEmpty) {
         if (obj.toString().contains("network_error")) {

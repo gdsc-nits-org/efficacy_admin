@@ -18,7 +18,7 @@ class NavButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: SizedBox(
-        width: (message.name.length * 17.0).toDouble(),
+        width: (message.name.length * 18.0).toDouble(),
         height: 38,
         child: OutlinedButton(
           onPressed: onTap,

@@ -1,7 +1,5 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
-import 'package:efficacy_admin/controllers/services/club/club_controller.dart';
-import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
@@ -13,16 +11,10 @@ import 'package:efficacy_admin/pages/event_details_view/widgets/stats_info.dart'
 import 'package:efficacy_admin/utils/custom_network_image.dart';
 import 'package:efficacy_admin/utils/share_handler.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:share_plus/share_plus.dart';
-import 'dart:io';
-import 'package:dio/dio.dart';
-import 'package:path_provider/path_provider.dart';
 
 class EventsViewer extends StatefulWidget {
   static const String routeName = "/eventFullScreen";

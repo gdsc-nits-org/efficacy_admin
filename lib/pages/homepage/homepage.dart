@@ -19,7 +19,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  int currentTabIndex = 0;
+  ValueNotifier<int> currentEventFilterTypeIndex = ValueNotifier(0);
 
   // Global keys for guide
   GlobalKey drawerKey = GlobalKey();
@@ -47,7 +47,8 @@ class _HomepageState extends State<Homepage> {
 
   void navigator(EventStatus buttonMessage) {
     setState(() {
-      currentTabIndex = EventStatus.values.indexOf(buttonMessage);
+      currentEventFilterTypeIndex.value =
+          EventStatus.values.indexOf(buttonMessage);
     });
   }
 
@@ -60,18 +61,14 @@ class _HomepageState extends State<Homepage> {
         children: [
           TabView(
             key: listEventsKey,
-            currentTabIndex: currentTabIndex,
+            currentTabIndex: currentEventFilterTypeIndex.value,
             navigator: navigator,
           ),
           Expanded(
             key: feedKey,
             child: EventsShowcasePage(
               createEventKey: createEventKey,
-              eventStatus: currentTabIndex == 0
-                  ? EventStatus.Upcoming
-                  : currentTabIndex == 1
-                      ? EventStatus.Ongoing
-                      : EventStatus.Completed,
+              currentEventFilterTypeIndex: currentEventFilterTypeIndex,
             ),
           ),
         ].separate(26),

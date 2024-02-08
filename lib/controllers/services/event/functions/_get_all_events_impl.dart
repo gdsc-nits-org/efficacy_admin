@@ -2,6 +2,7 @@ part of '../event_controller.dart';
 
 Stream<EventPaginationResponse> _getAllEventsImpl({
   int skip = 0,
+  EventStatus? eventStatus,
   List<String?> clubIDs = const [],
   bool forceGet = false,
   int count = 10,
@@ -17,6 +18,7 @@ Stream<EventPaginationResponse> _getAllEventsImpl({
   EventPaginationResponse filteredEvents = await _fetchAllEventsFromBackend(
     skip: skip,
     clubIDs: clubIDs,
+    eventStatus: eventStatus,
     forceGet: forceGet,
     count: count,
   );
@@ -62,6 +64,7 @@ Future<EventPaginationResponse> _fetchAllEventsLocal({
 
 Future<EventPaginationResponse> _fetchAllEventsFromBackend({
   int skip = 0,
+  EventStatus? eventStatus,
   List<String?> clubIDs = const [],
   bool forceGet = false,
   int count = 10,
@@ -75,6 +78,29 @@ Future<EventPaginationResponse> _fetchAllEventsFromBackend({
   if (clubIDs.isNotEmpty) {
     selectorBuilder.oneFrom(EventFields.clubID.name, clubIDs);
   }
+  if (eventStatus != null) {
+    DateTime currentTime = DateTime.now();
+    if (eventStatus == EventStatus.Completed) {
+      selectorBuilder.lt(
+        EventFields.endDate.name,
+        currentTime.toIso8601String(),
+      );
+    } else if (eventStatus == EventStatus.Upcoming) {
+      selectorBuilder.gt(
+        EventFields.startDate.name,
+        currentTime.toIso8601String(),
+      );
+    } else {
+      selectorBuilder.lte(
+        EventFields.startDate.name,
+        currentTime.toIso8601String(),
+      );
+      selectorBuilder.gte(
+        EventFields.endDate.name,
+        currentTime.toIso8601String(),
+      );
+    }
+  }
   selectorBuilder.sortBy(EventFields.updatedAt.name, descending: true);
   selectorBuilder.skip(skip);
   selectorBuilder.limit(count);
@@ -86,7 +112,7 @@ Future<EventPaginationResponse> _fetchAllEventsFromBackend({
     filteredEvents[i] = await EventController._save(filteredEvents[i]);
   }
   return EventPaginationResponse(
-    skip + filteredEvents.length,
+    filteredEvents.length < count ? -1 : skip + filteredEvents.length,
     filteredEvents,
   );
 }

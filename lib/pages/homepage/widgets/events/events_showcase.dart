@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:math';
 
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
@@ -22,9 +23,8 @@ class EventsShowcasePage extends StatefulWidget {
 }
 
 class _EventsShowcasePageState extends State<EventsShowcasePage> {
-  Stream<EventPaginationResponse> eventStream = EventController.getAllEvents(
-    clubIDs: getClubIDs(UserController.clubs),
-  );
+  late Stream<EventPaginationResponse> eventStream;
+  EventStatus? currentEventStatus;
   int skip = 0;
 
   final ScrollController _controller = ScrollController();
@@ -51,10 +51,13 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
     _controller.addListener(() {
       if (_controller.position.pixels == _controller.position.maxScrollExtent) {
         setState(() {
-          eventStream = EventController.getAllEvents(
-            clubIDs: getClubIDs(UserController.clubs),
-            skip: skip,
-          );
+          if (skip != -1) {
+            eventStream = EventController.getAllEvents(
+              eventStatus: currentEventStatus,
+              clubIDs: getClubIDs(UserController.clubs),
+              skip: skip,
+            );
+          }
         });
       }
     });
@@ -127,27 +130,34 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
   }
 
   Future<void> refresh() async {
+    skip = 0;
+    allEvents.clear();
+    upcomingEvents.clear();
+    ongoingEvents.clear();
+    completedEvents.clear();
     EventPaginationResponse response = await EventController.getAllEvents(
       clubIDs: getClubIDs(UserController.clubs),
       skip: skip,
       forceGet: true,
+      eventStatus: currentEventStatus,
     ).first;
     setState(() {
-      skip = 0;
-      allEvents.clear();
-      upcomingEvents.clear();
-      ongoingEvents.clear();
-      completedEvents.clear();
-      eventStream = EventController.getAllEvents(
-        clubIDs: getClubIDs(UserController.clubs),
-        skip: skip,
-      );
       skip = response.skip;
+      categoriseNewEvents(response.events);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    Size screen = MediaQuery.of(context).size;
+    if (widget.eventStatus != currentEventStatus) {
+      currentEventStatus = widget.eventStatus;
+
+      eventStream = EventController.getAllEvents(
+        eventStatus: currentEventStatus,
+        clubIDs: getClubIDs(UserController.clubs),
+      );
+    }
     return Scaffold(
       floatingActionButton: UserController.clubWithModifyEventPermission
               .isNotEmpty // If there is no club where the user can edit/create event don't show the option
@@ -178,7 +188,8 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
                       child:
                           Text("Some Error occurred. Please restart the app."),
                     );
-                  } else if (!snapshot.hasData) {
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else {
                     if (snapshot.data != null) {
@@ -200,8 +211,16 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
                     itemCount = events.length;
                     return ListView.builder(
                       controller: _controller,
-                      itemCount: itemCount,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: max(1, itemCount),
                       itemBuilder: (context, index) {
+                        if (itemCount == 0) {
+                          return SizedBox(
+                            width: screen.width,
+                            height: screen.height * .7,
+                            child: const Center(child: Text("No event found")),
+                          );
+                        }
                         return Padding(
                           padding: const EdgeInsets.symmetric(
                             vertical: 10,

@@ -10,12 +10,12 @@ import 'package:efficacy_admin/pages/homepage/widgets/events/event_card.dart';
 import 'package:flutter/material.dart';
 
 class EventsShowcasePage extends StatefulWidget {
-  final ValueNotifier<int> currentEventFilterTypeIndex;
+  final EventStatus eventStatus;
   final GlobalKey? createEventKey;
   const EventsShowcasePage({
     super.key,
     this.createEventKey,
-    required this.currentEventFilterTypeIndex,
+    required this.eventStatus,
   });
 
   @override
@@ -24,14 +24,20 @@ class EventsShowcasePage extends StatefulWidget {
 
 class _EventsShowcasePageState extends State<EventsShowcasePage> {
   late Stream<EventPaginationResponse> eventStream;
+  EventStatus? currentEventStatus;
   int skip = 0;
 
   final ScrollController _controller = ScrollController();
   SplayTreeSet<EventModel> allEvents =
-      SplayTreeSet<EventModel>(sortCompareEvents);
+  SplayTreeSet<EventModel>(sortCompareEvents);
+  SplayTreeSet<EventModel> upcomingEvents =
+  SplayTreeSet<EventModel>(sortCompareEvents);
+  SplayTreeSet<EventModel> ongoingEvents =
+  SplayTreeSet<EventModel>(sortCompareEvents);
+  SplayTreeSet<EventModel> completedEvents =
+  SplayTreeSet<EventModel>(sortCompareEvents);
 
   int itemCount = 0;
-  EventStatus? currentEventStatus;
 
   static int sortCompareEvents(EventModel a, EventModel b) {
     return a.startDate == b.startDate
@@ -59,11 +65,45 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
 
   void addNewEvent(EventModel newEvent) {
     allEvents.add(newEvent);
+    switch (newEvent.type) {
+      case EventStatus.Upcoming:
+        upcomingEvents.add(newEvent);
+        break;
+      case EventStatus.Ongoing:
+        ongoingEvents.add(newEvent);
+        break;
+      case EventStatus.Completed:
+        completedEvents.add(newEvent);
+        break;
+    }
   }
 
   void updateEvent(EventModel oldEvent, EventModel newEvent) {
     allEvents.remove(oldEvent);
     allEvents.add(newEvent);
+
+    switch (oldEvent.type) {
+      case EventStatus.Upcoming:
+        upcomingEvents.remove(oldEvent);
+        break;
+      case EventStatus.Ongoing:
+        ongoingEvents.remove(oldEvent);
+        break;
+      case EventStatus.Completed:
+        completedEvents.remove(oldEvent);
+        break;
+    }
+    switch (newEvent.type) {
+      case EventStatus.Upcoming:
+        upcomingEvents.add(newEvent);
+        break;
+      case EventStatus.Ongoing:
+        ongoingEvents.add(newEvent);
+        break;
+      case EventStatus.Completed:
+        completedEvents.add(newEvent);
+        break;
+    }
   }
 
   @override
@@ -72,128 +112,145 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
     super.dispose();
   }
 
+  void categoriseNewEvents(List<EventModel> events) {
+    allEvents.addAll(events);
+    for (EventModel event in events) {
+      switch (event.type) {
+        case EventStatus.Upcoming:
+          upcomingEvents.add(event);
+          break;
+        case EventStatus.Ongoing:
+          ongoingEvents.add(event);
+          break;
+        case EventStatus.Completed:
+          completedEvents.add(event);
+          break;
+      }
+    }
+  }
+
   Future<void> refresh() async {
+    skip = 0;
     allEvents.clear();
+    upcomingEvents.clear();
+    ongoingEvents.clear();
+    completedEvents.clear();
     EventPaginationResponse response = await EventController.getAllEvents(
-      eventStatus: currentEventStatus,
       clubIDs: getClubIDs(UserController.clubs),
       skip: skip,
       forceGet: true,
+      eventStatus: currentEventStatus,
     ).first;
     setState(() {
-      skip = 0;
-      eventStream = EventController.getAllEvents(
-        clubIDs: getClubIDs(UserController.clubs),
-        eventStatus: currentEventStatus,
-        skip: skip,
-      );
       skip = response.skip;
-      allEvents.addAll(response.events);
+      categoriseNewEvents(response.events);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    Size screen = MediaQuery.of(context).size;
+    if (widget.eventStatus != currentEventStatus) {
+      currentEventStatus = widget.eventStatus;
+
+      eventStream = EventController.getAllEvents(
+        eventStatus: currentEventStatus,
+        clubIDs: getClubIDs(UserController.clubs),
+      );
+    }
     return Scaffold(
       floatingActionButton: UserController.clubWithModifyEventPermission
-              .isNotEmpty // If there is no club where the user can edit/create event don't show the option
+          .isNotEmpty // If there is no club where the user can edit/create event don't show the option
           ? FloatingActionButton(
-              key: widget.createEventKey,
-              onPressed: () async {
-                final eventUpdated = await Navigator.pushNamed(
-                    context, CreateUpdateEvent.routeName);
-                if (eventUpdated != null && eventUpdated is EventModel) {
-                  addNewEvent(eventUpdated);
-                }
-              },
-              child: const Icon(Icons.add),
-            )
+        key: widget.createEventKey,
+        onPressed: () async {
+          final eventUpdated = await Navigator.pushNamed(
+              context, CreateUpdateEvent.routeName);
+          if (eventUpdated != null && eventUpdated is EventModel) {
+            addNewEvent(eventUpdated);
+          }
+        },
+        child: const Icon(Icons.add),
+      )
           : null,
       body: RefreshIndicator(
         onRefresh: refresh,
-        child: ValueListenableBuilder(
-            valueListenable: widget.currentEventFilterTypeIndex,
-            builder: (context, int currentEventFilterTypeIndex, _) {
-              Size screen = MediaQuery.of(context).size;
-              EventStatus status =
-                  EventStatus.values[currentEventFilterTypeIndex];
-              allEvents.clear();
-              if (status != currentEventStatus) {
-                currentEventStatus = status;
-                skip = 0;
-                eventStream = EventController.getAllEvents(
-                  skip: skip,
-                  clubIDs: getClubIDs(UserController.clubs),
-                  eventStatus: currentEventStatus,
-                );
-              }
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: StreamBuilder(
-                      stream: eventStream,
-                      builder: (context,
-                          AsyncSnapshot<EventPaginationResponse> snapshot) {
-                        if (snapshot.hasError) {
-                          return const Center(
-                            child: Text(
-                                "Some Error occurred. Please restart the app."),
-                          );
-                        } else if (!snapshot.hasData) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else {
-                          if (snapshot.data != null) {
-                            skip = snapshot.data!.skip;
-                            allEvents.addAll(snapshot.data!.events);
-                          }
-                          List<EventModel> events = allEvents.toList();
-                          itemCount = events.length;
-                          return ListView.builder(
-                            controller: _controller,
-                            itemCount: max(1, itemCount),
-                            itemBuilder: (context, index) {
-                              if (itemCount == 0) {
-                                return SizedBox(
-                                  width: screen.width,
-                                  height: screen.height * .7,
-                                  child: const Center(
-                                      child: Text("No event found")),
-                                );
-                              }
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 10,
-                                  horizontal: 10,
-                                ),
-                                child: InkWell(
-                                  onTap: () async {
-                                    final eventUpdated = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            EventsViewer(
-                                                currentEvent: events[index]),
-                                      ),
-                                    );
-                                    if (eventUpdated != null &&
-                                        eventUpdated is EventModel) {
-                                      updateEvent(events[index], eventUpdated);
-                                    }
-                                  },
-                                  child: EventCard(event: events[index]),
-                                ),
-                              );
-                            },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: StreamBuilder(
+                stream: eventStream,
+                builder:
+                    (context, AsyncSnapshot<EventPaginationResponse> snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child:
+                      Text("Some Error occurred. Please restart the app."),
+                    );
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else {
+                    if (snapshot.data != null) {
+                      skip = snapshot.data!.skip;
+                      categoriseNewEvents(snapshot.data!.events);
+                    }
+                    List<EventModel> events;
+                    switch (widget.eventStatus) {
+                      case EventStatus.Upcoming:
+                        events = upcomingEvents.toList();
+                        break;
+                      case EventStatus.Ongoing:
+                        events = ongoingEvents.toList();
+                        break;
+                      case EventStatus.Completed:
+                        events = completedEvents.toList();
+                        break;
+                    }
+                    itemCount = events.length;
+                    return ListView.builder(
+                      controller: _controller,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: max(1, itemCount),
+                      itemBuilder: (context, index) {
+                        if (itemCount == 0) {
+                          return SizedBox(
+                            width: screen.width,
+                            height: screen.height * .7,
+                            child: const Center(child: Text("No event found")),
                           );
                         }
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 10,
+                          ),
+                          child: InkWell(
+                            onTap: () async {
+                              final eventUpdated = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      EventsViewer(currentEvent: events[index]),
+                                ),
+                              );
+                              if (eventUpdated != null &&
+                                  eventUpdated is EventModel) {
+                                updateEvent(events[index], eventUpdated);
+                              }
+                            },
+                            child: EventCard(event: events[index]),
+                          ),
+                        );
                       },
-                    ),
-                  )
-                ],
-              );
-            }),
+                    );
+                  }
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

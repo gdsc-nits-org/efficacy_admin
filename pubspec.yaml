@@ -59,15 +59,15 @@ flutter:
     - assets/images/
 
   fonts:
-    - family: Comfortaa
+    - family: OpenSans
       fonts:
-        - asset: assets/fonts/comfortaa/Comfortaa-Light.ttf
+        - asset: assets/fonts/Open_Sans/OpenSans-Light.ttf
           weight: 300
-        - asset: assets/fonts/comfortaa/Comfortaa-Regular.ttf
+        - asset: assets/fonts/Open_Sans/OpenSans-Regular.ttf
           weight: 400
-        - asset: assets/fonts/comfortaa/Comfortaa-Medium.ttf
+        - asset: assets/fonts/Open_Sans/OpenSans-Medium.ttf
           weight: 500
-        - asset: assets/fonts/comfortaa/Comfortaa-SemiBold.ttf
+        - asset: assets/fonts/Open_Sans/OpenSans-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/comfortaa/Comfortaa-Bold.ttf
+        - asset: assets/fonts/Open_Sans/OpenSans-Bold.ttf
           weight: 700

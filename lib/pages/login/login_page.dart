@@ -48,14 +48,6 @@ class _LoginPageState extends State<LoginPage> {
                   "Hey! Welcome",
                   style: Theme.of(context).textTheme.displaySmall,
                 ),
-                FractionallySizedBox(
-                  widthFactor: messageFieldWidth,
-                  child: Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suscipit sed augue quam amet, sed gravida.",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ),
                 const LoginForm(),
               ].separate(gap),
             ),

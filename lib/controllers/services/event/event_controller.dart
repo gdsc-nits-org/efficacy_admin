@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/utils/comparator.dart';
@@ -99,15 +100,19 @@ class EventController {
   /// The [prevPassed] is used in terms of the updatedAt parameter
   ///
   /// If [clubIDs] is not provided it returns for all the clubs.
+  ///
+  /// [skip] is returned -1 if there are no more events
   static Stream<EventPaginationResponse> getAllEvents({
     int skip = 0,
     List<String?> clubIDs = const [],
+    EventStatus? eventStatus,
     bool forceGet = false,
     int count = 10,
   }) {
     return _getAllEventsImpl(
       skip: skip,
       clubIDs: clubIDs,
+      eventStatus: eventStatus,
       forceGet: forceGet,
       count: count,
     );

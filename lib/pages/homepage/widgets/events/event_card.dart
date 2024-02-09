@@ -2,8 +2,6 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
-import 'package:efficacy_admin/pages/event_details_view/event_viewer.dart';
-import 'package:efficacy_admin/pages/event_details_view/event_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';

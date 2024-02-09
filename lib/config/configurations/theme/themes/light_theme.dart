@@ -3,9 +3,7 @@ import '../utils/palette.dart';
 
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
-
-  /// Add a Font
-  fontFamily: 'Comfortaa',
+  fontFamily: 'SofiaPro',
   colorScheme: const ColorScheme.light(
     primary: dark,
     secondary: accent,

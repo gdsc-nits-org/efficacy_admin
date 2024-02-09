@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,11 +48,11 @@ class DevelopersPageState extends State<DevelopersPage> {
     List<dynamic> jsonList = jsonDecode(jsonString);
     setState(() {
       developers = jsonList
-          .map((e) => Developer(
-                name: e['name'],
-                image: e['image'],
-                github: e['github'],
-                linkedin: e['linkedin'],
+          .map((developer) => Developer(
+                name: developer['name'],
+                image: developer['image'],
+                github: developer['github'],
+                linkedin: developer['linkedin'],
               ))
           .toList();
       iconVisibility = List<bool>.filled(developers.length, false);
@@ -64,7 +66,6 @@ class DevelopersPageState extends State<DevelopersPage> {
     double cardImageSize = width * 0.35;
     double cardImageSizeSmall = width * 0.20;
     double cardSpacing = width * 0.025;
-
     return Scaffold(
       endDrawer: const CustomDrawer(),
       appBar: const CustomAppBar(
@@ -80,7 +81,7 @@ class DevelopersPageState extends State<DevelopersPage> {
               style: TextStyle(fontWeight: FontWeight.w400),
             ),
             Image.asset(
-              "assets/images/gdsc_logo.png",
+              Assets.gdscLogoImagePath,
               width: cardImageSizeSmall,
             ),
             const Text(
@@ -111,60 +112,69 @@ class DevelopersPageState extends State<DevelopersPage> {
                     },
                     child: Card(
                       elevation: 5,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: iconVisibility[index]
-                                ? cardImageSizeSmall
-                                : cardImageSize,
-                            height: iconVisibility[index]
-                                ? cardImageSizeSmall
-                                : cardImageSize,
-                            decoration: BoxDecoration(
-                              shape: iconVisibility[index]
-                                  ? BoxShape.circle
-                                  : BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.fitHeight,
-                                image: NetworkImage(developers[index].image),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AnimatedContainer(
+                              duration: kThemeChangeDuration,
+                              width: iconVisibility[index]
+                                  ? cardImageSizeSmall
+                                  : cardImageSize,
+                              height: iconVisibility[index]
+                                  ? cardImageSizeSmall
+                                  : cardImageSize,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    iconVisibility[index] ? 50 : 10),
+                                child: CachedNetworkImage(
+                                  imageUrl: developers[index].image,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(developers[index].name),
-                          const SizedBox(height: 10),
-                          if (iconVisibility[index]) ...[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(
-                                    FontAwesomeIcons.github,
+                            const SizedBox(height: 10),
+                            Text(developers[index].name),
+                            const SizedBox(height: 10),
+                            AnimatedContainer(
+                              height: (iconVisibility[index]) ? 40 : 0,
+                              duration: kThemeChangeDuration,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(
+                                      FontAwesomeIcons.github,
+                                    ),
+                                    onPressed: () {
+                                      launchUrl(
+                                          Uri.parse(developers[index].github));
+                                    },
                                   ),
-                                  onPressed: () {
-                                    launch(developers[index].github);
-                                  },
-                                ),
-                                IconButton(
-                                  icon: const Icon(
-                                    FontAwesomeIcons.linkedin,
+                                  IconButton(
+                                    icon: const Icon(
+                                      FontAwesomeIcons.linkedin,
+                                    ),
+                                    onPressed: () {
+                                      launchUrl(Uri.parse(
+                                          developers[index].linkedin));
+                                    },
                                   ),
-                                  onPressed: () {
-                                    launch(developers[index].linkedin);
-                                  },
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
+                            )
                           ],
-                        ],
+                        ),
                       ),
                     ),
                   );
                 },
               ),
             ),
-            const SizedBox(height: 10,)
+            const SizedBox(
+              height: 10,
+            )
           ],
         ),
       ),

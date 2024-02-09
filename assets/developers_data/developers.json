@@ -1,13 +1,13 @@
 [
   {
     "name": "John Doe",
-    "image": "assets/images/john_doe.jpg",
+    "image": "assets/images/media.png",
     "github": "https://github.com/johndoe",
     "linkedin": "https://www.linkedin.com/in/johndoe"
   },
   {
     "name": "Jane Smith",
-    "image": "assets/images/jane_smith.jpg",
+    "image": "assets/images/google_logo.png",
     "github": "https://github.com/janesmith",
     "linkedin": "https://www.linkedin.com/in/janesmith"
   }

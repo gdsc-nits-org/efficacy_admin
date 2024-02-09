@@ -19,14 +19,16 @@ class Developer {
       required this.linkedin});
 }
 
-class DeveloperGridView extends StatefulWidget {
-  const DeveloperGridView({super.key});
+class DevelopersPage extends StatefulWidget {
+  const DevelopersPage({super.key});
+
+  static const String routeName = '/developersPage';
 
   @override
-  DeveloperGridViewState createState() => DeveloperGridViewState();
+  DevelopersPageState createState() => DevelopersPageState();
 }
 
-class DeveloperGridViewState extends State<DeveloperGridView> {
+class DevelopersPageState extends State<DevelopersPage> {
   late List<Developer> developers;
   late List<bool> iconVisibility;
 

@@ -16,7 +16,7 @@ enum LocalGuideCheck {
   organizations,
   editClub,
   createClub,
-  clubEditInviteButton,
+  clubInvite,
   inviteSearch,
   inviteUser,
   inviteButton,

@@ -31,7 +31,7 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
     // To view guide everytime uncomment the next line
-    // LocalDatabase.resetGuideCheckpoint();
+    LocalDatabase.resetGuideCheckpoint();
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.home)) {
       Future.delayed(const Duration(seconds: 1), () {
         showHomePageTutorial(
@@ -70,7 +70,6 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    LocalDatabase.clearLocalStorage();
     return Scaffold(
       appBar: CustomAppBar(drawerKey: drawerKey, title: "Home"),
       endDrawer: const CustomDrawer(),

@@ -74,15 +74,14 @@ class _ClubPageState extends State<ClubPage> {
               if (UserController.clubWithModifyMemberPermission
                       .contains(club) &&
                   LocalDatabase.getAndSetGuideStatus(
-                      LocalGuideCheck.clubEditInviteButton)) {
+                      LocalGuideCheck.clubInvite)) {
                 showInviteTutorial(context, inviteKey);
               }
             },
           );
         });
       } else if (UserController.clubWithModifyMemberPermission.contains(club) &&
-          LocalDatabase.getAndSetGuideStatus(
-              LocalGuideCheck.clubEditInviteButton)) {
+          LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.clubInvite)) {
         if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.editClub)) {
           Future.delayed(const Duration(seconds: 1), () {
             showInviteTutorial(context, inviteKey);

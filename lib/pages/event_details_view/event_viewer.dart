@@ -7,6 +7,7 @@ import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/pages/create_update_event/create_update_event.dart';
 import 'package:efficacy_admin/pages/event_details_view/widgets/contributors.dart';
 import 'package:efficacy_admin/pages/event_details_view/widgets/event_registration_button.dart';
+import 'package:efficacy_admin/pages/event_details_view/widgets/photo_viewer.dart';
 import 'package:efficacy_admin/pages/event_details_view/widgets/stats_info.dart';
 import 'package:efficacy_admin/utils/custom_network_image.dart';
 import 'package:efficacy_admin/utils/share_handler.dart';
@@ -126,29 +127,34 @@ class _EventsViewerState extends State<EventsViewer> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  widget.currentEvent.posterURL.isEmpty ||
-                          widget.currentEvent.posterURL == "null"
-                      ? Container(
-                          decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20))),
-                          child: Image.asset(
-                            Assets.mediaImgPath,
-                            fit: BoxFit.cover,
-                            height: screenHeight * 0.4,
-                          ),
-                        )
-                      : CustomNetworkImage(
-                          url: widget.currentEvent.posterURL,
-                          height: screenHeight * 0.4,
-                          errorWidget: (BuildContext context, _, __) {
-                            return Image.asset(
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => EventPosterViewer(currentEvent: widget.currentEvent)));
+                    },
+                    child: widget.currentEvent.posterURL.isEmpty ||
+                            widget.currentEvent.posterURL == "null"
+                        ? Container(
+                            decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(20))),
+                            child: Image.asset(
                               Assets.mediaImgPath,
+                              fit: BoxFit.cover,
                               height: screenHeight * 0.4,
-                            );
-                          },
-                        ),
+                            ),
+                          )
+                        : CustomNetworkImage(
+                            url: widget.currentEvent.posterURL,
+                            height: screenHeight * 0.4,
+                            errorWidget: (BuildContext context, _, __) {
+                              return Image.asset(
+                                Assets.mediaImgPath,
+                                height: screenHeight * 0.4,
+                              );
+                            },
+                          ),
+                  ),
                   const Gap(50),
                   Container(
                     margin:

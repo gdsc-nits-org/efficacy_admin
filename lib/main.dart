@@ -1,10 +1,11 @@
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'utils/utils.dart';
 import 'config/config.dart';
 import 'pages/pages.dart';
 
 void main() async {
-  runApp(const EfficacyAdmin());
+  runApp(const BetterFeedback(child: EfficacyAdmin()));
 }
 
 class EfficacyAdmin extends StatelessWidget {

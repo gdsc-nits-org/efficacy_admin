@@ -6,18 +6,20 @@ void showProfilePageTutorial(
   BuildContext context,
   GlobalKey editProfileKey,
   GlobalKey delProfileKey,
-  ScrollController scrollController,
-) {
+  ScrollController scrollController, {
+  void Function()? onFinish,
+}) {
   List<TargetFocus> targets =
-      getTargets(editProfileKey, delProfileKey, scrollController);
+      getProfilePageTargets(editProfileKey, delProfileKey, scrollController);
   TutorialCoachMark(
     hideSkip: true,
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
+    onFinish: onFinish,
   ).show(context: context);
 }
 
-List<TargetFocus> getTargets(
+List<TargetFocus> getProfilePageTargets(
   GlobalKey editProfileKey,
   GlobalKey delProfileKey,
   ScrollController scrollController,

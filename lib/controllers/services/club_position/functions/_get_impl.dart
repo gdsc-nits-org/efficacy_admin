@@ -76,5 +76,6 @@ Future<List<ClubPositionModel>> _fetchFromBackend({
     filteredClubPositions[i] =
         await ClubPositionController._save(filteredClubPositions[i]);
   }
+
   return filteredClubPositions;
 }

@@ -59,12 +59,11 @@ flutter:
   assets:
     - .env
     - assets/images/
+    - assets/developers_data/
 
   fonts:
     - family: SofiaPro
       fonts:
-        - asset: assets/fonts/Sofia_Pro/SofiaProExtraLight.ttf
-          weight: 200
         - asset: assets/fonts/Sofia_Pro/SofiaProLight.ttf
           weight: 300
         - asset: assets/fonts/Sofia_Pro/SofiaProRegular.ttf

@@ -1,7 +1,6 @@
 part of '../club_position_controller.dart';
 
 Future<void> _deleteImpl(ClubPositionModel clubPosition) async {
-  print(clubPosition.id);
   DbCollection collection =
       Database.instance.collection(ClubPositionController._collectionName);
   SelectorBuilder selectorBuilder = SelectorBuilder();

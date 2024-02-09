@@ -38,7 +38,8 @@ class _ClubPositionPermissionOverlayState
             borderRadius: BorderRadius.circular(10),
             child: Material(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,29 +54,47 @@ class _ClubPositionPermissionOverlayState
                     CustomTextField(
                       controller: _nameController,
                       enabled: true,
-                      title: _nameController.text.toString(),
+                      title: "Club Leader",
                     ),
                     const Spacer(flex: 1),
                     const Text('Position Permissions:'),
                     Column(
                       children: Permissions.values.map((permission) {
-                        return Tooltip(
-                          message: permission.description,
-                          child: CheckboxListTile(
-                            title: Text(permission.name),
-                            value: _selectedPermissions.contains(permission),
-                            onChanged: (bool? value) {
-                              setState(() {
-                                if (value != null) {
-                                  if (value) {
-                                    _selectedPermissions.add(permission);
-                                  } else {
-                                    _selectedPermissions.remove(permission);
-                                  }
-                                }
-                              });
-                            },
+                        return CheckboxListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: Tooltip(
+                            message: permission.description,
+                            child: Row(
+                              children: [
+                                Tooltip(
+                                  message: permission.description,
+                                  triggerMode: TooltipTriggerMode.tap,
+                                  child: const Icon(
+                                    Icons.info,
+                                    size: 20,
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                    child: Text(
+                                  permission.name,
+                                  maxLines: null,
+                                )),
+                              ],
+                            ),
                           ),
+                          value: _selectedPermissions.contains(permission),
+                          onChanged: (bool? value) {
+                            setState(() {
+                              if (value != null) {
+                                if (value) {
+                                  _selectedPermissions.add(permission);
+                                } else {
+                                  _selectedPermissions.remove(permission);
+                                }
+                              }
+                            });
+                          },
                         );
                       }).toList(),
                     ),

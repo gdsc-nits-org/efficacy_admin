@@ -2,38 +2,43 @@ import 'package:efficacy_admin/widgets/coach_mark_desc/coach_mark_desc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
-void showCreateClubTutorial(
+void showOrganizationPageTutorial(
   BuildContext context,
-  GlobalKey editImageKey,
-  GlobalKey editBannerKey,
-  GlobalKey createKey,
-) {
-  List<TargetFocus> targets =
-      getTargets(editImageKey, editBannerKey, createKey);
+  GlobalKey invitationsKey,
+  GlobalKey clubsKey,
+  GlobalKey createClubKey, {
+  void Function()? onFinish,
+}) {
+  List<TargetFocus> targets = getOrganizationPageTargets(
+    invitationsKey,
+    clubsKey,
+    createClubKey,
+  );
 
   TutorialCoachMark(
     hideSkip: true,
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
+    onFinish: onFinish,
   ).show(context: context);
 }
 
-List<TargetFocus> getTargets(
-  GlobalKey editImageKey,
-  GlobalKey editBannerKey,
-  GlobalKey createKey,
+List<TargetFocus> getOrganizationPageTargets(
+  GlobalKey invitationsKey,
+  GlobalKey clubsKey,
+  GlobalKey createClubKey,
 ) {
   return [
     TargetFocus(
-      identify: "Edit Club Image",
-      keyTarget: editImageKey,
+      identify: "Invitations",
+      keyTarget: invitationsKey,
       contents: [
         TargetContent(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
-              heading: "Edit Club Image",
-              text: "Click here to edit club image.",
+              heading: "Invitations",
+              text: "Your invitations to other clubs appear here.",
               onNext: () {
                 controller.next();
               },
@@ -46,36 +51,15 @@ List<TargetFocus> getTargets(
       ],
     ),
     TargetFocus(
-      identify: "Edit Club Banner",
-      keyTarget: editBannerKey,
-      contents: [
-        TargetContent(
-          align: ContentAlign.bottom,
-          builder: (context, controller) {
-            return CoachmarkDesc(
-              heading: "Edit Club Banner",
-              text: "Click to edit club banner.",
-              onNext: () {
-                controller.next();
-              },
-              onSkip: () {
-                controller.skip();
-              },
-            );
-          },
-        )
-      ],
-    ),
-    TargetFocus(
-      identify: "Create",
-      keyTarget: createKey,
+      identify: "Clubs",
+      keyTarget: clubsKey,
       contents: [
         TargetContent(
           align: ContentAlign.top,
           builder: (context, controller) {
             return CoachmarkDesc(
-              heading: "Create",
-              text: "Click here to create club.",
+              heading: "Clubs",
+              text: "The clubs you are a part of are listed here.",
               onNext: () {
                 controller.next();
               },
@@ -84,7 +68,28 @@ List<TargetFocus> getTargets(
               },
             );
           },
-        ),
+        )
+      ],
+    ),
+    TargetFocus(
+      identify: "Create Club",
+      keyTarget: createClubKey,
+      contents: [
+        TargetContent(
+          align: ContentAlign.top,
+          builder: (context, controller) {
+            return CoachmarkDesc(
+              heading: "Create Club",
+              text: "Click here to create a new club.",
+              onNext: () {
+                controller.next();
+              },
+              onSkip: () {
+                controller.skip();
+              },
+            );
+          },
+        )
       ],
     ),
   ];

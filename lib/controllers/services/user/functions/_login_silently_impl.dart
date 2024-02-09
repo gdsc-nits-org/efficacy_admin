@@ -17,7 +17,7 @@ Stream<UserModel?> _loginSilentlyImpl({required bool forceGet}) async* {
         UserController.currentUser = user.first;
       }
     }
-    await UserController._gatherData(forceGet: forceGet);
+    await UserController.gatherData(forceGet: forceGet);
     yield UserController.currentUser;
 
     DbCollection collection =
@@ -35,6 +35,6 @@ Stream<UserModel?> _loginSilentlyImpl({required bool forceGet}) async* {
     } else {
       yield null;
     }
-    await UserController._gatherData();
+    await UserController.gatherData();
   }
 }

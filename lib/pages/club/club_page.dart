@@ -82,11 +82,9 @@ class _ClubPageState extends State<ClubPage> {
         });
       } else if (UserController.clubWithModifyMemberPermission.contains(club) &&
           LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.clubInvite)) {
-        if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.editClub)) {
-          Future.delayed(const Duration(seconds: 1), () {
-            showInviteTutorial(context, inviteKey);
-          });
-        }
+        Future.delayed(const Duration(seconds: 1), () {
+          showInviteTutorial(context, inviteKey);
+        });
       }
     }
     if (_createMode &&

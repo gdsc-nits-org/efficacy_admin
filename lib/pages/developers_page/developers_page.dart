@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../widgets/custom_drawer/custom_drawer.dart';
 
 class Developer {
   final String name;
@@ -63,35 +64,35 @@ class DevelopersPageState extends State<DevelopersPage> {
     double cardImageSize = width * 0.35;
     double cardImageSizeSmall = width * 0.20;
     double cardSpacing = width * 0.025;
-    double iconSize = width * 0.08;
-    double cardWidth = width * 0.35;
-    double cardHeight = width * 0.65;
-    double cardSizeLarge = width * 0.7;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset("assets/images/efficacy_admin_logo.png"),
-        ),
-        centerTitle: true,
-        title: const Text(
-          'Developers',
-          style: TextStyle(fontWeight: FontWeight.w800),
-        ),
+      endDrawer: const CustomDrawer(),
+      appBar: const CustomAppBar(
+        title: 'Developers',
       ),
       body: SizedBox(
         width: width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              "Developed by Google Developer Student Clubs,",
+            const Text(
+              "Developed by:",
               style: TextStyle(fontWeight: FontWeight.w400),
             ),
-            Text(
-              "National Intitute of Technology, Silchar.",
+            Image.asset(
+              "assets/images/gdsc_logo.png",
+              width: cardImageSizeSmall,
+            ),
+            const Text(
+              "Google Developer Student Clubs,",
               style: TextStyle(fontWeight: FontWeight.w400),
+            ),
+            const Text(
+              "National Institute of Technology, Silchar.",
+              style: TextStyle(fontWeight: FontWeight.w400),
+            ),
+            const SizedBox(
+              height: 20,
             ),
             Expanded(
               child: GridView.builder(
@@ -138,7 +139,7 @@ class DevelopersPageState extends State<DevelopersPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 IconButton(
-                                  icon: Icon(
+                                  icon: const Icon(
                                     FontAwesomeIcons.github,
                                   ),
                                   onPressed: () {
@@ -146,7 +147,7 @@ class DevelopersPageState extends State<DevelopersPage> {
                                   },
                                 ),
                                 IconButton(
-                                  icon: Icon(
+                                  icon: const Icon(
                                     FontAwesomeIcons.linkedin,
                                   ),
                                   onPressed: () {

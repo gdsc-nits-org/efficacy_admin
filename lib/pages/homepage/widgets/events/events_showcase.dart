@@ -29,13 +29,13 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
 
   final ScrollController _controller = ScrollController();
   SplayTreeSet<EventModel> allEvents =
-      SplayTreeSet<EventModel>(sortCompareEvents);
+  SplayTreeSet<EventModel>(sortCompareEvents);
   SplayTreeSet<EventModel> upcomingEvents =
-      SplayTreeSet<EventModel>(sortCompareEvents);
+  SplayTreeSet<EventModel>(sortCompareEvents);
   SplayTreeSet<EventModel> ongoingEvents =
-      SplayTreeSet<EventModel>(sortCompareEvents);
+  SplayTreeSet<EventModel>(sortCompareEvents);
   SplayTreeSet<EventModel> completedEvents =
-      SplayTreeSet<EventModel>(sortCompareEvents);
+  SplayTreeSet<EventModel>(sortCompareEvents);
 
   int itemCount = 0;
 
@@ -160,18 +160,18 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
     }
     return Scaffold(
       floatingActionButton: UserController.clubWithModifyEventPermission
-              .isNotEmpty // If there is no club where the user can edit/create event don't show the option
+          .isNotEmpty // If there is no club where the user can edit/create event don't show the option
           ? FloatingActionButton(
-              key: widget.createEventKey,
-              onPressed: () async {
-                final eventUpdated = await Navigator.pushNamed(
-                    context, CreateUpdateEvent.routeName);
-                if (eventUpdated != null && eventUpdated is EventModel) {
-                  addNewEvent(eventUpdated);
-                }
-              },
-              child: const Icon(Icons.add),
-            )
+        key: widget.createEventKey,
+        onPressed: () async {
+          final eventUpdated = await Navigator.pushNamed(
+              context, CreateUpdateEvent.routeName);
+          if (eventUpdated != null && eventUpdated is EventModel) {
+            addNewEvent(eventUpdated);
+          }
+        },
+        child: const Icon(Icons.add),
+      )
           : null,
       body: RefreshIndicator(
         onRefresh: refresh,
@@ -186,7 +186,7 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
                   if (snapshot.hasError) {
                     return const Center(
                       child:
-                          Text("Some Error occurred. Please restart the app."),
+                      Text("Some Error occurred. Please restart the app."),
                     );
                   } else if (snapshot.connectionState ==
                       ConnectionState.waiting) {

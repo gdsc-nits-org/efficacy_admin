@@ -57,6 +57,7 @@ flutter:
   assets:
     - .env
     - assets/images/
+    - assets/developers_data/
 
   fonts:
     - family: SofiaPro

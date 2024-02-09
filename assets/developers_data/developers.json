@@ -1,0 +1,14 @@
+[
+  {
+    "name": "John Doe",
+    "image": "assets/images/john_doe.jpg",
+    "github": "https://github.com/johndoe",
+    "linkedin": "https://www.linkedin.com/in/johndoe"
+  },
+  {
+    "name": "Jane Smith",
+    "image": "assets/images/jane_smith.jpg",
+    "github": "https://github.com/janesmith",
+    "linkedin": "https://www.linkedin.com/in/janesmith"
+  }
+]

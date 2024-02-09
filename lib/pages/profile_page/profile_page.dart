@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
-import 'package:efficacy_admin/pages/profile_page/utils/tutorial.dart';
+import 'package:efficacy_admin/utils/tutorials/tutorials.dart';
 import 'package:efficacy_admin/pages/profile_page/widgets/buttons.dart';
 import 'package:efficacy_admin/utils/utils.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';

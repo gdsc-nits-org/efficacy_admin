@@ -5,14 +5,12 @@ import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
-import 'package:efficacy_admin/pages/club/utils/edit_club_position_tutorial.dart';
-import 'package:efficacy_admin/pages/club/utils/invite_members_tutorial.dart';
+import 'package:efficacy_admin/utils/tutorials/tutorials.dart';
 import 'package:efficacy_admin/pages/club/widgets/members_overlay.dart';
 import 'package:efficacy_admin/pages/club/widgets/position_permission_overlay.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class InviteOverlay extends StatefulWidget {
@@ -56,7 +54,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
         posNameKey,
         membersKey,
         editPosKey,
-        () {
+        onFinish: () {
           if (widget.inviteMode &&
               LocalDatabase.getAndSetGuideStatus(
                   LocalGuideCheck.inviteButton)) {

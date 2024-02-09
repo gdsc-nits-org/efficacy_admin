@@ -1,3 +1,4 @@
+import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/widgets/coach_mark_desc/coach_mark_desc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
@@ -6,28 +7,42 @@ void showHomePageTutorial(
   BuildContext context,
   GlobalKey listEventsKey,
   GlobalKey drawerKey,
-  GlobalKey feedKey,
-  GlobalKey createEventKey,
-) {
-  List<TargetFocus> targets = getTargets(
+  GlobalKey feedKey, {
+  void Function()? onFinish,
+}) {
+  List<TargetFocus> targets = getHomePageTargets(
     listEventsKey,
     drawerKey,
     feedKey,
-    createEventKey,
   );
 
   TutorialCoachMark(
     hideSkip: true,
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
+    onFinish: onFinish,
   ).show(context: context);
 }
 
-List<TargetFocus> getTargets(
+void showCreateEventTutorial(
+  BuildContext context,
+  GlobalKey createEventKey, {
+  void Function()? onFinish,
+}) {
+  List<TargetFocus> targets = getCreateEventTargets(createEventKey);
+
+  TutorialCoachMark(
+    hideSkip: true,
+    useSafeArea: true,
+    targets: targets, // List<TargetFocus>
+    onFinish: onFinish,
+  ).show(context: context);
+}
+
+List<TargetFocus> getHomePageTargets(
   GlobalKey listEventsKey,
   GlobalKey drawerKey,
   GlobalKey feedKey,
-  GlobalKey createEventKey,
 ) {
   return [
     TargetFocus(
@@ -96,6 +111,13 @@ List<TargetFocus> getTargets(
         ),
       ],
     ),
+  ];
+}
+
+List<TargetFocus> getCreateEventTargets(
+  GlobalKey createEventKey,
+) {
+  return [
     TargetFocus(
       identify: "Create Event",
       keyTarget: createEventKey,

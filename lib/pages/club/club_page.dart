@@ -1,10 +1,10 @@
 import 'dart:typed_data';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
-import 'package:efficacy_admin/pages/club/utils/club_tutorial.dart';
-import 'package:efficacy_admin/pages/club/utils/create_club_tutorial.dart';
+import 'package:efficacy_admin/utils/tutorials/tutorials.dart';
 import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
 import 'package:efficacy_admin/pages/club/utils/get_lead_name.dart';
 import 'package:efficacy_admin/pages/club/widgets/club_form.dart';
@@ -63,16 +63,28 @@ class _ClubPageState extends State<ClubPage> {
   void initState() {
     super.initState();
     initData(widget.club);
-    if (!_createMode &&
-        LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.club)) {
-      Future.delayed(const Duration(seconds: 1), () {
-        showClubPageTutorial(
-          context,
-          editClubKey,
-          editClubPositionKey,
-          inviteKey,
-        );
-      });
+    if (!_createMode) {
+      if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.editClub)) {
+        Future.delayed(const Duration(seconds: 1), () {
+          showEditClubTutorial(
+            context,
+            editClubKey,
+            editClubPositionKey,
+            onFinish: () {
+              if (UserController.clubWithModifyMemberPermission
+                      .contains(club) &&
+                  LocalDatabase.getAndSetGuideStatus(
+                      LocalGuideCheck.clubEditInviteButton)) {
+                showInviteButtonTutorial(context, inviteKey);
+              }
+            },
+          );
+        });
+      } else if (UserController.clubWithModifyMemberPermission.contains(club) &&
+          LocalDatabase.getAndSetGuideStatus(
+              LocalGuideCheck.clubEditInviteButton)) {
+        showInviteButtonTutorial(context, inviteKey);
+      }
     }
     if (_createMode &&
         LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.createClub)) {
@@ -330,10 +342,17 @@ class _ClubPageState extends State<ClubPage> {
                               ? _getBannerImage
                               : () {},
                           child: _bannerImgPath != null
-                              ? Image(
-                                  image: NetworkImage(_bannerImgPath!),
+                              ? CachedNetworkImage(
+                                  imageUrl: _bannerImgPath!,
                                   fit: BoxFit.cover,
                                   width: width,
+                                  errorWidget: (_, __, ___) {
+                                    return Image.asset(
+                                      "assets/images/media.png",
+                                      width: width,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
                                 )
                               : _bannerImage == null
                                   ? Image.asset(
@@ -385,7 +404,7 @@ class _ClubPageState extends State<ClubPage> {
                           child: Row(
                             children: [
                               if (UserController.clubWithModifyClubPermission
-                                  .contains(widget.club))
+                                  .contains(club))
                                 EditPositionButton(
                                     key: editClubPositionKey,
                                     onPressed: () {
@@ -395,13 +414,13 @@ class _ClubPageState extends State<ClubPage> {
                                             return Center(
                                               child: InviteOverlay(
                                                 inviteMode: false,
-                                                club: widget.club,
+                                                club: club,
                                               ),
                                             );
                                           });
                                     }),
                               if (UserController.clubWithModifyMemberPermission
-                                  .contains(widget.club))
+                                  .contains(club))
                                 InviteButton(
                                     key: inviteKey,
                                     onPressed: () {

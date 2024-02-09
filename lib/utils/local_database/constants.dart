@@ -11,10 +11,12 @@ enum LocalDocuments {
 
 enum LocalGuideCheck {
   home,
+  createEvent,
   profile,
   organizations,
-  club,
+  editClub,
   createClub,
+  clubEditInviteButton,
   inviteSearch,
   inviteUser,
   inviteButton,

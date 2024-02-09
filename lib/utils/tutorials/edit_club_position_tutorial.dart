@@ -8,11 +8,11 @@ void showEditClubPosTutorial(
   GlobalKey addKey,
   GlobalKey posNameKey,
   GlobalKey membersKey,
-  GlobalKey editPosKey,
-  void Function() onFinish,
-) {
-  List<TargetFocus> targets =
-      getTargets(newPosNameKey, addKey, posNameKey, membersKey, editPosKey);
+  GlobalKey editPosKey, {
+  void Function()? onFinish,
+}) {
+  List<TargetFocus> targets = getEditClubPositionTargets(
+      newPosNameKey, addKey, posNameKey, membersKey, editPosKey);
 
   TutorialCoachMark(
     hideSkip: true,
@@ -22,7 +22,7 @@ void showEditClubPosTutorial(
   ).show(context: context);
 }
 
-List<TargetFocus> getTargets(
+List<TargetFocus> getEditClubPositionTargets(
   GlobalKey newPosNameKey,
   GlobalKey addKey,
   GlobalKey posNameKey,

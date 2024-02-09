@@ -4,6 +4,7 @@ import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/controllers/utils/comparator.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/models/club_position/club_position_model.dart';
+import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/models/utils/constants.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
 import 'package:efficacy_admin/utils/formatter.dart';
@@ -18,6 +19,7 @@ part 'functions/_update_impl.dart';
 part 'functions/_get_impl.dart';
 part 'functions/_get_name_impl.dart';
 part 'functions/_get_all_clubs_impl.dart';
+part 'functions/_remove_member_impl.dart';
 
 class ClubController {
   const ClubController._();
@@ -94,6 +96,15 @@ class ClubController {
     return _getAllClubsImpl(
       instituteName: instituteName,
       minified: minified,
+    );
+  }
+
+  static Future<void> removeMember(
+      {required String memberEmail,
+      required ClubPositionModel position}) async {
+    return _removeMemberImpl(
+      memberEmail: memberEmail,
+      position: position,
     );
   }
 }

@@ -1,18 +1,19 @@
 import 'package:efficacy_admin/widgets/coach_mark_desc/coach_mark_desc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 void showSearchBarTutorial(
   BuildContext context,
-  GlobalKey searchUserKey,
-) {
+  GlobalKey searchUserKey, {
+  void Function()? onFinish,
+}) {
   List<TargetFocus> targets = getSearchBarTarget(searchUserKey);
 
   TutorialCoachMark(
     hideSkip: true,
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
+    onFinish: onFinish,
   ).show(context: context);
 }
 
@@ -46,9 +47,9 @@ List<TargetFocus> getSearchBarTarget(
 
 void showSelectUserTutorial(
   BuildContext context,
-  GlobalKey memKey,
+  GlobalKey memberKey,
 ) {
-  List<TargetFocus> targets = getUserTarget(memKey);
+  List<TargetFocus> targets = getUserTarget(memberKey);
 
   TutorialCoachMark(
     hideSkip: true,

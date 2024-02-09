@@ -1,4 +1,5 @@
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/models/event/event_model.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/homepage/widgets/events/events_showcase.dart';
@@ -7,8 +8,7 @@ import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
-
-import 'utils/tutorial.dart';
+import 'package:efficacy_admin/utils/tutorials/tutorials.dart';
 
 class Homepage extends StatefulWidget {
   static const String routeName = "/homePage";
@@ -31,7 +31,7 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
     // To view guide everytime uncomment the next line
-    // LocalDatabase.resetGuideCheckpoint();
+    LocalDatabase.resetGuideCheckpoint();
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.home)) {
       Future.delayed(const Duration(seconds: 1), () {
         showHomePageTutorial(
@@ -39,9 +39,24 @@ class _HomepageState extends State<Homepage> {
           listEventsKey,
           drawerKey,
           feedKey,
-          createEventKey,
+          onFinish: () {
+            if (UserController.clubWithModifyEventPermission.isNotEmpty &&
+                LocalDatabase.getAndSetGuideStatus(
+                    LocalGuideCheck.createEvent)) {
+              showCreateEventTutorial(
+                context,
+                createEventKey,
+              );
+            }
+          },
         );
       });
+    } else if (UserController.clubWithModifyEventPermission.isNotEmpty &&
+        LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.createEvent)) {
+      showCreateEventTutorial(
+        context,
+        createEventKey,
+      );
     }
   }
 

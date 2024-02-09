@@ -7,8 +7,7 @@ import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-
-import 'utils/tutorial.dart';
+import 'package:efficacy_admin/utils/tutorials/tutorials.dart';
 import 'widgets/clubs/clubs_stream.dart';
 import 'widgets/invitations/invitations_stream.dart';
 

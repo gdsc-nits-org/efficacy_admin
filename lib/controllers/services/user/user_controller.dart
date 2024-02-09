@@ -35,12 +35,12 @@ class UserController {
     return await _saveImpl(user: user);
   }
 
-  static Future<void> _gatherData({bool forceGet = false}) async {
+  static Future<void> gatherData({bool forceGet = false}) async {
     return await _gatherDataImpl(forceGet: forceGet);
   }
 
   static Future<void> updateUserData() async {
-    await _gatherData(forceGet: true);
+    await gatherData(forceGet: true);
   }
 
   static UserModel _removePassword(UserModel user) {
@@ -81,7 +81,7 @@ class UserController {
       password: password,
     );
     if (user != null) {
-      await _gatherData();
+      await gatherData();
     }
     return user;
   }
@@ -123,7 +123,7 @@ class UserController {
   static Future<UserModel?> update({UserModel? updatedUser}) async {
     UserModel? user = await _updateImpl(user: updatedUser);
     if (user == null) {
-      await _gatherData();
+      await gatherData();
     }
     return user;
   }

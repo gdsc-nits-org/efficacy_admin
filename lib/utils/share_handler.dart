@@ -54,7 +54,7 @@ class ShareHandler {
       if (fbURL != null) {
         content += "\nCheck out our facebook page: \n$fbURL";
       }
-      if (registrationURL != null) {
+      if (registrationURL != null && registrationURL.isNotEmpty) {
         content += "\nYou can register at: \n$registrationURL";
       }
 

@@ -126,8 +126,8 @@ class DevelopersPageState extends State<DevelopersPage> {
                                   ? BoxShape.circle
                                   : BoxShape.rectangle,
                               image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage(developers[index].image),
+                                fit: BoxFit.fitHeight,
+                                image: NetworkImage(developers[index].image),
                               ),
                             ),
                           ),
@@ -164,6 +164,7 @@ class DevelopersPageState extends State<DevelopersPage> {
                 },
               ),
             ),
+            const SizedBox(height: 10,)
           ],
         ),
       ),

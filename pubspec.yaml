@@ -43,7 +43,8 @@ dependencies:
   dio: ^5.3.2
   tutorial_coach_mark: ^1.2.11
   feedback: ^3.0.0
-  feedback_gitlab: ^3.0.0
+  pdf: ^3.10.7
+  device_info_plus: ^9.1.2
 
 dev_dependencies:
   flutter_test:

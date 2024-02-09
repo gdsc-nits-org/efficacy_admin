@@ -27,7 +27,9 @@ enum ImageFolder {
   eventThumbnail("events/posters"),
   userImage("users/profile"),
   clubImage("clubs/club"),
-  clubBanner("clubs/banner");
+  clubBanner("clubs/banner"),
+
+  feedback("feedback");
 
   final String name;
   const ImageFolder(this.name);
@@ -58,7 +60,7 @@ class ImageController {
   /// For [ImageFolder.eventThumbnail]
   /// required: [clubName] and [eventName]
   ///
-  /// For [ImageFolder.userImage], [ImageFolder.clubBanner] and [ImageFolder.clubImage]
+  /// For rest
   /// required: [name]
   static Future<UploadInformation> uploadImage({
     required Uint8List img,

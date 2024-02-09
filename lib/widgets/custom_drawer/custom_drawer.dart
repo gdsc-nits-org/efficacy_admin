@@ -1,22 +1,13 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
-import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
+import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/pages/pages.dart';
-import 'package:efficacy_admin/utils/database/constants.dart';
-import 'package:efficacy_admin/utils/local_database/local_database.dart';
-import 'package:efficacy_admin/widgets/coach_mark_desc/coach_mark_desc.dart';
+import 'package:efficacy_admin/widgets/custom_drawer/utils/get_feedback_data.dart';
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:feedback/feedback.dart';
-import 'package:feedback_gitlab/feedback_gitlab.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
-import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import 'package:flutter/services.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
@@ -41,72 +32,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
     init();
   }
 
-  void showFeedback() {
-    BetterFeedback.of(context).show(
-      sendFeedback(
-        projectId: dotenv.env[EnvValues.GITLAB_ID.name]!,
-        apiToken: dotenv.env[EnvValues.GITLAB_TOKEN.name]!,
-        gitlabUrl: null,
-        client: null,
-      ),
-    );
-  }
-
-  OnFeedbackCallback sendFeedback({
-    required String projectId,
-    required String apiToken,
-    String? gitlabUrl,
-    http.Client? client,
-  }) {
-    final httpClient = client ?? http.Client();
-    final baseUrl = gitlabUrl ?? 'gitlab.com';
-
+  OnFeedbackCallback sendFeedback() {
     return (UserFeedback feedback) async {
-      final uri = Uri.https(
-        baseUrl,
-        '/api/v4/projects/$projectId/uploads',
+      await showLoadingOverlay(
+        context: context,
+        asyncTask: () async {
+          Uint8List data = await getFeedBackData(feedback);
+          DateTime now = DateTime.now();
+          await ImageController.uploadImage(
+            img: data,
+            folder: ImageFolder.feedback,
+            name: now.toIso8601String(),
+          );
+          showErrorSnackBar(context,
+              "Your feedback was shared, Thank you for your feedback.");
+        },
       );
-      final uploadRequest = http.MultipartRequest('POST', uri)
-        ..headers.putIfAbsent('PRIVATE-TOKEN', () => apiToken)
-        ..fields['id'] = projectId
-        ..files.add(http.MultipartFile.fromBytes(
-          'file',
-          feedback.screenshot,
-          filename: 'feedback.png',
-          contentType: MediaType('image', 'png'),
-        ));
-
-      final uploadResponse = await httpClient.send(uploadRequest);
-
-      final dynamic uploadResponseMap = jsonDecode(
-        await uploadResponse.stream.bytesToString(),
-      );
-
-      final imageMarkdown = uploadResponseMap["markdown"] as String?;
-      final extras = feedback.extra?.toString() ?? '';
-
-      final description = '${feedback.text}\n'
-          '${imageMarkdown ?? 'Missing image!'}\n'
-          '$extras';
-
-      // Create issue
-      await httpClient.post(
-        Uri.https(
-          baseUrl,
-          '/api/v4/projects/$projectId/issues',
-          <String, String>{
-            'title':
-                "${feedback.text} - ${UserController.currentUser!.name} - ${UserController.currentUser!.email}",
-            'description': description,
-          },
-        ),
-        headers: {'PRIVATE-TOKEN': apiToken},
-      );
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //     content: Text("Efficacy has reported the bug to the team"),
-      //   ),
-      // );
     };
   }
 
@@ -208,16 +149,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
               color: dark,
             ),
             title: const Text('Report Bug'),
-            onTap: showFeedback,
+            onTap: () {
+              BetterFeedback.of(context).show(sendFeedback());
+            },
           ),
           ListTile(
             leading: const Icon(
-              Icons.cancel,
-              color: Colors.red,
-            ),
-            title: const Text(
-              'Log out',
-              style: TextStyle(color: Colors.red),
+              Icons.developer_mode,
             ),
             title: const Text('Developers'),
             selected: routeName == "/developersPage",
@@ -233,8 +171,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
           ),
           ListTile(
-            title: const Text('Log out'),
+            leading: const Icon(
+              Icons.logout,
+              color: Colors.red,
+            ),
+            title: const Text(
+              'Log out',
+              style: TextStyle(color: Colors.red),
+            ),
             onTap: () async {
+              // Close the drawer
+              Navigator.pop(context);
               await UserController.logOut();
 
               if (mounted) {

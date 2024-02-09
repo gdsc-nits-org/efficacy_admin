@@ -5,7 +5,18 @@ import 'config/config.dart';
 import 'pages/pages.dart';
 
 void main() async {
-  runApp(const BetterFeedback(child: EfficacyAdmin()));
+  runApp(
+    BetterFeedback(
+      theme: FeedbackThemeData(
+        activeFeedbackModeColor: accent,
+        colorScheme: const ColorScheme.light(
+          primary: accent,
+          secondary: accent,
+        ),
+      ),
+      child: const EfficacyAdmin(),
+    ),
+  );
 }
 
 class EfficacyAdmin extends StatelessWidget {
@@ -28,7 +39,7 @@ class EfficacyAdmin extends StatelessWidget {
         ClubPage.routeName: (context) => const ClubPage(),
         CreateUpdateEvent.routeName: (context) => const CreateUpdateEvent(),
         OrganizationsPage.routeName: (context) => const OrganizationsPage(),
-        DevelopersPage.routeName : (context) => const DevelopersPage()
+        DevelopersPage.routeName: (context) => const DevelopersPage()
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,

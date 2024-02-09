@@ -71,111 +71,119 @@ class DevelopersPageState extends State<DevelopersPage> {
       appBar: const CustomAppBar(
         title: 'Developers',
       ),
-      body: SizedBox(
-        width: width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              "Developed by:",
-              style: TextStyle(fontWeight: FontWeight.w400),
-            ),
-            Image.asset(
-              Assets.gdscLogoImagePath,
-              width: cardImageSizeSmall,
-            ),
-            const Text(
-              "Google Developer Student Clubs,",
-              style: TextStyle(fontWeight: FontWeight.w400),
-            ),
-            const Text(
-              "National Institute of Technology, Silchar.",
-              style: TextStyle(fontWeight: FontWeight.w400),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Expanded(
-              child: GridView.builder(
-                itemCount: developers.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: cardSpacing,
-                  mainAxisSpacing: cardSpacing,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        iconVisibility[index] = !iconVisibility[index];
-                      });
-                    },
-                    child: Card(
-                      elevation: 5,
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            AnimatedContainer(
-                              duration: kThemeChangeDuration,
-                              width: iconVisibility[index]
-                                  ? cardImageSizeSmall
-                                  : cardImageSize,
-                              height: iconVisibility[index]
-                                  ? cardImageSizeSmall
-                                  : cardImageSize,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                    iconVisibility[index] ? 50 : 10),
-                                child: CachedNetworkImage(
-                                  imageUrl: developers[index].image,
-                                  fit: BoxFit.cover,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SizedBox(
+          width: width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                "Developed by:",
+                style: TextStyle(fontWeight: FontWeight.w400),
+              ),
+              Image.asset(
+                Assets.gdscLogoImagePath,
+                width: cardImageSizeSmall,
+              ),
+              const Text(
+                "Google Developer Student Clubs,",
+                style: TextStyle(fontWeight: FontWeight.w400),
+              ),
+              const Text(
+                "National Institute of Technology, Silchar.",
+                style: TextStyle(fontWeight: FontWeight.w400),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: GridView.builder(
+                  itemCount: developers.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisExtent: 200,
+                    crossAxisSpacing: cardSpacing,
+                    mainAxisSpacing: cardSpacing,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          iconVisibility[index] = !iconVisibility[index];
+                        });
+                      },
+                      child: Card(
+                        elevation: 5,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              AnimatedContainer(
+                                duration: kThemeChangeDuration,
+                                width: iconVisibility[index]
+                                    ? cardImageSizeSmall
+                                    : cardImageSize,
+                                height: iconVisibility[index]
+                                    ? cardImageSizeSmall
+                                    : cardImageSize,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      iconVisibility[index] ? 50 : 10),
+                                  child: CachedNetworkImage(
+                                    imageUrl: developers[index].image,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(developers[index].name),
-                            const SizedBox(height: 10),
-                            AnimatedContainer(
-                              height: (iconVisibility[index]) ? 40 : 0,
-                              duration: kThemeChangeDuration,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(
-                                      FontAwesomeIcons.github,
-                                    ),
-                                    onPressed: () {
-                                      launchUrl(
-                                          Uri.parse(developers[index].github));
-                                    },
+                              const SizedBox(height: 10),
+                              Text(developers[index].name),
+                              const SizedBox(height: 10),
+                              AnimatedContainer(
+                                height: (iconVisibility[index]) ? 40 : 0,
+                                duration: kThemeChangeDuration,
+                                child: AnimatedOpacity(
+                                  opacity: iconVisibility[index] ? 1 : 0,
+                                  duration: kThemeChangeDuration,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(
+                                          FontAwesomeIcons.github,
+                                        ),
+                                        onPressed: () {
+                                          launchUrl(Uri.parse(
+                                              developers[index].github));
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(
+                                          FontAwesomeIcons.linkedin,
+                                        ),
+                                        onPressed: () {
+                                          launchUrl(Uri.parse(
+                                              developers[index].linkedin));
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                  IconButton(
-                                    icon: const Icon(
-                                      FontAwesomeIcons.linkedin,
-                                    ),
-                                    onPressed: () {
-                                      launchUrl(Uri.parse(
-                                          developers[index].linkedin));
-                                    },
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            )
-          ],
+              const SizedBox(
+                height: 10,
+              )
+            ],
+          ),
         ),
       ),
     );

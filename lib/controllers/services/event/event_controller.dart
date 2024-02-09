@@ -99,12 +99,12 @@ class EventController {
   ///
   /// The [prevPassed] is used in terms of the updatedAt parameter
   ///
-  /// If [clubIDs] is not provided it returns for all the clubs.
+  /// NOTE: If [clubIDs] is null it returns for all the clubs.
   ///
   /// [skip] is returned -1 if there are no more events
   static Stream<EventPaginationResponse> getAllEvents({
     int skip = 0,
-    List<String?> clubIDs = const [],
+    List<String?>? clubIDs = const [],
     EventStatus? eventStatus,
     bool forceGet = false,
     int count = 10,

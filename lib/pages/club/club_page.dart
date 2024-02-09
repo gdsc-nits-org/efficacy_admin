@@ -75,7 +75,7 @@ class _ClubPageState extends State<ClubPage> {
                       .contains(club) &&
                   LocalDatabase.getAndSetGuideStatus(
                       LocalGuideCheck.clubEditInviteButton)) {
-                showInviteButtonTutorial(context, inviteKey);
+                showInviteTutorial(context, inviteKey);
               }
             },
           );
@@ -83,7 +83,11 @@ class _ClubPageState extends State<ClubPage> {
       } else if (UserController.clubWithModifyMemberPermission.contains(club) &&
           LocalDatabase.getAndSetGuideStatus(
               LocalGuideCheck.clubEditInviteButton)) {
-        showInviteButtonTutorial(context, inviteKey);
+        if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.editClub)) {
+          Future.delayed(const Duration(seconds: 1), () {
+            showInviteTutorial(context, inviteKey);
+          });
+        }
       }
     }
     if (_createMode &&

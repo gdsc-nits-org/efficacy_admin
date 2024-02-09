@@ -137,6 +137,9 @@ class UserController {
     currentUser = null;
     clubs = [];
     clubPositions = [];
-    await _save();
+    clubWithModifyMemberPermission = [];
+    clubWithModifyClubPermission = [];
+    clubWithModifyEventPermission = [];
+    await LocalDatabase.clearLocalStorage();
   }
 }

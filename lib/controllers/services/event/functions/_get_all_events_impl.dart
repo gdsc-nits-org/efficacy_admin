@@ -3,26 +3,30 @@ part of '../event_controller.dart';
 Stream<EventPaginationResponse> _getAllEventsImpl({
   int skip = 0,
   EventStatus? eventStatus,
-  List<String?> clubIDs = const [],
+  List<String?>? clubIDs = const [],
   bool forceGet = false,
   int count = 10,
 }) async* {
-  // EventPaginationResponse filteredEvents = await _fetchAllEventsLocal(
-  //   skip: skip,
-  //   clubIDs: clubIDs,
-  //   forceGet: forceGet,
-  //   count: count,
-  // );
-  // if (filteredEvents.events.isNotEmpty) yield filteredEvents;
+  if (clubIDs != null && clubIDs.isEmpty) {
+    yield const EventPaginationResponse(-1, []);
+  } else {
+    // EventPaginationResponse filteredEvents = await _fetchAllEventsLocal(
+    //   skip: skip,
+    //   clubIDs: clubIDs,
+    //   forceGet: forceGet,
+    //   count: count,
+    // );
+    // if (filteredEvents.events.isNotEmpty) yield filteredEvents;
 
-  EventPaginationResponse filteredEvents = await _fetchAllEventsFromBackend(
-    skip: skip,
-    clubIDs: clubIDs,
-    eventStatus: eventStatus,
-    forceGet: forceGet,
-    count: count,
-  );
-  yield filteredEvents;
+    EventPaginationResponse filteredEvents = await _fetchAllEventsFromBackend(
+      skip: skip,
+      clubIDs: clubIDs ?? [],
+      eventStatus: eventStatus,
+      forceGet: forceGet,
+      count: count,
+    );
+    yield filteredEvents;
+  }
 }
 
 Future<EventPaginationResponse> _fetchAllEventsLocal({

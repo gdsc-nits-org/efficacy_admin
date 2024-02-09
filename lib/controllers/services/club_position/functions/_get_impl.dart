@@ -18,6 +18,7 @@ Stream<List<ClubPositionModel>> _getImpl(
     clubPositionID: clubPositionID,
     clubID: clubID,
   );
+  print(filteredClubPositions.toString());
   yield filteredClubPositions;
 }
 
@@ -72,9 +73,11 @@ Future<List<ClubPositionModel>> _fetchFromBackend({
   List<Map<String, dynamic>> res = await collection.find(selector).toList();
   filteredClubPositions =
       res.map((model) => ClubPositionModel.fromJson(model)).toList();
+  print(filteredClubPositions.toString());
   for (int i = 0; i < filteredClubPositions.length; i++) {
     filteredClubPositions[i] =
         await ClubPositionController._save(filteredClubPositions[i]);
   }
+
   return filteredClubPositions;
 }

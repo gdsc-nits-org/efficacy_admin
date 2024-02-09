@@ -70,8 +70,8 @@ class _HomepageState extends State<Homepage> {
               eventStatus: currentTabIndex == 0
                   ? EventStatus.Upcoming
                   : currentTabIndex == 1
-                  ? EventStatus.Ongoing
-                  : EventStatus.Completed,
+                      ? EventStatus.Ongoing
+                      : EventStatus.Completed,
             ),
           ),
         ].separate(26),

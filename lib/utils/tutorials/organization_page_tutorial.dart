@@ -10,6 +10,7 @@ void showOrganizationPageTutorial(
   void Function()? onFinish,
 }) {
   List<TargetFocus> targets = getOrganizationPageTargets(
+    context,
     invitationsKey,
     clubsKey,
     createClubKey,
@@ -24,6 +25,7 @@ void showOrganizationPageTutorial(
 }
 
 List<TargetFocus> getOrganizationPageTargets(
+  BuildContext parentContext,
   GlobalKey invitationsKey,
   GlobalKey clubsKey,
   GlobalKey createClubKey,
@@ -37,6 +39,7 @@ List<TargetFocus> getOrganizationPageTargets(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Invitations",
               text: "Your invitations to other clubs appear here.",
               onNext: () {
@@ -58,6 +61,7 @@ List<TargetFocus> getOrganizationPageTargets(
           align: ContentAlign.top,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Clubs",
               text: "The clubs you are a part of are listed here.",
               onNext: () {
@@ -79,6 +83,7 @@ List<TargetFocus> getOrganizationPageTargets(
           align: ContentAlign.top,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Create Club",
               text: "Click here to create a new club.",
               onNext: () {

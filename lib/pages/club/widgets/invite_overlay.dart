@@ -47,24 +47,28 @@ class _InviteOverlayState extends State<InviteOverlay> {
     super.initState();
     _newClubPosition.addListener(_onTextChanged);
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.editClubPosition)) {
-      showEditClubPosTutorial(
-        context,
-        newPosNameKey,
-        addKey,
-        posNameKey,
-        membersKey,
-        editPosKey,
-        onFinish: () {
-          if (widget.inviteMode &&
-              LocalDatabase.getAndSetGuideStatus(
-                  LocalGuideCheck.inviteButton)) {
-            showInviteButtonTutorial(context, inviteKey);
-          }
-        },
-      );
+      Future.delayed(const Duration(seconds: 1), () {
+        showEditClubPosTutorial(
+          context,
+          newPosNameKey,
+          addKey,
+          posNameKey,
+          membersKey,
+          editPosKey,
+          onFinish: () {
+            if (widget.inviteMode &&
+                LocalDatabase.getAndSetGuideStatus(
+                    LocalGuideCheck.inviteButton)) {
+              showInviteButtonTutorial(context, inviteKey);
+            }
+          },
+        );
+      });
     } else if (widget.inviteMode &&
         LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.inviteButton)) {
-      showInviteButtonTutorial(context, inviteKey);
+      Future.delayed(const Duration(seconds: 1), () {
+        showInviteButtonTutorial(context, inviteKey);
+      });
     }
   }
 
@@ -81,6 +85,20 @@ class _InviteOverlayState extends State<InviteOverlay> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    showEditClubPosTutorial(
+      context,
+      newPosNameKey,
+      addKey,
+      posNameKey,
+      membersKey,
+      editPosKey,
+      onFinish: () {
+        if (widget.inviteMode &&
+            LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.inviteButton)) {
+          showInviteButtonTutorial(context, inviteKey);
+        }
+      },
+    );
     return SizedBox(
       width: min(400, size.width * .8),
       height: min(400 * 1.5, size.height * .8),

@@ -1,5 +1,5 @@
 import 'package:efficacy_admin/widgets/coach_mark_desc/coach_mark_desc.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 void showEditClubPosTutorial(
@@ -12,7 +12,13 @@ void showEditClubPosTutorial(
   void Function()? onFinish,
 }) {
   List<TargetFocus> targets = getEditClubPositionTargets(
-      newPosNameKey, addKey, posNameKey, membersKey, editPosKey);
+    context,
+    newPosNameKey,
+    addKey,
+    posNameKey,
+    membersKey,
+    editPosKey,
+  );
 
   TutorialCoachMark(
     hideSkip: true,
@@ -23,6 +29,7 @@ void showEditClubPosTutorial(
 }
 
 List<TargetFocus> getEditClubPositionTargets(
+  BuildContext parentContext,
   GlobalKey newPosNameKey,
   GlobalKey addKey,
   GlobalKey posNameKey,
@@ -38,6 +45,7 @@ List<TargetFocus> getEditClubPositionTargets(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "New Club Position Name",
               text: "Type your new club position name here.",
               onNext: () {
@@ -59,6 +67,7 @@ List<TargetFocus> getEditClubPositionTargets(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Add",
               text: "Click here to add  the new club position name.",
               onNext: () {
@@ -80,6 +89,7 @@ List<TargetFocus> getEditClubPositionTargets(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Club Position Name",
               text: "These are the existing club positions.",
               onNext: () {
@@ -101,6 +111,7 @@ List<TargetFocus> getEditClubPositionTargets(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Members",
               text: "Click here to view the list of members in this position.",
               onNext: () {
@@ -122,6 +133,7 @@ List<TargetFocus> getEditClubPositionTargets(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Edit Position",
               text: "Click here to edit the respective club position.",
               onNext: () {

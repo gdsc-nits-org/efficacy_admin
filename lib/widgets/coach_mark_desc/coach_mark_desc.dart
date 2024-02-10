@@ -10,7 +10,9 @@ class CoachmarkDesc extends StatefulWidget {
     this.next = "Next",
     this.onSkip,
     this.onNext,
+    required this.parentContext,
   });
+  final BuildContext parentContext;
   final String heading;
   final String? text;
   final String skip;
@@ -46,56 +48,59 @@ class _CoachmarkDescState extends State<CoachmarkDesc>
   @override
   Widget build(BuildContext context) {
     double gap = 8.0;
-    return AnimatedBuilder(
-      animation: animationController,
-      builder: (context, child) {
-        return Transform.translate(
-          offset: Offset(0, animationController.value),
-          child: child,
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              widget.heading,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            if (widget.text != null)
+    return Theme(
+      data: Theme.of(widget.parentContext),
+      child: AnimatedBuilder(
+        animation: animationController,
+        builder: (context, child) {
+          return Transform.translate(
+            offset: Offset(0, animationController.value),
+            child: child,
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
               Text(
-                widget.text!,
-                style: Theme.of(context).textTheme.bodyMedium,
+                widget.heading,
+                style: Theme.of(widget.parentContext).textTheme.bodyLarge,
               ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Flexible(
-                  flex: 2,
-                  child: OutlinedButton(
-                    onPressed: widget.onSkip,
-                    child: Text(widget.skip),
+              if (widget.text != null)
+                Text(
+                  widget.text!,
+                  style: Theme.of(widget.parentContext).textTheme.bodyMedium,
+                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: OutlinedButton(
+                      onPressed: widget.onSkip,
+                      child: Text(widget.skip),
+                    ),
                   ),
-                ),
-                const Spacer(
-                  flex: 1,
-                ),
-                Flexible(
-                  flex: 2,
-                  child: ElevatedButton(
-                    onPressed: widget.onNext,
-                    child: Text(widget.next),
+                  const Spacer(
+                    flex: 1,
                   ),
-                ),
-              ],
-            )
-          ].separate(gap),
+                  Flexible(
+                    flex: 2,
+                    child: ElevatedButton(
+                      onPressed: widget.onNext,
+                      child: Text(widget.next),
+                    ),
+                  ),
+                ],
+              )
+            ].separate(gap),
+          ),
         ),
       ),
     );

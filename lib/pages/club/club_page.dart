@@ -121,8 +121,8 @@ class _ClubPageState extends State<ClubPage> {
   }
 
 //show invite overlay
-  void _showOverlay(BuildContext context) {
-    showDialog(
+  void _showOverlay(BuildContext context) async {
+    await showDialog(
         context: context,
         builder: (BuildContext context) {
           return Center(
@@ -408,8 +408,8 @@ class _ClubPageState extends State<ClubPage> {
                                   .contains(club))
                                 EditPositionButton(
                                     key: editClubPositionKey,
-                                    onPressed: () {
-                                      showDialog(
+                                    onPressed: () async {
+                                      await showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
                                             return Center(

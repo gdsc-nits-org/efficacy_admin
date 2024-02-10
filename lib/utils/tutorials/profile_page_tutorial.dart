@@ -9,8 +9,8 @@ void showProfilePageTutorial(
   ScrollController scrollController, {
   void Function()? onFinish,
 }) {
-  List<TargetFocus> targets =
-      getProfilePageTargets(editProfileKey, delProfileKey, scrollController);
+  List<TargetFocus> targets = getProfilePageTargets(
+      context, editProfileKey, delProfileKey, scrollController);
   TutorialCoachMark(
     hideSkip: true,
     useSafeArea: true,
@@ -20,6 +20,7 @@ void showProfilePageTutorial(
 }
 
 List<TargetFocus> getProfilePageTargets(
+  BuildContext parentContext,
   GlobalKey editProfileKey,
   GlobalKey delProfileKey,
   ScrollController scrollController,
@@ -33,6 +34,7 @@ List<TargetFocus> getProfilePageTargets(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Edit Profile",
               text: "Click here to edit your profile details.",
               onNext: () async {
@@ -62,6 +64,7 @@ List<TargetFocus> getProfilePageTargets(
           align: ContentAlign.top,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Delete Profile",
               text: "Click here to delete your profile.",
               onNext: () {

@@ -9,6 +9,7 @@ void showEditClubTutorial(
   void Function()? onFinish,
 }) {
   List<TargetFocus> targets = getEditClubTargets(
+    context,
     editClubKey,
     editClubPositionKey,
   );
@@ -26,7 +27,7 @@ void showInviteTutorial(
   GlobalKey inviteKey, {
   void Function()? onFinish,
 }) {
-  List<TargetFocus> targets = getInviteTutorial(inviteKey);
+  List<TargetFocus> targets = getInviteTutorial(context, inviteKey);
 
   TutorialCoachMark(
     hideSkip: true,
@@ -37,6 +38,7 @@ void showInviteTutorial(
 }
 
 List<TargetFocus> getEditClubTargets(
+  BuildContext parentContext,
   GlobalKey editClubKey,
   GlobalKey editClubPositionKey,
 ) {
@@ -49,6 +51,7 @@ List<TargetFocus> getEditClubTargets(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Edit Club",
               text: "Click here to edit club.",
               onNext: () {
@@ -70,6 +73,7 @@ List<TargetFocus> getEditClubTargets(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Edit Club Position",
               text:
                   "Click to create and edit club positions and also view members in different positions of the club.",
@@ -87,7 +91,10 @@ List<TargetFocus> getEditClubTargets(
   ];
 }
 
-List<TargetFocus> getInviteTutorial(GlobalKey inviteKey) {
+List<TargetFocus> getInviteTutorial(
+  BuildContext parentContext,
+  GlobalKey inviteKey,
+) {
   return [
     TargetFocus(
       identify: "Invite",
@@ -97,6 +104,7 @@ List<TargetFocus> getInviteTutorial(GlobalKey inviteKey) {
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Invite",
               text: "Click here to invite new members to the club.",
               onNext: () {

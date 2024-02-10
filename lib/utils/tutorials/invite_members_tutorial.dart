@@ -7,7 +7,7 @@ void showSearchBarTutorial(
   GlobalKey searchUserKey, {
   void Function()? onFinish,
 }) {
-  List<TargetFocus> targets = getSearchBarTarget(searchUserKey);
+  List<TargetFocus> targets = getSearchBarTarget(context, searchUserKey);
 
   TutorialCoachMark(
     hideSkip: true,
@@ -18,6 +18,7 @@ void showSearchBarTutorial(
 }
 
 List<TargetFocus> getSearchBarTarget(
+  BuildContext parentContext,
   GlobalKey searchUserKey,
 ) {
   return [
@@ -29,6 +30,7 @@ List<TargetFocus> getSearchBarTarget(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Search  User",
               text: "Type here to search user who you want to invite.",
               onNext: () {
@@ -49,7 +51,7 @@ void showSelectUserTutorial(
   BuildContext context,
   GlobalKey memberKey,
 ) {
-  List<TargetFocus> targets = getUserTarget(memberKey);
+  List<TargetFocus> targets = getUserTarget(context, memberKey);
 
   TutorialCoachMark(
     hideSkip: true,
@@ -59,6 +61,7 @@ void showSelectUserTutorial(
 }
 
 List<TargetFocus> getUserTarget(
+  BuildContext parentContext,
   GlobalKey memKey,
 ) {
   return [
@@ -70,6 +73,7 @@ List<TargetFocus> getUserTarget(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Select user",
               text:
                   "Click to send invite to this user.\nLong press to select multiple users to send invite for a particular position.",
@@ -91,7 +95,7 @@ void showInviteButtonTutorial(
   BuildContext context,
   GlobalKey inviteKey,
 ) {
-  List<TargetFocus> targets = getInviteButtonTarget(inviteKey);
+  List<TargetFocus> targets = getInviteButtonTarget(context, inviteKey);
 
   TutorialCoachMark(
     hideSkip: true,
@@ -101,6 +105,7 @@ void showInviteButtonTutorial(
 }
 
 List<TargetFocus> getInviteButtonTarget(
+  BuildContext parentContext,
   GlobalKey inviteKey,
 ) {
   return [
@@ -112,6 +117,7 @@ List<TargetFocus> getInviteButtonTarget(
           align: ContentAlign.top,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Invite Button",
               text: "Click here to send invite.",
               onNext: () {

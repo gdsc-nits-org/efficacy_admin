@@ -11,6 +11,7 @@ void showHomePageTutorial(
   void Function()? onFinish,
 }) {
   List<TargetFocus> targets = getHomePageTargets(
+    context,
     listEventsKey,
     drawerKey,
     feedKey,
@@ -29,7 +30,7 @@ void showCreateEventTutorial(
   GlobalKey createEventKey, {
   void Function()? onFinish,
 }) {
-  List<TargetFocus> targets = getCreateEventTargets(createEventKey);
+  List<TargetFocus> targets = getCreateEventTargets(context, createEventKey);
 
   TutorialCoachMark(
     hideSkip: true,
@@ -40,6 +41,7 @@ void showCreateEventTutorial(
 }
 
 List<TargetFocus> getHomePageTargets(
+  BuildContext parentContext,
   GlobalKey listEventsKey,
   GlobalKey drawerKey,
   GlobalKey feedKey,
@@ -53,6 +55,7 @@ List<TargetFocus> getHomePageTargets(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "List of events",
               text:
                   "This shows the list of events categorized into upcoming,ongoing and completed events.",
@@ -75,6 +78,7 @@ List<TargetFocus> getHomePageTargets(
           // align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Menu",
               text: "Click to navigate between pages and see more options.",
               onNext: () {
@@ -97,6 +101,7 @@ List<TargetFocus> getHomePageTargets(
           align: ContentAlign.custom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Feed",
               text:
                   "This is where you can view different events in a category. Pull down to refresh the feed.",
@@ -115,6 +120,7 @@ List<TargetFocus> getHomePageTargets(
 }
 
 List<TargetFocus> getCreateEventTargets(
+  BuildContext parentContext,
   GlobalKey createEventKey,
 ) {
   return [
@@ -126,6 +132,7 @@ List<TargetFocus> getCreateEventTargets(
           align: ContentAlign.top,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Create Event",
               text: "This is where you can create new event.",
               onNext: () {

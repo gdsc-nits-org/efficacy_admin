@@ -10,7 +10,7 @@ void showCreateClubTutorial(
   void Function()? onFinish,
 }) {
   List<TargetFocus> targets =
-      getCreateClubTargets(editImageKey, editBannerKey, createKey);
+      getCreateClubTargets(context, editImageKey, editBannerKey, createKey);
 
   TutorialCoachMark(
     hideSkip: true,
@@ -21,6 +21,7 @@ void showCreateClubTutorial(
 }
 
 List<TargetFocus> getCreateClubTargets(
+  BuildContext parentContext,
   GlobalKey editImageKey,
   GlobalKey editBannerKey,
   GlobalKey createKey,
@@ -34,6 +35,7 @@ List<TargetFocus> getCreateClubTargets(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Edit Club Image",
               text: "Click here to edit club image.",
               onNext: () {
@@ -55,6 +57,7 @@ List<TargetFocus> getCreateClubTargets(
           align: ContentAlign.bottom,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Edit Club Banner",
               text: "Click to edit club banner.",
               onNext: () {
@@ -76,6 +79,7 @@ List<TargetFocus> getCreateClubTargets(
           align: ContentAlign.top,
           builder: (context, controller) {
             return CoachmarkDesc(
+              parentContext: parentContext,
               heading: "Create",
               text: "Click here to create club.",
               onNext: () {

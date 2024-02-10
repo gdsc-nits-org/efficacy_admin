@@ -74,8 +74,9 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Image.asset(Assets.efficacyAdminLogoImagePath),
             ),
             Text(
-              "Efficacy",
+              "Efficacy Admin",
               style: Theme.of(context).textTheme.displayMedium,
+              maxLines: null,
             ),
           ].separate(gap),
         ),

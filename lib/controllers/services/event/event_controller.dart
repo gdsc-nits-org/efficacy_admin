@@ -107,7 +107,7 @@ class EventController {
     List<String?>? clubIDs = const [],
     EventStatus? eventStatus,
     bool forceGet = false,
-    int count = 10,
+    int count = 5,
   }) {
     return _getAllEventsImpl(
       skip: skip,

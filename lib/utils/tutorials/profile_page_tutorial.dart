@@ -10,7 +10,11 @@ void showProfilePageTutorial(
   void Function()? onFinish,
 }) {
   List<TargetFocus> targets = getProfilePageTargets(
-      context, editProfileKey, delProfileKey, scrollController);
+    context,
+    editProfileKey,
+    delProfileKey,
+    scrollController,
+  );
   TutorialCoachMark(
     hideSkip: true,
     useSafeArea: true,
@@ -37,7 +41,7 @@ List<TargetFocus> getProfilePageTargets(
               parentContext: parentContext,
               heading: "Edit Profile",
               text: "Click here to edit your profile details.",
-              onNext: () async {
+              onNext: () {
                 RenderBox renderBox = delProfileKey.currentContext!
                     .findRenderObject() as RenderBox;
                 Offset position = renderBox.localToGlobal(Offset.zero);

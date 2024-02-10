@@ -28,26 +28,44 @@ Future<Uint8List> getFeedBackData(UserFeedback feedback) async {
                 ),
               ),
               pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text("Device Info", style: pw.TextStyle(font: ttf)),
-                    pw.Text("1. Device: ${androidInfo.model}",
-                        style: pw.TextStyle(font: ttf)),
-                    pw.Text("2. OS: Android", style: pw.TextStyle(font: ttf)),
-                    pw.Text(
-                        "3. OS Release version: ${androidInfo.version.release}",
-                        style: pw.TextStyle(font: ttf)),
-                    pw.Text("4. SDK: ${androidInfo.version.sdkInt}",
-                        style: pw.TextStyle(font: ttf)),
-                    pw.Text("5. Brand: ${androidInfo.brand}",
-                        style: pw.TextStyle(font: ttf)),
-                    pw.Text("6. Hardware: ${androidInfo.hardware}",
-                        style: pw.TextStyle(font: ttf)),
-                  ]),
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Text("Device Info", style: pw.TextStyle(font: ttf)),
+                  pw.Text(
+                    "1. App: Admin",
+                    style: pw.TextStyle(font: ttf),
+                  ),
+                  pw.Text(
+                    "2. Device: ${androidInfo.model}",
+                    style: pw.TextStyle(font: ttf),
+                  ),
+                  pw.Text(
+                    "3. OS: Android",
+                    style: pw.TextStyle(font: ttf),
+                  ),
+                  pw.Text(
+                    "4. OS Release version: ${androidInfo.version.release}",
+                    style: pw.TextStyle(font: ttf),
+                  ),
+                  pw.Text(
+                    "5. SDK: ${androidInfo.version.sdkInt}",
+                    style: pw.TextStyle(font: ttf),
+                  ),
+                  pw.Text(
+                    "6. Brand: ${androidInfo.brand}",
+                    style: pw.TextStyle(font: ttf),
+                  ),
+                  pw.Text(
+                    "7. Hardware: ${androidInfo.hardware}",
+                    style: pw.TextStyle(font: ttf),
+                  ),
+                ],
+              ),
             ],
           ),
           pw.SizedBox(height: 20),
-          pw.Text("Issue", style: pw.TextStyle(font: ttf)),
+          pw.Text("Issue:", style: pw.TextStyle(font: ttf)),
+          pw.SizedBox(height: 10),
           pw.Text(feedback.text, style: pw.TextStyle(font: ttf)),
         ];
       },

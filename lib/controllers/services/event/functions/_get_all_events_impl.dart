@@ -4,8 +4,8 @@ Stream<EventPaginationResponse> _getAllEventsImpl({
   int skip = 0,
   EventStatus? eventStatus,
   List<String?>? clubIDs = const [],
-  bool forceGet = false,
-  int count = 10,
+  required bool forceGet,
+  required int count,
 }) async* {
   if (clubIDs != null && clubIDs.isEmpty) {
     yield const EventPaginationResponse(-1, []);
@@ -70,8 +70,8 @@ Future<EventPaginationResponse> _fetchAllEventsFromBackend({
   int skip = 0,
   EventStatus? eventStatus,
   List<String?> clubIDs = const [],
-  bool forceGet = false,
-  int count = 10,
+  required bool forceGet,
+  required int count,
 }) async {
   List<EventModel> filteredEvents = [];
   // Server data
@@ -105,7 +105,7 @@ Future<EventPaginationResponse> _fetchAllEventsFromBackend({
       );
     }
   }
-  selectorBuilder.sortBy(EventFields.startDate.name, descending: false);
+  selectorBuilder.sortBy(EventFields.startDate.name, descending: true);
   selectorBuilder.skip(skip);
   selectorBuilder.limit(count);
 

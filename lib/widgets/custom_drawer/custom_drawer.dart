@@ -108,8 +108,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           ListTile(
-            leading: const Icon(
+            leading: Icon(
               Icons.home,
+              color: routeName == "/homePage"
+                  ? Theme.of(context).scaffoldBackgroundColor
+                  : dark,
             ),
             title: const Text('Home'),
             selected: routeName == "/homePage",
@@ -125,9 +128,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
           ),
           ListTile(
-            leading: const Icon(
+            leading: Icon(
               Icons.people,
-              // color: dark,
+              color: routeName == "/OrganizationsPage"
+                  ? Theme.of(context).scaffoldBackgroundColor
+                  : dark,
             ),
             title: const Text('Organizations'),
             trailing: pendingInvites ? const Text("NEW") : null,
@@ -154,8 +159,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
           ),
           ListTile(
-            leading: const Icon(
+            leading: Icon(
               Icons.developer_mode,
+              color: routeName == "/developersPage"
+                  ? Theme.of(context).scaffoldBackgroundColor
+                  : dark,
             ),
             title: const Text('Developers'),
             selected: routeName == "/developersPage",

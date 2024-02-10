@@ -26,6 +26,7 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
   late Stream<EventPaginationResponse> eventStream;
   EventStatus? currentEventStatus;
   int skip = 0;
+  bool isLoading = false;
 
   final ScrollController _controller = ScrollController();
   SplayTreeSet<EventModel> allEvents =
@@ -39,9 +40,13 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
 
   int itemCount = 0;
 
-  static int sortCompareEvents(EventModel a, EventModel b) {
+  static int sortCompareEvents(EventModel b, EventModel a) {
     return a.startDate == b.startDate
-        ? a.endDate.compareTo(b.endDate)
+        ? a.endDate == b.endDate
+            ? a.id == null || b.id == null
+                ? 0
+                : a.id!.compareTo(b.id!)
+            : a.endDate.compareTo(b.endDate)
         : a.startDate.compareTo(b.startDate);
   }
 
@@ -130,11 +135,14 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
   }
 
   Future<void> refresh() async {
-    skip = 0;
-    allEvents.clear();
-    upcomingEvents.clear();
-    ongoingEvents.clear();
-    completedEvents.clear();
+    setState(() {
+      isLoading = true;
+      skip = 0;
+      allEvents.clear();
+      upcomingEvents.clear();
+      ongoingEvents.clear();
+      completedEvents.clear();
+    });
     EventPaginationResponse response = await EventController.getAllEvents(
       clubIDs: getClubIDs(UserController.clubs),
       skip: skip,
@@ -142,6 +150,7 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
       eventStatus: currentEventStatus,
     ).first;
     setState(() {
+      isLoading = false;
       skip = response.skip;
       categoriseNewEvents(response.events);
     });
@@ -152,7 +161,7 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
     Size screen = MediaQuery.of(context).size;
     if (widget.eventStatus != currentEventStatus) {
       currentEventStatus = widget.eventStatus;
-
+      isLoading = true;
       eventStream = EventController.getAllEvents(
         eventStatus: currentEventStatus,
         clubIDs: getClubIDs(UserController.clubs),
@@ -188,10 +197,23 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
                       child:
                           Text("Some Error occurred. Please restart the app."),
                     );
-                  } else if (snapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
                   } else {
+                    if (snapshot.hasData) {
+                      EventPaginationResponse? response = snapshot.data;
+                      if (response != null) {
+                        if (response.events.isEmpty) {
+                          isLoading = false;
+                        } else {
+                          EventModel testData = response.events.first;
+                          if (testData.type == currentEventStatus) {
+                            isLoading = false;
+                          }
+                        }
+                      }
+                    }
+                    if (isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
                     if (snapshot.data != null) {
                       skip = snapshot.data!.skip;
                       categoriseNewEvents(snapshot.data!.events);
@@ -212,13 +234,22 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
                     return ListView.builder(
                       controller: _controller,
                       physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: max(1, itemCount),
+                      itemCount: max(1, itemCount + 1),
                       itemBuilder: (context, index) {
                         if (itemCount == 0) {
                           return SizedBox(
                             width: screen.width,
                             height: screen.height * .7,
                             child: const Center(child: Text("No event found")),
+                          );
+                        } else if (index == itemCount) {
+                          return SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: skip != -1
+                                ? const Center(
+                                    child: CircularProgressIndicator())
+                                : null,
                           );
                         }
                         return Padding(

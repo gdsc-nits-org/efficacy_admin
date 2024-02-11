@@ -455,7 +455,9 @@ class _ClubPageState extends State<ClubPage> {
     );
 
     return Scaffold(
-      endDrawer: const CustomDrawer(),
+      endDrawer: CustomDrawer(
+        pageContext: context,
+      ),
       appBar: CustomAppBar(
           title: (_createMode) ? "New Club" : nameController.text,
           actions: [

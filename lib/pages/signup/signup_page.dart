@@ -28,6 +28,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController verificationCodeController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController scholarIDController = TextEditingController();
   PhoneNumber? phoneNumber;
@@ -132,6 +133,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           emailController: emailController,
                           passwordController: passwordController,
                           confirmPasswordController: confirmPasswordController,
+                          verificationCodeController: verificationCodeController,
                           nameController: nameController,
                           scholarIDController: scholarIDController,
                           onPhoneChanged: (PhoneNumber newPhoneNumber) {
@@ -175,7 +177,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           },
                           onPressedNext: (int index) async {
                             if (_formKey.currentState!.validate()) {
-                              if (index == 2) {
+                              if (index == 3) {
                                 UserModel? user;
                                 showLoadingOverlay(
                                     context: context,

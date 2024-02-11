@@ -5,6 +5,7 @@ import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/pages/club/widgets/inivte_overlay/widgets/add_new_position_button.dart';
 import 'package:efficacy_admin/utils/tutorials/tutorials.dart';
 import 'package:efficacy_admin/pages/club/widgets/members_overlay.dart';
 import 'package:efficacy_admin/pages/club/widgets/position_permission_overlay.dart';
@@ -29,9 +30,9 @@ class InviteOverlay extends StatefulWidget {
 }
 
 class _InviteOverlayState extends State<InviteOverlay> {
-  final TextEditingController _newClubPosition = TextEditingController();
+  final TextEditingController _newClubPositionController =
+      TextEditingController();
   List<ClubPositionModel> clubPositionList = [];
-  String _newClubPositionName = '';
   int selected = -1;
 
   // Global keys for guide
@@ -45,7 +46,6 @@ class _InviteOverlayState extends State<InviteOverlay> {
   @override
   void initState() {
     super.initState();
-    _newClubPosition.addListener(_onTextChanged);
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.editClubPosition)) {
       Future.delayed(const Duration(seconds: 1), () {
         showEditClubPosTutorial(
@@ -72,13 +72,9 @@ class _InviteOverlayState extends State<InviteOverlay> {
     }
   }
 
-  void _onTextChanged() {
-    _newClubPositionName = _newClubPosition.text.trim();
-  }
-
   @override
   void dispose() {
-    _newClubPosition.dispose();
+    _newClubPositionController.dispose();
     super.dispose();
   }
 
@@ -107,7 +103,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                           flex: 8,
                           child: CustomTextField(
                             key: newPosNameKey,
-                            controller: _newClubPosition,
+                            controller: _newClubPositionController,
                             label: "New club position",
                             prefixIcon: Icons.assignment_ind_outlined,
                           ),
@@ -117,47 +113,44 @@ class _InviteOverlayState extends State<InviteOverlay> {
                           key: addKey,
                           flex: 4,
                           child: SizedBox(
-                            height: 40,
-                            child: _newClubPositionName.isNotEmpty
-                                ? ElevatedButton(
-                                    onPressed: () async {
-                                      await showLoadingOverlay(
-                                        context: context,
-                                        asyncTask: () async {
-                                          ClubPositionModel? newClubPosition =
-                                              await ClubPositionController
-                                                  .create(
-                                            ClubPositionModel(
-                                              clubID: widget.club!.id!,
-                                              position: _newClubPositionName,
-                                            ),
-                                          );
-                                          if (newClubPosition != null) {
-                                            setState(() {});
-                                          }
+                              height: 40,
+                              child: AddNewPositionButton(
+                                onTap: () async {
+                                  if (_newClubPositionController
+                                      .text.isNotEmpty) {
+                                    String newClubPositionName =
+                                        _newClubPositionController.text.trim();
+                                    await showLoadingOverlay(
+                                      context: context,
+                                      asyncTask: () async {
+                                        ClubPositionModel? newClubPosition =
+                                            await ClubPositionController.create(
+                                          ClubPositionModel(
+                                            clubID: widget.club!.id!,
+                                            position: newClubPositionName,
+                                          ),
+                                        );
+                                        if (newClubPosition != null) {
+                                          setState(() {});
+                                        }
 
-                                          if (mounted) {
-                                            showErrorSnackBar(
-                                                context,
-                                                newClubPosition != null
-                                                    ? "$_newClubPositionName position added to club"
-                                                    : "Couldn't add position");
-                                          }
-                                        },
-                                      );
-                                    },
-                                    child: const Text("Add"),
-                                  )
-                                : ElevatedButton(
-                                    onPressed: () {
-                                      showErrorSnackBar(context,
-                                          "Club position can't be empty");
-                                    },
-                                    style: const ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStatePropertyAll(shadow)),
-                                    child: const Text("Add")),
-                          ),
+                                        if (mounted) {
+                                          showErrorSnackBar(
+                                              context,
+                                              newClubPosition != null
+                                                  ? "$newClubPositionName position added to club"
+                                                  : "Couldn't add position");
+                                        }
+                                      },
+                                    );
+                                  } else {
+                                    showErrorSnackBar(context,
+                                        "Club position can't be empty");
+                                  }
+                                },
+                                newClubPositionController:
+                                    _newClubPositionController,
+                              )),
                         ),
                       ],
                     ),

@@ -9,7 +9,7 @@ import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
 import 'package:efficacy_admin/pages/club/utils/get_lead_name.dart';
 import 'package:efficacy_admin/pages/club/widgets/club_form.dart';
 import 'package:efficacy_admin/pages/club/widgets/buttons.dart';
-import 'package:efficacy_admin/pages/club/widgets/invite_overlay.dart';
+import 'package:efficacy_admin/pages/club/widgets/inivte_overlay/invite_overlay.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';

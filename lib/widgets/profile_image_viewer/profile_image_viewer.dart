@@ -49,7 +49,8 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
 
   Future<Uint8List?> pickImage(ImageSource imageSource) async {
     Uint8List? img = await ImageController.compressedImage(
-      source: ImageSource.gallery,
+      // source: ImageSource.gallery,
+      source: imageSource,
       maxSize: 1024 * 1024,
       context: context,
     );

@@ -18,7 +18,7 @@ class VerificationCodeController {
     return _generateRandomCodeImpl(len);
   }
 
-  static Future<String> generateRandomCodeAndSave({
+  static Future<VerificationCodeModel> generateRandomCodeAndSave({
     required int len,
     required String email,
   }) async {

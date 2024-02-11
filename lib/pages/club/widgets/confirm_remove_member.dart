@@ -44,7 +44,7 @@ class ConfirmRemoveMember extends StatelessWidget {
                   position: clubPosition,
                 );
                 await UserController.gatherData();
-                showErrorSnackBar(context, "User removed");
+                showSnackBar(context, "User removed");
                 Navigator.pop(context, true);
               },
             );

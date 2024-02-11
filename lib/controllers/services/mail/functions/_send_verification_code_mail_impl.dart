@@ -1,13 +1,19 @@
 part of '../mail_controller.dart';
 
-Future<bool> _sendVerificationCodeMailImpl({
+Future<void> _sendVerificationCodeMailImpl({
   required String code,
   required String email,
 }) async {
   String username = dotenv.env[EnvValues.MAIL_USERNAME.name]!;
   String password = dotenv.env[EnvValues.MAIL_PASSWORD.name]!;
 
-  SmtpServer smtpServer = gmail(username, password);
+  SmtpServer smtpServer = SmtpServer('smtp.gmail.com',
+      username: username,
+      password: password,
+      port: 25,
+      ignoreBadCertificate: true,
+      ssl: false,
+      allowInsecure: true);
 
   Message message = Message()
     ..from = Address(username, 'Efficacy Admin')
@@ -21,9 +27,11 @@ Future<bool> _sendVerificationCodeMailImpl({
     );
 
   try {
-    await send(message, smtpServer);
-    return true;
+    await send(message, smtpServer, timeout: Duration(minutes: 1));
   } on MailerException catch (e) {
-    return false;
+    for (var p in e.problems) {
+      print('Problem: ${p.code}: ${p.msg}');
+    }
+    throw Exception("Couldn't send code to your email");
   }
 }

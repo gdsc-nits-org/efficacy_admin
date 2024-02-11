@@ -49,14 +49,14 @@ class InvitationsStreamState extends State<InvitationsStream> {
                   ),
                 );
               } else if (snapshot.hasError) {
-                showErrorSnackBar(context, 'Error: ${snapshot.error}');
+                showSnackBar(context, 'Error: ${snapshot.error}');
                 throw Exception('Error: ${snapshot.error}');
               } else {
                 return const Text("No invitations");
               }
             } else {
               // Found to run when no user is logged in
-              showErrorSnackBar(context, "Please login");
+              showSnackBar(context, "Please login");
               throw Exception("User not logged in");
             }
           } else {

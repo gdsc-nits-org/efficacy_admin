@@ -159,7 +159,7 @@ class _CreateUpdateEventState extends State<CreateUpdateEvent> {
         },
       );
     } else {
-      showErrorSnackBar(
+      showSnackBar(
         context,
         "Please enter the required values.",
       );

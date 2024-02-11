@@ -4,11 +4,13 @@ import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/controllers/services/instituion/institution_controller.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
+import 'package:efficacy_admin/models/verification_code/verification_code_model.dart';
 import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/pages/signup/widgets/edit_form/edit_form.dart';
 import 'package:efficacy_admin/pages/signup/widgets/nav_buttons.dart';
 import 'package:efficacy_admin/pages/signup/widgets/steps.dart';
 import 'package:efficacy_admin/utils/exit_program.dart';
+import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -66,6 +68,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
 
   int activeStep = 0;
   bool takeStep = false;
+  bool verificationCodeVerified = false;
 
   bool backButtonDisableChecker() {
     return activeStep == 0;
@@ -75,6 +78,23 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
   void initState() {
     super.initState();
     init();
+  }
+
+  Future<void> generateAndSendCode() async {
+    showLoadingOverlay(
+        context: context,
+        asyncTask: () async {
+          VerificationCodeModel verificationCode =
+              await VerificationCodeController.generateRandomCodeAndSave(
+            len: 5,
+            email: emailController.text,
+          );
+          await MailController.sendVerificationCodeMail(
+            code: verificationCode.code,
+            email: verificationCode.email,
+          );
+          showSnackBar(context, "Please check your email for the code");
+        });
   }
 
   @override
@@ -111,13 +131,23 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                       Steps(
                         activeStep: activeStep,
                         takeStep: takeStep,
-                        onPressedStep: (int step) {
+                        onPressedStep: (int step) async {
                           if (_formKey.currentState!.validate() &&
                               (activeStep - step).abs() == 1) {
-                            setState(() {
-                              takeStep = true;
-                              activeStep = step;
-                            });
+                            bool canMove = false;
+                            if (activeStep != 1) {
+                              canMove = true;
+                            } else if (step == 0) {
+                              canMove = true;
+                            } else if (verificationCodeVerified) {
+                              canMove = true;
+                            }
+                            if (canMove) {
+                              setState(() {
+                                takeStep = true;
+                                activeStep = step;
+                              });
+                            }
                           }
                         },
                         onStepReached: (int index) {
@@ -130,10 +160,13 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                         width: formWidth,
                         child: EditForm(
                           step: activeStep,
+                          verificationCodeVerified: verificationCodeVerified,
+                          resendVerificationCode: generateAndSendCode,
                           emailController: emailController,
                           passwordController: passwordController,
                           confirmPasswordController: confirmPasswordController,
-                          verificationCodeController: verificationCodeController,
+                          verificationCodeController:
+                              verificationCodeController,
                           nameController: nameController,
                           scholarIDController: scholarIDController,
                           onPhoneChanged: (PhoneNumber newPhoneNumber) {
@@ -177,6 +210,16 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           },
                           onPressedNext: (int index) async {
                             if (_formKey.currentState!.validate()) {
+                              if (index == 0 && !verificationCodeVerified) {
+                                await generateAndSendCode();
+                              }
+                              if (index == 1 && !verificationCodeVerified) {
+                                await VerificationCodeController.verifyCode(
+                                  code: verificationCodeController.text,
+                                  email: emailController.text,
+                                );
+                                verificationCodeVerified = true;
+                              }
                               if (index == 3) {
                                 UserModel? user;
                                 showLoadingOverlay(

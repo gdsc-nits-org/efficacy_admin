@@ -77,7 +77,7 @@ class ErrorHandler {
           errorMessage = "Network error";
         }
       }
-      showErrorSnackBar(context, errorMessage);
+      showSnackBar(context, errorMessage);
       // error;
       return true;
     };

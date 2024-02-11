@@ -94,12 +94,12 @@ class _ConfirmDelProfileState extends State<ConfirmDelProfile> {
                             LoginPage.routeName,
                             (route) => false,
                           );
-                          showErrorSnackBar(context, "Profile Deleted!");
+                          showSnackBar(context, "Profile Deleted!");
                         });
                   } else {
                     if (!dialogContext.mounted) return;
                     Navigator.of(dialogContext).pop();
-                    showErrorSnackBar(context, "Invalid Password");
+                    showSnackBar(context, "Invalid Password");
                   }
                 });
           },

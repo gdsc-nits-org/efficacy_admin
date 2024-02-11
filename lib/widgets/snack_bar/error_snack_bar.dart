@@ -23,7 +23,7 @@ SnackBar _errorSnackBar(String message, BuildContext context) {
   );
 }
 
-void showErrorSnackBar(BuildContext context, String message) {
+void showSnackBar(BuildContext context, String message) {
   // To remove the current error snackbar when another error is encountered
   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();

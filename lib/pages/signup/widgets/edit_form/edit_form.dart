@@ -25,11 +25,15 @@ class EditForm extends StatefulWidget {
   final List<String> institutes;
   final String selectedInstitute;
   final void Function(String? newInstitutions) onInstituteChanged;
+
+  final Future<void> Function() resendVerificationCode;
+  final bool verificationCodeVerified;
   const EditForm({
     super.key,
     required this.step,
     required this.emailController,
     required this.passwordController,
+    required this.verificationCodeVerified,
     required this.confirmPasswordController,
     required this.verificationCodeController,
     required this.nameController,
@@ -44,6 +48,7 @@ class EditForm extends StatefulWidget {
     required this.institutes,
     required this.selectedInstitute,
     required this.onInstituteChanged,
+    required this.resendVerificationCode,
   });
 
   @override
@@ -59,20 +64,19 @@ class _EditFormState extends State<EditForm> {
         passwordController: widget.passwordController,
         confirmPasswordController: widget.confirmPasswordController,
       );
-    } 
-    else if(widget.step == 1){
+    } else if (widget.step == 1) {
       return VerificationStep(
-        verificationCodeController: widget.verificationCodeController
+        verificationCodeController: widget.verificationCodeController,
+        resendVerificationCode: widget.resendVerificationCode,
+        verificationCodeVerified: widget.verificationCodeVerified,
       );
-    }
-    else if (widget.step == 2) {
+    } else if (widget.step == 2) {
       return PersonalInfoStep(
         nameController: widget.nameController,
         scholarIDController: widget.scholarIDController,
         onPhoneChanged: widget.onPhoneChanged,
       );
-    } 
-    else {
+    } else {
       return MiscStep(
         onImageChanged: widget.onImageChanged,
         selectedDegree: widget.selectedDegree,

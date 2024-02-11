@@ -58,7 +58,7 @@ class _EventsViewerState extends State<EventsViewer> {
         event = event.copyWith(liked: liked);
       });
     } else {
-      showErrorSnackBar(context, "Please log in again");
+      showSnackBar(context, "Please log in again");
     }
   }
 
@@ -128,8 +128,12 @@ class _EventsViewerState extends State<EventsViewer> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => EventPosterViewer(currentEvent: widget.currentEvent)));
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EventPosterViewer(
+                                  currentEvent: widget.currentEvent)));
                     },
                     child: widget.currentEvent.posterURL.isEmpty ||
                             widget.currentEvent.posterURL == "null"

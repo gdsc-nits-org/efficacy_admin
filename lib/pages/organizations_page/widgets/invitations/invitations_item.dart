@@ -130,7 +130,7 @@ class InvitationItem extends StatelessWidget {
                           invitation.id!,
                         );
                         onCompleteAcceptOrReject();
-                        showErrorSnackBar(context, "Welcome to the club");
+                        showSnackBar(context, "Welcome to the club");
                       },
                     );
                   },

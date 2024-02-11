@@ -191,7 +191,7 @@ class _ClubPageState extends State<ClubPage> {
       },
       onCompleted: () {
         if (mounted && newClub != null) {
-          showErrorSnackBar(context, "Club Updated");
+          showSnackBar(context, "Club Updated");
           Navigator.pop(context, newClub);
         }
       },
@@ -274,14 +274,14 @@ class _ClubPageState extends State<ClubPage> {
           },
           onCompleted: () {
             if (mounted && newClub != null) {
-              showErrorSnackBar(context, "Club Created");
+              showSnackBar(context, "Club Created");
               Navigator.pop(context, newClub);
             }
           },
         );
       }
     } else {
-      showErrorSnackBar(
+      showSnackBar(
         context,
         "Please fill the required fields",
       );

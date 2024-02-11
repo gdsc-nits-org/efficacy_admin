@@ -26,7 +26,7 @@ void checkProxy(BuildContext context) async {
     final proxy = CustomProxy(ipAddress: host, port: port);
     proxy.enable();
     // debugPrint("proxy enabled");
-    showErrorSnackBar(context, "Proxy Enabled\nHost: $host\nPort: $port");
+    showSnackBar(context, "Proxy Enabled\nHost: $host\nPort: $port");
   }
 }
 

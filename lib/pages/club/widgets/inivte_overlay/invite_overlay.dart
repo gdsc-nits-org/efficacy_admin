@@ -135,7 +135,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                         }
 
                                         if (mounted) {
-                                          showErrorSnackBar(
+                                          showSnackBar(
                                               context,
                                               newClubPosition != null
                                                   ? "$newClubPositionName position added to club"
@@ -144,7 +144,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                       },
                                     );
                                   } else {
-                                    showErrorSnackBar(context,
+                                    showSnackBar(context,
                                         "Club position can't be empty");
                                   }
                                 },
@@ -301,7 +301,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                 );
                               }
                               if (mounted) {
-                                showErrorSnackBar(
+                                showSnackBar(
                                     context, "Invitation sent successfully!");
                                 Navigator.pop(context);
                               }

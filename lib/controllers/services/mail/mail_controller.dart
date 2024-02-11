@@ -12,10 +12,13 @@ part 'functions/_send_verification_code_mail_impl.dart';
 class MailController {
   const MailController._();
 
-  static Future<bool> sendVerificationCodeMail({
+  static Future<void> sendVerificationCodeMail({
     required String code,
     required String email,
   }) {
-    return _sendVerificationCodeMailImpl(code: code, email: email);
+    return _sendVerificationCodeMailImpl(
+      code: code,
+      email: email,
+    );
   }
 }

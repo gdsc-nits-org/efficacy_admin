@@ -1,6 +1,6 @@
 part of '../verification_code_controller.dart';
 
-Future<String> _generateRandomCodeAndSaveImpl({
+Future<VerificationCodeModel> _generateRandomCodeAndSaveImpl({
   required int len,
   required String email,
 }) async {
@@ -22,12 +22,19 @@ Future<String> _generateRandomCodeAndSaveImpl({
     VerificationCodeModel verificationCode = VerificationCodeModel.fromJson(
       Formatter.convertMapToMapStringDynamic(res)!,
     );
-    code = verificationCode.code;
+    return verificationCode;
   } else {
     code = VerificationCodeController.generateRandomCode(len);
-    await collection.insert(
-      VerificationCodeModel(email: email, code: code).toJson(),
+    VerificationCodeModel verificationCode = VerificationCodeModel(
+      email: email,
+      code: code,
     );
+    Map<String, dynamic> res =
+        await collection.insert(verificationCode.toJson());
+    verificationCode = VerificationCodeModel.fromJson(
+      Formatter.convertMapToMapStringDynamic(res)!,
+    );
+
+    return verificationCode;
   }
-  return code;
 }

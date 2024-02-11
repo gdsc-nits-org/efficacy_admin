@@ -53,7 +53,7 @@ class NavButtons extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(activeStep == 2 ? "Sign Up" : "Next"),
+                    Text(activeStep == 3 ? "Sign Up" : "Next"),
                     Gap(MediaQuery.of(context).size.width * 0.01),
                     const Icon(
                       Icons.arrow_forward_sharp,

@@ -55,7 +55,18 @@ class _StepsState extends State<Steps> {
               ),
               EasyStep(
                 customStep: IconButton(
-                    onPressed: () => widget.onPressedStep(1),
+                  onPressed: () => widget.onPressedStep(1),
+                  icon: const Icon(Icons.verified),
+                ),
+                customTitle: const Text(
+                  'Verification Code',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12),
+                )
+              ),
+              EasyStep(
+                customStep: IconButton(
+                    onPressed: () => widget.onPressedStep(2),
                     icon: const Icon(Icons.group)),
                 customTitle: const Text(
                   "Personal Info",
@@ -65,7 +76,7 @@ class _StepsState extends State<Steps> {
               ),
               EasyStep(
                 customStep: IconButton(
-                    onPressed: () => widget.onPressedStep(2),
+                    onPressed: () => widget.onPressedStep(3),
                     icon: const Icon(Icons.miscellaneous_services)),
                 customTitle: const Text(
                   "Misc",

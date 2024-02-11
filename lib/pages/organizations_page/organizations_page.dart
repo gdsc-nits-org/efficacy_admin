@@ -108,7 +108,7 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
                   InvitationsStream(
                     key: invitationsKey,
                     maxHeight: height / 3,
-                    onCompleteAction: () => setState(() {}),
+                    onCompleteAction: () => setState((){}),
                     invitationStream: invitationsStream,
                   ),
                   const Divider(color: dark),

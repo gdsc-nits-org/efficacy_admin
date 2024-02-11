@@ -71,7 +71,9 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
 
     return Scaffold(
       appBar: const CustomAppBar(title: "Organizations"),
-      endDrawer: const CustomDrawer(),
+      endDrawer: CustomDrawer(
+        pageContext: context,
+      ),
       floatingActionButton: FloatingActionButton(
         key: createClubKey,
         onPressed: () {

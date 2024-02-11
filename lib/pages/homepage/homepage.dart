@@ -72,7 +72,9 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(drawerKey: drawerKey, title: "Home"),
-      endDrawer: const CustomDrawer(),
+      endDrawer: CustomDrawer(
+        pageContext: context,
+      ),
       body: Column(
         children: [
           TabView(

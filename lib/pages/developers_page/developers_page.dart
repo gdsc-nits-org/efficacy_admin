@@ -67,7 +67,9 @@ class DevelopersPageState extends State<DevelopersPage> {
     double cardImageSizeSmall = width * 0.20;
     double cardSpacing = width * 0.025;
     return Scaffold(
-      endDrawer: const CustomDrawer(),
+      endDrawer: CustomDrawer(
+        pageContext: context,
+      ),
       appBar: const CustomAppBar(
         title: 'Developers',
       ),

@@ -21,4 +21,7 @@ class Assets {
 
   static const String regularFontPath =
       "$_basePath/$_fontBasePath/Sofia_Pro/SofiaProRegular.ttf";
+
+  static const String efficacyAdminHostedImageUrl =
+      "https://res.cloudinary.com/dxdyqv2jq/image/upload/v1707658993/app/efficacy_admin.png";
 }

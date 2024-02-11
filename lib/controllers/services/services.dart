@@ -5,5 +5,8 @@ export 'club/club_controller.dart';
 export 'club_position/club_position_controller.dart';
 export 'event/event_controller.dart';
 export 'image/image_controller.dart';
+export 'instituion/institution_controller.dart';
 export 'invitation/invitation_controller.dart';
+export 'mail/mail_controller.dart';
 export 'user/user_controller.dart';
+export 'verification_code/verification_code_controller.dart';

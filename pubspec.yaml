@@ -46,6 +46,7 @@ dependencies:
   feedback: ^3.0.0
   pdf: ^3.10.7
   device_info_plus: ^9.1.2
+  mailer: ^6.1.0
 
 dev_dependencies:
   flutter_test:

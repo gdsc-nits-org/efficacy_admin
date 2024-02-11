@@ -4,9 +4,9 @@ Future<void> _deleteImpl(InvitationModel invitation) async {
   if (UserController.currentUser == null) {
     throw Exception("Please Login");
   }
-  if (invitation.senderID != UserController.currentUser!.id &&
+  if (invitation.senderID != UserController.currentUser!.id ||
       invitation.recipientID != UserController.currentUser!.id) {
-    throw Exception("Only the creator of the invitation can delete it");
+    throw Exception("You are not authorized to delete the invitation");
   }
   DbCollection collection =
       Database.instance.collection(InvitationController._collectionName);

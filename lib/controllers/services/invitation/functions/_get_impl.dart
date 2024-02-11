@@ -9,7 +9,8 @@ Stream<List<InvitationModel>> _getImpl({
   List<InvitationModel> invitations = [];
   if (senderID == null && invitationID == null && recipientID == null) {
     throw ArgumentError(
-        "Either Invitation or Sender ID or RecipientID is required");
+      "Either Invitation or Sender ID or RecipientID is required",
+    );
   }
   invitations = await _fetchLocal(
     senderID: senderID,

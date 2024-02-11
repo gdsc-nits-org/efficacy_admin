@@ -27,7 +27,7 @@ Future<void> _sendVerificationCodeMailImpl({
     );
 
   try {
-    await send(message, smtpServer, timeout: Duration(minutes: 1));
+    await send(message, smtpServer, timeout: const Duration(minutes: 1));
   } on MailerException catch (e) {
     for (var p in e.problems) {
       print('Problem: ${p.code}: ${p.msg}');

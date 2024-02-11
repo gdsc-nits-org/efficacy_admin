@@ -69,18 +69,20 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
   }
 
   void addNewEvent(EventModel newEvent) {
-    allEvents.add(newEvent);
-    switch (newEvent.type) {
-      case EventStatus.Upcoming:
-        upcomingEvents.add(newEvent);
-        break;
-      case EventStatus.Ongoing:
-        ongoingEvents.add(newEvent);
-        break;
-      case EventStatus.Completed:
-        completedEvents.add(newEvent);
-        break;
-    }
+    setState(() {
+      allEvents.add(newEvent);
+      switch (newEvent.type) {
+        case EventStatus.Upcoming:
+          upcomingEvents.add(newEvent);
+          break;
+        case EventStatus.Ongoing:
+          ongoingEvents.add(newEvent);
+          break;
+        case EventStatus.Completed:
+          completedEvents.add(newEvent);
+          break;
+      }
+    });
   }
 
   void updateEvent(EventModel oldEvent, EventModel newEvent) {

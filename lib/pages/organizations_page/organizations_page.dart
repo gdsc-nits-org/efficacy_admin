@@ -1,5 +1,6 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/pages/club/club_page.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
@@ -82,7 +83,11 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
                 club: null,
               ),
             ),
-          ).then((value) => setState(() {}));
+          ).then((value) => showLoadingOverlay(
+              context: context,
+              asyncTask: () async {
+                await _refresh();
+              }));
         },
         heroTag: "Create club",
         tooltip: "Create a new club",
@@ -108,7 +113,13 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
                   InvitationsStream(
                     key: invitationsKey,
                     maxHeight: height / 3,
-                    onCompleteAction: () => setState(() {}),
+                    onCompleteAction: () {
+                      showLoadingOverlay(
+                          context: context,
+                          asyncTask: () async {
+                            await _refresh();
+                          });
+                    },
                     invitationStream: invitationsStream,
                   ),
                   const Divider(color: dark),

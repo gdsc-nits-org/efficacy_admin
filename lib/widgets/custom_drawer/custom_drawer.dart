@@ -140,6 +140,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
             selectedColor: light,
             selectedTileColor: dark,
             onTap: () {
+              setState(() {
+                pendingInvites = false;
+              });
               // Close the drawer
               Navigator.pop(context);
               // Navigate to Organizations page

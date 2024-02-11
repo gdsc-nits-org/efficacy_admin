@@ -28,14 +28,14 @@ class ErrorHandler {
       /// TODO: Improvise required
       /// The message should not always render what it gets as sometimes it might be too large
       /// Added a maximum size for error message after which it will be truncated
-      debugPrintStack(stackTrace: details.stack);
-      String errorMessage = details.exception.toString();
-      int maxSize = 100;
-      if (errorMessage.length > maxSize) {
-        errorMessage =
-            "${details.toStringShort()}:\nPlease contact us if error persists";
-      }
-      showErrorSnackBar(context, errorMessage);
+      // debugPrintStack(stackTrace: details.stack);
+      // String errorMessage = details.exception.toString();
+      // int maxSize = 100;
+      // if (errorMessage.length > maxSize) {
+      //   errorMessage =
+      //       "${details.toStringShort()}:\nPlease contact us if error persists";
+      // }
+      // showErrorSnackBar(context, errorMessage);
     };
   }
 

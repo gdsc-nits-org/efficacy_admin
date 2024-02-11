@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/utils/tutorials/tutorials.dart';
-import 'package:efficacy_admin/pages/club/widgets/invite_overlay.dart';
+import 'package:efficacy_admin/pages/club/widgets/inivte_overlay/invite_overlay.dart';
 import 'package:efficacy_admin/utils/debouncer.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:flutter/material.dart';

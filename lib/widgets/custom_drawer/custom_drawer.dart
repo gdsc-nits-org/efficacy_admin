@@ -5,6 +5,7 @@ import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/utils/get_feedback_data.dart';
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/services.dart';
@@ -149,6 +150,26 @@ class _CustomDrawerState extends State<CustomDrawer> {
               // Navigate to Organizations page
               Navigator.of(context).pushNamed(
                 OrganizationsPage.routeName,
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              CupertinoIcons.envelope,
+              color: routeName == "/invitePage"
+                  ? Theme.of(context).scaffoldBackgroundColor
+                  : dark,
+            ),
+            title: const Text('Invite Requests'),
+            selected: routeName == "/invitePage",
+            selectedColor: light,
+            selectedTileColor: dark,
+            onTap: () {
+              // Close the drawer
+              Navigator.pop(context);
+              // Navigate to invite page
+              Navigator.of(context).pushNamed(
+                InvitePage.routeName,
               );
             },
           ),

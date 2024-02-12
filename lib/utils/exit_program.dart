@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Future<bool?> showExitWarning(BuildContext context) async {
+Future<bool> showExitWarning(BuildContext context) async {
   bool choice = false;
   if (Navigator.canPop(context)) {
     Navigator.pop(context);

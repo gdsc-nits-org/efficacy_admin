@@ -6,6 +6,7 @@ import 'package:efficacy_admin/models/event/event_model.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/pages/create_update_event/create_update_event.dart';
 import 'package:efficacy_admin/pages/event_details_view/widgets/contributors.dart';
+import 'package:efficacy_admin/pages/event_details_view/widgets/delete_button.dart';
 import 'package:efficacy_admin/pages/event_details_view/widgets/event_registration_button.dart';
 import 'package:efficacy_admin/pages/event_details_view/widgets/photo_viewer.dart';
 import 'package:efficacy_admin/pages/event_details_view/widgets/stats_info.dart';
@@ -350,6 +351,14 @@ class _EventsViewerState extends State<EventsViewer> {
                               contacts: widget.currentEvent.contacts,
                               role: "Moderators"),
                         const SizedBox(height: 40),
+                        if (UserController.clubWithModifyEventPermission
+                                .indexWhere(
+                                    (club) => club.id == event.clubID) !=
+                            -1)
+                          Center(
+                              child: DeleteButton(
+                            event: widget.currentEvent,
+                          )),
                       ].separate(10),
                     ),
                   ),

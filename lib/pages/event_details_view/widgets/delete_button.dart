@@ -7,7 +7,9 @@ import '../../../models/models.dart';
 
 class DeleteButton extends StatelessWidget {
   final EventModel event;
-  const DeleteButton({super.key, required this.event});
+  final void Function(EventModel) onDeleteEvent;
+  const DeleteButton(
+      {super.key, required this.event, required this.onDeleteEvent});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class DeleteButton extends StatelessWidget {
                   eventID: event.id!,
                   clubID: event.clubID,
                 );
+                onDeleteEvent(event);
                 showSnackBar(context, "Event deleted successfully!");
                 Navigator.pop(context);
               });

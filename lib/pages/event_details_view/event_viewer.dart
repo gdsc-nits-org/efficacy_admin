@@ -21,9 +21,11 @@ import 'package:url_launcher/url_launcher_string.dart';
 class EventsViewer extends StatefulWidget {
   static const String routeName = "/eventFullScreen";
   final EventModel currentEvent;
+  final void Function(EventModel) onDeleteEvent;
   const EventsViewer({
     super.key,
     required this.currentEvent,
+    required this.onDeleteEvent,
   });
 
   @override
@@ -356,9 +358,11 @@ class _EventsViewerState extends State<EventsViewer> {
                                     (club) => club.id == event.clubID) !=
                             -1)
                           Center(
-                              child: DeleteButton(
-                            event: widget.currentEvent,
-                          )),
+                            child: DeleteButton(
+                              event: widget.currentEvent,
+                              onDeleteEvent: widget.onDeleteEvent,
+                            ),
+                          ),
                       ].separate(10),
                     ),
                   ),

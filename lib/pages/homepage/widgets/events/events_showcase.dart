@@ -152,6 +152,12 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
       eventStatus: currentEventStatus,
     ).first;
     setState(() {
+      eventStream = EventController.getAllEvents(
+        clubIDs: getClubIDs(UserController.clubs),
+        skip: skip,
+        forceGet: true,
+        eventStatus: currentEventStatus,
+      );
       isLoading = false;
       skip = response.skip;
       categoriseNewEvents(response.events);
@@ -265,7 +271,17 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      EventsViewer(currentEvent: events[index]),
+                                      EventsViewer(
+                                    currentEvent: events[index],
+                                    onDeleteEvent: (event) {
+                                      setState(() {
+                                        allEvents.remove(event);
+                                        upcomingEvents.remove(event);
+                                        ongoingEvents.remove(event);
+                                        completedEvents.remove(event);
+                                      });
+                                    },
+                                  ),
                                 ),
                               );
                               if (eventUpdated != null &&

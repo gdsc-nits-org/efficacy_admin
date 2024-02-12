@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 import 'package:efficacy_admin/config/config.dart';
+import 'package:efficacy_admin/config/configurations/extensions/date_time_extension.dart';
+import 'package:efficacy_admin/config/configurations/extensions/date_time_extension.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
@@ -54,18 +56,18 @@ class _CreateUpdateEventState extends State<CreateUpdateEvent> {
     if (selectedClub == null) {
       throw Exception("Please select a club");
     }
-    DateTime start = selectedStartDate.add(
-      Duration(
-        hours: selectedStartTime.hour,
-        minutes: selectedStartTime.minute,
-      ),
-    );
-    DateTime end = selectedEndDate.add(
-      Duration(
-        hours: selectedEndTime.hour,
-        minutes: selectedEndTime.minute,
-      ),
-    );
+    DateTime start = selectedStartDate.toStartOfDay().add(
+          Duration(
+            hours: selectedStartTime.hour,
+            minutes: selectedStartTime.minute,
+          ),
+        );
+    DateTime end = selectedEndDate.toStartOfDay().add(
+          Duration(
+            hours: selectedEndTime.hour,
+            minutes: selectedEndTime.minute,
+          ),
+        );
     if (start.millisecondsSinceEpoch >= end.millisecondsSinceEpoch) {
       throw Exception("Start time must be before end time");
     }

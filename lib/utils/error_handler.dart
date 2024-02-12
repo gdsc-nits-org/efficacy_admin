@@ -75,6 +75,10 @@ class ErrorHandler {
           errorMessage = "No internet connection";
         } else if (obj.toString().contains("SplashscreenError")) {
           errorMessage = "Network error";
+        } else if (obj
+            .toString()
+            .contains("Start time must be before end time")) {
+          errorMessage = "Start time must be before end time";
         }
       }
       showSnackBar(context, errorMessage);

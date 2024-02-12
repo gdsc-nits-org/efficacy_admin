@@ -1,5 +1,6 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 Future<void> showLoadingOverlay(
     {required BuildContext context,
@@ -23,7 +24,9 @@ Future<void> showLoadingOverlay(
                 valueListenable: isVisible!,
                 builder: (BuildContext context, visible, Widget? child) {
                   if (!visible) {
-                    Navigator.pop(context);
+                     SchedulerBinding.instance
+                                      .scheduleFrameCallback(
+                                          (_) => Navigator.pop(context));
                   }
                   return const Center(
                     child: SizedBox(

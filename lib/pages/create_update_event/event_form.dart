@@ -359,16 +359,19 @@ class _EventFormState extends State<EventForm> {
                           List<UserModel> moderators = snapshot.data ?? [];
                           return Padding(
                             padding: EdgeInsets.only(left: padding),
-                            child: ContactsDropDown(
-                              items: moderators,
-                              value: selectedModerator,
-                              onChanged: (UserModel? newModerator) {
-                                setState(() {
-                                  selectedModerator = newModerator;
-                                });
-                                widget.onSelectedModeratorChanged(newModerator);
-                              },
-                            ),
+                            child: (selectedClub != null)
+                                ? ContactsDropDown(
+                                    items: moderators,
+                                    value: selectedModerator,
+                                    onChanged: (UserModel? newModerator) {
+                                      setState(() {
+                                        selectedModerator = newModerator;
+                                      });
+                                      widget.onSelectedModeratorChanged(
+                                          newModerator);
+                                    },
+                                  )
+                                : const Text("No club selected"),
                           );
                         }),
                   ],

@@ -141,45 +141,6 @@ class _InviteItemState extends State<InviteItem> {
               ),
             ),
           ),
-          // Row(
-          //   children: [
-          //     Tooltip(
-          //       message: "Accept",
-          //       child: IconButton(
-          //         onPressed: () async {
-          //           // Handle accept invitation
-          //           showLoadingOverlay(
-          //             context: context,
-          //             asyncTask: () async {
-          //               await InvitationController.acceptInvitation(
-          //                 invitation.id!,
-          //               );
-          //               onCompleteAcceptOrReject();
-          //               showSnackBar(context, "Welcome to the club");
-          //             },
-          //           );
-          //         },
-          //         icon: const Icon(
-          //           Icons.check,
-          //           color: Colors.green,
-          //         ),
-          //       ),
-          //     ),
-          //     Tooltip(
-          //       message: "Reject",
-          //       child: IconButton(
-          //         onPressed: () async {
-          //           // Handle reject invitation
-          //           await InvitationController.rejectInvitation(invitation);
-          //         },
-          //         icon: const Icon(
-          //           Icons.close,
-          //           color: Colors.red,
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
         ],
       ),
     );

@@ -85,10 +85,7 @@ class EventController {
       clubID: clubID,
       forView: false,
     );
-    return await _deleteImpl(
-      eventID: eventID,
-      clubID: clubID,
-    );
+    return await _deleteImpl(eventID: eventID);
   }
 
   /// Returns all the events.

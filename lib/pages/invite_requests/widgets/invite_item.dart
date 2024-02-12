@@ -12,14 +12,14 @@ class InviteItem extends StatefulWidget {
   final String clubPositionID;
   final String receiverID;
   final InvitationModel invitation;
-  final Function refresh;
+  final Future<void> Function() onDeleteInvitation;
   // final VoidCallback onCompleteAcceptOrReject;
   const InviteItem({
     super.key,
     required this.clubPositionID,
     required this.receiverID,
     required this.invitation,
-    required this.refresh,
+    required this.onDeleteInvitation,
     // required this.onCompleteAcceptOrReject,
   });
 
@@ -84,7 +84,12 @@ class _InviteItemState extends State<InviteItem> {
                             children: [
                               Text(
                                 "Position: ",
-                                style: Theme.of(context).textTheme.labelLarge,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                               Text(
                                 clubPosition?.position ?? "Position",
@@ -103,19 +108,24 @@ class _InviteItemState extends State<InviteItem> {
                 builder: (BuildContext context,
                     AsyncSnapshot<List<UserModel>> snapshot) {
                   String receiverName = "Receiver";
+                  String receiverMail = "";
                   if (snapshot.hasData &&
                       snapshot.data != null &&
                       snapshot.data!.isNotEmpty) {
                     receiverName = snapshot.data!.first.name;
+                    receiverMail = snapshot.data!.first.email;
                   }
                   return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         "Receiver: ",
-                        style: Theme.of(context).textTheme.labelLarge,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                       Text(
-                        receiverName.split(" ").first,
+                        "${receiverName.split(" ").first}\n$receiverMail",
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
                     ],
@@ -129,8 +139,12 @@ class _InviteItemState extends State<InviteItem> {
             height: 40,
             child: ElevatedButton(
               onPressed: () async {
-                await InvitationController.delete(widget.invitation);
-                widget.refresh();
+                showLoadingOverlay(
+                    context: context,
+                    asyncTask: () async {
+                      await InvitationController.delete(widget.invitation);
+                      await widget.onDeleteInvitation();
+                    });
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,

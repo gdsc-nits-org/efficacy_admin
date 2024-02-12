@@ -216,14 +216,23 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           onPressedNext: (int index) async {
                             if (_formKey.currentState!.validate()) {
                               if (index == 0 && !verificationCodeVerified) {
-                                await generateAndSendCode();
+                                await showLoadingOverlay(
+                                    context: context,
+                                    asyncTask: () async {
+                                      await generateAndSendCode();
+                                    });
                               }
                               if (index == 1 && !verificationCodeVerified) {
-                                await VerificationCodeController.verifyCode(
-                                  code: verificationCodeController.text,
-                                  email: emailController.text,
-                                );
-                                verificationCodeVerified = true;
+                                await showLoadingOverlay(
+                                    context: context,
+                                    asyncTask: () async {
+                                      await VerificationCodeController
+                                          .verifyCode(
+                                        code: verificationCodeController.text,
+                                        email: emailController.text,
+                                      );
+                                      verificationCodeVerified = true;
+                                    });
                               }
                               if (index == 3) {
                                 UserModel? user;

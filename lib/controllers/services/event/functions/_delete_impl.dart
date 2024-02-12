@@ -1,7 +1,6 @@
 part of '../event_controller.dart';
 
-Future<void> _deleteImpl(
-    {required String eventID, required String clubID}) async {
+Future<void> _deleteImpl({required String eventID}) async {
   DbCollection collection =
       Database.instance.collection(EventController._collectionName);
 

@@ -83,73 +83,77 @@ class InvitePage extends StatefulWidget {
 }
 
 class InvitePageState extends State<InvitePage> {
+  List<InvitationModel> invitations = [];
   Future<void> _refresh() async {
-    setState(() {});
+    List<InvitationModel> latestInvitations = await InvitationController.get(
+      senderID: UserController.currentUser!.id,
+      forceGet: true,
+    ).first;
+    setState(() {
+      invitations = latestInvitations;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: "Invite Requests",
-      ),
-      endDrawer: CustomDrawer(
-        pageContext: context,
-      ),
-      body: Expanded(
-        child: StreamBuilder<List<InvitationModel>>(
-          stream: InvitationController.get(
-              senderID: UserController.currentUser!.id),
-          initialData: const [],
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                final invitations = snapshot.data;
-                if (invitations!.isNotEmpty) {
-                  return RefreshIndicator(
-                    onRefresh: _refresh,
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15.0, vertical: 20.0),
-                        child: Column(
-                          children: invitations
-                              .map((invitation) {
-                                return InviteItem(
-                                  receiverID: invitation.recipientID,
-                                  clubPositionID: invitation.clubPositionID,
-                                  invitation: invitation,
-                                  refresh: _refresh,
-                                  // onCompleteAcceptOrReject: () {
-                                  //   widget.onCompleteAction();
-                                  // },
-                                );
-                              })
-                              .toList()
-                              .separate(30),
-                        ),
+      appBar: const CustomAppBar(title: "Invite Requests"),
+      endDrawer: CustomDrawer(pageContext: context),
+      body: StreamBuilder<List<InvitationModel>>(
+        stream: InvitationController.get(
+          senderID: UserController.currentUser!.id,
+        ),
+        initialData: const [],
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              invitations = snapshot.data ?? [];
+              if (invitations.isNotEmpty) {
+                return RefreshIndicator(
+                  onRefresh: _refresh,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0, vertical: 20.0),
+                      child: Column(
+                        children: invitations
+                            .map((invitation) {
+                              return InviteItem(
+                                receiverID: invitation.recipientID,
+                                clubPositionID: invitation.clubPositionID,
+                                invitation: invitation,
+                                onDeleteInvitation: _refresh,
+                              );
+                            })
+                            .toList()
+                            .separate(30),
                       ),
                     ),
-                  );
-                } else if (snapshot.hasError) {
-                  showSnackBar(context, 'Error: ${snapshot.error}');
-                  throw Exception('Error: ${snapshot.error}');
-                } else {
-                  return const Center(child: Text("No invitations"));
-                }
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                showSnackBar(context, 'Error: ${snapshot.error}');
+                throw Exception('Error: ${snapshot.error}');
               } else {
-                // Found to run when no user is logged in
-                showSnackBar(context, "Please login");
-                throw Exception("User not logged in");
+                return const Center(
+                  child: Text(
+                    "All your invitations sent appear here.\nNo invitations sent so far.",
+                    textAlign: TextAlign.center,
+                  ),
+                );
               }
             } else {
-              // Works for all connection state but the one encountered here is ConnectionState.waiting
-              return const Center(child: CircularProgressIndicator());
+              // Found to run when no user is logged in
+              showSnackBar(context, "Please login");
+              throw Exception("User not logged in");
             }
-          },
-          // ),
-        ),
+          } else {
+            // Works for all connection state but the one encountered here is ConnectionState.waiting
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
+        // ),
       ),
     );
   }

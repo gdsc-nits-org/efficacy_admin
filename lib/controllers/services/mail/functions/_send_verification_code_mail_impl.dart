@@ -4,34 +4,29 @@ Future<void> _sendVerificationCodeMailImpl({
   required String code,
   required String email,
 }) async {
-  String username = dotenv.env[EnvValues.MAIL_USERNAME.name]!;
-  String password = dotenv.env[EnvValues.MAIL_PASSWORD.name]!;
+  String sendMailUrl =
+      MailController._backendBaseUrl + MailController._mailSendRoute;
+  String mailServiceToken = dotenv.env[EnvValues.MAIL_SERVICE_TOKEN.name]!;
 
-  SmtpServer smtpServer = SmtpServer('smtp.gmail.com',
-      username: username,
-      password: password,
-      port: 25,
-      ignoreBadCertificate: true,
-      ssl: false,
-      allowInsecure: true);
+  Dio dio = Dio();
 
-  Message message = Message()
-    ..from = Address(username, 'Efficacy Admin')
-    ..recipients.add(email)
-    ..subject = 'Welcome to Efficacy Admin'
-    ..html = generateVerificationEmail(
-      "Efficacy Admin",
+  Map body = {
+    "to": email,
+    "html": generateVerificationEmail(
+      appName,
       code,
       Assets.efficacyAdminHostedImageUrl,
-      dark.value.toRadixString(16),
-    );
-
-  try {
-    await send(message, smtpServer, timeout: const Duration(minutes: 1));
-  } on MailerException catch (e) {
-    for (var p in e.problems) {
-      print('Problem: ${p.code}: ${p.msg}');
-    }
-    throw Exception("Couldn't send code to your email");
-  }
+      dark.toHexCode(),
+    ),
+    "subject": "Verification code for sign up at $appName",
+  };
+  await dio.post(
+    sendMailUrl,
+    data: body,
+    options: Options(
+      headers: {
+        "Authorization": "Bearer $mailServiceToken",
+      },
+    ),
+  );
 }

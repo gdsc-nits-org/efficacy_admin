@@ -2,6 +2,7 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/pages/login/widgets/login_form.dart';
 import 'package:efficacy_admin/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class LoginPage extends StatefulWidget {
   //route
@@ -27,10 +28,16 @@ class _LoginPageState extends State<LoginPage> {
     double gap = height * 0.05;
     double messageFieldWidth = 0.85;
 
-    return WillPopScope(
-      onWillPop: () async {
-        final quitCondition = await showExitWarning(context);
-        return quitCondition ?? false;
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+        final bool shouldPop = await showExitWarning(context);
+        if (shouldPop) {
+          SystemNavigator.pop();
+        }
       },
       child: Scaffold(
         body: Center(

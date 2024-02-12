@@ -11,3 +11,4 @@ export 'organizations_page/organizations_page.dart';
 export 'create_update_event/create_update_event.dart';
 export 'club/club_page.dart';
 export 'developers_page/developers_page.dart';
+export 'invite_requests/invites.dart';

@@ -4,7 +4,7 @@ Future<void> _deleteImpl(InvitationModel invitation) async {
   if (UserController.currentUser == null) {
     throw Exception("Please Login");
   }
-  if (invitation.senderID != UserController.currentUser!.id ||
+  if (invitation.senderID != UserController.currentUser!.id &&
       invitation.recipientID != UserController.currentUser!.id) {
     throw Exception("You are not authorized to delete the invitation");
   }

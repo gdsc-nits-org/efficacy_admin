@@ -39,7 +39,8 @@ class EfficacyAdmin extends StatelessWidget {
         ClubPage.routeName: (context) => const ClubPage(),
         CreateUpdateEvent.routeName: (context) => const CreateUpdateEvent(),
         OrganizationsPage.routeName: (context) => const OrganizationsPage(),
-        DevelopersPage.routeName: (context) => const DevelopersPage()
+        DevelopersPage.routeName: (context) => const DevelopersPage(),
+        InvitePage.routeName: (context) => const InvitePage(),
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,

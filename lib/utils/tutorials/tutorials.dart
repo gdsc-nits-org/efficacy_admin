@@ -5,3 +5,4 @@ export 'club_page_tutorial.dart';
 export 'invite_members_tutorial.dart';
 export 'organization_page_tutorial.dart';
 export 'profile_page_tutorial.dart';
+export 'report_bug_tutorial.dart';

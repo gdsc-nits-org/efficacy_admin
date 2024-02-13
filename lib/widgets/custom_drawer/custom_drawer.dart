@@ -2,6 +2,7 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/pages/pages.dart';
+import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/utils/get_feedback_data.dart';
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
@@ -9,6 +10,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/services.dart';
+
+import 'package:efficacy_admin/utils/tutorials/tutorials.dart';
 
 class CustomDrawer extends StatefulWidget {
   final BuildContext pageContext;
@@ -179,7 +182,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
               color: dark,
             ),
             title: const Text('Report Bug'),
-            onTap: () {
+            onTap: () async {
+              if (LocalDatabase.getAndSetGuideStatus(
+                  LocalGuideCheck.reportBug)) {
+                await showReportBugTutorial(context);
+              }
+
               // Close the drawer
               Navigator.pop(context);
               if (widget.pageContext.mounted) {

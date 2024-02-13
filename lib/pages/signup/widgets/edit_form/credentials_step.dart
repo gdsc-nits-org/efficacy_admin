@@ -7,11 +7,13 @@ class CredentialsStep extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
+  final bool verificationCodeVerified;
   const CredentialsStep({
     super.key,
     required this.emailController,
     required this.passwordController,
-    required this.confirmPasswordController
+    required this.confirmPasswordController,
+    required this.verificationCodeVerified,
   });
 
   @override
@@ -40,6 +42,7 @@ class _CredentialsStepState extends State<CredentialsStep> {
         prefixIcon: Icons.email,
         controller: widget.emailController,
         validator: Validator.isEmailValid,
+        enabled: !widget.verificationCodeVerified,
       ),
       CustomTextField(
         hiddenText: hidePassword,

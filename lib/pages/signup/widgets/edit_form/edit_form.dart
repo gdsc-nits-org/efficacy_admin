@@ -63,6 +63,7 @@ class _EditFormState extends State<EditForm> {
         emailController: widget.emailController,
         passwordController: widget.passwordController,
         confirmPasswordController: widget.confirmPasswordController,
+        verificationCodeVerified:widget.verificationCodeVerified,
       );
     } else if (widget.step == 1) {
       return VerificationStep(

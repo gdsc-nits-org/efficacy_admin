@@ -123,16 +123,11 @@ class InvitationItem extends StatelessWidget {
                 child: IconButton(
                   onPressed: () async {
                     // Handle accept invitation
-                    showLoadingOverlay(
-                      context: context,
-                      asyncTask: () async {
-                        await InvitationController.acceptInvitation(
-                          invitation.id!,
-                        );
-                        onCompleteAcceptOrReject();
-                        showSnackBar(context, "Welcome to the club");
-                      },
+                    await InvitationController.acceptInvitation(
+                      invitation.id!,
                     );
+                    onCompleteAcceptOrReject();
+                    showSnackBar(context, "Welcome to the club");
                   },
                   icon: const Icon(
                     Icons.check,

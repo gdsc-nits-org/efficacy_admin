@@ -227,9 +227,7 @@ class _ProfileState extends State<ProfilePage> {
                             UserController.currentUser!.degree.name;
                       },
                     ),
-                    DeleteProfileButton(
-                      key: delProfileKey,
-                    ),
+                    DeleteProfileButton(key: delProfileKey),
                   ].separate(gap),
                 ),
               ),

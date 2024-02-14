@@ -13,7 +13,7 @@ class EditButton extends StatelessWidget {
     double fontSize = 30;
     double pad = 18.0;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal:pad),
+      padding: EdgeInsets.symmetric(horizontal: pad),
       child: IconButton(
           tooltip: "Edit Profile",
           style: const ButtonStyle(
@@ -78,9 +78,11 @@ class DeleteProfileButton extends StatelessWidget {
       child: ElevatedButton(
         style: const ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(Colors.red)),
-        onPressed: () {
-          showDialog(
+        onPressed: () async {
+          await showDialog(
             context: context,
+            useRootNavigator: false,
+            barrierDismissible: true,
             builder: (BuildContext context) => const ConfirmDelProfile(),
           );
         },

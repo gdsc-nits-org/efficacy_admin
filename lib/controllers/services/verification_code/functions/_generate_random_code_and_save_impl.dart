@@ -39,7 +39,8 @@ Future<VerificationCodeModel> _generateRandomCodeAndSaveImpl({
   } else {
     VerificationCodeModel verificationCode =
         newVerificationCodeModel(len, email);
-    res = await collection.insert(verificationCode.toJson());
+    WriteResult result = await collection.insertOne(verificationCode.toJson());
+    res = result.document;
     verificationCode = VerificationCodeModel.fromJson(
       Formatter.convertMapToMapStringDynamic(res)!,
     );

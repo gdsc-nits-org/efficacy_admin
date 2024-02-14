@@ -13,7 +13,6 @@ class CreateButton extends StatelessWidget {
       width: buttonWidth,
       child: FloatingActionButton(
         onPressed: onPressed,
-        heroTag: "Create",
         child: Text(
           "Create",
           style: TextStyle(fontSize: buttonFontSize),

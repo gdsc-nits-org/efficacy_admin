@@ -13,6 +13,7 @@ class VerificationCodeModel with _$VerificationCodeModel {
     @JsonKey(name: '_id') String? id,
     required String email,
     required String code,
+    required DateTime expiresAt,
 
     /// Which app does this user instance belong to
     /// No need to touch this
@@ -38,6 +39,8 @@ class VerificationCodeModel with _$VerificationCodeModel {
                 (identical(other.email, email) || other.email == email) &&
                 (identical(other.code, code) || other.code == code) &&
                 (identical(other.app, app) || other.app == app) &&
+                (identical(other.expiresAt, expiresAt) ||
+                    other.expiresAt == expiresAt) &&
                 (identical(other.lastLocalUpdate, lastLocalUpdate) ||
                     other.lastLocalUpdate == lastLocalUpdate));
   }
@@ -45,7 +48,8 @@ class VerificationCodeModel with _$VerificationCodeModel {
   @override
   int get hashCode => id != null
       ? Object.hash(runtimeType, id)
-      : Object.hash(runtimeType, id, email, code, app, lastLocalUpdate);
+      : Object.hash(
+          runtimeType, id, email, code, app, expiresAt, lastLocalUpdate);
 }
 
-enum VerificationCodeFields { id, email, code, app, lastLocalUpdate }
+enum VerificationCodeFields { id, email, code, app, expiresAt, lastLocalUpdate }

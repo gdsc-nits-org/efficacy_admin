@@ -25,6 +25,7 @@ mixin _$VerificationCodeModel {
   String? get id => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get code => throw _privateConstructorUsedError;
+  DateTime get expiresAt => throw _privateConstructorUsedError;
 
   /// Which app does this user instance belong to
   /// No need to touch this
@@ -47,6 +48,7 @@ abstract class $VerificationCodeModelCopyWith<$Res> {
       {@JsonKey(name: '_id') String? id,
       String email,
       String code,
+      DateTime expiresAt,
       String app,
       DateTime? lastLocalUpdate});
 }
@@ -68,6 +70,7 @@ class _$VerificationCodeModelCopyWithImpl<$Res,
     Object? id = freezed,
     Object? email = null,
     Object? code = null,
+    Object? expiresAt = null,
     Object? app = null,
     Object? lastLocalUpdate = freezed,
   }) {
@@ -84,6 +87,10 @@ class _$VerificationCodeModelCopyWithImpl<$Res,
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
               as String,
+      expiresAt: null == expiresAt
+          ? _value.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       app: null == app
           ? _value.app
           : app // ignore: cast_nullable_to_non_nullable
@@ -109,6 +116,7 @@ abstract class _$$VerificationCodeModelImplCopyWith<$Res>
       {@JsonKey(name: '_id') String? id,
       String email,
       String code,
+      DateTime expiresAt,
       String app,
       DateTime? lastLocalUpdate});
 }
@@ -128,6 +136,7 @@ class __$$VerificationCodeModelImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? email = null,
     Object? code = null,
+    Object? expiresAt = null,
     Object? app = null,
     Object? lastLocalUpdate = freezed,
   }) {
@@ -144,6 +153,10 @@ class __$$VerificationCodeModelImplCopyWithImpl<$Res>
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
               as String,
+      expiresAt: null == expiresAt
+          ? _value.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       app: null == app
           ? _value.app
           : app // ignore: cast_nullable_to_non_nullable
@@ -163,6 +176,7 @@ class _$VerificationCodeModelImpl extends _VerificationCodeModel {
       {@JsonKey(name: '_id') this.id,
       required this.email,
       required this.code,
+      required this.expiresAt,
       this.app = appName,
       this.lastLocalUpdate})
       : super._();
@@ -177,6 +191,8 @@ class _$VerificationCodeModelImpl extends _VerificationCodeModel {
   final String email;
   @override
   final String code;
+  @override
+  final DateTime expiresAt;
 
   /// Which app does this user instance belong to
   /// No need to touch this
@@ -188,7 +204,7 @@ class _$VerificationCodeModelImpl extends _VerificationCodeModel {
 
   @override
   String toString() {
-    return 'VerificationCodeModel(id: $id, email: $email, code: $code, app: $app, lastLocalUpdate: $lastLocalUpdate)';
+    return 'VerificationCodeModel(id: $id, email: $email, code: $code, expiresAt: $expiresAt, app: $app, lastLocalUpdate: $lastLocalUpdate)';
   }
 
   @JsonKey(ignore: true)
@@ -211,6 +227,7 @@ abstract class _VerificationCodeModel extends VerificationCodeModel {
       {@JsonKey(name: '_id') final String? id,
       required final String email,
       required final String code,
+      required final DateTime expiresAt,
       final String app,
       final DateTime? lastLocalUpdate}) = _$VerificationCodeModelImpl;
   const _VerificationCodeModel._() : super._();
@@ -225,6 +242,8 @@ abstract class _VerificationCodeModel extends VerificationCodeModel {
   String get email;
   @override
   String get code;
+  @override
+  DateTime get expiresAt;
   @override
 
   /// Which app does this user instance belong to

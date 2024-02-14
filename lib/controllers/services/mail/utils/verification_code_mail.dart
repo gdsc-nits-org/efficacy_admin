@@ -1,9 +1,15 @@
+import 'package:intl/intl.dart';
+
 String generateVerificationEmail(
   String appName,
   String code,
   String logoUrl,
   String codeColor,
+  DateTime expiresAt,
 ) {
+  final formattedExpiresAt =
+      DateFormat('h:mm a, MMM d, yyyy').format(expiresAt.toLocal());
+
   return '''
 <!DOCTYPE html>
 <html>
@@ -70,6 +76,17 @@ body {
   color: #888;
   margin-top: 20px;
 }
+
+.expiry-info {
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.expiry-time {
+  color: $codeColor; /* Match color with code parameter */
+  font-weight: bold; /* Make the time font bold */
+}
 </style>
 </head>
 <body>
@@ -86,6 +103,9 @@ body {
   </div>
   <div class="instruction">
     Once you've entered the code, you'll be able to explore all that $appName has to offer.
+  </div>
+  <div class="expiry-info">
+    This code expires at <span class="expiry-time">$formattedExpiresAt</span>.
   </div>
   <div class="footer">
     If you didn't request this verification code, please disregard this email.

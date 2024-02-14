@@ -22,19 +22,39 @@ Future<VerificationCodeModel> _generateRandomCodeAndSaveImpl({
     VerificationCodeModel verificationCode = VerificationCodeModel.fromJson(
       Formatter.convertMapToMapStringDynamic(res)!,
     );
+    if (verificationCode.expiresAt.millisecondsSinceEpoch <
+        DateTime.now().millisecondsSinceEpoch) {
+      VerificationCodeModel newVerificationCode =
+          newVerificationCodeModel(len, email);
+      await collection.updateOne(
+        selectorBuilder,
+        compare(
+          verificationCode.toJson(),
+          newVerificationCode.toJson(),
+        ).map,
+      );
+      verificationCode = newVerificationCode;
+    }
     return verificationCode;
   } else {
-    code = VerificationCodeController.generateRandomCode(len);
-    VerificationCodeModel verificationCode = VerificationCodeModel(
-      email: email,
-      code: code,
-    );
-    Map<String, dynamic> res =
-        await collection.insert(verificationCode.toJson());
+    VerificationCodeModel verificationCode =
+        newVerificationCodeModel(len, email);
+    res = await collection.insert(verificationCode.toJson());
     verificationCode = VerificationCodeModel.fromJson(
       Formatter.convertMapToMapStringDynamic(res)!,
     );
 
     return verificationCode;
   }
+}
+
+VerificationCodeModel newVerificationCodeModel(int len, String email) {
+  DateTime expiresAt = DateTime.now().add(const Duration(days: 1));
+  String code = VerificationCodeController.generateRandomCode(len);
+  VerificationCodeModel verificationCode = VerificationCodeModel(
+    email: email,
+    code: code,
+    expiresAt: expiresAt,
+  );
+  return verificationCode;
 }

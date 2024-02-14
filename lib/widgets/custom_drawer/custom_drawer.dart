@@ -50,7 +50,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             name: now.toIso8601String(),
           );
           showSnackBar(widget.pageContext,
-              "Your feedback was shared, Thank you for your feedback.");
+              "Your feedback was shared. Thank you for your feedback.");
         },
       );
     };

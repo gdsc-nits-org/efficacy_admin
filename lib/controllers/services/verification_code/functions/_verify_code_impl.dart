@@ -24,6 +24,11 @@ Future<void> _verifyCodeImpl({
     VerificationCodeModel verificationCode = VerificationCodeModel.fromJson(
       Formatter.convertMapToMapStringDynamic(res)!,
     );
+    if (verificationCode.expiresAt.millisecondsSinceEpoch <
+        DateTime.now().millisecondsSinceEpoch) {
+      throw Exception(
+          "Verification code expired. Please request for a new code.");
+    }
     if (verificationCode.code != code) {
       throw Exception("Wrong code. Please recheck");
     } else {

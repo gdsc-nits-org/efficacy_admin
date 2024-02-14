@@ -12,6 +12,7 @@ _$VerificationCodeModelImpl _$$VerificationCodeModelImplFromJson(
       id: json['_id'] as String?,
       email: json['email'] as String,
       code: json['code'] as String,
+      expiresAt: DateTime.parse(json['expiresAt'] as String),
       app: json['app'] as String? ?? appName,
       lastLocalUpdate: json['lastLocalUpdate'] == null
           ? null
@@ -24,6 +25,7 @@ Map<String, dynamic> _$$VerificationCodeModelImplToJson(
       '_id': instance.id,
       'email': instance.email,
       'code': instance.code,
+      'expiresAt': instance.expiresAt.toIso8601String(),
       'app': instance.app,
       'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
     };

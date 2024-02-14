@@ -15,10 +15,12 @@ class MailController {
   static Future<void> sendVerificationCodeMail({
     required String code,
     required String email,
+    required DateTime expiresAt,
   }) {
     return _sendVerificationCodeMailImpl(
       code: code,
       email: email,
+      expiresAt: expiresAt,
     );
   }
 }

@@ -3,6 +3,7 @@ part of '../mail_controller.dart';
 Future<void> _sendVerificationCodeMailImpl({
   required String code,
   required String email,
+  required DateTime expiresAt,
 }) async {
   String sendMailUrl =
       MailController._backendBaseUrl + MailController._mailSendRoute;
@@ -17,6 +18,7 @@ Future<void> _sendVerificationCodeMailImpl({
       code,
       Assets.efficacyAdminHostedImageUrl,
       dark.toHexCode(),
+      expiresAt,
     ),
     "subject": "Verification code for sign up at $appName",
   };

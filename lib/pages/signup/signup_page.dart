@@ -80,19 +80,25 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
   }
 
   Future<void> generateAndSendCode() async {
-    showLoadingOverlay(
+    await showLoadingOverlay(
         context: context,
         asyncTask: () async {
-          VerificationCodeModel verificationCode =
-              await VerificationCodeController.generateRandomCodeAndSave(
-            len: 5,
-            email: emailController.text,
-          );
-          await MailController.sendVerificationCodeMail(
-            code: verificationCode.code,
-            email: verificationCode.email,
-          );
-          showSnackBar(context, "Please check your email for the code");
+          if (!(await UserController.doesUserExists(
+              email: emailController.text))) {
+            VerificationCodeModel verificationCode =
+                await VerificationCodeController.generateRandomCodeAndSave(
+              len: 5,
+              email: emailController.text,
+            );
+            await MailController.sendVerificationCodeMail(
+              code: verificationCode.code,
+              email: verificationCode.email,
+              expiresAt: verificationCode.expiresAt,
+            );
+            showSnackBar(context, "Please check your email for the code");
+          } else {
+            throw Exception("User already exists");
+          }
         });
   }
 
@@ -217,8 +223,12 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                             if (_formKey.currentState!.validate()) {
                               if (index == 0 && !verificationCodeVerified) {
                                 await generateAndSendCode();
-                              }
-                              if (index == 1 && !verificationCodeVerified) {
+
+                                setState(() {
+                                  ++activeStep;
+                                });
+                              } else if (index == 1 &&
+                                  !verificationCodeVerified) {
                                 await showLoadingOverlay(
                                     context: context,
                                     asyncTask: () async {
@@ -228,9 +238,12 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                                         email: emailController.text,
                                       );
                                       verificationCodeVerified = true;
+
+                                      setState(() {
+                                        ++activeStep;
+                                      });
                                     });
-                              }
-                              if (index == 3) {
+                              } else if (index == 3) {
                                 UserModel? user;
                                 showLoadingOverlay(
                                     context: context,

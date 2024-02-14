@@ -37,7 +37,7 @@ Future<void> showReportBugTutorial(BuildContext context) async {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 TextSpan(
-                  text: " Draw.",
+                  text: " Draw. ",
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium

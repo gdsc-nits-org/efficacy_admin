@@ -19,6 +19,7 @@ part 'functions/_get_impl.dart';
 part 'functions/_update_impl.dart';
 part 'functions/_delete_impl.dart';
 part 'functions/_gather_data.dart';
+part 'functions/_does_user_exists_impl.dart';
 
 class UserController {
   static const String _collectionName = "users";
@@ -37,6 +38,10 @@ class UserController {
 
   static Future<void> gatherData({bool forceGet = false}) async {
     return await _gatherDataImpl(forceGet: forceGet);
+  }
+
+  static Future<bool> doesUserExists({required String email}) async {
+    return _doesUserExistsImpl(email: email);
   }
 
   static Future<void> updateUserData() async {

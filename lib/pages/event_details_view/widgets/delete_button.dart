@@ -24,13 +24,40 @@ class DeleteButton extends StatelessWidget {
           showLoadingOverlay(
               context: context,
               asyncTask: () async {
-                await EventController.delete(
-                  eventID: event.id!,
-                  clubID: event.clubID,
-                );
-                onDeleteEvent(event);
-                showSnackBar(context, "Event deleted successfully!");
-                Navigator.pop(context);
+                bool choice = false;
+                await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: const Text(
+                              "Are you sure you want to delete this event?"),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  choice = false;
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("No")),
+                            TextButton(
+                                onPressed: () {
+                                  choice = true;
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Yes"))
+                          ],
+                          alignment: Alignment.center,
+                          actionsAlignment: MainAxisAlignment.spaceEvenly,
+                        ));
+                if (choice) {
+                  await EventController.delete(
+                    eventID: event.id!,
+                    clubID: event.clubID,
+                  );
+                  onDeleteEvent(event);
+                  if (context.mounted) {
+                    showSnackBar(context, "Event deleted successfully!");
+                    Navigator.pop(context);
+                  }
+                }
               });
         },
         child: Text(

@@ -216,11 +216,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                           onPressedNext: (int index) async {
                             if (_formKey.currentState!.validate()) {
                               if (index == 0 && !verificationCodeVerified) {
-                                await showLoadingOverlay(
-                                    context: context,
-                                    asyncTask: () async {
-                                      await generateAndSendCode();
-                                    });
+                                await generateAndSendCode();
                               }
                               if (index == 1 && !verificationCodeVerified) {
                                 await showLoadingOverlay(

@@ -18,6 +18,7 @@ part 'functions/_accept_invitation_impl.dart';
 part 'functions/_check_permission_impl.dart';
 part 'functions/_any_pending_invitation_impl.dart';
 part 'functions/_reject_invitation_impl.dart';
+part 'functions/_check_if_user_is_already_in_that_position_impl.dart';
 
 class InvitationController {
   static const String _collectionName = "invitations";
@@ -37,6 +38,11 @@ class InvitationController {
 
   static Future<void> _checkDuplicate(InvitationModel invitation) async {
     return await _checkDuplicateImpl(invitation);
+  }
+
+  static Future<void> _checkIfUserIsAlreadyInThatPosition(
+      InvitationModel invitation) async {
+    return await _checkIfUserIsAlreadyInThatPositionImpl(invitation);
   }
 
   static Future<InvitationModel?> create(InvitationModel invitation) async {

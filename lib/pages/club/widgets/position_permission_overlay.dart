@@ -114,7 +114,7 @@ class _ClubPositionPermissionOverlayState
                                     MaterialStatePropertyAll(Colors.red)),
                             onPressed: () async {
                               showLoadingOverlay(
-                                  context: context,
+                                  parentContext: context,
                                   asyncTask: () async {
                                     await ClubPositionController.delete(
                                       widget.clubPosition,
@@ -134,7 +134,7 @@ class _ClubPositionPermissionOverlayState
                           child: ElevatedButton(
                             onPressed: () {
                               showLoadingOverlay(
-                                  context: context,
+                                  parentContext: context,
                                   asyncTask: () async {
                                     ClubPositionModel updatedPosition =
                                         widget.clubPosition.copyWith(

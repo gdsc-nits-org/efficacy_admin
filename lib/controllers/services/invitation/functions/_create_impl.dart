@@ -4,6 +4,7 @@ Future<InvitationModel?> _createImpl(InvitationModel invitation) async {
   DbCollection collection =
       Database.instance.collection(InvitationController._collectionName);
   await InvitationController._checkDuplicate(invitation);
+  await InvitationController._checkIfUserIsAlreadyInThatPosition(invitation);
 
   Duration expiryDuration = const Duration(days: 7);
 

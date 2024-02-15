@@ -5,6 +5,8 @@ import 'package:mongo_dart/mongo_dart.dart';
 part 'verification_code_model.freezed.dart';
 part 'verification_code_model.g.dart';
 
+enum VerificationCodeIntent { createAccount, forgotPassword }
+
 @Freezed(fromJson: true, toJson: true)
 class VerificationCodeModel with _$VerificationCodeModel {
   const VerificationCodeModel._();
@@ -18,6 +20,7 @@ class VerificationCodeModel with _$VerificationCodeModel {
     /// Which app does this user instance belong to
     /// No need to touch this
     @Default(appName) String app,
+    required VerificationCodeIntent intent,
     DateTime? lastLocalUpdate,
   }) = _VerificationCodeModel;
 
@@ -38,9 +41,10 @@ class VerificationCodeModel with _$VerificationCodeModel {
                 (identical(other.id, id) || other.id == id) &&
                 (identical(other.email, email) || other.email == email) &&
                 (identical(other.code, code) || other.code == code) &&
-                (identical(other.app, app) || other.app == app) &&
                 (identical(other.expiresAt, expiresAt) ||
                     other.expiresAt == expiresAt) &&
+                (identical(other.app, app) || other.app == app) &&
+                (identical(other.intent, intent) || other.intent == intent) &&
                 (identical(other.lastLocalUpdate, lastLocalUpdate) ||
                     other.lastLocalUpdate == lastLocalUpdate));
   }
@@ -48,8 +52,16 @@ class VerificationCodeModel with _$VerificationCodeModel {
   @override
   int get hashCode => id != null
       ? Object.hash(runtimeType, id)
-      : Object.hash(
-          runtimeType, id, email, code, app, expiresAt, lastLocalUpdate);
+      : Object.hash(runtimeType, id, email, code, expiresAt, app, intent,
+          lastLocalUpdate);
 }
 
-enum VerificationCodeFields { id, email, code, app, expiresAt, lastLocalUpdate }
+enum VerificationCodeFields {
+  id,
+  email,
+  code,
+  expiresAt,
+  app,
+  intent,
+  lastLocalUpdate
+}

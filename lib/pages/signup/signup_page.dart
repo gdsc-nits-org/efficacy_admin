@@ -89,6 +89,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                 await VerificationCodeController.generateRandomCodeAndSave(
               len: 5,
               email: emailController.text,
+              intent: VerificationCodeIntent.createAccount,
             );
             await MailController.sendVerificationCodeMail(
               code: verificationCode.code,

@@ -69,7 +69,7 @@ List<TargetFocus> getEditClubPositionTargets(
             return CoachmarkDesc(
               parentContext: parentContext,
               heading: "Add",
-              text: "Click here to add  the new club position name.",
+              text: "Click here to add the new club position name.",
               onNext: () {
                 controller.next();
               },

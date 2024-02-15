@@ -122,7 +122,7 @@ class _ClubPageState extends State<ClubPage> {
 
 //show invite overlay
   void _showOverlay(BuildContext context) async {
-    await showDialog(
+    dynamic res = await showDialog(
         context: context,
         builder: (BuildContext context) {
           return Center(
@@ -131,6 +131,17 @@ class _ClubPageState extends State<ClubPage> {
             ),
           );
         });
+    if (res != null && res is List<String> && res.isNotEmpty && mounted) {
+      await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return InviteOverlay(
+              inviteMode: true,
+              club: widget.club,
+              users: res,
+            );
+          });
+    }
   }
 
   Future<void> _refresh() async {
@@ -146,7 +157,7 @@ class _ClubPageState extends State<ClubPage> {
   void _updateClub() async {
     ClubModel? newClub;
     showLoadingOverlay(
-      context: context,
+      parentContext: context,
       asyncTask: () async {
         UploadInformation logo = UploadInformation(
           url: club!.clubLogoURL,
@@ -211,7 +222,7 @@ class _ClubPageState extends State<ClubPage> {
       if (mounted) {
         ClubModel? newClub;
         showLoadingOverlay(
-          context: context,
+          parentContext: context,
           asyncTask: () async {
             UploadInformation? bannerImageInfo, clubImageInfo;
             if (_bannerImage != null) {

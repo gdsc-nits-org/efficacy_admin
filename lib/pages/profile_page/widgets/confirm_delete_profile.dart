@@ -69,7 +69,7 @@ class _ConfirmDelProfileState extends State<ConfirmDelProfile> {
           onPressed: () {
             List<UserModel> user = [];
             showLoadingOverlay(
-                context: context,
+                parentContext: context,
                 asyncTask: () async {
                   user = await UserController.get(
                     email: UserController.currentUser!.email,
@@ -83,7 +83,7 @@ class _ConfirmDelProfileState extends State<ConfirmDelProfile> {
                           user.first.password!, enteredPassword) &&
                       mounted) {
                     showLoadingOverlay(
-                      context: context,
+                      parentContext: context,
                       asyncTask: () async {
                         await UserController.delete();
 

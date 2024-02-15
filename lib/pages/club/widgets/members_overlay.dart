@@ -76,9 +76,12 @@ class _MembersOverlayState extends State<MembersOverlay> {
                                                 maxLines: null,
                                               ),
                                             ),
-                                            if (UserController
-                                                .clubWithModifyMemberPermission
-                                                .contains(widget.club))
+                                            if (user[0].id !=
+                                                    UserController
+                                                        .currentUser?.id &&
+                                                UserController
+                                                    .clubWithModifyMemberPermission
+                                                    .contains(widget.club))
                                               IconButton(
                                                 onPressed: () async {
                                                   bool? didDelete =

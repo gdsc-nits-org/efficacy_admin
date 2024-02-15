@@ -140,7 +140,7 @@ class _InviteItemState extends State<InviteItem> {
             child: ElevatedButton(
               onPressed: () async {
                 showLoadingOverlay(
-                    context: context,
+                    parentContext: context,
                     asyncTask: () async {
                       await InvitationController.delete(widget.invitation);
                       await widget.onDeleteInvitation();

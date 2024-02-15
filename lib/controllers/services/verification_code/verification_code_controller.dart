@@ -22,20 +22,24 @@ class VerificationCodeController {
   static Future<VerificationCodeModel> generateRandomCodeAndSave({
     required int len,
     required String email,
+    required VerificationCodeIntent intent,
   }) async {
     return _generateRandomCodeAndSaveImpl(
       len: len,
       email: email,
+      intent: intent,
     );
   }
 
   static Future<void> verifyCode({
     required String code,
     required String email,
+    required VerificationCodeIntent intent,
   }) async {
     return _verifyCodeImpl(
       code: code,
       email: email,
+      intent: intent,
     );
   }
 }

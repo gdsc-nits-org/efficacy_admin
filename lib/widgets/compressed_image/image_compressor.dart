@@ -67,7 +67,7 @@ class ImageCompressorState extends State<ImageCompressor> {
 
   Future _compress() async {
     showLoadingOverlay(
-        context: context,
+        parentContext: context,
         onCompleted: () => setState(() {}),
         asyncTask: () async {
           Uint8List? cache = await FlutterImageCompress.compressWithList(

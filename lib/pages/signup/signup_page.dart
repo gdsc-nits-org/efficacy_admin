@@ -81,7 +81,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
 
   Future<void> generateAndSendCode() async {
     await showLoadingOverlay(
-        context: context,
+        parentContext: context,
         asyncTask: () async {
           if (!(await UserController.doesUserExists(
               email: emailController.text))) {
@@ -231,12 +231,14 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                               } else if (index == 1 &&
                                   !verificationCodeVerified) {
                                 await showLoadingOverlay(
-                                    context: context,
+                                    parentContext: context,
                                     asyncTask: () async {
                                       await VerificationCodeController
                                           .verifyCode(
                                         code: verificationCodeController.text,
                                         email: emailController.text,
+                                        intent: VerificationCodeIntent
+                                            .createAccount,
                                       );
                                       verificationCodeVerified = true;
 
@@ -247,7 +249,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                               } else if (index == 3) {
                                 UserModel? user;
                                 showLoadingOverlay(
-                                    context: context,
+                                    parentContext: context,
                                     asyncTask: () async {
                                       UploadInformation? info;
                                       if (_image != null) {

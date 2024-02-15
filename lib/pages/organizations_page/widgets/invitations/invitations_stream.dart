@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class InvitationsStream extends StatefulWidget {
   final double maxHeight;
-  final VoidCallback onCompleteAction;
+  final Future<void> Function() onCompleteAction;
   final Stream<List<InvitationModel>> invitationStream;
 
   const InvitationsStream({
@@ -41,9 +41,7 @@ class InvitationsStreamState extends State<InvitationsStream> {
                         senderID: invitation.senderID,
                         clubPositionID: invitation.clubPositionID,
                         invitation: invitation,
-                        onCompleteAcceptOrReject: () {
-                          widget.onCompleteAction();
-                        },
+                        onCompleteAcceptOrReject: widget.onCompleteAction,
                       );
                     }).toList(),
                   ),

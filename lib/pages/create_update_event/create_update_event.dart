@@ -141,7 +141,7 @@ class _CreateUpdateEventState extends State<CreateUpdateEvent> {
       EventModel? eventUpdated;
       FocusManager.instance.primaryFocus?.unfocus();
       showLoadingOverlay(
-        context: context,
+        parentContext: context,
         asyncTask: () async {
           EventModel? event = await prepareEvent();
           if (event != null) {
@@ -174,7 +174,7 @@ class _CreateUpdateEventState extends State<CreateUpdateEvent> {
   //function to get image from gallery
   Future<void> _getImage() async {
     showLoadingOverlay(
-      context: context,
+      parentContext: context,
       asyncTask: () async {
         Uint8List? temp = await ImageController.compressedImage(
           source: ImageSource.gallery,

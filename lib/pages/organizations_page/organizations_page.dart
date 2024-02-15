@@ -86,7 +86,7 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
               ),
             ),
           ).then((value) => showLoadingOverlay(
-              context: context,
+              parentContext: context,
               asyncTask: () async {
                 await _refresh();
               }));
@@ -115,12 +115,8 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
                   InvitationsStream(
                     key: invitationsKey,
                     maxHeight: height / 3,
-                    onCompleteAction: () {
-                      showLoadingOverlay(
-                          context: context,
-                          asyncTask: () async {
-                            await _refresh();
-                          });
+                    onCompleteAction: () async {
+                      await _refresh();
                     },
                     invitationStream: invitationsStream,
                   ),

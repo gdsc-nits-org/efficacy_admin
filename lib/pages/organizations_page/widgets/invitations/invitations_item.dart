@@ -11,7 +11,7 @@ class InvitationItem extends StatelessWidget {
   final String clubPositionID;
   final String senderID;
   final InvitationModel invitation;
-  final VoidCallback onCompleteAcceptOrReject;
+  final Future<void> Function() onCompleteAcceptOrReject;
   const InvitationItem({
     super.key,
     required this.clubPositionID,
@@ -123,13 +123,13 @@ class InvitationItem extends StatelessWidget {
                 child: IconButton(
                   onPressed: () async {
                     // Handle accept invitation
-                    showLoadingOverlay(
-                      context: context,
+                    await showLoadingOverlay(
+                      parentContext: context,
                       asyncTask: () async {
                         await InvitationController.acceptInvitation(
                           invitation.id!,
                         );
-                        onCompleteAcceptOrReject();
+                        await onCompleteAcceptOrReject();
                         showSnackBar(context, "Welcome to the club");
                       },
                     );

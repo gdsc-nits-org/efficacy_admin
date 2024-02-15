@@ -143,21 +143,8 @@ class _OverlaySearchState extends State<OverlaySearch> {
                                                 }
                                               });
                                             } else {
-                                              Navigator.pop(context);
-                                              showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return Center(
-                                                      child: InviteOverlay(
-                                                        inviteMode: true,
-                                                        club: widget.club,
-                                                        users: [
-                                                          userList[index].id!
-                                                        ],
-                                                      ),
-                                                    );
-                                                  });
+                                              Navigator.pop(context,
+                                                  [userList[index].id!]);
                                             }
                                           },
                                         );
@@ -171,18 +158,7 @@ class _OverlaySearchState extends State<OverlaySearch> {
                     ? ElevatedButton(
                         child: const Text("Continue"),
                         onPressed: () {
-                          Navigator.pop(context);
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Center(
-                                  child: InviteOverlay(
-                                    inviteMode: true,
-                                    club: widget.club,
-                                    users: selectedUsers.toList(),
-                                  ),
-                                );
-                              });
+                          Navigator.pop(context, selectedUsers.toList());
                         },
                       )
                     : const SizedBox(),

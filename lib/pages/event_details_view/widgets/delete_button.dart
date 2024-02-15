@@ -22,7 +22,7 @@ class DeleteButton extends StatelessWidget {
             backgroundColor: MaterialStatePropertyAll(Colors.red)),
         onPressed: () {
           showLoadingOverlay(
-              context: context,
+              parentContext: context,
               asyncTask: () async {
                 bool choice = false;
                 await showDialog<bool>(

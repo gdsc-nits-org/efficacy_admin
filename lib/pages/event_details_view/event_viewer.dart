@@ -85,7 +85,7 @@ class _EventsViewerState extends State<EventsViewer> {
                 UserModel? moderator;
                 ClubModel? club;
                 showLoadingOverlay(
-                    context: context,
+                    parentContext: context,
                     asyncTask: () async {
                       if (widget.currentEvent.contacts.isNotEmpty) {
                         List<UserModel> moderators = await UserController.get(
@@ -246,7 +246,7 @@ class _EventsViewerState extends State<EventsViewer> {
                               child: InkWell(
                                 onTap: () async {
                                   await showLoadingOverlay(
-                                      context: context,
+                                      parentContext: context,
                                       asyncTask: () async {
                                         await ShareHandler.shareEvent(
                                             widget.currentEvent);
@@ -307,7 +307,7 @@ class _EventsViewerState extends State<EventsViewer> {
                                   child: EventRegistrationButton(
                                       onTap: () {
                                         showLoadingOverlay(
-                                            context: context,
+                                            parentContext: context,
                                             asyncTask: () async {
                                               await launchUrlString(widget
                                                   .currentEvent
@@ -326,7 +326,7 @@ class _EventsViewerState extends State<EventsViewer> {
                                   child: EventRegistrationButton(
                                     onTap: () async {
                                       await showLoadingOverlay(
-                                          context: context,
+                                          parentContext: context,
                                           asyncTask: () async {
                                             launchUrlString(widget
                                                 .currentEvent.facebookPostURL!);

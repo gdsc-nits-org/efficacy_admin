@@ -37,7 +37,7 @@ class ConfirmRemoveMember extends StatelessWidget {
         TextButton(
           onPressed: () {
             showLoadingOverlay(
-              context: context,
+              parentContext: context,
               asyncTask: () async {
                 await ClubController.removeMember(
                   memberEmail: memberEmail,

@@ -85,7 +85,7 @@ class _ProfileState extends State<ProfilePage> {
   void saveUpdates() async {
     if (_formKey.currentState!.validate()) {
       showLoadingOverlay(
-        context: context,
+        parentContext: context,
         asyncTask: () async {
           UploadInformation info = UploadInformation(
             url: UserController.currentUser?.userPhoto,

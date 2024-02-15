@@ -34,10 +34,12 @@ class VerificationCodeController {
   static Future<void> verifyCode({
     required String code,
     required String email,
+    required VerificationCodeIntent intent,
   }) async {
     return _verifyCodeImpl(
       code: code,
       email: email,
+      intent: intent,
     );
   }
 }

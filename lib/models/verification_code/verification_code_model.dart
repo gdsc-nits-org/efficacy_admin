@@ -20,6 +20,8 @@ class VerificationCodeModel with _$VerificationCodeModel {
     /// Which app does this user instance belong to
     /// No need to touch this
     @Default(appName) String app,
+
+    /// Basically it is asking for what is purpose of creating the verification code.
     required VerificationCodeIntent intent,
     DateTime? lastLocalUpdate,
   }) = _VerificationCodeModel;

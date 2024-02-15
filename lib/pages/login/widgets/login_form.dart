@@ -76,6 +76,11 @@ class LoginFormState extends State<LoginForm> {
                         )),
                     prefixIcon: Icons.lock,
                   ),
+                  TextButton(
+                      onPressed: () {
+
+                      },
+                      child: Text("Forgot password?")),
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {

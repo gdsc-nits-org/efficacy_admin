@@ -17,8 +17,11 @@ Future<VerificationCodeModel> _generateRandomCodeAndSaveImpl({
     VerificationCodeFields.app.name,
     appName,
   );
+  selectorBuilder.eq(
+    VerificationCodeFields.intent.name,
+    intent.name,
+  );
   Map? res = await collection.findOne(selectorBuilder);
-  late String code;
   if (res != null) {
     VerificationCodeModel verificationCode = VerificationCodeModel.fromJson(
       Formatter.convertMapToMapStringDynamic(res)!,

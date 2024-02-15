@@ -287,32 +287,26 @@ class _InviteOverlayState extends State<InviteOverlay> {
                     ? ElevatedButton(
                         key: inviteKey,
                         onPressed: () {
-                          if (selected != -1) {
-                            showLoadingOverlay(
-                              context: context,
-                              asyncTask: () async {
-                                for (String user in widget.users) {
-                                  await InvitationController.create(
-                                    InvitationModel(
-                                        clubPositionID:
-                                            clubPositionList[selected].id!,
-                                        senderID:
-                                            UserController.currentUser!.id ??
-                                                "",
-                                        recipientID: user),
-                                  );
-                                }
-                                if (mounted) {
-                                  showSnackBar(
-                                      context, "Invitation sent successfully!");
-                                  Navigator.pop(context);
-                                }
-                              },
-                            );
-                          } else {
-                            showSnackBar(context,
-                                "Please select a club position to send invite");
-                          }
+                          showLoadingOverlay(
+                            context: context,
+                            asyncTask: () async {
+                              for (String user in widget.users) {
+                                await InvitationController.create(
+                                  InvitationModel(
+                                      clubPositionID:
+                                          clubPositionList[selected].id!,
+                                      senderID:
+                                          UserController.currentUser!.id ?? "",
+                                      recipientID: user),
+                                );
+                              }
+                              if (mounted) {
+                                showSnackBar(
+                                    context, "Invitation sent successfully!");
+                                Navigator.pop(context);
+                              }
+                            },
+                          );
                         },
                         child: const Text("Send Invite"))
                     : const SizedBox()

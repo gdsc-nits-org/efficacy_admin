@@ -20,6 +20,7 @@ part 'functions/_update_impl.dart';
 part 'functions/_delete_impl.dart';
 part 'functions/_gather_data.dart';
 part 'functions/_does_user_exists_impl.dart';
+part 'functions/_reset_password_impl.dart';
 
 class UserController {
   static const String _collectionName = "users";
@@ -147,5 +148,14 @@ class UserController {
     clubWithModifyClubPermission = [];
     clubWithModifyEventPermission = [];
     await LocalDatabase.clearLocalStorageExceptGuideCheckpoints();
+  }
+
+  /// Resets the password and returns the username
+  static Future<String> resetPassword(
+      {required String email, required String newPassword}) async {
+    return await _resetPasswordImpl(
+      email: email,
+      newPassword: newPassword,
+    );
   }
 }

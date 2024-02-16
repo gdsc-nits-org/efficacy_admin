@@ -1,13 +1,15 @@
 import 'package:cloudinary/cloudinary.dart';
 import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/controllers/services/mail/utils/forgot_password_mail.dart';
-import 'package:efficacy_admin/controllers/services/mail/utils/verification_code_mail.dart';
+import 'templates/password_reset_acknowledgement_mail.dart';
+import 'templates/verification_code_mail.dart';
+import 'templates/forgot_password_mail.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
 import 'package:efficacy_admin/utils/database/constants.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 part 'functions/_send_verification_code_mail_impl.dart';
 part 'functions/_send_forgot_password_mail_impl.dart';
+part 'functions/_send_password_reset_acknowledgement_mail_impl.dart';
 
 class MailController {
   const MailController._();
@@ -35,6 +37,16 @@ class MailController {
       code: code,
       email: email,
       expiresAt: expiresAt,
+    );
+  }
+
+  static Future<void> sendPasswordResetAcknowledgementMail({
+    required String email,
+    required String userName,
+  }) async {
+    return _sendPasswordResetAcknowledgementMailImpl(
+      email: email,
+      userName: userName,
     );
   }
 }

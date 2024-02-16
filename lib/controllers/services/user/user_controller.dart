@@ -134,6 +134,7 @@ class UserController {
   }
 
   /// Deletes the user if exists from both local database and server
+  /// Logs out the user then
   static Future<void> delete() async {
     return await _deleteImpl();
   }
@@ -145,6 +146,6 @@ class UserController {
     clubWithModifyMemberPermission = [];
     clubWithModifyClubPermission = [];
     clubWithModifyEventPermission = [];
-    await LocalDatabase.clearLocalStorage();
+    await LocalDatabase.clearLocalStorageExceptGuideCheckpoints();
   }
 }

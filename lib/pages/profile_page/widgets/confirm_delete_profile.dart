@@ -87,13 +87,17 @@ class _ConfirmDelProfileState extends State<ConfirmDelProfile> {
                       asyncTask: () async {
                         await UserController.delete();
 
-                        if (!dialogContext.mounted) return;
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          LoginPage.routeName,
-                          (route) => false,
-                        );
-                        showSnackBar(context, "Profile Deleted!");
+                        WidgetsBinding.instance
+                            .addPostFrameCallback((timeStamp) {
+                          if (context.mounted) {
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              LoginPage.routeName,
+                              (route) => false,
+                            );
+                            showSnackBar(context, "Profile Deleted!");
+                          }
+                        });
                       },
                     );
                   } else {

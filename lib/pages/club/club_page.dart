@@ -35,6 +35,7 @@ class ClubPage extends StatefulWidget {
 class _ClubPageState extends State<ClubPage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
+
   //form variables
   final _formKey = GlobalKey<FormState>();
   late bool _createMode;
@@ -403,6 +404,7 @@ class _ClubPageState extends State<ClubPage> {
                                   },
                                 )
                               : ProfileImageViewer(
+                                  pickFromCamera: false,
                                   height: profileSize,
                                   enabled: _editMode || _createMode,
                                   imageData: _clubImage,

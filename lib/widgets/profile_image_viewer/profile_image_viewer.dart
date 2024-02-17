@@ -19,6 +19,7 @@ class ProfileImageViewer extends StatefulWidget {
   final Uint8List? imageData;
   final bool enabled;
   final void Function(Uint8List?)? onImageChange;
+  final bool pickFromCamera;
   const ProfileImageViewer({
     super.key,
     this.height = 150,
@@ -26,6 +27,7 @@ class ProfileImageViewer extends StatefulWidget {
     this.imageData,
     this.enabled = true,
     this.onImageChange,
+    this.pickFromCamera = true
   });
 
   @override
@@ -99,6 +101,7 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
                     updateImage(await pickImage(ImageSource.gallery));
                     if (mounted) Navigator.of(context).pop();
                   }),
+              widget.pickFromCamera ?
               ListTile(
                 leading: const Icon(Icons.photo_camera),
                 title: const Text('Camera'),
@@ -106,7 +109,7 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
                   updateImage(await pickImage(ImageSource.camera));
                   if (mounted) Navigator.of(context).pop();
                 },
-              ),
+              ) : const SizedBox()
             ],
           ),
         );

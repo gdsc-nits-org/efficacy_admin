@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-String generateForgotPasswordEmail(
+String generateVerificationEmail(
   String appName,
   String code,
   String logoUrl,
@@ -14,7 +14,7 @@ String generateForgotPasswordEmail(
 <!DOCTYPE html>
 <html>
 <head>
-<title>Password Reset for $appName</title>
+<title>Welcome to $appName!</title>
 <style>
 body {
   font-family: sans-serif;
@@ -70,17 +70,6 @@ body {
   margin-bottom: 20px;
 }
 
-.button {
-  text-align: center;
-  margin: 10px auto;
-  padding: 10px 20px;
-  background-color: #3498db;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
 .footer {
   text-align: center;
   font-size: 14px;
@@ -106,17 +95,21 @@ body {
     <img src="$logoUrl" alt="$appName logo">
   </div>
   <div class="header">
-    Reset Your Password for $appName
+    Welcome to the $appName community!
   </div>
   <div class="code-container">
-    We received a request to reset your password for your $appName account. Use this code to set a new password:
+    We're excited you're here! To complete your registration, simply enter this code:
     <span class="code">$code</span>
+  </div>
+  <div class="instruction">
+    Once you've entered the code, you'll be able to explore all that $appName has to offer.
   </div>
   <div class="expiry-info">
     This code expires at <span class="expiry-time">$formattedExpiresAt</span>.
   </div>
   <div class="footer">
-    If you didn't request a password reset, please contact us immediately.
+    If you didn't request this verification code, please disregard this email.<br>
+    This is an auto-generated email. Please do not reply.
   </div>
 </div>
 </body>

@@ -25,6 +25,7 @@ class _OverlaySearchState extends State<OverlaySearch> {
   Set<String> selectedUsers = {};
   bool isMultiSelect = false;
   bool memTutorialShown = false;
+  TextEditingController searchController = TextEditingController();
 
   // Global keys for guide
   GlobalKey searchUserKey = GlobalKey();
@@ -57,6 +58,7 @@ class _OverlaySearchState extends State<OverlaySearch> {
                   key: searchUserKey,
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
+                    controller: searchController,
                     onChanged: (String? name) {
                       debouncer.run(() {
                         setState(() {

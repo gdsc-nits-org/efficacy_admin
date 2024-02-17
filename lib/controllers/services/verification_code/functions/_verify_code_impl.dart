@@ -24,7 +24,7 @@ Future<void> _verifyCodeImpl({
   Map? res = await collection.findOne(selectorBuilder);
 
   if (res == null) {
-    throw Exception("Could not find verification code for your $email");
+    throw Exception("Could not find verification code for $email");
   } else {
     VerificationCodeModel verificationCode = VerificationCodeModel.fromJson(
       Formatter.convertMapToMapStringDynamic(res)!,

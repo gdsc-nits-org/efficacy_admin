@@ -2,6 +2,7 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
+import 'package:efficacy_admin/pages/forgot_password/forgot_password.dart';
 import 'package:efficacy_admin/pages/homepage/homepage.dart';
 import 'package:efficacy_admin/pages/signup/signup_page.dart';
 import 'package:efficacy_admin/utils/validator.dart';
@@ -32,7 +33,7 @@ class LoginFormState extends State<LoginForm> {
     double fieldGap = height * 0.005;
     double smallGap = height * 0.01;
     double formWidth = width * 0.8;
-    double fieldHeight = height * 0.075;
+    double fieldHeight = height * 0.065;
 
     return Column(
       children: [
@@ -41,6 +42,7 @@ class LoginFormState extends State<LoginForm> {
             child: SizedBox(
               width: formWidth,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomTextField(
                     label: "Email",
@@ -49,62 +51,80 @@ class LoginFormState extends State<LoginForm> {
                     validator: Validator.isEmailValid,
                     prefixIcon: Icons.email,
                   ),
-                  CustomTextField(
-                    label: "Password",
-                    height: fieldHeight,
-                    controller: _passController,
-                    hiddenText: hidePassword,
-                    keyboardType: TextInputType.visiblePassword,
-                    validator: (value) => Validator.isPasswordValid(value),
-                    suffixIcon: IconButton(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomTextField(
+                        label: "Password",
+                        controller: _passController,
+                        hiddenText: hidePassword,
+                        keyboardType: TextInputType.visiblePassword,
+                        validator: (value) => Validator.isPasswordValid(value),
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              if (passVisibility == Icons.visibility) {
+                                setState(() {
+                                  passVisibility = Icons.visibility_off;
+                                  hidePassword = false;
+                                });
+                              } else {
+                                setState(() {
+                                  passVisibility = Icons.visibility;
+                                  hidePassword = true;
+                                });
+                              }
+                            },
+                            icon: Icon(
+                              passVisibility,
+                              color: const Color.fromARGB(255, 67, 67, 67),
+                            )),
+                        prefixIcon: Icons.lock,
+                      ),
+                      TextButton(
                         onPressed: () {
-                          if (passVisibility == Icons.visibility) {
-                            setState(() {
-                              passVisibility = Icons.visibility_off;
-                              hidePassword = false;
-                            });
-                          } else {
-                            setState(() {
-                              passVisibility = Icons.visibility;
-                              hidePassword = true;
-                            });
-                          }
+                          Navigator.pushNamed(
+                              context, ForgotPasswordPage.routeName);
                         },
-                        icon: Icon(
-                          passVisibility,
-                          color: const Color.fromARGB(255, 67, 67, 67),
-                        )),
-                    prefixIcon: Icons.lock,
+                        child: Text(
+                          "Forgot password?",
+                          style:
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
+                                    decoration: TextDecoration.underline,
+                                    color: dark,
+                                    decorationColor: dark,
+                                  ),
+                        ),
+                      ),
+                    ],
                   ),
-                  TextButton(
-                      onPressed: () {
-
-                      },
-                      child: Text("Forgot password?")),
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        UserModel? user;
-                        showLoadingOverlay(
-                          parentContext: context,
-                          asyncTask: () async {
-                            user = await UserController.login(
-                              email: _emailController.text.toString(),
-                              password: _passController.text.toString(),
-                            );
-                          },
-                          onCompleted: () {
-                            if (user != null && mounted) {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                Homepage.routeName,
-                                (_) => false,
+                  Container(
+                    width: width,
+                    alignment: Alignment.center,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          UserModel? user;
+                          showLoadingOverlay(
+                            parentContext: context,
+                            asyncTask: () async {
+                              user = await UserController.login(
+                                email: _emailController.text.toString(),
+                                password: _passController.text.toString(),
                               );
-                            }
-                          },
-                        );
-                      }
-                    },
-                    child: const Text("Login"),
+                            },
+                            onCompleted: () {
+                              if (user != null && mounted) {
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                  Homepage.routeName,
+                                  (_) => false,
+                                );
+                              }
+                            },
+                          );
+                        }
+                      },
+                      child: const Text("Login"),
+                    ),
                   ),
                 ].separate(fieldGap * 0.5),
               ),

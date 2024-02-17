@@ -123,6 +123,7 @@ class _ClubPageState extends State<ClubPage> {
 //show invite overlay
   void _showOverlay(BuildContext context) async {
     dynamic res = await showDialog(
+        useRootNavigator: false,
         context: context,
         builder: (BuildContext context) {
           return Center(
@@ -133,6 +134,7 @@ class _ClubPageState extends State<ClubPage> {
         });
     if (res != null && res is List<String> && res.isNotEmpty && mounted) {
       await showDialog(
+          useRootNavigator: false,
           context: context,
           builder: (BuildContext context) {
             return InviteOverlay(

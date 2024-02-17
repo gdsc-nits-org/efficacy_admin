@@ -48,6 +48,14 @@ Future<void> showReportBugTutorial(BuildContext context) async {
                       "Use the Navigate button to go into navigation mode where you will be able to navigate through pages.\n\nThe Draw button allows you to draw on the screen to mark the position as per your requirement.\n\nAfter that at the bottom you can type your issue and press the submit button. We will be happy to review those.",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
+                TextSpan(
+                  text:
+                      "\n\nPlease note that your identity will be kept anonymous. We will just collect the feedback, along with you device information.",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontWeight: FontWeight.w600),
+                ),
               ],
             ),
           ),

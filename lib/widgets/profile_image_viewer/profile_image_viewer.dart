@@ -20,15 +20,15 @@ class ProfileImageViewer extends StatefulWidget {
   final bool enabled;
   final void Function(Uint8List?)? onImageChange;
   final bool pickFromCamera;
-  const ProfileImageViewer({
-    super.key,
-    this.height = 150,
-    this.imagePath,
-    this.imageData,
-    this.enabled = true,
-    this.onImageChange,
-    this.pickFromCamera = true
-  });
+
+  const ProfileImageViewer(
+      {super.key,
+      this.height = 150,
+      this.imagePath,
+      this.imageData,
+      this.enabled = true,
+      this.onImageChange,
+      this.pickFromCamera = true});
 
   @override
   State<ProfileImageViewer> createState() => _ProfileImageViewerState();
@@ -101,7 +101,6 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
                     updateImage(await pickImage(ImageSource.gallery));
                     if (mounted) Navigator.of(context).pop();
                   }),
-              widget.pickFromCamera ?
               ListTile(
                 leading: const Icon(Icons.photo_camera),
                 title: const Text('Camera'),
@@ -109,7 +108,7 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
                   updateImage(await pickImage(ImageSource.camera));
                   if (mounted) Navigator.of(context).pop();
                 },
-              ) : const SizedBox()
+              )
             ],
           ),
         );
@@ -129,7 +128,11 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
   Widget build(BuildContext context) {
     return Center(
       child: InkWell(
-        onTap: () => (widget.enabled) ? _showPicker(context) : null,
+        onTap: () => (widget.enabled)
+            ? (widget.pickFromCamera
+                ? _showPicker(context)
+                : pickImage(ImageSource.gallery))
+            : null,
         child: CircleAvatar(
           backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
           radius: widget.height / 2,

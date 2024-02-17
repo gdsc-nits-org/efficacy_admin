@@ -41,6 +41,7 @@ class Contributors extends StatelessWidget {
                             ProfileImageViewer(
                               imagePath: user.userPhoto,
                               height: 40,
+                              enabled: false
                             ),
                             const SizedBox(width: 20),
                             Column(

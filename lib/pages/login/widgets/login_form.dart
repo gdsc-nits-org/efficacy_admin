@@ -97,30 +97,34 @@ class LoginFormState extends State<LoginForm> {
                       ),
                     ],
                   ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        UserModel? user;
-                        showLoadingOverlay(
-                          parentContext: context,
-                          asyncTask: () async {
-                            user = await UserController.login(
-                              email: _emailController.text.toString(),
-                              password: _passController.text.toString(),
-                            );
-                          },
-                          onCompleted: () {
-                            if (user != null && mounted) {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                Homepage.routeName,
-                                (_) => false,
+                  Container(
+                    width: width,
+                    alignment: Alignment.center,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          UserModel? user;
+                          showLoadingOverlay(
+                            parentContext: context,
+                            asyncTask: () async {
+                              user = await UserController.login(
+                                email: _emailController.text.toString(),
+                                password: _passController.text.toString(),
                               );
-                            }
-                          },
-                        );
-                      }
-                    },
-                    child: const Text("Login"),
+                            },
+                            onCompleted: () {
+                              if (user != null && mounted) {
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                  Homepage.routeName,
+                                  (_) => false,
+                                );
+                              }
+                            },
+                          );
+                        }
+                      },
+                      child: const Text("Login"),
+                    ),
                   ),
                 ].separate(fieldGap * 0.5),
               ),

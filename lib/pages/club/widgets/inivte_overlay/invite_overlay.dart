@@ -47,7 +47,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
   void initState() {
     super.initState();
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.editClubPosition)) {
-      Future.delayed(const Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 0), () {
         showEditClubPosTutorial(
           context,
           newPosNameKey,

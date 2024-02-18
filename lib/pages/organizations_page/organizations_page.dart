@@ -48,7 +48,7 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
       recipientID: UserController.currentUser?.id,
     );
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.organizations)) {
-      Future.delayed(const Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 0), () {
         showOrganizationPageTutorial(
           context,
           invitationsKey,

@@ -66,7 +66,7 @@ class _ClubPageState extends State<ClubPage> {
     initData(widget.club);
     if (!_createMode) {
       if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.editClub)) {
-        Future.delayed(const Duration(seconds: 1), () {
+        Future.delayed(const Duration(seconds: 0), () {
           showEditClubTutorial(
             context,
             editClubKey,
@@ -83,14 +83,14 @@ class _ClubPageState extends State<ClubPage> {
         });
       } else if (UserController.clubWithModifyMemberPermission.contains(club) &&
           LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.clubInvite)) {
-        Future.delayed(const Duration(seconds: 1), () {
+        Future.delayed(const Duration(seconds: 0), () {
           showInviteTutorial(context, inviteKey);
         });
       }
     }
     if (_createMode &&
         LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.createClub)) {
-      Future.delayed(const Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 0), () {
         showCreateClubTutorial(
           context,
           editImageKey,

@@ -222,6 +222,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               IconButton(
+                                                tooltip: "View members",
                                                 key: (index == 0)
                                                     ? membersKey
                                                     : null,
@@ -246,6 +247,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                                   .clubWithModifyClubPermission
                                                   .contains(widget.club))
                                                 IconButton(
+                                                  tooltip: "Edit club position",
                                                     key: (index == 0)
                                                         ? editPosKey
                                                         : null,

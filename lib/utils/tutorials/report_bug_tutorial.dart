@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 Future<void> showReportBugTutorial(BuildContext context) async {
   await showDialog(
     barrierDismissible: true,
+    useRootNavigator: false,
     context: context,
     builder: (BuildContext context) {
       return OverlayScaleAnimation(

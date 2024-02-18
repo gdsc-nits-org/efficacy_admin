@@ -426,6 +426,7 @@ class _ClubPageState extends State<ClubPage> {
                                     onPressed: () async {
                                       await showDialog(
                                           context: context,
+                                          useRootNavigator: false,
                                           builder: (BuildContext context) {
                                             return Center(
                                               child: InviteOverlay(

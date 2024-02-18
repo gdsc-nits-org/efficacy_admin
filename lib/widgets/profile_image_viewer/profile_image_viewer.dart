@@ -128,10 +128,10 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
   Widget build(BuildContext context) {
     return Center(
       child: InkWell(
-        onTap: () => (widget.enabled)
-            ? (widget.pickFromCamera
+        onTap: (widget.enabled)
+            ? () async => (widget.pickFromCamera
                 ? _showPicker(context)
-                : pickImage(ImageSource.gallery))
+                : updateImage(await pickImage(ImageSource.gallery)))
             : null,
         child: CircleAvatar(
           backgroundColor: const Color.fromRGBO(196, 196, 196, 1),

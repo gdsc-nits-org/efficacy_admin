@@ -5,6 +5,7 @@ import 'package:efficacy_admin/utils/utils.dart';
 Future<String?> getLeadName(BuildContext context) async {
   return await showDialog(
     context: context,
+    useRootNavigator: false,
     builder: (BuildContext context) {
       return const LeadNameDialog();
     },

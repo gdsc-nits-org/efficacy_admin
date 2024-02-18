@@ -7,6 +7,7 @@ Future<bool> showExitWarning(BuildContext context) async {
   } else {
     await showDialog<bool>(
         context: context,
+        useRootNavigator: false,
         builder: (context) => AlertDialog(
               title: const Text("Do you want to exit the app?"),
               actions: [

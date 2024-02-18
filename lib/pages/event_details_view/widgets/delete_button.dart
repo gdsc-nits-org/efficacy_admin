@@ -27,6 +27,7 @@ class DeleteButton extends StatelessWidget {
                 bool choice = false;
                 await showDialog<bool>(
                     context: context,
+                    useRootNavigator: false,
                     builder: (context) => AlertDialog(
                           title: const Text(
                               "Are you sure you want to delete this event?"),

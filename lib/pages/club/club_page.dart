@@ -35,6 +35,7 @@ class ClubPage extends StatefulWidget {
 class _ClubPageState extends State<ClubPage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
+
   //form variables
   final _formKey = GlobalKey<FormState>();
   late bool _createMode;
@@ -123,6 +124,7 @@ class _ClubPageState extends State<ClubPage> {
 //show invite overlay
   void _showOverlay(BuildContext context) async {
     dynamic res = await showDialog(
+        useRootNavigator: false,
         context: context,
         builder: (BuildContext context) {
           return Center(
@@ -133,6 +135,7 @@ class _ClubPageState extends State<ClubPage> {
         });
     if (res != null && res is List<String> && res.isNotEmpty && mounted) {
       await showDialog(
+          useRootNavigator: false,
           context: context,
           builder: (BuildContext context) {
             return InviteOverlay(
@@ -401,6 +404,7 @@ class _ClubPageState extends State<ClubPage> {
                                   },
                                 )
                               : ProfileImageViewer(
+                                  pickFromCamera: false,
                                   height: profileSize,
                                   enabled: _editMode || _createMode,
                                   imageData: _clubImage,
@@ -422,6 +426,7 @@ class _ClubPageState extends State<ClubPage> {
                                     onPressed: () async {
                                       await showDialog(
                                           context: context,
+                                          useRootNavigator: false,
                                           builder: (BuildContext context) {
                                             return Center(
                                               child: InviteOverlay(

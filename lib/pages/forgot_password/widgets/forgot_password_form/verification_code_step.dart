@@ -1,29 +1,24 @@
-import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/utils/utils.dart';
+import 'package:efficacy_admin/config/configurations/theme/utils/palette.dart';
+import 'package:efficacy_admin/utils/validator.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
-class VerificationStep extends StatefulWidget {
+class VerificationCodeStep extends StatelessWidget {
   final TextEditingController verificationCodeController;
-  final Future<void> Function() resendVerificationCode;
   final bool verificationCodeVerified;
-  const VerificationStep({
+  final Future<void> Function() resendVerificationCode;
+  const VerificationCodeStep({
     super.key,
     required this.verificationCodeController,
-    required this.resendVerificationCode,
     required this.verificationCodeVerified,
+    required this.resendVerificationCode,
   });
 
-  @override
-  State<VerificationStep> createState() => _VerificationStepState();
-}
-
-class _VerificationStepState extends State<VerificationStep> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.4,
-      child: widget.verificationCodeVerified
+      child: verificationCodeVerified
           ? Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -50,21 +45,22 @@ class _VerificationStepState extends State<VerificationStep> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextButton(
-                      onPressed: widget.resendVerificationCode,
+                      onPressed: resendVerificationCode,
                       child: Text(
                         "Resend verification code",
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                               decoration: TextDecoration.underline,
                               color: dark,
+                              decorationColor: dark,
                             ),
                       ),
                     ),
                     CustomTextField(
                       label: "Verification Code",
                       keyboardType: TextInputType.number,
-                      height: MediaQuery.of(context).size.height * 0.075,
+                      height: MediaQuery.of(context).size.height * 0.075 + 8,
                       prefixIcon: Icons.verified_user,
-                      controller: widget.verificationCodeController,
+                      controller: verificationCodeController,
                       validator: (val) =>
                           Validator.nullAndEmptyCheck(val, "verification code"),
                     ),

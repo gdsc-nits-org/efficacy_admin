@@ -9,9 +9,13 @@ import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:efficacy_admin/utils/tutorials/tutorials.dart';
+import 'package:flutter/services.dart';
+
+import '../../utils/utils.dart';
 
 class Homepage extends StatefulWidget {
   static const String routeName = "/homePage";
+
   const Homepage({super.key});
 
   @override
@@ -70,30 +74,42 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(drawerKey: drawerKey, title: "Home"),
-      endDrawer: CustomDrawer(
-        pageContext: context,
-      ),
-      body: Column(
-        children: [
-          TabView(
-            key: listEventsKey,
-            currentTabIndex: currentTabIndex,
-            navigator: navigator,
-          ),
-          Expanded(
-            key: feedKey,
-            child: EventsShowcasePage(
-              createEventKey: createEventKey,
-              eventStatus: currentTabIndex == 0
-                  ? EventStatus.Upcoming
-                  : currentTabIndex == 1
-                      ? EventStatus.Ongoing
-                      : EventStatus.Completed,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+        final bool shouldPop = await showExitWarning(context);
+        if (shouldPop) {
+          SystemNavigator.pop();
+        }
+      },
+      child: Scaffold(
+        appBar: CustomAppBar(drawerKey: drawerKey, title: "Home"),
+        endDrawer: CustomDrawer(
+          pageContext: context,
+        ),
+        body: Column(
+          children: [
+            TabView(
+              key: listEventsKey,
+              currentTabIndex: currentTabIndex,
+              navigator: navigator,
             ),
-          ),
-        ].separate(26),
+            Expanded(
+              key: feedKey,
+              child: EventsShowcasePage(
+                createEventKey: createEventKey,
+                eventStatus: currentTabIndex == 0
+                    ? EventStatus.Upcoming
+                    : currentTabIndex == 1
+                        ? EventStatus.Ongoing
+                        : EventStatus.Completed,
+              ),
+            ),
+          ].separate(26),
+        ),
       ),
     );
   }

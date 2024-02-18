@@ -87,6 +87,7 @@ class _MembersOverlayState extends State<MembersOverlay> {
                                                   bool? didDelete =
                                                       await showDialog(
                                                     context: context,
+                                                    useRootNavigator: false,
                                                     builder: (BuildContext
                                                             context) =>
                                                         ConfirmRemoveMember(

@@ -100,7 +100,7 @@ class LocalDatabase {
   }
 
   /// Clears the local database except the guide checkpoints
-  static Future<void> clearLocalStorage() async {
+  static Future<void> clearLocalStorageExceptGuideCheckpoints() async {
     Set<String> keys = sharedPreferences.getKeys();
     for (String key in keys) {
       if (!key.startsWith("LocalGuideCheck")) {

@@ -204,6 +204,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                               } else {
                                                 showDialog(
                                                   context: context,
+                                                  useRootNavigator: false,
                                                   builder: (context) {
                                                     return Center(
                                                         child: MembersOverlay(
@@ -227,6 +228,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                                 onPressed: () {
                                                   showDialog(
                                                     context: context,
+                                                    useRootNavigator: false,
                                                     builder: (context) {
                                                       return Center(
                                                           child: MembersOverlay(
@@ -251,6 +253,8 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                                       var updatedPosition =
                                                           await showDialog(
                                                               context: context,
+                                                              useRootNavigator:
+                                                                  false,
                                                               builder:
                                                                   (BuildContext
                                                                       context) {

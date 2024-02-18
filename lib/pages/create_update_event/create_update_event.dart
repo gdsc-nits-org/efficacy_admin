@@ -308,7 +308,7 @@ class _CreateUpdateEventState extends State<CreateUpdateEvent> {
                     backgroundColor: dark,
                     child: Icon(
                       Icons.close,
-                      size: height * 0.035,
+                      size: height * 0.03,
                       color: light,
                     ),
                   ),

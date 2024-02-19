@@ -36,10 +36,12 @@ class ClubPositionController {
   }
 
   static Future<void> _checkPermission({
+    required String clubPositionID,
     required String clubID,
     required bool forView,
   }) async {
     return _checkPermissionImpl(
+      clubPositionID: clubPositionID,
       clubID: clubID,
       forView: forView,
     );
@@ -49,6 +51,7 @@ class ClubPositionController {
   static Future<ClubPositionModel?> create(
       ClubPositionModel clubPosition) async {
     await _checkPermission(
+      clubPositionID: clubPosition.id!,
       clubID: clubPosition.clubID,
       forView: false,
     );
@@ -72,6 +75,7 @@ class ClubPositionController {
   static Future<ClubPositionModel> update(
       ClubPositionModel clubPositionModel) async {
     await _checkPermission(
+      clubPositionID: clubPositionModel.id!,
       clubID: clubPositionModel.clubID,
       forView: false,
     );
@@ -82,6 +86,7 @@ class ClubPositionController {
   /// Or warning the user
   static Future<void> delete(ClubPositionModel clubPositionModel) async {
     await _checkPermissionImpl(
+      clubPositionID: clubPositionModel.id!,
       clubID: clubPositionModel.clubID,
       forView: false,
     );

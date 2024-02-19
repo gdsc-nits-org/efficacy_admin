@@ -39,6 +39,10 @@ mixin _$ClubModel {
   /// Since it has issues with freezed (cannot make keys with custom type)
   Map<String, List<String>> get members => throw _privateConstructorUsedError;
 
+  /// ID of the club position of the leader
+  /// Required to make sure that all the positions are not deleted
+  String? get leadPositionID => throw _privateConstructorUsedError;
+
   /// Follower Ids
   List<String> get followers => throw _privateConstructorUsedError;
   DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
@@ -67,6 +71,7 @@ abstract class $ClubModelCopyWith<$Res> {
       String? clubBannerURL,
       String? clubBannerPublicId,
       Map<String, List<String>> members,
+      String? leadPositionID,
       List<String> followers,
       DateTime? lastLocalUpdate});
 }
@@ -96,6 +101,7 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
     Object? clubBannerURL = freezed,
     Object? clubBannerPublicId = freezed,
     Object? members = null,
+    Object? leadPositionID = freezed,
     Object? followers = null,
     Object? lastLocalUpdate = freezed,
   }) {
@@ -148,6 +154,10 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
           ? _value.members
           : members // ignore: cast_nullable_to_non_nullable
               as Map<String, List<String>>,
+      leadPositionID: freezed == leadPositionID
+          ? _value.leadPositionID
+          : leadPositionID // ignore: cast_nullable_to_non_nullable
+              as String?,
       followers: null == followers
           ? _value.followers
           : followers // ignore: cast_nullable_to_non_nullable
@@ -181,6 +191,7 @@ abstract class _$$ClubModelImplCopyWith<$Res>
       String? clubBannerURL,
       String? clubBannerPublicId,
       Map<String, List<String>> members,
+      String? leadPositionID,
       List<String> followers,
       DateTime? lastLocalUpdate});
 }
@@ -208,6 +219,7 @@ class __$$ClubModelImplCopyWithImpl<$Res>
     Object? clubBannerURL = freezed,
     Object? clubBannerPublicId = freezed,
     Object? members = null,
+    Object? leadPositionID = freezed,
     Object? followers = null,
     Object? lastLocalUpdate = freezed,
   }) {
@@ -260,6 +272,10 @@ class __$$ClubModelImplCopyWithImpl<$Res>
           ? _value._members
           : members // ignore: cast_nullable_to_non_nullable
               as Map<String, List<String>>,
+      leadPositionID: freezed == leadPositionID
+          ? _value.leadPositionID
+          : leadPositionID // ignore: cast_nullable_to_non_nullable
+              as String?,
       followers: null == followers
           ? _value._followers
           : followers // ignore: cast_nullable_to_non_nullable
@@ -288,6 +304,7 @@ class _$ClubModelImpl extends _ClubModel {
       this.clubBannerURL,
       this.clubBannerPublicId,
       required final Map<String, List<String>> members,
+      this.leadPositionID,
       final List<String> followers = const [],
       this.lastLocalUpdate})
       : _socials = socials,
@@ -345,6 +362,11 @@ class _$ClubModelImpl extends _ClubModel {
     return EqualUnmodifiableMapView(_members);
   }
 
+  /// ID of the club position of the leader
+  /// Required to make sure that all the positions are not deleted
+  @override
+  final String? leadPositionID;
+
   /// Follower Ids
   final List<String> _followers;
 
@@ -362,7 +384,7 @@ class _$ClubModelImpl extends _ClubModel {
 
   @override
   String toString() {
-    return 'ClubModel(id: $id, name: $name, instituteName: $instituteName, description: $description, socials: $socials, email: $email, phoneNumber: $phoneNumber, clubLogoURL: $clubLogoURL, clubLogoPublicId: $clubLogoPublicId, clubBannerURL: $clubBannerURL, clubBannerPublicId: $clubBannerPublicId, members: $members, followers: $followers, lastLocalUpdate: $lastLocalUpdate)';
+    return 'ClubModel(id: $id, name: $name, instituteName: $instituteName, description: $description, socials: $socials, email: $email, phoneNumber: $phoneNumber, clubLogoURL: $clubLogoURL, clubLogoPublicId: $clubLogoPublicId, clubBannerURL: $clubBannerURL, clubBannerPublicId: $clubBannerPublicId, members: $members, leadPositionID: $leadPositionID, followers: $followers, lastLocalUpdate: $lastLocalUpdate)';
   }
 
   @JsonKey(ignore: true)
@@ -393,6 +415,7 @@ abstract class _ClubModel extends ClubModel {
       final String? clubBannerURL,
       final String? clubBannerPublicId,
       required final Map<String, List<String>> members,
+      final String? leadPositionID,
       final List<String> followers,
       final DateTime? lastLocalUpdate}) = _$ClubModelImpl;
   const _ClubModel._() : super._();
@@ -430,6 +453,11 @@ abstract class _ClubModel extends ClubModel {
   /// Cannot use clubPositionModel
   /// Since it has issues with freezed (cannot make keys with custom type)
   Map<String, List<String>> get members;
+  @override
+
+  /// ID of the club position of the leader
+  /// Required to make sure that all the positions are not deleted
+  String? get leadPositionID;
   @override
 
   /// Follower Ids

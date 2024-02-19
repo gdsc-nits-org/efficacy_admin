@@ -27,6 +27,7 @@ _$ClubModelImpl _$$ClubModelImplFromJson(Map<String, dynamic> json) =>
         (k, e) =>
             MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
       ),
+      leadPositionID: json['leadPositionID'] as String?,
       followers: (json['followers'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -51,6 +52,7 @@ Map<String, dynamic> _$$ClubModelImplToJson(_$ClubModelImpl instance) =>
       'clubBannerURL': instance.clubBannerURL,
       'clubBannerPublicId': instance.clubBannerPublicId,
       'members': instance.members,
+      'leadPositionID': instance.leadPositionID,
       'followers': instance.followers,
       'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
     };

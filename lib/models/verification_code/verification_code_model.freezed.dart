@@ -30,6 +30,8 @@ mixin _$VerificationCodeModel {
   /// Which app does this user instance belong to
   /// No need to touch this
   String get app => throw _privateConstructorUsedError;
+
+  /// Basically it is asking for what is purpose of creating the verification code.
   VerificationCodeIntent get intent => throw _privateConstructorUsedError;
   DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
 
@@ -213,6 +215,8 @@ class _$VerificationCodeModelImpl extends _VerificationCodeModel {
   @override
   @JsonKey()
   final String app;
+
+  /// Basically it is asking for what is purpose of creating the verification code.
   @override
   final VerificationCodeIntent intent;
   @override
@@ -267,6 +271,8 @@ abstract class _VerificationCodeModel extends VerificationCodeModel {
   /// No need to touch this
   String get app;
   @override
+
+  /// Basically it is asking for what is purpose of creating the verification code.
   VerificationCodeIntent get intent;
   @override
   DateTime? get lastLocalUpdate;

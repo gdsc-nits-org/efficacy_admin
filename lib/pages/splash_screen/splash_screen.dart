@@ -4,6 +4,7 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/utils/utils.dart';
+import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -18,15 +19,19 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool isDatabaseInitSuccess = false;
+  bool isLocalInitSuccess = false;
   // Function to process all async functions
   Future<int> init() async {
     Stopwatch stopwatch = Stopwatch()..start();
     await dotenv.load();
-    await Database.init();
-    await LocalDatabase.init();
+    isDatabaseInitSuccess = await Database.init();
+    isLocalInitSuccess = await LocalDatabase.init();
     // await ForegroundService.init();
     // await ForegroundService.startDataSync();
-    await UserController.loginSilently().last;
+    if (isDatabaseInitSuccess && isLocalInitSuccess) {
+      await UserController.loginSilently().last;
+    }
     stopwatch.stop();
     return stopwatch.elapsed.inMilliseconds;
   }
@@ -37,16 +42,21 @@ class _SplashScreenState extends State<SplashScreen> {
     init().then((duration) {
       debugPrint("Successfully completed all async tasks");
       debugPrint("Time taken: $duration ms");
-      if (UserController.currentUser == null) {
+      if (UserController.currentUser == null &&
+          isDatabaseInitSuccess &&
+          isLocalInitSuccess) {
         Navigator.of(context)
             .pushNamedAndRemoveUntil(
                 LoginPage.routeName, (Route<dynamic> route) => false)
             .then((value) => exit(0));
-      } else {
+      } else if (isDatabaseInitSuccess && isLocalInitSuccess) {
         Navigator.of(context)
             .pushNamedAndRemoveUntil(
                 Homepage.routeName, (Route<dynamic> route) => false)
             .then((value) => exit(0));
+      } else {
+        showSnackBar(
+            context, "Sorry, couldn't connect to the internet. Please restart the app.");
       }
     });
   }

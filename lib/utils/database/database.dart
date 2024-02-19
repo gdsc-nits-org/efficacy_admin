@@ -6,8 +6,8 @@ class Database {
   static Db? _db;
   const Database._();
 
-  static Future<void> init() async {
-    if (_db != null) return;
+  static Future<bool> init() async {
+    if (_db != null) return true;
 
     String? url = dotenv.env[EnvValues.MONGO_URI.name];
     if (url == null) {
@@ -17,7 +17,7 @@ class Database {
 
     _db = await Db.create(url);
     await _db!.open();
-    return;
+    return true;
   }
 
   static Db get instance {

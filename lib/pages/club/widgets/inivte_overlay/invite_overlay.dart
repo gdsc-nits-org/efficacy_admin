@@ -18,6 +18,7 @@ class InviteOverlay extends StatefulWidget {
   final List<String> users;
   final ClubModel? club;
   final bool inviteMode;
+
   const InviteOverlay({
     super.key,
     required this.inviteMode,
@@ -87,9 +88,8 @@ class _InviteOverlayState extends State<InviteOverlay> {
         height: min(400 * 1.5, size.height * .8),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: Padding(
+          child: Material(
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

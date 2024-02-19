@@ -30,11 +30,11 @@ class Validator {
     if (res != null) {
       return res;
     }
-    // //checks only for B.Tech students from year 2010 to 2023
-    // if (!RegExp(r'^(1[0-9]|20|21|22|23)[1][1-6](?!000)[0-9]{3}$')
-    //     .hasMatch(scholarID!)) {
-    //   return "Invalid scholar ID";
-    // }
+    //checks only for B.Tech students from year 2010 to 2023
+    if (!RegExp(r'^(1[0-9]|20|21|22|23)[1][1-6](?!000)[0-9]{3}$')
+        .hasMatch(scholarID!)) {
+      return "Invalid scholar ID";
+    }
     return null;
   }
 

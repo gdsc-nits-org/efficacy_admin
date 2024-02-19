@@ -56,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
             .then((value) => exit(0));
       } else {
         showSnackBar(
-            context, "Unknown error occured. Please contact developers");
+            context, "Sorry, couldn't connect to the internet. Please restart the app.");
       }
     });
   }

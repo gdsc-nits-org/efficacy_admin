@@ -10,6 +10,7 @@ void showEditClubPosTutorial(
   GlobalKey membersKey,
   GlobalKey editPosKey, {
   void Function()? onFinish,
+  bool Function()? onSkip,
 }) {
   List<TargetFocus> targets = getEditClubPositionTargets(
     context,
@@ -25,6 +26,7 @@ void showEditClubPosTutorial(
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
     onFinish: onFinish,
+    onSkip: onSkip,
   ).show(context: context);
 }
 

@@ -1,11 +1,8 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
-import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/widgets/profile_image_viewer/profile_image_viewer.dart';
-import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class InviteItem extends StatefulWidget {
@@ -115,27 +112,46 @@ class _InviteItemState extends State<InviteItem> {
                     receiverName = snapshot.data!.first.name;
                     receiverMail = snapshot.data!.first.email;
                   }
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Receiver: ",
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.59,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                "Receiver: ",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
                             ),
-                      ),
-                      Text(
-                        "${receiverName.split(" ").first}\n$receiverMail",
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                    ],
+                            Flexible(
+                              child: Text(
+                                receiverName.split(" ").first,
+                                style: Theme.of(context).textTheme.labelLarge,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          receiverMail.trim(),
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),
             ],
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.35,
+            width: MediaQuery.of(context).size.width * 0.31,
             height: 40,
             child: ElevatedButton(
               onPressed: () async {

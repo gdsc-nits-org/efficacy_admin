@@ -25,6 +25,9 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   int currentTabIndex = 0;
 
+  // Check for guide
+  bool isGuideRunning = false;
+
   // Global keys for guide
   GlobalKey drawerKey = GlobalKey();
   GlobalKey createEventKey = GlobalKey();
@@ -35,32 +38,69 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
     // To view guide everytime uncomment the next line
-    // LocalDatabase.resetGuideCheckpoint();
+    LocalDatabase.resetGuideCheckpoint();
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.home)) {
-      Future.delayed(const Duration(seconds: 1), () {
+      isGuideRunning = true;
+      Future.delayed(const Duration(seconds: 0), () {
         showHomePageTutorial(
           context,
           listEventsKey,
           drawerKey,
           feedKey,
           onFinish: () {
+            setState(() {
+              isGuideRunning = false;
+            });
             if (UserController.clubWithModifyEventPermission.isNotEmpty &&
                 LocalDatabase.getAndSetGuideStatus(
                     LocalGuideCheck.createEvent)) {
+              isGuideRunning = true;
               showCreateEventTutorial(
                 context,
                 createEventKey,
+                onFinish: () {
+                  setState(() {
+                    isGuideRunning = false;
+                  });
+                },
+                onSkip: () {
+                  setState(() {
+                    isGuideRunning = false;
+                  });
+                  // Returning true to allow skip
+                  return true;
+                },
               );
             }
+          },
+          onSkip: () {
+            setState(() {
+              isGuideRunning = false;
+            });
+            // Returning true to allow skip
+            return true;
           },
         );
       });
     } else if (UserController.clubWithModifyEventPermission.isNotEmpty &&
         LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.createEvent)) {
-      Future.delayed(const Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 0), () {
+        isGuideRunning = true;
         showCreateEventTutorial(
           context,
           createEventKey,
+          onFinish: () {
+            setState(() {
+              isGuideRunning = false;
+            });
+          },
+          onSkip: () {
+            setState(() {
+              isGuideRunning = false;
+            });
+            // Returning true to allow skip
+            return true;
+          },
         );
       });
     }
@@ -80,9 +120,11 @@ class _HomepageState extends State<Homepage> {
         if (didPop) {
           return;
         }
-        final bool shouldPop = await showExitWarning(context);
-        if (shouldPop) {
-          SystemNavigator.pop();
+        if (!isGuideRunning) {
+          final bool shouldPop = await showExitWarning(context);
+          if (shouldPop) {
+            SystemNavigator.pop();
+          }
         }
       },
       child: Scaffold(

@@ -8,6 +8,7 @@ void showOrganizationPageTutorial(
   GlobalKey clubsKey,
   GlobalKey createClubKey, {
   void Function()? onFinish,
+  bool Function()? onSkip,
 }) {
   List<TargetFocus> targets = getOrganizationPageTargets(
     context,
@@ -21,6 +22,7 @@ void showOrganizationPageTutorial(
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
     onFinish: onFinish,
+    onSkip: onSkip,
   ).show(context: context);
 }
 

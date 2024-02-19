@@ -5,7 +5,7 @@ part of '../club_position_controller.dart';
 ///
 /// If [forView] is false it is assumed the permission to check is for editing a position
 Future<void> _checkPermissionImpl({
-  required String clubPositionID,
+  required String? clubPositionID,
   required String clubID,
   required bool forView,
 }) async {

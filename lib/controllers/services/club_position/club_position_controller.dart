@@ -36,7 +36,7 @@ class ClubPositionController {
   }
 
   static Future<void> _checkPermission({
-    required String clubPositionID,
+    required String? clubPositionID,
     required String clubID,
     required bool forView,
   }) async {
@@ -51,7 +51,7 @@ class ClubPositionController {
   static Future<ClubPositionModel?> create(
       ClubPositionModel clubPosition) async {
     await _checkPermission(
-      clubPositionID: clubPosition.id!,
+      clubPositionID: clubPosition.id,
       clubID: clubPosition.clubID,
       forView: false,
     );

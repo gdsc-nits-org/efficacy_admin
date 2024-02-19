@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
+import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/club/widgets/inivte_overlay/widgets/add_new_position_button.dart';
 import 'package:efficacy_admin/utils/tutorials/tutorials.dart';
@@ -139,9 +140,8 @@ class _InviteOverlayState extends State<InviteOverlay> {
           height: min(400 * 1.5, size.height * .8),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: Padding(
+            child: Material(
+              child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

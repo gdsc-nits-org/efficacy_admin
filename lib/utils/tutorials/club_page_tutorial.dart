@@ -7,6 +7,7 @@ void showEditClubTutorial(
   GlobalKey editClubKey,
   GlobalKey editClubPositionKey, {
   void Function()? onFinish,
+  bool Function()? onSkip,
 }) {
   List<TargetFocus> targets = getEditClubTargets(
     context,
@@ -19,6 +20,7 @@ void showEditClubTutorial(
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
     onFinish: onFinish,
+    onSkip: onSkip
   ).show(context: context);
 }
 
@@ -26,6 +28,7 @@ void showInviteTutorial(
   BuildContext context,
   GlobalKey inviteKey, {
   void Function()? onFinish,
+  bool Function()? onSkip,
 }) {
   List<TargetFocus> targets = getInviteTutorial(context, inviteKey);
 
@@ -34,6 +37,7 @@ void showInviteTutorial(
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
     onFinish: onFinish,
+    onSkip: onSkip
   ).show(context: context);
 }
 

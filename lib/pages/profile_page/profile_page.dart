@@ -16,8 +16,6 @@ import 'package:efficacy_admin/config/config.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
-import '../../widgets/coach_mark_desc/coach_mark_desc.dart';
-
 class ProfilePage extends StatefulWidget {
   static const String routeName = '/ProfilePage';
 
@@ -32,6 +30,9 @@ class _ProfileState extends State<ProfilePage> {
       GlobalKey<RefreshIndicatorState>();
   final _formKey = GlobalKey<FormState>();
 
+  // Check for guide
+  bool isGuideRunning = false;
+
   // Global keys for guide
   GlobalKey editProfileKey = GlobalKey();
   GlobalKey delProfileKey = GlobalKey();
@@ -45,12 +46,25 @@ class _ProfileState extends State<ProfilePage> {
     super.initState();
     init();
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.profile)) {
+      isGuideRunning = true;
       Future.delayed(const Duration(seconds: 0), () {
         showProfilePageTutorial(
           context,
           editProfileKey,
           delProfileKey,
           scrollController,
+          onFinish: () {
+            setState(() {
+              isGuideRunning = false;
+            });
+          },
+          onSkip: () {
+            setState(() {
+              isGuideRunning = false;
+            });
+            // Returning true to allow skip
+            return true;
+          },
         );
       });
     }
@@ -137,98 +151,106 @@ class _ProfileState extends State<ProfilePage> {
     double hMargin = width * 0.08;
     double vMargin = width * 0.16;
 
-    return Scaffold(
-      endDrawer: CustomDrawer(
-        pageContext: context,
-      ),
-      appBar: CustomAppBar(title: "Profile", actions: [
-        if (editMode == false)
-          EditButton(
-            key: editProfileKey,
-            onPressed: () {
-              enableEdit();
-            },
-          ),
-      ]),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: editMode
-          ? SaveButton(onPressed: () {
-              saveUpdates();
-            })
-          : null,
-      body: RefreshIndicator(
-        key: _refreshIndicatorKey,
-        onRefresh: _refresh,
-        child: Form(
-          key: _formKey,
-          child: Center(
-            child: SingleChildScrollView(
-              controller: scrollController,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                    vertical: vMargin, horizontal: hMargin),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ProfileImageViewer(
-                      enabled: editMode,
-                      imagePath: UserController.currentUser?.userPhoto,
-                      imageData: image,
-                      onImageChange: (Uint8List? newImage) {
-                        image = newImage;
-                      },
-                    ),
-                    CustomTextField(
-                      controller: _nameController,
-                      title: "Name",
-                      enabled: editMode,
-                      validator: Validator.isNameValid,
-                    ),
-                    CustomTextField(
-                      controller: _emailController,
-                      title: "Email",
-                      enabled: false,
-                      validator: Validator.isEmailValid,
-                    ),
-                    CustomPhoneField(
-                      title: "Phone",
-                      initialValue: phoneNumber,
-                      onPhoneChanged: (PhoneNumber newPhoneNumber) {
-                        phoneNumber = newPhoneNumber;
-                      },
-                      enabled: editMode,
-                    ),
-                    CustomTextField(
-                      controller: _scholarIDController,
-                      title: "ScholarID",
-                      enabled: editMode,
-                      validator: Validator.isScholarIDValid,
-                    ),
-                    CustomDropDown(
-                      title: "Branch",
-                      items:
-                          Branch.values.map((branch) => branch.name).toList(),
-                      enabled: editMode,
-                      value: UserController.currentUser!.branch.name,
-                      onChanged: (String? newSelectedBranch) {
-                        selectedBranch = newSelectedBranch ??
-                            UserController.currentUser!.branch.name;
-                      },
-                    ),
-                    CustomDropDown(
-                      title: "Degree",
-                      items:
-                          Degree.values.map((degree) => degree.name).toList(),
-                      enabled: editMode,
-                      value: UserController.currentUser!.degree.name,
-                      onChanged: (String? newSelectedDegree) {
-                        selectedDegree = newSelectedDegree ??
-                            UserController.currentUser!.degree.name;
-                      },
-                    ),
-                    DeleteProfileButton(key: delProfileKey),
-                  ].separate(gap),
+    return PopScope(
+      canPop: !isGuideRunning,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+      },
+      child: Scaffold(
+        endDrawer: CustomDrawer(
+          pageContext: context,
+        ),
+        appBar: CustomAppBar(title: "Profile", actions: [
+          if (editMode == false)
+            EditButton(
+              key: editProfileKey,
+              onPressed: () {
+                enableEdit();
+              },
+            ),
+        ]),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: editMode
+            ? SaveButton(onPressed: () {
+                saveUpdates();
+              })
+            : null,
+        body: RefreshIndicator(
+          key: _refreshIndicatorKey,
+          onRefresh: _refresh,
+          child: Form(
+            key: _formKey,
+            child: Center(
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: vMargin, horizontal: hMargin),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ProfileImageViewer(
+                        enabled: editMode,
+                        imagePath: UserController.currentUser?.userPhoto,
+                        imageData: image,
+                        onImageChange: (Uint8List? newImage) {
+                          image = newImage;
+                        },
+                      ),
+                      CustomTextField(
+                        controller: _nameController,
+                        title: "Name",
+                        enabled: editMode,
+                        validator: Validator.isNameValid,
+                      ),
+                      CustomTextField(
+                        controller: _emailController,
+                        title: "Email",
+                        enabled: false,
+                        validator: Validator.isEmailValid,
+                      ),
+                      CustomPhoneField(
+                        title: "Phone",
+                        initialValue: phoneNumber,
+                        onPhoneChanged: (PhoneNumber newPhoneNumber) {
+                          phoneNumber = newPhoneNumber;
+                        },
+                        enabled: editMode,
+                      ),
+                      CustomTextField(
+                        controller: _scholarIDController,
+                        title: "ScholarID",
+                        enabled: editMode,
+                        validator: Validator.isScholarIDValid,
+                      ),
+                      CustomDropDown(
+                        title: "Branch",
+                        items:
+                            Branch.values.map((branch) => branch.name).toList(),
+                        enabled: editMode,
+                        value: UserController.currentUser!.branch.name,
+                        onChanged: (String? newSelectedBranch) {
+                          selectedBranch = newSelectedBranch ??
+                              UserController.currentUser!.branch.name;
+                        },
+                      ),
+                      CustomDropDown(
+                        title: "Degree",
+                        items:
+                            Degree.values.map((degree) => degree.name).toList(),
+                        enabled: editMode,
+                        value: UserController.currentUser!.degree.name,
+                        onChanged: (String? newSelectedDegree) {
+                          selectedDegree = newSelectedDegree ??
+                              UserController.currentUser!.degree.name;
+                        },
+                      ),
+                      DeleteProfileButton(key: delProfileKey),
+                    ].separate(gap),
+                  ),
                 ),
               ),
             ),

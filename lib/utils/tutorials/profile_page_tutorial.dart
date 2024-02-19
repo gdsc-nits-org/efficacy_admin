@@ -8,6 +8,7 @@ void showProfilePageTutorial(
   GlobalKey delProfileKey,
   ScrollController scrollController, {
   void Function()? onFinish,
+  bool Function()? onSkip,
 }) {
   List<TargetFocus> targets = getProfilePageTargets(
     context,
@@ -20,6 +21,7 @@ void showProfilePageTutorial(
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
     onFinish: onFinish,
+    onSkip: onSkip,
   ).show(context: context);
 }
 

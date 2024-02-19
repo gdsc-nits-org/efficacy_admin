@@ -8,6 +8,7 @@ void showCreateClubTutorial(
   GlobalKey editBannerKey,
   GlobalKey createKey, {
   void Function()? onFinish,
+  bool Function()? onSkip,
 }) {
   List<TargetFocus> targets =
       getCreateClubTargets(context, editImageKey, editBannerKey, createKey);
@@ -17,6 +18,7 @@ void showCreateClubTutorial(
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
     onFinish: onFinish,
+    onSkip: onSkip,
   ).show(context: context);
 }
 

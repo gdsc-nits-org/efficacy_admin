@@ -9,6 +9,7 @@ void showHomePageTutorial(
   GlobalKey drawerKey,
   GlobalKey feedKey, {
   void Function()? onFinish,
+  bool Function()? onSkip,
 }) {
   List<TargetFocus> targets = getHomePageTargets(
     context,
@@ -22,6 +23,7 @@ void showHomePageTutorial(
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
     onFinish: onFinish,
+    onSkip: onSkip,
   ).show(context: context);
 }
 
@@ -29,6 +31,7 @@ void showCreateEventTutorial(
   BuildContext context,
   GlobalKey createEventKey, {
   void Function()? onFinish,
+  bool Function()? onSkip,
 }) {
   List<TargetFocus> targets = getCreateEventTargets(context, createEventKey);
 
@@ -37,6 +40,7 @@ void showCreateEventTutorial(
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
     onFinish: onFinish,
+    onSkip: onSkip,
   ).show(context: context);
 }
 

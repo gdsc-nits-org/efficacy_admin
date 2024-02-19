@@ -28,8 +28,8 @@ class _MembersOverlayState extends State<MembersOverlay> {
       height: min(400 * 1.5, size.height * .8),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
-        child: Scaffold(
-          body: Padding(
+        child: Material(
+          child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 2),
             child: Column(
               children: [

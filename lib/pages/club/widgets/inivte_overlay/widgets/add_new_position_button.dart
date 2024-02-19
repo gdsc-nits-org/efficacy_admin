@@ -17,7 +17,7 @@ class _AddNewPositionButtonState extends State<AddNewPositionButton> {
     super.initState();
     widget.newClubPositionController.addListener(() {
       setState(() {
-        newClubPositionName = widget.newClubPositionController.text;
+        newClubPositionName = widget.newClubPositionController.text.trim();
       });
     });
   }

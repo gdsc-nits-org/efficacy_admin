@@ -171,7 +171,7 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                   child: AddNewPositionButton(
                                     onTap: () async {
                                       if (_newClubPositionController
-                                          .text.isNotEmpty) {
+                                          .text.trim().isNotEmpty) {
                                         String newClubPositionName =
                                             _newClubPositionController.text
                                                 .trim();

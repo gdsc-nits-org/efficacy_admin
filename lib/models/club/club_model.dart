@@ -27,6 +27,10 @@ class ClubModel with _$ClubModel {
     /// Since it has issues with freezed (cannot make keys with custom type)
     required Map<String, List<String>> members,
 
+    /// ID of the club position of the leader
+    /// Required to make sure that all the positions are not deleted
+    String? leadPositionID,
+
     /// Follower Ids
     @Default([]) List<String> followers,
     DateTime? lastLocalUpdate,
@@ -89,6 +93,8 @@ class ClubModel with _$ClubModel {
                     other.clubBannerPublicId == clubBannerPublicId) &&
                 const DeepCollectionEquality()
                     .equals(other._members, members) &&
+                (identical(other.leadPositionID, leadPositionID) ||
+                    other.leadPositionID == leadPositionID) &&
                 const DeepCollectionEquality()
                     .equals(other._followers, followers) &&
                 (identical(other.lastLocalUpdate, lastLocalUpdate) ||
@@ -112,6 +118,7 @@ class ClubModel with _$ClubModel {
           clubBannerURL,
           clubBannerPublicId,
           const DeepCollectionEquality().hash(members),
+          leadPositionID,
           const DeepCollectionEquality().hash(followers),
           lastLocalUpdate);
 }
@@ -126,6 +133,7 @@ enum ClubFields {
   clubLogoURL,
   clubBannerURL,
   members,
+  leadPositionID,
   followers,
   lastLocalUpdate
 }

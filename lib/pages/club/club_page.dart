@@ -273,6 +273,7 @@ class _ClubPageState extends State<ClubPage> {
                   members: {
                     clubPosition.id!: [UserController.currentUser!.email],
                   },
+                  leadPositionID: clubPosition.id,
                 );
                 newClub = await ClubController.update(newClub!);
                 List<String> clubPositions =

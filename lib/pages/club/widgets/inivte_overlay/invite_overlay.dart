@@ -298,52 +298,57 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                                   },
                                                   icon: const Icon(Icons.group),
                                                 ),
-                                                IconButton(
-                                                    tooltip:
-                                                        "Edit club position",
-                                                    key: (index == 0)
-                                                        ? editPosKey
-                                                        : null,
-                                                    onPressed: () async {
-                                                      var updatedPosition =
-                                                          await showDialog(
-                                                              context: context,
-                                                              useRootNavigator:
-                                                                  false,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return Center(
-                                                                  child:
-                                                                      ClubPositionPermissionOverlay(
-                                                                    club: widget
-                                                                        .club,
-                                                                    clubPosition:
-                                                                        clubPositionList[
-                                                                            index],
-                                                                  ),
-                                                                );
-                                                              });
-                                                      if (updatedPosition !=
-                                                              null &&
-                                                          updatedPosition
-                                                              is ClubPositionModel) {
-                                                        setState(() {
-                                                          clubPositionList[
-                                                                  index] =
-                                                              updatedPosition;
-                                                        });
-                                                      }
-                                                      if (updatedPosition ==
-                                                          null) {
-                                                        setState(() {
-                                                          clubPositionList
-                                                              .removeAt(index);
-                                                        });
-                                                      }
-                                                    },
-                                                    icon:
-                                                        const Icon(Icons.edit)),
+                                                if (UserController
+                                                    .clubWithModifyClubPermission
+                                                    .contains(widget.club))
+                                                  IconButton(
+                                                      tooltip:
+                                                          "Edit club position",
+                                                      key: (index == 0)
+                                                          ? editPosKey
+                                                          : null,
+                                                      onPressed: () async {
+                                                        var updatedPosition =
+                                                            await showDialog(
+                                                                context:
+                                                                    context,
+                                                                useRootNavigator:
+                                                                    false,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return Center(
+                                                                    child:
+                                                                        ClubPositionPermissionOverlay(
+                                                                      club: widget
+                                                                          .club,
+                                                                      clubPosition:
+                                                                          clubPositionList[
+                                                                              index],
+                                                                    ),
+                                                                  );
+                                                                });
+                                                        if (updatedPosition !=
+                                                                null &&
+                                                            updatedPosition
+                                                                is ClubPositionModel) {
+                                                          setState(() {
+                                                            clubPositionList[
+                                                                    index] =
+                                                                updatedPosition;
+                                                          });
+                                                        }
+                                                        if (updatedPosition ==
+                                                            null) {
+                                                          setState(() {
+                                                            clubPositionList
+                                                                .removeAt(
+                                                                    index);
+                                                          });
+                                                        }
+                                                      },
+                                                      icon: const Icon(
+                                                          Icons.edit)),
                                               ],
                                             ),
                                           );

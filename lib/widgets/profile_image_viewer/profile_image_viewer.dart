@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:efficacy_admin/config/configurations/theme/utils/palette.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -50,40 +51,46 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
   }
 
   Future<Uint8List?> pickImage(ImageSource imageSource) async {
-    Uint8List? img = await ImageController.compressedImage(
-      // source: ImageSource.gallery,
-      source: imageSource,
-      maxSize: 1024 * 1024,
-      context: context,
-    );
-    if (img != null && mounted) {
-      Directory tempDir = await getTemporaryDirectory();
-      File compressed = File("${tempDir.path}/compressed.jpg");
-      await compressed.writeAsBytes(img);
+    Uint8List? img;
+    await showLoadingOverlay(
+        parentContext: context,
+        asyncTask: () async {
+          img = await ImageController.compressedImage(
+            // source: ImageSource.gallery,
+            source: imageSource,
+            maxSize: 1024 * 1024,
+            context: context,
+          );
 
-      CroppedFile? croppedFile = await ImageCropper().cropImage(
-        sourcePath: compressed.path,
-        cropStyle: CropStyle.circle,
-        aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
-        uiSettings: [
-          AndroidUiSettings(
-              toolbarTitle: 'Crop Image',
-              toolbarColor: dark,
-              activeControlsWidgetColor: shadow,
-              toolbarWidgetColor: light,
-              initAspectRatio: CropAspectRatioPreset.original,
-              dimmedLayerColor: shadow,
-              lockAspectRatio: true),
-          IOSUiSettings(
-            title: 'Crop Image',
-          ),
-        ],
-      );
-      if (croppedFile != null) {
-        img = await croppedFile.readAsBytes();
-      }
-      await compressed.delete(recursive: true);
-    }
+          if (img != null && mounted) {
+            Directory tempDir = await getTemporaryDirectory();
+            File compressed = File("${tempDir.path}/compressed.jpg");
+            await compressed.writeAsBytes(img!.toList());
+
+            CroppedFile? croppedFile = await ImageCropper().cropImage(
+              sourcePath: compressed.path,
+              cropStyle: CropStyle.circle,
+              aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+              uiSettings: [
+                AndroidUiSettings(
+                    toolbarTitle: 'Crop Image',
+                    toolbarColor: dark,
+                    activeControlsWidgetColor: shadow,
+                    toolbarWidgetColor: light,
+                    initAspectRatio: CropAspectRatioPreset.original,
+                    dimmedLayerColor: shadow,
+                    lockAspectRatio: true),
+                IOSUiSettings(
+                  title: 'Crop Image',
+                ),
+              ],
+            );
+            if (croppedFile != null) {
+              img = await croppedFile.readAsBytes();
+            }
+            await compressed.delete(recursive: true);
+          }
+        });
     return img;
   }
 

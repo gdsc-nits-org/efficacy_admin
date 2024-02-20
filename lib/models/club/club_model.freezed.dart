@@ -30,6 +30,10 @@ mixin _$ClubModel {
   @PhoneNumberSerializer()
   PhoneNumber? get phoneNumber => throw _privateConstructorUsedError;
   String get clubLogoURL => throw _privateConstructorUsedError;
+
+  /// This basically tells whether the club was accepted by the developer and
+  /// is available for general use or not.
+  ClubStatus get clubStatus => throw _privateConstructorUsedError;
   String? get clubLogoPublicId => throw _privateConstructorUsedError;
   String? get clubBannerURL => throw _privateConstructorUsedError;
   String? get clubBannerPublicId => throw _privateConstructorUsedError;
@@ -67,6 +71,7 @@ abstract class $ClubModelCopyWith<$Res> {
       String email,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String clubLogoURL,
+      ClubStatus clubStatus,
       String? clubLogoPublicId,
       String? clubBannerURL,
       String? clubBannerPublicId,
@@ -97,6 +102,7 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
     Object? email = null,
     Object? phoneNumber = freezed,
     Object? clubLogoURL = null,
+    Object? clubStatus = null,
     Object? clubLogoPublicId = freezed,
     Object? clubBannerURL = freezed,
     Object? clubBannerPublicId = freezed,
@@ -138,6 +144,10 @@ class _$ClubModelCopyWithImpl<$Res, $Val extends ClubModel>
           ? _value.clubLogoURL
           : clubLogoURL // ignore: cast_nullable_to_non_nullable
               as String,
+      clubStatus: null == clubStatus
+          ? _value.clubStatus
+          : clubStatus // ignore: cast_nullable_to_non_nullable
+              as ClubStatus,
       clubLogoPublicId: freezed == clubLogoPublicId
           ? _value.clubLogoPublicId
           : clubLogoPublicId // ignore: cast_nullable_to_non_nullable
@@ -187,6 +197,7 @@ abstract class _$$ClubModelImplCopyWith<$Res>
       String email,
       @PhoneNumberSerializer() PhoneNumber? phoneNumber,
       String clubLogoURL,
+      ClubStatus clubStatus,
       String? clubLogoPublicId,
       String? clubBannerURL,
       String? clubBannerPublicId,
@@ -215,6 +226,7 @@ class __$$ClubModelImplCopyWithImpl<$Res>
     Object? email = null,
     Object? phoneNumber = freezed,
     Object? clubLogoURL = null,
+    Object? clubStatus = null,
     Object? clubLogoPublicId = freezed,
     Object? clubBannerURL = freezed,
     Object? clubBannerPublicId = freezed,
@@ -256,6 +268,10 @@ class __$$ClubModelImplCopyWithImpl<$Res>
           ? _value.clubLogoURL
           : clubLogoURL // ignore: cast_nullable_to_non_nullable
               as String,
+      clubStatus: null == clubStatus
+          ? _value.clubStatus
+          : clubStatus // ignore: cast_nullable_to_non_nullable
+              as ClubStatus,
       clubLogoPublicId: freezed == clubLogoPublicId
           ? _value.clubLogoPublicId
           : clubLogoPublicId // ignore: cast_nullable_to_non_nullable
@@ -300,6 +316,7 @@ class _$ClubModelImpl extends _ClubModel {
       required this.email,
       @PhoneNumberSerializer() this.phoneNumber,
       required this.clubLogoURL,
+      required this.clubStatus,
       this.clubLogoPublicId,
       this.clubBannerURL,
       this.clubBannerPublicId,
@@ -340,6 +357,11 @@ class _$ClubModelImpl extends _ClubModel {
   final PhoneNumber? phoneNumber;
   @override
   final String clubLogoURL;
+
+  /// This basically tells whether the club was accepted by the developer and
+  /// is available for general use or not.
+  @override
+  final ClubStatus clubStatus;
   @override
   final String? clubLogoPublicId;
   @override
@@ -384,7 +406,7 @@ class _$ClubModelImpl extends _ClubModel {
 
   @override
   String toString() {
-    return 'ClubModel(id: $id, name: $name, instituteName: $instituteName, description: $description, socials: $socials, email: $email, phoneNumber: $phoneNumber, clubLogoURL: $clubLogoURL, clubLogoPublicId: $clubLogoPublicId, clubBannerURL: $clubBannerURL, clubBannerPublicId: $clubBannerPublicId, members: $members, leadPositionID: $leadPositionID, followers: $followers, lastLocalUpdate: $lastLocalUpdate)';
+    return 'ClubModel(id: $id, name: $name, instituteName: $instituteName, description: $description, socials: $socials, email: $email, phoneNumber: $phoneNumber, clubLogoURL: $clubLogoURL, clubStatus: $clubStatus, clubLogoPublicId: $clubLogoPublicId, clubBannerURL: $clubBannerURL, clubBannerPublicId: $clubBannerPublicId, members: $members, leadPositionID: $leadPositionID, followers: $followers, lastLocalUpdate: $lastLocalUpdate)';
   }
 
   @JsonKey(ignore: true)
@@ -411,6 +433,7 @@ abstract class _ClubModel extends ClubModel {
       required final String email,
       @PhoneNumberSerializer() final PhoneNumber? phoneNumber,
       required final String clubLogoURL,
+      required final ClubStatus clubStatus,
       final String? clubLogoPublicId,
       final String? clubBannerURL,
       final String? clubBannerPublicId,
@@ -441,6 +464,11 @@ abstract class _ClubModel extends ClubModel {
   PhoneNumber? get phoneNumber;
   @override
   String get clubLogoURL;
+  @override
+
+  /// This basically tells whether the club was accepted by the developer and
+  /// is available for general use or not.
+  ClubStatus get clubStatus;
   @override
   String? get clubLogoPublicId;
   @override

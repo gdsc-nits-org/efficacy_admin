@@ -311,6 +311,7 @@ class _ClubPageState extends State<ClubPage> {
               email: emailController.text,
               phoneNumber: phoneNumber,
               clubLogoURL: clubImageInfo!.url!,
+              clubStatus: ClubStatus.requested,
               clubLogoPublicId: clubImageInfo.publicID,
               clubBannerURL: bannerImageInfo?.url,
               clubBannerPublicId: bannerImageInfo?.publicID,

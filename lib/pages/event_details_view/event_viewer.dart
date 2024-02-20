@@ -12,7 +12,9 @@ import 'package:efficacy_admin/pages/event_details_view/widgets/photo_viewer.dar
 import 'package:efficacy_admin/pages/event_details_view/widgets/stats_info.dart';
 import 'package:efficacy_admin/utils/custom_network_image.dart';
 import 'package:efficacy_admin/utils/share_handler.dart';
+import 'package:efficacy_admin/utils/utils.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -205,6 +207,22 @@ class _EventsViewerState extends State<EventsViewer> {
                                   ?.copyWith(color: dark),
                             )
                           ].separate(10),
+                        ),
+                        Row(
+                          children: [
+                            const Icon(
+                              CupertinoIcons.clock,
+                              color: dark,
+                              size: 25,
+                            ),
+                            Text(
+                              Formatter.timeOnly(widget.currentEvent.startDate),
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: shadow,
+                              ),
+                            ),
+                          ].separate(15),
                         ),
                         const Gap(3),
                         // EventStats(currentEvent: widget.currentEvent),
@@ -419,8 +437,10 @@ class _EventsViewerState extends State<EventsViewer> {
                                   club = snapshot.data ?? [];
                                 }
                                 if (club.isNotEmpty) {
+                                  String clubName =
+                                      "${club.first.name[0].toUpperCase()}${club.first.name.substring(1)}";
                                   return Text(
-                                    club.first.name,
+                                    clubName,
                                     style: const TextStyle(color: dark),
                                     maxLines: null,
                                   );

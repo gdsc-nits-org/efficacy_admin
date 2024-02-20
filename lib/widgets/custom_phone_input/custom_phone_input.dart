@@ -47,7 +47,7 @@ class CustomPhoneField extends StatelessWidget {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
-        
+
               prefixIcon: Icon(prefixIcon,
                   color: const Color.fromARGB(
                       255, 67, 67, 67)), //const Color(0xFF05354C),),
@@ -56,7 +56,7 @@ class CustomPhoneField extends StatelessWidget {
             onChanged: onPhoneChanged,
             enabled: enabled,
             initialCountryCode: initialValue?.countryISOCode ?? "IN",
-            initialValue: initialValue?.number,
+            initialValue: "${initialValue?.countryCode}${initialValue?.number}",
           ),
         ),
       ],

@@ -49,6 +49,7 @@ class ErrorHandler {
       if (obj is Exception) {
         errorMessage = obj.toString().substring("Exception: ".length);
       } else {
+        // print(obj.toString());
         errorMessage = "Some error occurred. Please retry or restart the app.";
         // if (Platform.isAndroid) {
         //   errorMessage = 'This feature is not available on Android.';

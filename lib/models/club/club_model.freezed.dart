@@ -316,7 +316,7 @@ class _$ClubModelImpl extends _ClubModel {
       required this.email,
       @PhoneNumberSerializer() this.phoneNumber,
       required this.clubLogoURL,
-      required this.clubStatus,
+      this.clubStatus = ClubStatus.requested,
       this.clubLogoPublicId,
       this.clubBannerURL,
       this.clubBannerPublicId,
@@ -361,6 +361,7 @@ class _$ClubModelImpl extends _ClubModel {
   /// This basically tells whether the club was accepted by the developer and
   /// is available for general use or not.
   @override
+  @JsonKey()
   final ClubStatus clubStatus;
   @override
   final String? clubLogoPublicId;
@@ -433,7 +434,7 @@ abstract class _ClubModel extends ClubModel {
       required final String email,
       @PhoneNumberSerializer() final PhoneNumber? phoneNumber,
       required final String clubLogoURL,
-      required final ClubStatus clubStatus,
+      final ClubStatus clubStatus,
       final String? clubLogoPublicId,
       final String? clubBannerURL,
       final String? clubBannerPublicId,

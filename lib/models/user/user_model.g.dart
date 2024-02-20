@@ -68,8 +68,6 @@ const _$BranchEnumMap = {
 
 const _$DegreeEnumMap = {
   Degree.BTech: 'BTech',
-  Degree.MTech: 'MTech',
-  Degree.Phd: 'Phd',
 };
 
 const _$SocialEnumMap = {

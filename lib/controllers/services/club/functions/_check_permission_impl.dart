@@ -17,8 +17,7 @@ Future<void> _checkPermissionImpl({
     return;
   }
 
-  AppInfoModel appInfo = await AppInfoController.get();
-  if (appInfo.adminEmails.contains(UserController.currentUser?.email)) {
+  if (await UserController.isCurrentUserAnAdmin()) {
     return;
   }
   List<ClubPositionModel> positions = UserController.clubPositions

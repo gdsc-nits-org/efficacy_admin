@@ -24,6 +24,7 @@ part 'functions/_get_all_clubs_impl.dart';
 part 'functions/_remove_member_impl.dart';
 part 'functions/_accept_club_impl.dart';
 part 'functions/_reject_club_impl.dart';
+part 'functions/_get_requested_clubs_impl.dart';
 
 class ClubController {
   const ClubController._();
@@ -39,6 +40,10 @@ class ClubController {
 
   static Future<void> _checkDuplicate(ClubModel club) async {
     return await _checkDuplicateImpl(club);
+  }
+
+  static Future<List<ClubModel>> getRequestedClubs() async {
+    return await _getRequestedClubsImpl();
   }
 
   static Future<void> _checkPermission({

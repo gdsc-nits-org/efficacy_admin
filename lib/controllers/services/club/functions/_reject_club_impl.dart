@@ -5,8 +5,7 @@ Future<void> _rejectClubImpl({required String clubID}) async {
   if (currentUser == null) {
     throw Exception("Please login again.");
   }
-  AppInfoModel appInfo = await AppInfoController.get();
-  if (!appInfo.adminEmails.contains(currentUser.email)) {
+  if (!(await UserController.isCurrentUserAnAdmin())) {
     throw Exception("You do not have enough privilege for the operation.");
   }
 

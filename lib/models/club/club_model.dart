@@ -6,6 +6,8 @@ import 'package:mongo_dart/mongo_dart.dart';
 part 'club_model.freezed.dart';
 part 'club_model.g.dart';
 
+enum ClubStatus { requested, accepted, rejected }
+
 @Freezed(fromJson: true, toJson: true)
 class ClubModel with _$ClubModel {
   const ClubModel._();
@@ -18,6 +20,10 @@ class ClubModel with _$ClubModel {
     required String email,
     @PhoneNumberSerializer() PhoneNumber? phoneNumber,
     required String clubLogoURL,
+
+    /// This basically tells whether the club was accepted by the developer and
+    /// is available for general use or not.
+    required ClubStatus clubStatus,
     String? clubLogoPublicId,
     String? clubBannerURL,
     String? clubBannerPublicId,
@@ -58,6 +64,7 @@ class ClubModel with _$ClubModel {
       instituteName: json[ClubFields.instituteName.name],
       description: "",
       socials: {},
+      clubStatus: ClubStatus.requested,
       email: "",
       clubLogoURL: "",
       members: {},
@@ -85,6 +92,8 @@ class ClubModel with _$ClubModel {
                     other.phoneNumber == phoneNumber) &&
                 (identical(other.clubLogoURL, clubLogoURL) ||
                     other.clubLogoURL == clubLogoURL) &&
+                (identical(other.clubStatus, clubStatus) ||
+                    other.clubStatus == clubStatus) &&
                 (identical(other.clubLogoPublicId, clubLogoPublicId) ||
                     other.clubLogoPublicId == clubLogoPublicId) &&
                 (identical(other.clubBannerURL, clubBannerURL) ||
@@ -114,6 +123,7 @@ class ClubModel with _$ClubModel {
           email,
           phoneNumber,
           clubLogoURL,
+          clubStatus,
           clubLogoPublicId,
           clubBannerURL,
           clubBannerPublicId,
@@ -131,7 +141,10 @@ enum ClubFields {
   email,
   phoneNumber,
   clubLogoURL,
+  clubStatus,
+  clubLogoPublicId,
   clubBannerURL,
+  clubBannerPublicId,
   members,
   leadPositionID,
   followers,

@@ -44,6 +44,7 @@ Future<List<ClubModel>> _fetchLocal({
 
     for (dynamic model in res.values) {
       model = Formatter.convertMapToMapStringDynamic(model);
+      ClubModel clubModel = ClubModel.fromJson(model);
       if (id != null &&
           model["_id"] == id &&
           !ClubController._isMinified(model)) {
@@ -51,7 +52,8 @@ Future<List<ClubModel>> _fetchLocal({
         break;
       } else if (instituteName != null &&
           model[ClubFields.instituteName.name] == instituteName &&
-          !ClubController._isMinified(model)) {
+          !ClubController._isMinified(model) &&
+          clubModel.clubStatus == ClubStatus.accepted) {
         filteredClubs.add(ClubModel.fromJson(model));
       } else if (clubName != null &&
           model[ClubFields.name.name] == clubName &&
@@ -78,6 +80,7 @@ Future<List<ClubModel>> _fetchFromBackend({
   }
   if (instituteName != null) {
     selectorBuilder.eq(ClubFields.instituteName.name, instituteName);
+    selectorBuilder.eq(ClubFields.clubStatus.name, ClubStatus.accepted.name);
   }
   if (clubName != null) {
     selectorBuilder.eq(ClubFields.name.name, clubName);

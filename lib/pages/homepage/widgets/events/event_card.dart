@@ -73,6 +73,7 @@ class EventCard extends StatelessWidget {
                       if (club.isNotEmpty) {
                         String clubName =
                             "${club.first.name[0].toUpperCase()}${club.first.name.substring(1)}";
+                            
                         return EventDataField(
                           text: clubName,
                           icon: Icons.group,

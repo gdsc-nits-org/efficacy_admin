@@ -7,9 +7,12 @@ import 'package:efficacy_admin/models/utils/constants.dart';
 import 'package:efficacy_admin/widgets/custom_text_field/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
+import '../../../models/models.dart';
+
 class ClubPositionPermissionOverlay extends StatefulWidget {
   final ClubPositionModel clubPosition;
-  const ClubPositionPermissionOverlay({super.key, required this.clubPosition});
+  final ClubModel? club;
+  const ClubPositionPermissionOverlay({super.key, required this.clubPosition,required this.club});
 
   @override
   State<ClubPositionPermissionOverlay> createState() =>
@@ -61,6 +64,7 @@ class _ClubPositionPermissionOverlayState
                     Column(
                       children: Permissions.values.map((permission) {
                         return CheckboxListTile(
+                          enabled: widget.clubPosition.id != widget.club!.leadPositionID,
                           contentPadding: EdgeInsets.zero,
                           title: Tooltip(
                             message: permission.description,
@@ -105,6 +109,7 @@ class _ClubPositionPermissionOverlayState
                         const Spacer(
                           flex: 1,
                         ),
+                        if (widget.clubPosition.id != widget.club!.leadPositionID)
                         Flexible(
                           flex: 4,
                           fit: FlexFit.loose,
@@ -113,14 +118,17 @@ class _ClubPositionPermissionOverlayState
                                 backgroundColor:
                                     MaterialStatePropertyAll(Colors.red)),
                             onPressed: () async {
-                              showLoadingOverlay(
-                                  parentContext: context,
-                                  asyncTask: () async {
-                                    await ClubPositionController.delete(
-                                      widget.clubPosition,
-                                    );
-                                    Navigator.pop(context, null);
-                                  });
+
+                                showLoadingOverlay(
+                                    parentContext: context,
+                                    asyncTask: () async {
+                                      await ClubPositionController.delete(
+                                        widget.clubPosition,
+                                      );
+                                      Navigator.pop(context, null);
+                                    });
+
+
                             },
                             child: const Text('Delete'),
                           ),

@@ -54,7 +54,7 @@ class _ClubPositionPermissionOverlayState
                     CustomTextField(
                       controller: _nameController,
                       enabled: true,
-                      title: "Club Leader",
+                      title: "Club Position",
                     ),
                     const Spacer(flex: 1),
                     const Text('Position Permissions:'),

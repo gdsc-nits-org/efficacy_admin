@@ -52,6 +52,9 @@ class _ClubPageState extends State<ClubPage> {
   String instituteName = "NIT, Silchar";
   PhoneNumber? phoneNumber;
 
+  // Check for guide
+  bool isGuideRunning = false;
+
   // Global keys for guide
   GlobalKey editClubKey = GlobalKey();
   GlobalKey editClubPositionKey = GlobalKey();
@@ -66,36 +69,92 @@ class _ClubPageState extends State<ClubPage> {
     initData(widget.club);
     if (!_createMode) {
       if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.editClub)) {
-        Future.delayed(const Duration(seconds: 1), () {
+        isGuideRunning = true;
+        Future.delayed(const Duration(seconds: 0), () {
           showEditClubTutorial(
             context,
             editClubKey,
             editClubPositionKey,
             onFinish: () {
+              setState(() {
+                isGuideRunning = false;
+              });
               if (UserController.clubWithModifyMemberPermission
                       .contains(club) &&
                   LocalDatabase.getAndSetGuideStatus(
                       LocalGuideCheck.clubInvite)) {
-                showInviteTutorial(context, inviteKey);
+                isGuideRunning = true;
+                showInviteTutorial(
+                  context,
+                  inviteKey,
+                  onFinish: () {
+                    setState(() {
+                      isGuideRunning = false;
+                    });
+                  },
+                  onSkip: () {
+                    setState(() {
+                      isGuideRunning = false;
+                    });
+                    // Returning true to allow skip
+                    return true;
+                  },
+                );
               }
+            },
+            onSkip: () {
+              setState(() {
+                isGuideRunning = false;
+              });
+              // Returning true to allow skip
+              return true;
             },
           );
         });
       } else if (UserController.clubWithModifyMemberPermission.contains(club) &&
           LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.clubInvite)) {
-        Future.delayed(const Duration(seconds: 1), () {
-          showInviteTutorial(context, inviteKey);
+        isGuideRunning = true;
+        Future.delayed(const Duration(seconds: 0), () {
+          showInviteTutorial(
+            context,
+            inviteKey,
+            onFinish: () {
+              setState(() {
+                isGuideRunning = false;
+              });
+            },
+            onSkip: () {
+              setState(() {
+                isGuideRunning = false;
+              });
+              // Returning true to allow skip
+              return true;
+            },
+          );
         });
       }
     }
     if (_createMode &&
         LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.createClub)) {
-      Future.delayed(const Duration(seconds: 1), () {
+      isGuideRunning = true;
+      Future.delayed(const Duration(seconds: 0), () {
         showCreateClubTutorial(
           context,
           editImageKey,
           editBannerKey,
           createKey,
+          onFinish: () {
+            setState(() {
+              isGuideRunning = false;
+            });
+          },
+          onSkip: () {
+            setState(() {
+              isGuideRunning = false;
+            });
+            // Returning true to allow skip
+            return true;
+          },
         );
       });
     }
@@ -252,6 +311,7 @@ class _ClubPageState extends State<ClubPage> {
               email: emailController.text,
               phoneNumber: phoneNumber,
               clubLogoURL: clubImageInfo!.url!,
+              clubStatus: ClubStatus.requested,
               clubLogoPublicId: clubImageInfo.publicID,
               clubBannerURL: bannerImageInfo?.url,
               clubBannerPublicId: bannerImageInfo?.publicID,
@@ -471,40 +531,48 @@ class _ClubPageState extends State<ClubPage> {
       ),
     );
 
-    return Scaffold(
-      endDrawer: CustomDrawer(
-        pageContext: context,
+    return PopScope(
+      canPop: !isGuideRunning,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+      },
+      child: Scaffold(
+        endDrawer: CustomDrawer(
+          pageContext: context,
+        ),
+        appBar: CustomAppBar(
+            title: (_createMode) ? "New Club" : nameController.text,
+            actions: [
+              if (_editMode == false &&
+                  _createMode == false &&
+                  UserController.clubWithModifyClubPermission.contains(club))
+                EditButton(
+                  key: editClubKey,
+                  onPressed: () {
+                    setState(() {
+                      _editMode = true;
+                    });
+                  },
+                ),
+            ]),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: _createMode
+            ? CreateButton(key: createKey, onPressed: _validateAndCreateClub)
+            : _editMode
+                ? SaveButton(onPressed: () {
+                    _updateClub();
+                    setState(() {
+                      _editMode = false;
+                    });
+                  })
+                : null,
+        body: _createMode == true
+            ? child
+            : RefreshIndicator(
+                key: _refreshIndicatorKey, onRefresh: _refresh, child: child),
       ),
-      appBar: CustomAppBar(
-          title: (_createMode) ? "New Club" : nameController.text,
-          actions: [
-            if (_editMode == false &&
-                _createMode == false &&
-                UserController.clubWithModifyClubPermission.contains(club))
-              EditButton(
-                key: editClubKey,
-                onPressed: () {
-                  setState(() {
-                    _editMode = true;
-                  });
-                },
-              ),
-          ]),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: _createMode
-          ? CreateButton(key: createKey, onPressed: _validateAndCreateClub)
-          : _editMode
-              ? SaveButton(onPressed: () {
-                  _updateClub();
-                  setState(() {
-                    _editMode = false;
-                  });
-                })
-              : null,
-      body: _createMode == true
-          ? child
-          : RefreshIndicator(
-              key: _refreshIndicatorKey, onRefresh: _refresh, child: child),
     );
   }
 }

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:efficacy_admin/controllers/services/app_info/app_info.dart';
 import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/controllers/utils/comparator.dart';
+import 'package:efficacy_admin/models/app_info/app_info_model.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/models/club_position/club_position_model.dart';
 import 'package:efficacy_admin/models/user/user_model.dart';
@@ -20,6 +22,9 @@ part 'functions/_get_impl.dart';
 part 'functions/_get_name_impl.dart';
 part 'functions/_get_all_clubs_impl.dart';
 part 'functions/_remove_member_impl.dart';
+part 'functions/_accept_club_impl.dart';
+part 'functions/_reject_club_impl.dart';
+part 'functions/_get_requested_clubs_impl.dart';
 
 class ClubController {
   const ClubController._();
@@ -35,6 +40,10 @@ class ClubController {
 
   static Future<void> _checkDuplicate(ClubModel club) async {
     return await _checkDuplicateImpl(club);
+  }
+
+  static Future<List<ClubModel>> getRequestedClubs() async {
+    return await _getRequestedClubsImpl();
   }
 
   static Future<void> _checkPermission({
@@ -106,5 +115,13 @@ class ClubController {
       memberEmail: memberEmail,
       position: position,
     );
+  }
+
+  static Future<void> acceptClub({required String clubID}) async {
+    return _acceptClubImpl(clubID: clubID);
+  }
+
+  static Future<void> rejectClub({required String clubID}) async {
+    return _rejectClubImpl(clubID: clubID);
   }
 }

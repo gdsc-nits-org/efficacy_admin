@@ -31,8 +31,9 @@ Future<List<ClubModel>> _fetchAllClubsLocal({
   if (minified == true) {
     for (dynamic model in res.values) {
       ClubModel clubModel = ClubModel.minifiedFromJson(model);
-      if (instituteName.isEmpty ||
-          instituteName.contains(clubModel.instituteName)) {
+      if (clubModel.clubStatus == ClubStatus.accepted &&
+          (instituteName.isEmpty ||
+              instituteName.contains(clubModel.instituteName))) {
         filteredClubs.add(clubModel);
       }
     }
@@ -68,7 +69,8 @@ Future<List<ClubModel>> _fetchAllClubsFromBackend({
   }
 
   if (instituteName.isNotEmpty) {
-    selectorBuilder.all(ClubFields.instituteName.name, instituteName);
+    selectorBuilder.oneFrom(ClubFields.instituteName.name, instituteName);
+    selectorBuilder.eq(ClubFields.clubStatus.name, ClubStatus.accepted.name);
   }
 
   List<Map<String, dynamic>> listResponse =

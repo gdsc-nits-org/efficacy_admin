@@ -5,7 +5,7 @@ part of '../club_position_controller.dart';
 ///
 /// If [forView] is false it is assumed the permission to check is for editing a position
 Future<void> _checkPermissionImpl({
-  required String clubPositionID,
+  required String? clubPositionID,
   required String clubID,
   required bool forView,
 }) async {
@@ -17,9 +17,9 @@ Future<void> _checkPermissionImpl({
   if (club.first.members.isEmpty) {
     return;
   }
-  if (club.first.leadPositionID == clubPositionID) {
-    throw Exception("Leader position cannot be updated or deleted.");
-  }
+  // if (club.first.leadPositionID == clubPositionID) {
+  //   throw Exception("Leader position cannot be updated or deleted.");
+  // }
   List<ClubPositionModel> positions = UserController.clubPositions
       .where((clubPosition) => clubPosition.clubID == clubID)
       .toList();

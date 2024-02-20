@@ -6,6 +6,7 @@ void showSearchBarTutorial(
   BuildContext context,
   GlobalKey searchUserKey, {
   void Function()? onFinish,
+  bool Function()? onSkip,
 }) {
   List<TargetFocus> targets = getSearchBarTarget(context, searchUserKey);
 
@@ -14,6 +15,7 @@ void showSearchBarTutorial(
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
     onFinish: onFinish,
+    onSkip: onSkip,
   ).show(context: context);
 }
 
@@ -49,14 +51,18 @@ List<TargetFocus> getSearchBarTarget(
 
 void showSelectUserTutorial(
   BuildContext context,
-  GlobalKey memberKey,
-) {
+  GlobalKey memberKey, {
+  void Function()? onFinish,
+  bool Function()? onSkip,
+}) {
   List<TargetFocus> targets = getUserTarget(context, memberKey);
 
   TutorialCoachMark(
     hideSkip: true,
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
+    onFinish: onFinish,
+    onSkip: onSkip,
   ).show(context: context);
 }
 
@@ -93,14 +99,18 @@ List<TargetFocus> getUserTarget(
 
 void showInviteButtonTutorial(
   BuildContext context,
-  GlobalKey inviteKey,
-) {
+  GlobalKey inviteKey, {
+  void Function()? onFinish,
+  bool Function()? onSkip,
+}) {
   List<TargetFocus> targets = getInviteButtonTarget(context, inviteKey);
 
   TutorialCoachMark(
     hideSkip: true,
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
+    onFinish: onFinish,
+    onSkip: onSkip,
   ).show(context: context);
 }
 

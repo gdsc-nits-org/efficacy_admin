@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:efficacy_admin/controllers/controllers.dart';
+import 'package:efficacy_admin/controllers/services/app_info/app_info.dart';
 import 'package:efficacy_admin/controllers/utils/comparator.dart';
+import 'package:efficacy_admin/models/app_info/app_info_model.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/utils/database/constants.dart';
 import 'package:efficacy_admin/utils/database/database.dart';
@@ -21,6 +23,7 @@ part 'functions/_delete_impl.dart';
 part 'functions/_gather_data.dart';
 part 'functions/_does_user_exists_impl.dart';
 part 'functions/_reset_password_impl.dart';
+part 'functions/_is_current_user_an_admin_impl.dart';
 
 class UserController {
   static const String _collectionName = "users";
@@ -39,6 +42,10 @@ class UserController {
 
   static Future<void> gatherData({bool forceGet = false}) async {
     return await _gatherDataImpl(forceGet: forceGet);
+  }
+
+  static Future<bool> isCurrentUserAnAdmin() async {
+    return await _isCurrentUserAnAdminImpl();
   }
 
   static Future<bool> doesUserExists({required String email}) async {

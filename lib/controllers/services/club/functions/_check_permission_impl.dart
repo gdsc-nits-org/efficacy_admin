@@ -16,6 +16,10 @@ Future<void> _checkPermissionImpl({
   if (clubs.first.members.isEmpty) {
     return;
   }
+
+  if (await UserController.isCurrentUserAnAdmin()) {
+    return;
+  }
   List<ClubPositionModel> positions = UserController.clubPositions
       .where((clubPosition) => clubPosition.clubID == clubID)
       .toList();

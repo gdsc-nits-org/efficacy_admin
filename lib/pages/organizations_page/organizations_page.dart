@@ -33,6 +33,9 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
     });
   }
 
+  // Check for guide
+  bool isGuideRunning = false;
+
   // Global keys for guide
   GlobalKey invitationsKey = GlobalKey();
   GlobalKey clubsKey = GlobalKey();
@@ -48,12 +51,25 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
       recipientID: UserController.currentUser?.id,
     );
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.organizations)) {
-      Future.delayed(const Duration(seconds: 1), () {
+      isGuideRunning = true;
+      Future.delayed(const Duration(seconds: 0), () {
         showOrganizationPageTutorial(
           context,
           invitationsKey,
           clubsKey,
           createClubKey,
+          onFinish: () {
+            setState(() {
+              isGuideRunning = false;
+            });
+          },
+          onSkip: () {
+            setState(() {
+              isGuideRunning = false;
+            });
+            // Returning true to allow skip
+            return true;
+          },
         );
       });
     }
@@ -69,66 +85,76 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
     double pad = width * 0.05;
     double gap = height * 0.02;
 
-    return Scaffold(
-      appBar: const CustomAppBar(title: "Organizations"),
-      endDrawer: CustomDrawer(
-        pageContext: context,
-      ),
-      floatingActionButton: FloatingActionButton(
-        key: createClubKey,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const ClubPage(
-                createMode: true, // Example parameter value
-                club: null,
+    return PopScope(
+      canPop: !isGuideRunning,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+      },
+      child: Scaffold(
+        appBar: const CustomAppBar(title: "Organizations"),
+        endDrawer: CustomDrawer(
+          pageContext: context,
+        ),
+        floatingActionButton: FloatingActionButton(
+          key: createClubKey,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ClubPage(
+                  createMode: true, // Example parameter value
+                  club: null,
+                ),
               ),
-            ),
-          ).then((value) => showLoadingOverlay(
-              parentContext: context,
-              asyncTask: () async {
-                await _refresh();
-              }));
-        },
-        heroTag: "Create club",
-        tooltip: "Create a new club",
-        child: const Icon(Icons.add),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(pad),
-          child: RefreshIndicator(
-            onRefresh: _refresh,
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("Invitations",
+            ).then((value) => showLoadingOverlay(
+                parentContext: context,
+                asyncTask: () async {
+                  await _refresh();
+                }));
+          },
+          heroTag: "Create club",
+          tooltip: "Create a new club",
+          child: const Icon(Icons.add),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(pad),
+            child: RefreshIndicator(
+              onRefresh: _refresh,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Invitations",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: dark)),
+                    const Divider(),
+                    InvitationsStream(
+                      key: invitationsKey,
+                      maxHeight: height / 3,
+                      onCompleteAction: () async {
+                        await _refresh();
+                      },
+                      invitationStream: invitationsStream,
+                    ),
+                    const Divider(color: dark),
+                    const Text(
+                      "Clubs",
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: dark)),
-                  const Divider(),
-                  InvitationsStream(
-                    key: invitationsKey,
-                    maxHeight: height / 3,
-                    onCompleteAction: () async {
-                      await _refresh();
-                    },
-                    invitationStream: invitationsStream,
-                  ),
-                  const Divider(color: dark),
-                  const Text(
-                    "Clubs",
-                    style: TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold, color: dark),
-                  ),
-                  const Divider(),
-                  ClubsStream(key: clubsKey, clubs: UserController.clubs),
-                ].separate(gap),
+                          color: dark),
+                    ),
+                    const Divider(),
+                    ClubsStream(key: clubsKey, clubs: UserController.clubs),
+                  ].separate(gap),
+                ),
               ),
             ),
           ),

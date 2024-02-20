@@ -22,7 +22,7 @@ Future<Uint8List> getFeedBackData(UserFeedback feedback) async {
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
               pw.ConstrainedBox(
-                constraints: const pw.BoxConstraints(maxHeight: 700),
+                constraints: const pw.BoxConstraints(maxHeight: 728),
                 child: pw.Image(
                   pw.MemoryImage(feedback.screenshot),
                 ),
@@ -59,14 +59,14 @@ Future<Uint8List> getFeedBackData(UserFeedback feedback) async {
                     "7. Hardware: ${androidInfo.hardware}",
                     style: pw.TextStyle(font: ttf),
                   ),
+                  pw.SizedBox(height: 20),
+                  pw.Text("Issue:", style: pw.TextStyle(font: ttf)),
+                  pw.SizedBox(height: 10),
+                  pw.Text(feedback.text, style: pw.TextStyle(font: ttf)),
                 ],
               ),
             ],
           ),
-          pw.SizedBox(height: 20),
-          pw.Text("Issue:", style: pw.TextStyle(font: ttf)),
-          pw.SizedBox(height: 10),
-          pw.Text(feedback.text, style: pw.TextStyle(font: ttf)),
         ];
       },
     ),

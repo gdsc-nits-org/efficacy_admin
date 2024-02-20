@@ -109,7 +109,7 @@ class _ClubPositionPermissionOverlayState
                         const Spacer(
                           flex: 1,
                         ),
-                        if (widget.clubPosition.id != widget.club!.leadPositionID)
+
                         Flexible(
                           flex: 4,
                           fit: FlexFit.loose,
@@ -117,7 +117,7 @@ class _ClubPositionPermissionOverlayState
                             style: const ButtonStyle(
                                 backgroundColor:
                                     MaterialStatePropertyAll(Colors.red)),
-                            onPressed: () async {
+                            onPressed:widget.clubPosition.id != widget.club!.leadPositionID ? () async {
 
                                 showLoadingOverlay(
                                     parentContext: context,
@@ -129,7 +129,7 @@ class _ClubPositionPermissionOverlayState
                                     });
 
 
-                            },
+                            } : null,
                             child: const Text('Delete'),
                           ),
                         ),

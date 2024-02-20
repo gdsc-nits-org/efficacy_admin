@@ -91,6 +91,7 @@ class _InviteItemState extends State<InviteItem> {
                               Text(
                                 clubPosition?.position ?? "Position",
                                 style: Theme.of(context).textTheme.labelLarge,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           )
@@ -135,6 +136,7 @@ class _InviteItemState extends State<InviteItem> {
                               child: Text(
                                 receiverName.split(" ").first,
                                 style: Theme.of(context).textTheme.labelLarge,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
@@ -142,6 +144,7 @@ class _InviteItemState extends State<InviteItem> {
                         Text(
                           receiverMail.trim(),
                           style: Theme.of(context).textTheme.labelLarge,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),

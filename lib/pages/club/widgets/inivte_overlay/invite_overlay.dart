@@ -170,8 +170,9 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                   height: 40,
                                   child: AddNewPositionButton(
                                     onTap: () async {
-                                      if (_newClubPositionController
-                                          .text.isNotEmpty) {
+                                      if (_newClubPositionController.text
+                                          .trim()
+                                          .isNotEmpty) {
                                         String newClubPositionName =
                                             _newClubPositionController.text
                                                 .trim();
@@ -298,8 +299,13 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                                   icon: const Icon(Icons.group),
                                                 ),
                                                 if (UserController
-                                                    .clubWithModifyClubPermission
-                                                    .contains(widget.club))
+                                                        .clubWithModifyClubPermission
+                                                        .contains(
+                                                            widget.club) &&
+                                                    (widget.club!
+                                                            .leadPositionID !=
+                                                        clubPositionList[index]
+                                                            .id))
                                                   IconButton(
                                                       tooltip:
                                                           "Edit club position",

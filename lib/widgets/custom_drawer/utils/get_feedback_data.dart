@@ -30,8 +30,6 @@ Future<Uint8List> getFeedBackData(UserFeedback feedback) async {
               pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  pw.Text("Efficacy Admin Report:", style: pw.TextStyle(font: ttf)),
-                  pw.SizedBox(height: 10),
                   pw.Text("Device Info", style: pw.TextStyle(font: ttf)),
                   pw.Text(
                     "1. App: Admin",
@@ -61,14 +59,14 @@ Future<Uint8List> getFeedBackData(UserFeedback feedback) async {
                     "7. Hardware: ${androidInfo.hardware}",
                     style: pw.TextStyle(font: ttf),
                   ),
-                  pw.SizedBox(height: 20),
-                  pw.Text("Issue:", style: pw.TextStyle(font: ttf)),
-                  pw.SizedBox(height: 10),
-                  pw.Text(feedback.text, style: pw.TextStyle(font: ttf)),
                 ],
               ),
             ],
           ),
+          pw.SizedBox(height: 20),
+          pw.Text("Issue:", style: pw.TextStyle(font: ttf)),
+          pw.SizedBox(height: 10),
+          pw.Text(feedback.text, style: pw.TextStyle(font: ttf)),
         ];
       },
     ),

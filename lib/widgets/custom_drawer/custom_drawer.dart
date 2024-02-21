@@ -1,6 +1,7 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
+import 'package:efficacy_admin/pages/club_history/club_history.dart';
 import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/utils/get_feedback_data.dart';
@@ -173,6 +174,26 @@ class _CustomDrawerState extends State<CustomDrawer> {
               // Navigate to invite page
               Navigator.of(context).pushNamed(
                 InvitePage.routeName,
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              CupertinoIcons.group,
+              color: routeName == "/interactionHistory"
+                  ? Theme.of(context).scaffoldBackgroundColor
+                  : dark,
+            ),
+            title: const Text('Interactions History'),
+            selected: routeName == "/interactionHistory",
+            selectedColor: light,
+            selectedTileColor: dark,
+            onTap: () {
+              // Close the drawer
+              Navigator.pop(context);
+              // Navigate to invite page
+              Navigator.of(context).pushNamed(
+                InteractionHistory.routeName,
               );
             },
           ),

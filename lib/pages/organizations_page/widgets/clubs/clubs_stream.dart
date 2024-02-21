@@ -21,6 +21,20 @@ class ClubsStream extends StatefulWidget {
 }
 
 class ClubsStreamState extends State<ClubsStream> {
+
+  List<ClubModel> filter(){
+    List<ClubModel> clubStatusAcceptedList = [];
+    for(int i = 0; i < widget.clubs.length; i++){
+      if(widget.clubs[i].clubStatus == ClubStatus.rejected||widget.clubs[i].clubStatus == ClubStatus.requested){
+        continue;
+      }
+      clubStatusAcceptedList.add(widget.clubs[i]);
+    }
+    return clubStatusAcceptedList;
+  }
+
+  
+
   List<Widget> buildClubs(List<ClubModel> clubs) {
     List<Widget> children = [];
     for (int index = 0; index < clubs.length; index++) {
@@ -104,11 +118,10 @@ class ClubsStreamState extends State<ClubsStream> {
     }
     return children;
   }
-
   @override
   Widget build(BuildContext context) {
-    return (widget.clubs.isNotEmpty)
-        ? Column(children: buildClubs(widget.clubs))
+    return (filter().isNotEmpty)
+        ? Column(children: buildClubs(filter()))
         : const Text("You are in no club");
   }
 }

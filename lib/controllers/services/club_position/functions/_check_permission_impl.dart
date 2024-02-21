@@ -17,9 +17,9 @@ Future<void> _checkPermissionImpl({
   if (club.first.members.isEmpty) {
     return;
   }
-  if (club.first.leadPositionID == clubPositionID) {
-    throw Exception("Leader position cannot be updated or deleted.");
-  }
+  // if (club.first.leadPositionID == clubPositionID) {
+  //   throw Exception("Leader position cannot be updated or deleted.");
+  // }
   List<ClubPositionModel> positions = UserController.clubPositions
       .where((clubPosition) => clubPosition.clubID == clubID)
       .toList();

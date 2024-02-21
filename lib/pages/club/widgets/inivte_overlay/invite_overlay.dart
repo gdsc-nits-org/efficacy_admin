@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
-import 'package:efficacy_admin/models/invitation/invitaion_model.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/pages/club/widgets/inivte_overlay/widgets/add_new_position_button.dart';
 import 'package:efficacy_admin/utils/tutorials/tutorials.dart';
@@ -18,6 +17,7 @@ class InviteOverlay extends StatefulWidget {
   final List<String> users;
   final ClubModel? club;
   final bool inviteMode;
+
   const InviteOverlay({
     super.key,
     required this.inviteMode,
@@ -299,13 +299,8 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                                   icon: const Icon(Icons.group),
                                                 ),
                                                 if (UserController
-                                                        .clubWithModifyClubPermission
-                                                        .contains(
-                                                            widget.club) &&
-                                                    (widget.club!
-                                                            .leadPositionID !=
-                                                        clubPositionList[index]
-                                                            .id))
+                                                    .clubWithModifyClubPermission
+                                                    .contains(widget.club))
                                                   IconButton(
                                                       tooltip:
                                                           "Edit club position",
@@ -325,6 +320,8 @@ class _InviteOverlayState extends State<InviteOverlay> {
                                                                   return Center(
                                                                     child:
                                                                         ClubPositionPermissionOverlay(
+                                                                      club: widget
+                                                                          .club,
                                                                       clubPosition:
                                                                           clubPositionList[
                                                                               index],

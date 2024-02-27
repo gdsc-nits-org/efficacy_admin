@@ -13,4 +13,4 @@ export 'club/club_page.dart';
 export 'developers_page/developers_page.dart';
 export 'invite_requests/invites.dart';
 export 'forgot_password/forgot_password.dart';
-export 'club_history/club_history.dart';
+export 'create_club_requests/create_club_requests.dart';

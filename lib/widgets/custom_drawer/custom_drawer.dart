@@ -1,7 +1,7 @@
 import 'package:efficacy_admin/config/config.dart';
 import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
-import 'package:efficacy_admin/pages/club_history/club_history.dart';
+import 'package:efficacy_admin/pages/create_club_requests/create_club_requests.dart';
 import 'package:efficacy_admin/pages/pages.dart';
 import 'package:efficacy_admin/utils/local_database/local_database.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/utils/get_feedback_data.dart';
@@ -62,7 +62,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     //size constants
-    double gap = height * 0.02;
+    double gap = 10;
 
     // Get current route name
     var route = ModalRoute.of(context);
@@ -178,26 +178,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
           ),
           ListTile(
-            leading: Icon(
-              CupertinoIcons.group,
-              color: routeName == "/interactionHistory"
-                  ? Theme.of(context).scaffoldBackgroundColor
-                  : dark,
-            ),
-            title: const Text('Interactions History'),
-            selected: routeName == "/interactionHistory",
-            selectedColor: light,
-            selectedTileColor: dark,
-            onTap: () {
-              // Close the drawer
-              Navigator.pop(context);
-              // Navigate to invite page
-              Navigator.of(context).pushNamed(
-                InteractionHistory.routeName,
-              );
-            },
-          ),
-          ListTile(
             leading: const Icon(
               Icons.bug_report,
               color: dark,
@@ -257,6 +237,36 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   LoginPage.routeName,
                   (route) => false,
                 );
+              }
+            },
+          ),
+          FutureBuilder(
+            future: UserController.isCurrentUserAnAdmin(),
+            initialData: false,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.data == true) {
+                return ListTile(
+                  leading: Icon(
+                    CupertinoIcons.group,
+                    color: routeName == CreateClubRequests.routeName
+                        ? Theme.of(context).scaffoldBackgroundColor
+                        : dark,
+                  ),
+                  title: const Text('Create Club Requests'),
+                  selected: routeName == CreateClubRequests.routeName,
+                  selectedColor: light,
+                  selectedTileColor: dark,
+                  onTap: () {
+                    // Close the drawer
+                    Navigator.pop(context);
+                    // Navigate to invite page
+                    Navigator.of(context).pushNamed(
+                      CreateClubRequests.routeName,
+                    );
+                  },
+                );
+              } else {
+                return const SizedBox.shrink();
               }
             },
           ),

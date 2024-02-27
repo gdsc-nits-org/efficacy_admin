@@ -345,12 +345,12 @@ class _ClubPageState extends State<ClubPage> {
                 );
                 await UserController.update();
               }
-            }
-          },
-          onCompleted: () {
-            if (mounted && newClub != null) {
-              showSnackBar(context, "Club Created");
-              Navigator.pop(context, newClub);
+
+              if (mounted && newClub != null) {
+                showSnackBar(
+                    context, "Club requested for approval from developers.");
+                Navigator.pop(context, newClub);
+              }
             }
           },
         );

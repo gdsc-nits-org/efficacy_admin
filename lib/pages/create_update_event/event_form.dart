@@ -21,10 +21,10 @@ class EventForm extends StatefulWidget {
   final TextEditingController venueController;
 
   final UserModel? selectedModerator;
-  DateTime selectedStartDate;
-  DateTime selectedEndDate;
-  TimeOfDay selectedStartTime;
-  TimeOfDay selectedEndTime;
+  final DateTime selectedStartDate;
+  final DateTime selectedEndDate;
+  final TimeOfDay selectedStartTime;
+  final TimeOfDay selectedEndTime;
   final ClubModel? selectedClub;
 
   final void Function(UserModel?) onSelectedModeratorChanged;
@@ -34,7 +34,7 @@ class EventForm extends StatefulWidget {
   final void Function(TimeOfDay) onSelectedEndTimeChanged;
   final void Function(ClubModel) onSelectedClubModelChanged;
 
-  EventForm({
+  const EventForm({
     super.key,
     required this.formKey,
     required this.scrollController,
@@ -218,7 +218,9 @@ class _EventFormState extends State<EventForm> {
                     ),
                   ),
                   ClubDropDown(
-                    items: UserController.clubWithModifyEventPermission,
+                    items: UserController.clubWithModifyEventPermission
+                        .where((club) => club.clubStatus == ClubStatus.accepted)
+                        .toList(),
                     value: selectedClub,
                     onChanged: (ClubModel? newClub) {
                       if (newClub != null) {

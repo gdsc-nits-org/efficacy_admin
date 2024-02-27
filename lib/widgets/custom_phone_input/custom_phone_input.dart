@@ -56,8 +56,11 @@ class CustomPhoneField extends StatelessWidget {
             onChanged: onPhoneChanged,
             enabled: enabled,
             initialCountryCode: initialValue?.countryISOCode ?? "IN",
-            initialValue:
-                "${(initialValue?.countryCode != null) ? initialValue?.countryCode : "+91"}${(initialValue?.number != null) ? initialValue?.number : ""}",
+            initialValue: (initialValue?.number != null)
+                ? initialValue!.number.startsWith("91")
+                    ? "91${initialValue!.number}"
+                    : initialValue!.number
+                : "",
           ),
         ),
       ],

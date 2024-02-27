@@ -1,3 +1,4 @@
+import 'package:efficacy_admin/config/configurations/theme/utils/palette.dart';
 import 'package:efficacy_admin/controllers/services/services.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/pages/club/club_page.dart';
@@ -21,19 +22,25 @@ class ClubsStream extends StatefulWidget {
 }
 
 class ClubsStreamState extends State<ClubsStream> {
+  List<ClubModel> clubStatusAcceptedList = [];
+  List<ClubModel> clubStatusRequestedList = [];
+  List<ClubModel> clubStatusRejectedList = [];
 
-  List<ClubModel> filter(){
-    List<ClubModel> clubStatusAcceptedList = [];
-    for(int i = 0; i < widget.clubs.length; i++){
-      if(widget.clubs[i].clubStatus == ClubStatus.rejected||widget.clubs[i].clubStatus == ClubStatus.requested){
-        continue;
+  void filter() {
+    for (ClubModel club in widget.clubs) {
+      switch (club.clubStatus) {
+        case ClubStatus.requested:
+          clubStatusRequestedList.add(club);
+          break;
+        case ClubStatus.accepted:
+          clubStatusAcceptedList.add(club);
+          break;
+        case ClubStatus.rejected:
+          clubStatusRejectedList.add(club);
+          break;
       }
-      clubStatusAcceptedList.add(widget.clubs[i]);
     }
-    return clubStatusAcceptedList;
   }
-
-  
 
   List<Widget> buildClubs(List<ClubModel> clubs) {
     List<Widget> children = [];
@@ -118,10 +125,36 @@ class ClubsStreamState extends State<ClubsStream> {
     }
     return children;
   }
+
+  @override
+  void initState() {
+    super.initState();
+    filter();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return (filter().isNotEmpty)
-        ? Column(children: buildClubs(filter()))
-        : const Text("You are in no club");
+    return (clubStatusRequestedList.isEmpty &&
+            clubStatusRejectedList.isEmpty &&
+            clubStatusAcceptedList.isEmpty)
+        ? const Center(child: Text("You are in no club"))
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...buildClubs(clubStatusAcceptedList),
+              if (clubStatusRequestedList.isNotEmpty) ...[
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0),
+                  child: Text(
+                    "Requested",
+                    style: TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold, color: dark),
+                  ),
+                ),
+                const Divider(),
+                ...buildClubs(clubStatusRequestedList),
+              ]
+            ],
+          );
   }
 }

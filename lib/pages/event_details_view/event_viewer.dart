@@ -35,6 +35,7 @@ class EventsViewer extends StatefulWidget {
 }
 
 class _EventsViewerState extends State<EventsViewer> {
+  final dateTimeFormat = DateFormat('hh:mm a, MMM d yy');
   void toggleLike() {
     List<String> liked = List.from(event.liked);
 
@@ -199,30 +200,19 @@ class _EventsViewerState extends State<EventsViewer> {
                               Icons.calendar_month_outlined,
                               color: dark,
                             ),
-                            Text(
-                              "${DateFormat('d MMM yyyy').format(widget.currentEvent.startDate)} - ${DateFormat('d MMM yyyy').format(widget.currentEvent.endDate)}",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge
-                                  ?.copyWith(color: dark),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
+                                  maxWidth:
+                                      MediaQuery.of(context).size.width * .8),
+                              child: Text(
+                                "${dateTimeFormat.format(widget.currentEvent.startDate)} - ${dateTimeFormat.format(widget.currentEvent.endDate)}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge
+                                    ?.copyWith(color: dark),
+                              ),
                             )
                           ].separate(10),
-                        ),
-                        Row(
-                          children: [
-                            const Icon(
-                              CupertinoIcons.clock,
-                              color: dark,
-                              size: 25,
-                            ),
-                            Text(
-                              Formatter.timeOnly(widget.currentEvent.startDate),
-                              style: const TextStyle(
-                                fontSize: 15,
-                                color: shadow,
-                              ),
-                            ),
-                          ].separate(15),
                         ),
                         const Gap(3),
                         // EventStats(currentEvent: widget.currentEvent),

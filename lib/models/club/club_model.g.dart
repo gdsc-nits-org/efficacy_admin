@@ -20,7 +20,9 @@ _$ClubModelImpl _$$ClubModelImplFromJson(Map<String, dynamic> json) =>
       phoneNumber: const PhoneNumberSerializer()
           .fromJson(json['phoneNumber'] as Map<String, dynamic>?),
       clubLogoURL: json['clubLogoURL'] as String,
-      clubStatus: $enumDecode(_$ClubStatusEnumMap, json['clubStatus']),
+      clubStatus:
+          $enumDecodeNullable(_$ClubStatusEnumMap, json['clubStatus']) ??
+              ClubStatus.requested,
       clubLogoPublicId: json['clubLogoPublicId'] as String?,
       clubBannerURL: json['clubBannerURL'] as String?,
       clubBannerPublicId: json['clubBannerPublicId'] as String?,

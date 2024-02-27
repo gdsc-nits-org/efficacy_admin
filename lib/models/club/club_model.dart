@@ -23,7 +23,7 @@ class ClubModel with _$ClubModel {
 
     /// This basically tells whether the club was accepted by the developer and
     /// is available for general use or not.
-    required ClubStatus clubStatus,
+    @Default(ClubStatus.requested) ClubStatus clubStatus,
     String? clubLogoPublicId,
     String? clubBannerURL,
     String? clubBannerPublicId,

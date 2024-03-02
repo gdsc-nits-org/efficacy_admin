@@ -571,7 +571,10 @@ class _ClubPageState extends State<ClubPage> {
         body: _createMode == true
             ? child
             : RefreshIndicator(
-                key: _refreshIndicatorKey, onRefresh: _refresh, child: child),
+                key: _refreshIndicatorKey,
+                onRefresh: _refresh,
+                child: child,
+              ),
       ),
     );
   }

@@ -7,6 +7,7 @@ Future<void> _checkDuplicateImpl(ClubModel club) async {
   SelectorBuilder selectorBuilder = SelectorBuilder();
   selectorBuilder.eq(ClubFields.instituteName.name, club.instituteName);
   selectorBuilder.eq(ClubFields.name.name, club.name);
+  selectorBuilder.eq(ClubFields.clubStatus.name, ClubStatus.accepted.name);
 
   Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
   ClubModel? temp;

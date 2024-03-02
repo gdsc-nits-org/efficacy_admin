@@ -47,6 +47,7 @@ class ClubForm extends StatelessWidget {
             children: [
               //Name
               CustomField(
+                maxLines: null,
                 enabled: editMode,
                 controller: nameController,
                 hintText: 'Club Name',

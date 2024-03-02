@@ -3,9 +3,11 @@ import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/pages/club/club_page.dart';
+import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -164,12 +166,16 @@ class _ClubWidgetState extends State<ClubWidget> {
                       ),
                     ),
                     const Gap(20),
-                    Text(
-                      widget.club.name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: width * 0.5),
+                      child: Text(
+                        widget.club.name,
+                        maxLines: null,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),

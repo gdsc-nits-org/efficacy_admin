@@ -304,6 +304,7 @@ class _ClubPageState extends State<ClubPage> {
             if (clubImageInfo?.url == null) {
               throw Exception("Could not upload image");
             }
+
             // validation logic
             newClub = ClubModel(
               name: nameController.text.trim(),
@@ -317,6 +318,12 @@ class _ClubPageState extends State<ClubPage> {
               clubBannerPublicId: bannerImageInfo?.publicID,
               instituteName: instituteName.trim(),
               members: {},
+              socials: {
+                Social.github: githubUrlController.text,
+                Social.facebook: fbUrlController.text,
+                Social.instagram: instaController.text,
+                Social.linkedin: linkedinController.text
+              },
             );
             newClub = await ClubController.create(newClub!);
             if (newClub != null) {

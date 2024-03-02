@@ -6,7 +6,7 @@ class CustomField extends StatelessWidget {
   final IconData icon;
   final bool obscureText;
   final String? Function(String?) validator;
-  final int maxLines;
+  final int? maxLines;
   final TextInputType? textInputType;
   final bool enabled;
   final String? initialValue;

@@ -9,5 +9,5 @@ Future<EventModel> _toggleLikeImpl(
   }
 
   event = event.copyWith(liked: liked);
-  return await EventController.update(event);
+  return await EventController.update(event, skipPermissionCheck: true);
 }

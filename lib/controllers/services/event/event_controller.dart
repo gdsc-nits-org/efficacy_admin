@@ -18,7 +18,7 @@ part 'functions/_get_impl.dart';
 part 'functions/_update_impl.dart';
 part 'functions/_delete_impl.dart';
 part 'functions/_get_all_events_impl.dart';
-part 'functions/_like_impl.dart';
+part 'functions/_toggle_like_impl.dart';
 
 class EventController {
   static const String _collectionName = "events";
@@ -71,11 +71,14 @@ class EventController {
     );
   }
 
-  static Future<EventModel> update(EventModel event) async {
-    await _checkPermission(
-      clubID: event.clubID,
-      forView: false,
-    );
+  static Future<EventModel> update(EventModel event,
+      {bool skipPermissionCheck = false}) async {
+    if (!skipPermissionCheck) {
+      await _checkPermission(
+        clubID: event.clubID,
+        forView: false,
+      );
+    }
     return await _updateImpl(event);
   }
 

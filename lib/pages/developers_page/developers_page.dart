@@ -139,7 +139,10 @@ class DevelopersPageState extends State<DevelopersPage> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Text(developers[index].name),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(developers[index].name),
+                              ),
                               const SizedBox(height: 10),
                               AnimatedContainer(
                                 height: (iconVisibility[index]) ? 40 : 0,

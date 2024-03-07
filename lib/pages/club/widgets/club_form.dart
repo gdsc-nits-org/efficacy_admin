@@ -1,5 +1,4 @@
 import 'package:efficacy_admin/config/config.dart';
-import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
 import 'package:efficacy_admin/pages/club/widgets/custom_field.dart';
 import 'package:efficacy_admin/pages/create_update_event/widgets/url_input.dart';
 import 'package:efficacy_admin/widgets/custom_phone_input/custom_phone_input.dart';
@@ -38,6 +37,13 @@ class ClubForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // prepareData();
+    double padding = 16;
+
+    Size size = MediaQuery.of(context).size;
+    double width = size.width;
+    double height = size.height;
+    double endGap = height * 0.1;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 25.0),
       child: Form(

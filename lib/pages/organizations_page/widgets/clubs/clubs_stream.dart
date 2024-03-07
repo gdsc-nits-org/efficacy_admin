@@ -2,7 +2,6 @@ import 'package:efficacy_admin/config/configurations/theme/utils/palette.dart';
 import 'package:efficacy_admin/controllers/services/services.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/pages/club/club_page.dart';
-import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
 import 'package:flutter/material.dart';
 
 class ClubsStream extends StatefulWidget {
@@ -58,8 +57,8 @@ class ClubsStreamState extends State<ClubsStream> {
                   top: ClubsStream.largePadding,
                   bottom: ClubsStream.largePadding),
               title: ConstrainedBox(
-
-                constraints: BoxConstraints(maxWidth: 0.5 * width),
+                constraints: BoxConstraints(
+                    maxWidth: 0.5 * MediaQuery.of(context).size.width),
                 child: Text(
                   club.name,
                   maxLines: null,

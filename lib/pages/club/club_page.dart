@@ -5,7 +5,6 @@ import 'package:efficacy_admin/controllers/controllers.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/models.dart';
 import 'package:efficacy_admin/utils/tutorials/tutorials.dart';
-import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
 import 'package:efficacy_admin/pages/club/utils/get_lead_name.dart';
 import 'package:efficacy_admin/pages/club/widgets/club_form.dart';
 import 'package:efficacy_admin/pages/club/widgets/buttons.dart';
@@ -398,7 +397,6 @@ class _ClubPageState extends State<ClubPage> {
     double gap = height * 0.02;
     double hMargin = width * 0.08;
     double vMargin = width * 0.08;
-    getSize(context);
     double profileSize = 100;
     double profileBorder = 7;
 

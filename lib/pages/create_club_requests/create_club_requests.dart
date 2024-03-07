@@ -1,9 +1,10 @@
+import 'dart:math';
+
 import 'package:efficacy_admin/controllers/services/club/club_controller.dart';
 import 'package:efficacy_admin/controllers/services/user/user_controller.dart';
 import 'package:efficacy_admin/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_admin/models/club/club_model.dart';
 import 'package:efficacy_admin/pages/club/club_page.dart';
-import 'package:efficacy_admin/pages/club/utils/create_edit_club_utils.dart';
 import 'package:efficacy_admin/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_admin/widgets/custom_drawer/custom_drawer.dart';
 import 'package:efficacy_admin/widgets/snack_bar/error_snack_bar.dart';
@@ -119,6 +120,9 @@ class _ClubWidgetState extends State<ClubWidget> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double width = size.width;
+    double height = size.height;
     return Padding(
       padding: const EdgeInsets.all(CreateClubRequests.smallPadding),
       child: InkWell(
